@@ -1,4 +1,4 @@
-package dariogonzalez.activeandhealthy;
+package dariogonzalez.fitplaygames;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -67,7 +67,7 @@ public class LoginActivity extends ActionBarActivity {
 
                             if (e==null){
                                 //Success
-                                ActiveAndHealthyApplication.updateParseInstallation(parseUser);
+                                FitPlayGamesApplication.updateParseInstallation(parseUser);
 
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -1,4 +1,4 @@
-package dariogonzalez.activeandhealthy;
+package dariogonzalez.fitplaygames;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -11,6 +11,8 @@ import org.scribe.builder.ServiceBuilder;
 import org.scribe.model.Token;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
+
+import dariogonzalez.fitplaygames.classes.FitbitApi;
 
 
 public class FitbitAuthenticationActivity extends ActionBarActivity {

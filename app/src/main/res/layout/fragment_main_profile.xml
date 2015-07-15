@@ -1,13 +1,13 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="dariogonzalez.activeandhealthy.MainProfileFragment">
+    tools:context="dariogonzalez.fitplaygames.MainProfileFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView android:layout_width="match_parent" android:layout_height="match_parent"
         android:text="PROFILE" />
 
-    <dariogonzalez.activeandhealthy.utils.RoundedImageView
+    <dariogonzalez.fitplaygames.utils.RoundedImageView
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginTop="15dp"

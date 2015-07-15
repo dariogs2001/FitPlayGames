@@ -1,4 +1,4 @@
-package dariogonzalez.activeandhealthy;
+package dariogonzalez.fitplaygames;
 
 
 import android.os.Bundle;

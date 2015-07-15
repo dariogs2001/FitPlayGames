@@ -1,4 +1,4 @@
-package dariogonzalez.activeandhealthy.utils;
+package dariogonzalez.fitplaygames.utils;
 
 /**
  * Created by dgonzalez on 4/9/2015.

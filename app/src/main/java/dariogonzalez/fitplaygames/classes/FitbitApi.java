@@ -1,4 +1,4 @@
-package dariogonzalez.activeandhealthy;
+package dariogonzalez.fitplaygames.classes;
 
 import org.scribe.builder.api.DefaultApi10a;
 import org.scribe.model.Token;

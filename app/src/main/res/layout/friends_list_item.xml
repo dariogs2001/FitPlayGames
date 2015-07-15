@@ -8,7 +8,7 @@
         android:layout_height="match_parent"
         android:rowCount="2"
         android:columnCount="5">
-        <dariogonzalez.activeandhealthy.utils.RoundedImageView
+        <dariogonzalez.fitplaygames.utils.RoundedImageView
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:id="@+id/user_thumbnail"

@@ -1,4 +1,4 @@
-package dariogonzalez.activeandhealthy;
+package dariogonzalez.fitplaygames;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;

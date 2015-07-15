@@ -1,4 +1,4 @@
-package dariogonzalez.activeandhealthy;
+package dariogonzalez.fitplaygames;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -29,8 +29,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import dariogonzalez.activeandhealthy.utils.FileHelper;
-import dariogonzalez.activeandhealthy.utils.ParseConstants;
+import dariogonzalez.fitplaygames.utils.FileHelper;
+import dariogonzalez.fitplaygames.utils.ParseConstants;
 
 
 public class SignUpActivity extends ActionBarActivity {
@@ -139,7 +139,7 @@ public class SignUpActivity extends ActionBarActivity {
                             setProgressBarIndeterminateVisibility(false);
                             if (e == null){
                                 //Success
-                                ActiveAndHealthyApplication.updateParseInstallation(ParseUser.getCurrentUser());
+                                FitPlayGamesApplication.updateParseInstallation(ParseUser.getCurrentUser());
 
                                 Intent intent = new Intent(SignUpActivity.this, FitbitAuthenticationActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -1,11 +1,9 @@
-package dariogonzalez.activeandhealthy;
+package dariogonzalez.fitplaygames;
 
 import android.content.Context;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -14,13 +12,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.parse.ParseUser;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import dariogonzalez.activeandhealthy.classes.LeaderBoardListItem;
-import dariogonzalez.activeandhealthy.classes.MoreOptionsListItem;
+import dariogonzalez.fitplaygames.classes.LeaderBoardListItem;
 
 
 public class LeaderBoardActivity extends ActionBarActivity {

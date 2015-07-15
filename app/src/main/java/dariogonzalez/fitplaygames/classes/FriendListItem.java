@@ -1,4 +1,4 @@
-package dariogonzalez.activeandhealthy.classes;
+package dariogonzalez.fitplaygames.classes;
 
 /**
  * Created by Dario on 6/6/2015.

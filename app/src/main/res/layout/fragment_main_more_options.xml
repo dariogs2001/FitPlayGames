@@ -1,7 +1,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="dariogonzalez.activeandhealthy.MainMoreOptionsFragment">
+    tools:context="dariogonzalez.fitplaygames.MainMoreOptionsFragment">
 
     <ListView
         android:id="@+id/more_options_list_view"

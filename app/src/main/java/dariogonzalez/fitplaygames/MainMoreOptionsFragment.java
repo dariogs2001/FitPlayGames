@@ -1,4 +1,4 @@
-package dariogonzalez.activeandhealthy;
+package dariogonzalez.fitplaygames;
 
 
 import android.content.Context;
@@ -20,7 +20,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-import dariogonzalez.activeandhealthy.classes.MoreOptionsListItem;
+import dariogonzalez.fitplaygames.classes.MoreOptionsListItem;
 
 
 /**

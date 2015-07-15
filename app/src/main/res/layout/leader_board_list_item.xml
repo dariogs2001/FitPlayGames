@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="60dp"
     android:orientation="horizontal">
-    <dariogonzalez.activeandhealthy.utils.RoundedImageView
+    <dariogonzalez.fitplaygames.utils.RoundedImageView
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:id="@+id/user_thumbnail"

@@ -1,4 +1,4 @@
-package dariogonzalez.activeandhealthy.utils;
+package dariogonzalez.fitplaygames.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;

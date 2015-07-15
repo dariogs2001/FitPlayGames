@@ -1,4 +1,4 @@
-package dariogonzalez.activeandhealthy;
+package dariogonzalez.fitplaygames;
 
 import android.app.Application;
 
@@ -6,12 +6,12 @@ import com.parse.Parse;
 import com.parse.ParseInstallation;
 import com.parse.ParseUser;
 
-import dariogonzalez.activeandhealthy.utils.ParseConstants;
+import dariogonzalez.fitplaygames.utils.ParseConstants;
 
 /**
  * Created by Dario on 4/25/2015.
  */
-public class ActiveAndHealthyApplication extends Application {
+public class FitPlayGamesApplication extends Application {
 
     @Override
     public void onCreate() {
