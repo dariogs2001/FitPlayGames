@@ -6,26 +6,26 @@ import android.os.Parcelable;
 /**
  * Created by dgonzalez on 7/15/15.
  */
-public class FitbitUser implements Parcelable {
+public class FitbitAccountInfo implements Parcelable {
     private String mAccessToken;
     private String mSecret;
     private String mUserId;
 
-    protected FitbitUser(Parcel in) {
+    protected FitbitAccountInfo(Parcel in) {
         mAccessToken = in.readString();
         mSecret = in.readString();
         mUserId = in.readString();
     }
 
-    public static final Creator<FitbitUser> CREATOR = new Creator<FitbitUser>() {
+    public static final Creator<FitbitAccountInfo> CREATOR = new Creator<FitbitAccountInfo>() {
         @Override
-        public FitbitUser createFromParcel(Parcel in) {
-            return new FitbitUser(in);
+        public FitbitAccountInfo createFromParcel(Parcel in) {
+            return new FitbitAccountInfo(in);
         }
 
         @Override
-        public FitbitUser[] newArray(int size) {
-            return new FitbitUser[size];
+        public FitbitAccountInfo[] newArray(int size) {
+            return new FitbitAccountInfo[size];
         }
     };
 
@@ -53,7 +53,7 @@ public class FitbitUser implements Parcelable {
         this.mUserId = mUserId;
     }
 
-    public FitbitUser(final String mAccessToken, final String mSecret, final String mUserId) {
+    public FitbitAccountInfo(final String mAccessToken, final String mSecret, final String mUserId) {
         this.mAccessToken = mAccessToken;
         this.mSecret = mSecret;
         this.mUserId = mUserId;

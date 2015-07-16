@@ -3,11 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="65dp"
     android:orientation="horizontal">
-    <GridLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:rowCount="2"
-        android:columnCount="5">
+
         <dariogonzalez.fitplaygames.utils.RoundedImageView
             android:layout_width="60dp"
             android:layout_height="60dp"
@@ -16,56 +12,78 @@
             android:layout_rowSpan="2"
             android:layout_row="0"
             android:layout_column="0" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="1">
         <TextView
             android:text="User Name"
             android:textSize="25dp"
             android:textStyle="bold"
             android:paddingTop="3dp"
-            android:layout_row="0"
-            android:layout_column="1"
-            android:layout_columnSpan="2"
-            android:layout_columnWeight="1"/>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="4">
             <TextView
                 android:text="Steps:"
-                android:gravity="center"
-                android:layout_row="1"
-                android:layout_column="1"/>
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:gravity="center_vertical"/>
             <TextView
                 android:text="15.000"
-                android:layout_row="1"
-                android:layout_column="2"
-                android:id="@+id/tv_steps"/>
+                android:id="@+id/tv_steps"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"/>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="1">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:text="Message"
+                android:id="@+id/btn_message"/>
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:id="@+id/ib_send_message"
-            android:layout_row="0"
-            android:layout_column="3"
-            android:src="@drawable/abc_btn_radio_to_on_mtrl_000" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:text="DElete"
+                android:id="@+id/btn_delete"/>
+        </LinearLayout>
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:id="@+id/ib_remove_friend"
-            android:layout_row="0"
-            android:layout_column="4"
-            android:src="@drawable/abc_btn_radio_to_on_mtrl_000" />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:layout_row="1"
-            android:layout_column="3"
-            android:text="Accept"
-            android:id="@+id/btn_accept"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:text="Accept"
+                android:id="@+id/btn_accept"/>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-           android:layout_row="1"
-            android:layout_column="4"
-            android:text="Decline"
-            android:id="@+id/btn_decline"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:text="Decline"
+                android:id="@+id/btn_decline"/>
+        </LinearLayout>
+    </LinearLayout>
 
-    </GridLayout>
 </LinearLayout>
