@@ -1,6 +1,8 @@
 package dariogonzalez.fitplaygames;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -12,7 +14,10 @@ import org.scribe.model.Token;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 
+import dariogonzalez.fitplaygames.classes.FitbitAccountInfo;
 import dariogonzalez.fitplaygames.classes.FitbitApi;
+import dariogonzalez.fitplaygames.classes.NamesIds;
+import dariogonzalez.fitplaygames.utils.ComplexPreferences;
 
 
 public class FitbitAuthenticationActivity extends ActionBarActivity {
@@ -87,7 +92,12 @@ public class FitbitAuthenticationActivity extends ActionBarActivity {
                     Intent myIntent = new Intent(FitbitAuthenticationActivity.this, MainActivity.class);
 //                    myIntent.putExtra("accesstoken ", MainActivity.accessToken.getToken()); //Optional parameters
 //                    myIntent.putExtra("secret", MainActivity.accessToken.getSecret()); //Optional parameters
-                    FitbitAuthenticationActivity.this.startActivity(myIntent);
+
+//                    FitbitAccountInfo ai = new FitbitAccountInfo("1", "1", "1");
+//                    ComplexPreferences cp = ComplexPreferences.getComplexPreferences(getBaseContext(), NamesIds.SHARED_PREFERENCES, MODE_PRIVATE);
+//                    cp.putObject(NamesIds.FITBIT_ACCOUNT_INFO, ai);
+//                    cp.commit();
+
                 } catch (Exception ex) {
                     String eee = ex.getMessage();
                 }

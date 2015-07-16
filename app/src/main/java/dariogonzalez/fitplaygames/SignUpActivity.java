@@ -30,7 +30,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import dariogonzalez.fitplaygames.utils.FileHelper;
-import dariogonzalez.fitplaygames.utils.ParseConstants;
+import dariogonzalez.fitplaygames.classes.ParseConstants;
 
 
 public class SignUpActivity extends ActionBarActivity {

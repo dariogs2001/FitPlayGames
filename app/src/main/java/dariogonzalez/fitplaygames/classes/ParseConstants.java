@@ -1,4 +1,4 @@
-package dariogonzalez.fitplaygames.utils;
+package dariogonzalez.fitplaygames.classes;
 
 /**
  * Created by dgonzalez on 4/9/2015.

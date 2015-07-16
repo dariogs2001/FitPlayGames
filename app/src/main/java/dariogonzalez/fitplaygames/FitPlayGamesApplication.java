@@ -6,7 +6,7 @@ import com.parse.Parse;
 import com.parse.ParseInstallation;
 import com.parse.ParseUser;
 
-import dariogonzalez.fitplaygames.utils.ParseConstants;
+import dariogonzalez.fitplaygames.classes.ParseConstants;
 
 /**
  * Created by Dario on 4/25/2015.
