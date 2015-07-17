@@ -12,15 +12,23 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import dariogonzalez.fitplaygames.classes.LeaderBoardListItem;
+import dariogonzalez.fitplaygames.classes.ParseConstants;
 
 
 public class LeaderBoardActivity extends ActionBarActivity {
     private List<LeaderBoardListItem> mLeadBoardList = new ArrayList<LeaderBoardListItem>();
-    View view;
+    private View view;
+    protected List<ParseUser> mUsers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,15 +39,32 @@ public class LeaderBoardActivity extends ActionBarActivity {
         {
             populateList();
         }
-        populateListView();
+
         registerClickCallback();
     }
 
     private void populateList() {
-        mLeadBoardList.add(new LeaderBoardListItem("20.000", "15", R.mipmap.ic_profile));
-        mLeadBoardList.add(new LeaderBoardListItem("23.000", "9", R.mipmap.ic_profile));
-        mLeadBoardList.add(new LeaderBoardListItem("15.000", "13", R.mipmap.ic_profile));
-        mLeadBoardList.add(new LeaderBoardListItem("18.000", "12", R.mipmap.ic_profile));
+
+        ParseQuery<ParseUser> query = ParseUser.getQuery();// new ParseQuery<ParseObject>(ParseConstants.CLASS_USER);
+        query.addAscendingOrder(ParseConstants.KEY_CREATED_AT);
+        query.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(final List<ParseUser> list, final ParseException e) {
+                if (e == null)
+                {
+                    mUsers = list;
+                    for (ParseObject user : mUsers) {
+                        mLeadBoardList.add(new LeaderBoardListItem(user.getString(ParseConstants.USER_USERNAME), "20.000", "15", R.mipmap.ic_profile));
+                    }
+                    populateListView();
+                }
+            }
+        });
+
+//        mLeadBoardList.add(new LeaderBoardListItem("20.000", "15", R.mipmap.ic_profile));
+//        mLeadBoardList.add(new LeaderBoardListItem("23.000", "9", R.mipmap.ic_profile));
+//        mLeadBoardList.add(new LeaderBoardListItem("15.000", "13", R.mipmap.ic_profile));
+//        mLeadBoardList.add(new LeaderBoardListItem("18.000", "12", R.mipmap.ic_profile));
     }
 
     private void populateListView() {
@@ -73,6 +98,8 @@ public class LeaderBoardActivity extends ActionBarActivity {
             }
             LeaderBoardListItem current = mLeadBoardList.get(position);
 
+            TextView userNameTextView = (TextView) itemView.findViewById(R.id.user_name);
+            userNameTextView.setText(current.getUserName());
             ImageView imageView = (ImageView) itemView.findViewById(R.id.user_thumbnail);
             imageView.setImageResource(current.getIconId());
             TextView stepsTextView = (TextView) itemView.findViewById(R.id.steps_text_view);

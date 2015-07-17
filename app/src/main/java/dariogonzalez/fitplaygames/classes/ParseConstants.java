@@ -7,6 +7,8 @@ public final class ParseConstants
 {
     //Class name
     public static final String CLASS_MESSAGES = "Messages";
+    public static final String CLASS_USER = "User";
+
     //Field name
     public static final String KEY_USERNAME = "username";
     public static final String KEY_FRIENDS_RELATION = "friendsRelation";
@@ -24,9 +26,8 @@ public final class ParseConstants
     public static final String TYPE_VIDEO = "video";
 
     //User table
+    public static final String USER_USERNAME = "username";
     public static final String USER_GENDER = "Gender";
     public static final String USER_AGE_RANGE = "AgeRange";
     public static final String USER_PROFILE_PICTURE = "ProfilePicture";
-    public static final String USER_FITBIT_ACCESS_TOKEN = "FitbitAccessToken";
-    public static final String USER_FITBIT_SECRET = "FitbitSecret";
 }

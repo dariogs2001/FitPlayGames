@@ -21,7 +21,8 @@
             android:layout_gravity="center_vertical"
             android:textSize="25dp"
             android:textStyle="bold"
-            android:paddingTop="3dp"/>
+            android:paddingTop="3dp"
+            android:id="@+id/user_name"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

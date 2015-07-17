@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -22,13 +23,15 @@ import dariogonzalez.fitplaygames.utils.ComplexPreferences;
 
 public class FitbitAuthenticationActivity extends ActionBarActivity {
 
-    WebView wvAuthorise;
-    OAuthService service;
-    Token requestToken;
-    Token accessToken;
+    private static String TAG = FitbitAuthenticationActivity.class.getSimpleName();
 
-    String apiKey = "a2f813cf8c7420eff5629382ae6a25a4";
-    String apiSecret = "0129ef7d53df74e1bb428fdaec8df9c1";
+    private WebView wvAuthorise;
+    private OAuthService service;
+    private Token requestToken;
+    private Token accessToken;
+
+    private String apiKey = "a2f813cf8c7420eff5629382ae6a25a4";
+    private String apiSecret = "0129ef7d53df74e1bb428fdaec8df9c1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,22 +87,22 @@ public class FitbitAuthenticationActivity extends ActionBarActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
+                try
+                {
                     accessToken = service.getAccessToken(requestToken, v);
 
-                    String eee = "Dario";
+                    FitbitAccountInfo ai = new FitbitAccountInfo(accessToken.getToken(), accessToken.getSecret(), accessToken.getRawResponse());
+                    ComplexPreferences cp = ComplexPreferences.getComplexPreferences(getBaseContext(), NamesIds.SHARED_PREFERENCES, MODE_PRIVATE);
+                    cp.putObject(NamesIds.FITBIT_ACCOUNT_INFO, ai);
+                    cp.commit();
 
                     Intent myIntent = new Intent(FitbitAuthenticationActivity.this, MainActivity.class);
-//                    myIntent.putExtra("accesstoken ", MainActivity.accessToken.getToken()); //Optional parameters
-//                    myIntent.putExtra("secret", MainActivity.accessToken.getSecret()); //Optional parameters
-
-//                    FitbitAccountInfo ai = new FitbitAccountInfo("1", "1", "1");
-//                    ComplexPreferences cp = ComplexPreferences.getComplexPreferences(getBaseContext(), NamesIds.SHARED_PREFERENCES, MODE_PRIVATE);
-//                    cp.putObject(NamesIds.FITBIT_ACCOUNT_INFO, ai);
-//                    cp.commit();
-
-                } catch (Exception ex) {
+                    startActivity(myIntent);
+                }
+                catch (Exception ex)
+                {
                     String eee = ex.getMessage();
+                    Log.i("Error signing in Fitbit", ex.getMessage());
                 }
             }
         }).start();
