@@ -1,6 +1,7 @@
 package dariogonzalez.fitplaygames;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,9 +15,11 @@ import android.widget.TextView;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +57,9 @@ public class LeaderBoardActivity extends ActionBarActivity {
                 {
                     mUsers = list;
                     for (ParseObject user : mUsers) {
-                        mLeadBoardList.add(new LeaderBoardListItem(user.getString(ParseConstants.USER_USERNAME), "20.000", "15", R.mipmap.ic_profile));
+                        ParseFile file = user.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
+                        Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
+                        mLeadBoardList.add(new LeaderBoardListItem(user.getString(ParseConstants.USER_USERNAME), "20.000", "15", R.mipmap.ic_profile, fileUri));
                     }
                     populateListView();
                 }
@@ -101,7 +106,15 @@ public class LeaderBoardActivity extends ActionBarActivity {
             TextView userNameTextView = (TextView) itemView.findViewById(R.id.user_name);
             userNameTextView.setText(current.getUserName());
             ImageView imageView = (ImageView) itemView.findViewById(R.id.user_thumbnail);
-            imageView.setImageResource(current.getIconId());
+            Uri profilePicture = current.getImageUri();
+            if (profilePicture != null)
+            {
+                Picasso.with(mContext).load(profilePicture.toString()).into(imageView);
+            }
+            else
+            {
+                imageView.setImageResource(current.getIconId());
+            }
             TextView stepsTextView = (TextView) itemView.findViewById(R.id.steps_text_view);
             stepsTextView.setText(current.getSteps());
             TextView gamesTextView = (TextView) itemView.findViewById(R.id.games_text_view);
