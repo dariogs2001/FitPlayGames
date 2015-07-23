@@ -19,6 +19,7 @@ import dariogonzalez.fitplaygames.classes.FitbitAccountInfo;
 import dariogonzalez.fitplaygames.classes.FitbitApi;
 import dariogonzalez.fitplaygames.classes.NamesIds;
 import dariogonzalez.fitplaygames.utils.ComplexPreferences;
+import dariogonzalez.fitplaygames.utils.FitbitHelper;
 
 
 public class FitbitAuthenticationActivity extends ActionBarActivity {
@@ -30,8 +31,8 @@ public class FitbitAuthenticationActivity extends ActionBarActivity {
     private Token requestToken;
     private Token accessToken;
 
-    private String apiKey = "a2f813cf8c7420eff5629382ae6a25a4";
-    private String apiSecret = "0129ef7d53df74e1bb428fdaec8df9c1";
+//    private String apiKey = "a2f813cf8c7420eff5629382ae6a25a4";
+//    private String apiSecret = "0129ef7d53df74e1bb428fdaec8df9c1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,22 +47,22 @@ public class FitbitAuthenticationActivity extends ActionBarActivity {
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 final String url2 = url;
 
-                if(url.startsWith("http://localhost")) {
+                if (url.startsWith("http://localhost")) {
                     Uri uri = Uri.parse(url);
                     String verifier = uri.getQueryParameter("oauth_verifier");
                     final Verifier v = new Verifier(verifier);
 
                     GetTokens(v);
                 }
-
                 return super.shouldOverrideUrlLoading(view, url);
             }
         });
 
         // Replace these with your own api key and secret
 
-
-        service = new ServiceBuilder().provider(FitbitApi.class).apiKey(apiKey).apiSecret(apiSecret).callback("http://localhost").build();
+        service = new ServiceBuilder().provider(FitbitApi.class).apiKey(getString(R.string.fitbit_api_key))
+                .apiSecret(getString(R.string.fitbit_api_secret))
+                .callback(getString(R.string.fitbit_callback)).build();
 
         // network operation shouldn't run on main thread
         new Thread(new Runnable() {
@@ -95,6 +96,9 @@ public class FitbitAuthenticationActivity extends ActionBarActivity {
                     ComplexPreferences cp = ComplexPreferences.getComplexPreferences(getBaseContext(), NamesIds.SHARED_PREFERENCES, MODE_PRIVATE);
                     cp.putObject(NamesIds.FITBIT_ACCOUNT_INFO, ai);
                     cp.commit();
+
+                    FitbitHelper fh = new FitbitHelper(getBaseContext());
+                    fh.getUserLastMonthData();
 
                     Intent myIntent = new Intent(FitbitAuthenticationActivity.this, MainActivity.class);
                     startActivity(myIntent);
