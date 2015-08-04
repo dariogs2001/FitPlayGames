@@ -5,12 +5,16 @@ import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.model.OAuthRequest;
 import org.scribe.model.Response;
 import org.scribe.model.Token;
 import org.scribe.model.Verb;
 import org.scribe.oauth.OAuthService;
+
+import java.util.Date;
 
 import dariogonzalez.fitplaygames.R;
 import dariogonzalez.fitplaygames.classes.FitbitAccountInfo;
@@ -95,8 +99,23 @@ public class FitbitHelper {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            String result = s;
-            Log.d(TAG, "Result = " + result);
+            Log.d(TAG, "Result = " + s);
+
+            try {
+                //Save daa in Database
+                JSONObject jsonRootObject = new JSONObject(s);
+                //Get the instance of JSONArray that contains JSONObjects
+                JSONArray jsonArray = jsonRootObject.optJSONArray("activities-steps");
+                for(int i = 0; i < jsonArray.length(); i++){
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    String dateTime = jsonObject.optString("dateTime").toString();
+                    int value = Integer.parseInt(jsonObject.optString("value").toString());
+                }
+            }
+            catch (org.json.JSONException ex)
+            {
+                Log.d(TAG, ex.getMessage());
+            }
         }
     }
 }
