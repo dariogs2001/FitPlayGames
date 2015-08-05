@@ -45,8 +45,6 @@ public class FitbitAuthenticationActivity extends ActionBarActivity {
         wvAuthorise.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                final String url2 = url;
-
                 if (url.startsWith("http://localhost")) {
                     Uri uri = Uri.parse(url);
                     String verifier = uri.getQueryParameter("oauth_verifier");
@@ -97,8 +95,8 @@ public class FitbitAuthenticationActivity extends ActionBarActivity {
                     cp.putObject(NamesIds.FITBIT_ACCOUNT_INFO, ai);
                     cp.commit();
 
-                    FitbitHelper fh = new FitbitHelper(getBaseContext());
-                    fh.getUserLastMonthData();
+//                    FitbitHelper fh = new FitbitHelper(getBaseContext());
+//                    fh.getUserLastMonthData();
 
                     Intent myIntent = new Intent(FitbitAuthenticationActivity.this, MainActivity.class);
                     startActivity(myIntent);

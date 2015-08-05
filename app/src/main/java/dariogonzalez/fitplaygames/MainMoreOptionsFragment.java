@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dariogonzalez.fitplaygames.classes.MoreOptionsListItem;
+import dariogonzalez.fitplaygames.utils.FitbitHelper;
 
 
 /**
@@ -55,6 +56,7 @@ public class MainMoreOptionsFragment extends android.support.v4.app.Fragment {
         mOptions.add(new MoreOptionsListItem(getString(R.string.fitbit_sign_in_text), R.mipmap.fitbit_white));
         mOptions.add(new MoreOptionsListItem(getString(R.string.log_out_text), R.mipmap.logout));
         mOptions.add(new MoreOptionsListItem(getString(R.string.privacy_policy_text), R.mipmap.privacy));
+        mOptions.add(new MoreOptionsListItem("Test", R.mipmap.ic_launcher));
     }
 
     private void populateListView() {
@@ -81,6 +83,11 @@ public class MainMoreOptionsFragment extends android.support.v4.app.Fragment {
                         break;
                     case 3:
                         showIntent(getActivity(), PrivacyPolicyActivity.class);
+                        break;
+                    case 4:
+                        FitbitHelper fh = new FitbitHelper(getActivity());
+                        fh.getUserLastMonthData();
+
                         break;
                     default:
                         break;
