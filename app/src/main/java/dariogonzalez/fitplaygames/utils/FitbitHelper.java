@@ -5,10 +5,12 @@ import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.Parse;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 import org.json.JSONArray;
@@ -23,7 +25,9 @@ import org.scribe.oauth.OAuthService;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import dariogonzalez.fitplaygames.R;
@@ -90,15 +94,101 @@ public class FitbitHelper {
     {
         FitbitLastMonthTask task = new FitbitLastMonthTask();
         task.execute("https://api.fitbit.com/1/user/-/activities/steps/date/today/1m.json");
-
-//        String result = executeQuery("https://api.fitbit.com/1/user/-/activities/steps/date/today/1m.json");
-//        Log.d(TAG, "Result = " + result);
     }
 
     public boolean isFitbitUserAlive()
     {
         return (mUserInfo != null && mUserInfo.getAccessToken().length() > 0 && mUserInfo.getSecret().length() > 0);
     }
+
+    //I have to create this because Parse.com does not support aggregate queries, so to avoid going through all the HistoryActivity table to try
+    //to calculate the last 7 days created a new table with this info. So each time HistoryActivity table is updated I should update this new table
+    //to keep track of the last 7 days steps.
+    public void lastSevenDaySumAndAverage(final String parseUserId)
+    {
+        final Calendar today = Calendar.getInstance();
+        today.clear(Calendar.HOUR); today.clear(Calendar.MINUTE); today.clear(Calendar.SECOND);
+        today.add(Calendar.DAY_OF_YEAR, -7);
+        Date sevenDaysBeforeToday = today.getTime();
+
+        //For the user returning the 7 last days of activity
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseConstants.CLASS_ACTIVITY_HISTORY);
+        query.whereEqualTo(ParseConstants.KEY_USER_ID, parseUserId);
+        query.whereGreaterThanOrEqualTo(ParseConstants.ACTIVITY_HISTORY_DATE, sevenDaysBeforeToday);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, com.parse.ParseException e) {
+                if (e == null)
+                {
+                    double totalSteps = 0;
+                    double avgSteps = 0;
+
+                    for (ParseObject obj : list)
+                    {
+                        totalSteps = totalSteps + obj.getInt(ParseConstants.ACTIVITY_HISTORY_STEPS);
+                    }
+
+                    if (list.size() > 0) {
+                        avgSteps = totalSteps / list.size();
+                    }
+
+                    final double totalStepsFinal = totalSteps;
+                    final double avgStepsFinal = avgSteps;
+
+                    //Now save the value in the table
+                    ParseQuery<ParseObject> queryLast = ParseQuery.getQuery(ParseConstants.CLASS_LAST_SEVEN_DAYS);
+                    queryLast.whereEqualTo(ParseConstants.KEY_USER_ID, parseUserId);
+                    queryLast.getFirstInBackground(new GetCallback<ParseObject>() {
+                        @Override
+                        public void done(ParseObject parseObject, com.parse.ParseException e) {
+                            if (e == null)
+                            {
+                                parseObject.put(ParseConstants.LAST_SEVEN_DAYS_STEPS, totalStepsFinal);
+                                parseObject.put(ParseConstants.LAST_SEVEN_DAYS_AVG, avgStepsFinal);
+                                parseObject.saveInBackground();
+                            }
+                            else
+                            {
+                                ParseObject lastSevenDays = new ParseObject(ParseConstants.CLASS_LAST_SEVEN_DAYS);
+                                lastSevenDays.put(ParseConstants.KEY_USER_ID, parseUserId);
+                                lastSevenDays.put(ParseConstants.LAST_SEVEN_DAYS_STEPS, totalStepsFinal);
+                                lastSevenDays.put(ParseConstants.LAST_SEVEN_DAYS_AVG, avgStepsFinal);
+                                lastSevenDays.saveInBackground();
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+//    public void testRelationalQuery()
+//    {
+//        final ParseQuery<ParseObject> innerQuery = ParseQuery.getQuery(ParseConstants.CLASS_USER);
+//        innerQuery.getInBackground(ParseUser.getCurrentUser().getObjectId(), new GetCallback<ParseObject>() {
+//            @Override
+//            public void done(ParseObject parseObject, com.parse.ParseException e) {
+//                if (e == null) {
+//                    ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseConstants.CLASS_ACTIVITY_HISTORY);
+//                    query.whereMatchesQuery(ParseConstants.CLASS_USER, innerQuery);
+//                    query.getFirstInBackground(new GetCallback<ParseObject>() {
+//                        @Override
+//                        public void done(ParseObject parseObject, com.parse.ParseException e) {
+//                            if (e == null)
+//                            {
+//                                parseObject
+//                            }
+//                            else
+//                            {
+//
+//                            }
+//                        }
+//                    });
+//                }
+//            }
+//        });
+//
+//    }
 
     public class FitbitLastMonthTask extends AsyncTask<String, Void, String> {
         @Override
@@ -140,12 +230,13 @@ public class FitbitHelper {
                                         parseObject.saveInBackground();
                                     }
                                 } else {
-                                    ParseObject gameScore = new ParseObject(ParseConstants.CLASS_ACTIVITY_HISTORY);
-                                    gameScore.put(ParseConstants.KEY_USER_ID, parseUserId);
+                                    ParseObject activityHistory = new ParseObject(ParseConstants.CLASS_ACTIVITY_HISTORY);
+                                    activityHistory.put(ParseConstants.KEY_USER_ID, parseUserId);
+//                                    activityHistory.put("userId", ParseObject.createWithoutData(ParseConstants.CLASS_USER, parseUserId));
 
-                                    gameScore.put(ParseConstants.ACTIVITY_HISTORY_DATE, date);
-                                    gameScore.put(ParseConstants.ACTIVITY_HISTORY_STEPS, value);
-                                    gameScore.saveInBackground();
+                                    activityHistory.put(ParseConstants.ACTIVITY_HISTORY_DATE, date);
+                                    activityHistory.put(ParseConstants.ACTIVITY_HISTORY_STEPS, value);
+                                    activityHistory.saveInBackground();
                                 }
                             }
                         });

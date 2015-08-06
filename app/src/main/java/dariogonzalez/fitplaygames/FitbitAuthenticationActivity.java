@@ -95,8 +95,9 @@ public class FitbitAuthenticationActivity extends ActionBarActivity {
                     cp.putObject(NamesIds.FITBIT_ACCOUNT_INFO, ai);
                     cp.commit();
 
-//                    FitbitHelper fh = new FitbitHelper(getBaseContext());
-//                    fh.getUserLastMonthData();
+                    //Save last 30 days of activity.
+                    FitbitHelper fh = new FitbitHelper(getBaseContext());
+                    fh.getUserLastMonthData();
 
                     Intent myIntent = new Intent(FitbitAuthenticationActivity.this, MainActivity.class);
                     startActivity(myIntent);

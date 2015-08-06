@@ -9,6 +9,7 @@ public final class ParseConstants
     public static final String CLASS_MESSAGES = "Messages";
     public static final String CLASS_USER = "User";
     public static final String CLASS_ACTIVITY_HISTORY = "ActivityHistory";
+    public static final String CLASS_LAST_SEVEN_DAYS =  "LastSevenDays";
 
     //Field name
     public static final String KEY_USERNAME = "username";
@@ -35,4 +36,7 @@ public final class ParseConstants
     public static final String ACTIVITY_HISTORY_DATE = "Date";
     public static final String ACTIVITY_HISTORY_STEPS = "Steps";
     public static final String ACTIVITY_HISTORY_ACTIVE_MINUTES = "ActiveMinutes";
+
+    public static final String LAST_SEVEN_DAYS_STEPS = "Steps";
+    public static final String LAST_SEVEN_DAYS_AVG = "Average";
 }
