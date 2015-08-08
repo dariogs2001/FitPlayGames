@@ -4,8 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".FitPlayGamesApplication"
@@ -14,7 +13,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="dariogonzalez.fitplaygames.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -24,42 +23,49 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="dariogonzalez.fitplaygames.LoginActivity"
+            android:name=".LoginActivity"
             android:label="@string/title_activity_login"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="dariogonzalez.fitplaygames.SignUpActivity"
+            android:name=".SignUpActivity"
             android:label="@string/title_activity_sign_up"
-            android:parentActivityName="dariogonzalez.fitplaygames.MainActivity"
+            android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="dariogonzalez.fitplaygames.MainActivity" />
         </activity>
         <activity
-            android:name="dariogonzalez.fitplaygames.FitbitAuthenticationActivity"
+            android:name=".FitbitAuthenticationActivity"
             android:label="Fitbit Authentication"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
         </activity>
         <activity
-            android:name="dariogonzalez.fitplaygames.PrivacyPolicyActivity"
+            android:name=".PrivacyPolicyActivity"
             android:label="@string/title_activity_privacy_policy"
-            android:parentActivityName="dariogonzalez.fitplaygames.MainActivity"
+            android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="dariogonzalez.fitplaygames.MainActivity" />
         </activity>
         <activity
-            android:name="dariogonzalez.fitplaygames.LeaderBoardActivity"
+            android:name=".LeaderBoardActivity"
             android:label="@string/title_activity_leader_board"
+            android:screenOrientation="portrait" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="dariogonzalez.fitplaygames.MainActivity" />
+        </activity>
+        <activity
+            android:name=".SearchFriendActivity"
+            android:label="@string/title_activity_search_friend"
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

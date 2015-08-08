@@ -4,7 +4,7 @@
     android:layout_height="65dp"
     android:orientation="horizontal">
 
-        <dariogonzalez.fitplaygames.utils.RoundedImageView
+    <dariogonzalez.fitplaygames.utils.RoundedImageView
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:id="@+id/user_thumbnail"

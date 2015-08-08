@@ -7,6 +7,7 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.parse.ParseFile;
 import com.parse.ParseUser;
@@ -21,6 +22,9 @@ import dariogonzalez.fitplaygames.utils.RoundedImageView;
  */
 public class MainProfileFragment extends android.support.v4.app.Fragment {
 
+    private RoundedImageView profileImage;
+    private TextView userName;
+    private TextView userEmail;
 
     public MainProfileFragment() {
         // Required empty public constructor
@@ -32,22 +36,26 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_main_profile, container, false);
-        RoundedImageView image = (RoundedImageView) view.findViewById(R.id.profile_image);
+        profileImage = (RoundedImageView) view.findViewById(R.id.profile_image);
+        userName = (TextView) view.findViewById(R.id.user_name);
+        userEmail = (TextView) view.findViewById(R.id.user_email);
+
         ParseUser user = ParseUser.getCurrentUser();
         ParseFile file = user.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
         Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
 
         if (fileUri != null)
         {
-            Picasso.with(getActivity().getBaseContext()).load(fileUri.toString()).into(image);
+            Picasso.with(getActivity().getBaseContext()).load(fileUri.toString()).into(profileImage);
         }
         else
         {
-            image.setImageResource(R.mipmap.ic_profile);
+            profileImage.setImageResource(R.mipmap.ic_profile);
         }
+
+        userName.setText(user.getUsername());
+        userEmail.setText(user.getEmail());
 
         return view;
     }
-
-
 }

@@ -1,7 +1,8 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="dariogonzalez.fitplaygames.MainProfileFragment">
+    tools:context="dariogonzalez.fitplaygames.MainProfileFragment"
+    android:orientation="vertical">
 
 
     <dariogonzalez.fitplaygames.utils.RoundedImageView
@@ -11,4 +12,16 @@
         android:id="@+id/profile_image"
         android:layout_gravity="center_horizontal|top"
         android:src="@mipmap/ic_profile" />
-</FrameLayout>
+    <TextView
+        android:id="@+id/user_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="User Name"
+        android:gravity="center_horizontal"/>
+    <TextView
+        android:id="@+id/user_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="User Email"
+        android:gravity="center_horizontal"/>
+</LinearLayout>

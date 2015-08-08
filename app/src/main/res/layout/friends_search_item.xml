@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="65dp">
+    <dariogonzalez.fitplaygames.utils.RoundedImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:id="@+id/user_thumbnail"
+        android:src="@mipmap/ic_profile"
+        android:layout_rowSpan="2"
+        android:layout_row="0"
+        android:layout_column="0" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="1">
+        <TextView
+            android:text="User Name"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:paddingTop="3dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/user_name"/>
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:weightSum="4">-->
+            <!--<TextView-->
+                <!--android:text="Steps:"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_weight="3"-->
+                <!--android:gravity="center_vertical"/>-->
+            <!--<TextView-->
+                <!--android:text="15.000"-->
+                <!--android:id="@+id/tv_steps"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_weight="1"-->
+                <!--android:gravity="center_vertical"/>-->
+        <!--</LinearLayout>-->
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="1">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:text="Invite"
+                android:id="@+id/btn_invite"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:text="Sent"
+                android:id="@+id/btn_sent"
+                android:enabled="false"/>
+    </LinearLayout>
+</LinearLayout>
