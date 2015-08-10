@@ -10,10 +10,15 @@ public class FriendSearchListItem {
     private int mIconId;
     private Uri mImageUri;
 
-    public FriendSearchListItem(String userName, int iconId, Uri imageUri) {
+    private String mUserId;
+    private String mFriendId;
+
+    public FriendSearchListItem(String userName, int iconId, Uri imageUri, String userId, String friendId) {
         this.mUserName = userName;
         this.mIconId = iconId;
         this.mImageUri = imageUri;
+        this.mUserId = userId;
+        this.mFriendId = friendId;
     }
 
     public String getUserName() { return mUserName; }
@@ -21,4 +26,8 @@ public class FriendSearchListItem {
         return mIconId;
     }
     public Uri getImageUri() {return mImageUri; }
+
+    public String getUserId() { return mUserId; }
+    public String getUserFriend() { return mFriendId; }
+
 }

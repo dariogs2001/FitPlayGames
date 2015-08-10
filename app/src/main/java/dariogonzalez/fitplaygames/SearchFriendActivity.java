@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -27,7 +28,7 @@ import dariogonzalez.fitplaygames.classes.ParseConstants;
 
 public class SearchFriendActivity extends AppCompatActivity {
     private List<FriendSearchListItem> mSearchFriendList = new ArrayList<FriendSearchListItem>();
-    protected List<ParseUser> mUsers;
+    ListView friendAdapterList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,18 +58,17 @@ public class SearchFriendActivity extends AppCompatActivity {
                 users.whereStartsWith(ParseConstants.USER_USERNAME, newText);
                 users.setLimit(50);
 
+                final String userId = ParseUser.getCurrentUser().getObjectId();
                 //TODO: Only search for those whom are not friends or have not received a friend request, or have not declined a friend request, or have not been deleted from a friend request...
                 users.findInBackground(new FindCallback<ParseUser>() {
                     @Override
                     public void done(List<ParseUser> list, ParseException e) {
-                        if (e == null)
-                        {
+                        if (e == null) {
                             mSearchFriendList.clear();
-                            for (ParseUser user : list)
-                            {
+                            for (ParseUser user : list) {
                                 ParseFile file = user.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
                                 Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
-                                mSearchFriendList.add(new FriendSearchListItem(user.getString(ParseConstants.USER_USERNAME), R.mipmap.ic_profile, fileUri));
+                                mSearchFriendList.add(new FriendSearchListItem(user.getString(ParseConstants.USER_USERNAME), R.mipmap.ic_profile, fileUri, userId, user.getObjectId()));
                             }
                             populateListView();
                         }
@@ -78,12 +78,25 @@ public class SearchFriendActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        friendAdapterList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
     }
 
     private void populateListView() {
         ArrayAdapter<FriendSearchListItem> adapter = new FriendSearchAdapterList(this, R.layout.friends_search_item);
-        ListView list = (ListView) findViewById(R.id.search_results_list_view);
-        list.setAdapter(adapter);
+        friendAdapterList = (ListView) findViewById(R.id.search_results_list_view);
+        friendAdapterList.setAdapter(adapter);
     }
 
     private class FriendSearchAdapterList extends ArrayAdapter<FriendSearchListItem> {
