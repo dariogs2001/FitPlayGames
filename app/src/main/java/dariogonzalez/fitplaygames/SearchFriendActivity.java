@@ -14,7 +14,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.parse.FindCallback;
-import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
@@ -26,12 +25,11 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-import dariogonzalez.fitplaygames.Enums.FriendRequestStatus;
-import dariogonzalez.fitplaygames.classes.FriendSearchListItem;
+import dariogonzalez.fitplaygames.classes.FriendListItem;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
 
 public class SearchFriendActivity extends AppCompatActivity {
-    private List<FriendSearchListItem> mSearchFriendList = new ArrayList<FriendSearchListItem>();
+    private List<FriendListItem> mSearchFriendList = new ArrayList<FriendListItem>();
     ListView searchResultListView;
 
     @Override
@@ -84,7 +82,7 @@ public class SearchFriendActivity extends AppCompatActivity {
 //                                        {
 //                                            ParseFile file = user.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
 //                                            Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
-//                                            mSearchFriendList.add(new FriendSearchListItem(user.getString(ParseConstants.USER_USERNAME), R.mipmap.ic_profile, fileUri, userId, user.getObjectId()));
+//                                            mSearchFriendList.add(new FriendListItem(user.getString(ParseConstants.USER_USERNAME), R.mipmap.ic_profile, fileUri, userId, user.getObjectId()));
 //
 //                                            //TODO: move this outside of this if... Need to find a way to call it only once, at the end of the loop.
 //                                            populateListView();
@@ -93,7 +91,7 @@ public class SearchFriendActivity extends AppCompatActivity {
 //                                });
                                 ParseFile file = user.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
                                 Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
-                                mSearchFriendList.add(new FriendSearchListItem(user.getString(ParseConstants.USER_USERNAME), R.mipmap.ic_profile, fileUri, userId, user.getObjectId()));
+                                mSearchFriendList.add(new FriendListItem(user.getString(ParseConstants.USER_USERNAME), R.mipmap.ic_profile, fileUri, userId, user.getObjectId()));
 
                             }
                             populateListView();
@@ -104,28 +102,15 @@ public class SearchFriendActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-//        searchResultListView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
-
     }
 
     private void populateListView() {
-        ArrayAdapter<FriendSearchListItem> adapter = new FriendSearchAdapterList(this, R.layout.friends_search_item);
+        ArrayAdapter<FriendListItem> adapter = new FriendSearchAdapterList(this, R.layout.friends_search_item);
         searchResultListView = (ListView) findViewById(R.id.search_results_list_view);
         searchResultListView.setAdapter(adapter);
     }
 
-    private class FriendSearchAdapterList extends ArrayAdapter<FriendSearchListItem> {
+    private class FriendSearchAdapterList extends ArrayAdapter<FriendListItem> {
         Context mContext;
         public FriendSearchAdapterList(Context context, int resource) {
             super(context, resource, mSearchFriendList);
@@ -138,7 +123,7 @@ public class SearchFriendActivity extends AppCompatActivity {
             if (itemView == null){
                 itemView = LayoutInflater.from(mContext).inflate(R.layout.friends_search_item, parent, false);
             }
-            final FriendSearchListItem current = mSearchFriendList.get(position);
+            final FriendListItem current = mSearchFriendList.get(position);
 
             TextView userNameTextView = (TextView) itemView.findViewById(R.id.user_name);
             userNameTextView.setText(current.getUserName());

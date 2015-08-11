@@ -4,15 +4,16 @@
     tools:context="dariogonzalez.fitplaygames.MainFriendsFragment"
     android:orientation="vertical">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
+    <!--<ScrollView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_weight="1">-->
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/friends_list_view"/>
-    </ScrollView>
+            android:id="@+id/friends_list_view"
+            android:layout_weight="1"/>
+    <!--</ScrollView>-->
 
     <ImageView
         android:layout_width="wrap_content"

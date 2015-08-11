@@ -121,7 +121,7 @@ public class MainMoreOptionsFragment extends android.support.v4.app.Fragment {
             }
             MoreOptionsListItem current = mOptions.get(position);
             ImageView imageView = (ImageView) itemView.findViewById(R.id.ivImage);
-            Picasso.with(mContext).load(current.getIcontId()).resize(50, 50).into(imageView);
+            Picasso.with(mContext).load(current.getIcontId()).resize(55, 55).into(imageView);
 //            imageView.setImageResource(current.getIcontId());
             TextView textView = (TextView) itemView.findViewById(R.id.tvText);
             textView.setText(current.getText());
