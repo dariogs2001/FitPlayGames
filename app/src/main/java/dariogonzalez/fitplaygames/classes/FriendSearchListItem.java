@@ -28,6 +28,6 @@ public class FriendSearchListItem {
     public Uri getImageUri() {return mImageUri; }
 
     public String getUserId() { return mUserId; }
-    public String getUserFriend() { return mFriendId; }
+    public String getFriendId() { return mFriendId; }
 
 }

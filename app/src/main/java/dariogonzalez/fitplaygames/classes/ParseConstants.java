@@ -10,6 +10,7 @@ public final class ParseConstants
     public static final String CLASS_USER = "User";
     public static final String CLASS_ACTIVITY_HISTORY = "ActivityHistory";
     public static final String CLASS_LAST_SEVEN_DAYS =  "LastSevenDays";
+    public static final String CLASS_USER_FRIENDS =  "UserFriends";
 
     //Field name
     public static final String KEY_USERNAME = "username";
@@ -39,4 +40,7 @@ public final class ParseConstants
 
     public static final String LAST_SEVEN_DAYS_STEPS = "Steps";
     public static final String LAST_SEVEN_DAYS_AVG = "Average";
+
+    public static final String USER_FRIENDS_FRIEND_ID = "FriendId";
+    public static final String USER_FRIENDS_STATUS = "UserFriendStatus";
 }

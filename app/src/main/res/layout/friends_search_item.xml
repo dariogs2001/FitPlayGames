@@ -44,22 +44,24 @@
                 <!--android:gravity="center_vertical"/>-->
         <!--</LinearLayout>-->
     </LinearLayout>
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_weight="1">
+        android:layout_weight="2">
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="35dp"
                 android:text="Invite"
-                android:id="@+id/btn_invite"/>
+                android:id="@+id/btn_invite"
+                android:layout_centerInParent="true" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="35dp"
                 android:text="Sent"
                 android:id="@+id/btn_sent"
-                android:enabled="false"/>
-    </LinearLayout>
+                android:enabled="false"
+                android:visibility="gone"
+                android:layout_centerInParent="true"/>
+    </RelativeLayout>
 </LinearLayout>
