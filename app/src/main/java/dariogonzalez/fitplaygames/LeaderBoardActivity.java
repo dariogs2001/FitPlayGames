@@ -56,46 +56,29 @@ public class LeaderBoardActivity extends ActionBarActivity {
             public void done(List<ParseObject> list, ParseException e) {
                 if (e == null) {
                     for (ParseObject obj : list) {
-                        try {
-                            ParseQuery<ParseUser> query = ParseUser.getQuery();
-                            ParseUser user = query.get(obj.getString(ParseConstants.KEY_USER_ID));
+//                        try {
+//                            ParseQuery<ParseUser> query = ParseUser.getQuery();
+//                            ParseUser user = query.get(obj.getString(ParseConstants.KEY_USER_ID));
+//                            if (user != null)
+//                            {
+//                                ParseFile file = user.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
+//                                Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
+//                                mLeadBoardList.add(new LeaderBoardListItem(user.getString(ParseConstants.USER_USERNAME), "" + obj.getDouble(ParseConstants.LAST_SEVEN_DAYS_STEPS), "15", R.mipmap.ic_profile, fileUri));
+//                            }
+                            ParseUser user = obj.getParseUser(ParseConstants.USER_OBJECT);
                             if (user != null)
                             {
                                 ParseFile file = user.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
                                 Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
                                 mLeadBoardList.add(new LeaderBoardListItem(user.getString(ParseConstants.USER_USERNAME), "" + obj.getDouble(ParseConstants.LAST_SEVEN_DAYS_STEPS), "15", R.mipmap.ic_profile, fileUri));
                             }
-                        }
-                        catch (ParseException ex) {}
+//                        }
+//                        catch (ParseException ex) {}
                     }
                     populateListView();
                 }
             }
         });
-
-
-//        ParseQuery<ParseUser> query = ParseUser.getQuery();// new ParseQuery<ParseObject>(ParseConstants.CLASS_USER);
-//        query.addAscendingOrder(ParseConstants.KEY_CREATED_AT);
-//        query.findInBackground(new FindCallback<ParseUser>() {
-//            @Override
-//            public void done(final List<ParseUser> list, final ParseException e) {
-//                if (e == null)
-//                {
-//                    mUsers = list;
-//                    for (ParseObject user : mUsers) {
-//                        ParseFile file = user.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
-//                        Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
-//                        mLeadBoardList.add(new LeaderBoardListItem(user.getString(ParseConstants.USER_USERNAME), "20.000", "15", R.mipmap.ic_profile, fileUri));
-//                    }
-//                    populateListView();
-//                }
-//            }
-//        });
-
-//        mLeadBoardList.add(new LeaderBoardListItem("20.000", "15", R.mipmap.ic_profile));
-//        mLeadBoardList.add(new LeaderBoardListItem("23.000", "9", R.mipmap.ic_profile));
-//        mLeadBoardList.add(new LeaderBoardListItem("15.000", "13", R.mipmap.ic_profile));
-//        mLeadBoardList.add(new LeaderBoardListItem("18.000", "12", R.mipmap.ic_profile));
     }
 
     private void populateListView() {

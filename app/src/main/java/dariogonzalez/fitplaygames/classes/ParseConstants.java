@@ -24,7 +24,6 @@ public final class ParseConstants
 
     public static final String KEY_USER_ID = "userId";
 
-
     public static final String TYPE_IMAGE = "image";
     public static final String TYPE_VIDEO = "video";
 
@@ -43,4 +42,7 @@ public final class ParseConstants
 
     public static final String USER_FRIENDS_FRIEND_ID = "FriendId";
     public static final String USER_FRIENDS_STATUS = "UserFriendStatus";
+
+    public static final String USER_OBJECT = "UserObject";
+    public static final String FRIEND_OBJECT = "FriendObject";
 }

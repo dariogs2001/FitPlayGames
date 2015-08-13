@@ -137,7 +137,8 @@ public class FitbitHelper {
 
                     //Now save the value in the table
                     ParseQuery<ParseObject> queryLast = ParseQuery.getQuery(ParseConstants.CLASS_LAST_SEVEN_DAYS);
-                    queryLast.whereEqualTo(ParseConstants.KEY_USER_ID, parseUserId);
+//                    queryLast.whereEqualTo(ParseConstants.KEY_USER_ID, parseUserId);
+                    queryLast.whereEqualTo(ParseConstants.USER_OBJECT, ParseUser.getCurrentUser());
                     queryLast.getFirstInBackground(new GetCallback<ParseObject>() {
                         @Override
                         public void done(ParseObject parseObject, com.parse.ParseException e) {
@@ -153,6 +154,8 @@ public class FitbitHelper {
                                 lastSevenDays.put(ParseConstants.KEY_USER_ID, parseUserId);
                                 lastSevenDays.put(ParseConstants.LAST_SEVEN_DAYS_STEPS, totalStepsFinal);
                                 lastSevenDays.put(ParseConstants.LAST_SEVEN_DAYS_AVG, avgStepsFinal);
+                                lastSevenDays.put(ParseConstants.USER_OBJECT, ParseUser.getCurrentUser());
+
                                 lastSevenDays.saveInBackground();
                             }
                         }

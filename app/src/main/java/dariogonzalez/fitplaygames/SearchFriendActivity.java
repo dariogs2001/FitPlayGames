@@ -60,17 +60,19 @@ public class SearchFriendActivity extends AppCompatActivity {
                 users.whereStartsWith(ParseConstants.USER_USERNAME, newText);
                 users.setLimit(50);
 
-                final String userId = ParseUser.getCurrentUser().getObjectId();
+                final ParseUser userObject = ParseUser.getCurrentUser();
+                final String userId = userObject.getObjectId();
+
                 //TODO: Only search for those whom are not friends or have not received a friend request, or have not declined a friend request, or have not been deleted from a friend request...
                 users.findInBackground(new FindCallback<ParseUser>() {
                     @Override
                     public void done(List<ParseUser> list, ParseException e) {
                         if (e == null) {
                             mSearchFriendList.clear();
-                            for (final ParseUser user : list) {
+                            for (final ParseUser friend : list) {
 //                                ParseQuery userFriendQuery = new ParseQuery(ParseConstants.CLASS_USER_FRIENDS);
 //                                userFriendQuery.whereEqualTo(ParseConstants.KEY_USER_ID, userId);
-//                                userFriendQuery.whereEqualTo(ParseConstants.USER_FRIENDS_FRIEND_ID, user.getObjectId());
+//                                userFriendQuery.whereEqualTo(ParseConstants.USER_FRIENDS_FRIEND_ID, friend.getObjectId());
 //                                userFriendQuery.getFirstInBackground(new GetCallback() {
 //                                    @Override
 //                                    public void done(ParseObject parseObject, ParseException e) {
@@ -80,18 +82,18 @@ public class SearchFriendActivity extends AppCompatActivity {
 //                                    public void done(Object o, Throwable throwable) {
 //                                        if (throwable != null)
 //                                        {
-//                                            ParseFile file = user.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
+//                                            ParseFile file = friend.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
 //                                            Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
-//                                            mSearchFriendList.add(new FriendListItem(user.getString(ParseConstants.USER_USERNAME), R.mipmap.ic_profile, fileUri, userId, user.getObjectId()));
+//                                            mSearchFriendList.add(new FriendListItem(friend.getString(ParseConstants.USER_USERNAME), R.mipmap.ic_profile, fileUri, userId, friend.getObjectId()));
 //
 //                                            //TODO: move this outside of this if... Need to find a way to call it only once, at the end of the loop.
 //                                            populateListView();
 //                                        }
 //                                    }
 //                                });
-                                ParseFile file = user.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
+                                ParseFile file = friend.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
                                 Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
-                                mSearchFriendList.add(new FriendListItem(user.getString(ParseConstants.USER_USERNAME), R.mipmap.ic_profile, fileUri, userId, user.getObjectId()));
+                                mSearchFriendList.add(new FriendListItem(friend.getString(ParseConstants.USER_USERNAME), R.mipmap.ic_profile, fileUri, userId, friend.getObjectId(), userObject, friend));
 
                             }
                             populateListView();
@@ -144,10 +146,12 @@ public class SearchFriendActivity extends AppCompatActivity {
             inviteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //TODO: add invitation to the DB
+                    //Adding invitation into the DB
                     ParseObject newObject = new ParseObject(ParseConstants.CLASS_USER_FRIENDS);
                     newObject.put(ParseConstants.KEY_USER_ID, current.getUserId());
+                    newObject.put(ParseConstants.USER_OBJECT, current.getUserObject());
                     newObject.put(ParseConstants.USER_FRIENDS_FRIEND_ID, current.getFriendId());
+                    newObject.put(ParseConstants.FRIEND_OBJECT, current.getFriendObject());
                     newObject.put(ParseConstants.USER_FRIENDS_STATUS, 0);
 
                     newObject.saveInBackground(new SaveCallback() {
