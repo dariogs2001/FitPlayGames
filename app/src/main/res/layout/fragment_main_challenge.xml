@@ -1,9 +1,43 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="dariogonzalez.fitplaygames.MainChallengeFragment">
+    android:orientation="vertical"
+    tools:context="dariogonzalez.fitplaygames.MainChallengeFragment"
+    android:layout_margin="5dp">
 
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="CHALLENGES" />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="New Challenge"
+        android:textAllCaps="false"
+        android:layout_marginBottom="5dp"
+        android:id="@+id/new_challenge_btn"/>
 
-</FrameLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <include layout="@layout/challenge_layer"
+                android:layout_width="match_parent"
+                android:layout_height="182dp"
+                android:layout_marginBottom="5dp"/>
+
+            <include layout="@layout/challenge_layer"
+                android:layout_width="match_parent"
+                android:layout_height="182dp"
+                android:layout_marginBottom="5dp"/>
+
+            <include layout="@layout/challenge_layer"
+                android:layout_width="match_parent"
+                android:layout_height="182dp"
+                android:layout_marginBottom="5dp"/>
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>
