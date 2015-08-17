@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -31,7 +32,8 @@ public class ChallengeRecyclerViewAdapter  extends RecyclerView.Adapter<Challeng
     @Override
     public void onBindViewHolder(final ChallengeViewHolder personViewHolder, final int i) {
         personViewHolder.challengeName.setText(mChallengeGames.get(i).getChallengeName());
-        personViewHolder.challengeName.setBackgroundResource(mChallengeGames.get(i).getPhotoId());
+//        personViewHolder.challengeName.setBackgroundResource(mChallengeGames.get(i).getPhotoId());
+        personViewHolder.challengeThumbnail.setImageResource(mChallengeGames.get(i).getPhotoId());
     }
 
     @Override
@@ -49,11 +51,13 @@ public class ChallengeRecyclerViewAdapter  extends RecyclerView.Adapter<Challeng
     public static class ChallengeViewHolder extends RecyclerView.ViewHolder {
         CardView cv;
         TextView challengeName;
+        ImageView challengeThumbnail;
 
         ChallengeViewHolder(final View itemView) {
             super(itemView);
             cv = (CardView) itemView.findViewById(R.id.challenge_cv);
-            challengeName = (TextView) itemView.findViewById(R.id.game_name);
+            challengeName = (TextView) itemView.findViewById(R.id.challenge_name);
+            challengeThumbnail = (ImageView) itemView.findViewById(R.id.challenge_thumbnail);
         }
     }
 }

@@ -86,7 +86,7 @@ public class MainMoreOptionsFragment extends android.support.v4.app.Fragment {
                         break;
                     case 4:
                         FitbitHelper fh = new FitbitHelper(getActivity());
-//                        fh.getUserLastMonthData();
+                        fh.getUserLastMonthData();
                         fh.lastSevenDaySumAndAverage(ParseUser.getCurrentUser().getObjectId());
 
                         break;

@@ -22,8 +22,8 @@ public class ChooseChallengeActivity extends AppCompatActivity {
 
     private void initializeData(){
         challengeGameList = new ArrayList<>();
-        challengeGameList.add(new ChallengeGame("Hot Potato", R.mipmap.ic_launcher));
-        challengeGameList.add(new ChallengeGame("Running", R.mipmap.ic_launcher));
+        challengeGameList.add(new ChallengeGame("Hot Potato", R.mipmap.fitbit_black));
+        challengeGameList.add(new ChallengeGame("Running", R.mipmap.fitbit_white));
     }
 
     @Override
