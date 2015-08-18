@@ -152,7 +152,7 @@ public class SearchFriendActivity extends AppCompatActivity {
                     newObject.put(ParseConstants.USER_OBJECT, current.getUserObject());
                     newObject.put(ParseConstants.USER_FRIENDS_FRIEND_ID, current.getFriendId());
                     newObject.put(ParseConstants.FRIEND_OBJECT, current.getFriendObject());
-                    newObject.put(ParseConstants.USER_FRIENDS_STATUS, 0);
+                    newObject.put(ParseConstants.USER_FRIENDS_STATUS, ParseConstants.FRIEND_STATUS_SENT);
 
                     newObject.saveInBackground(new SaveCallback() {
                         @Override

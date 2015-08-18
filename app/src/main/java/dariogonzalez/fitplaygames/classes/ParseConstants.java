@@ -45,4 +45,15 @@ public final class ParseConstants
 
     public static final String USER_OBJECT = "UserObject";
     public static final String FRIEND_OBJECT = "FriendObject";
+
+
+
+
+
+    /********************************************************************************************/
+    public static int FRIEND_STATUS_SENT = 0;
+    public static int FRIEND_STATUS_ACCEPTED = 1;
+    public static int FRIEND_STATUS_DECLINED = 2;
+    public static int FRIEND_STATUS_CANCELED = 3;
+    /********************************************************************************************/
 }

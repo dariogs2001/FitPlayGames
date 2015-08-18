@@ -85,5 +85,7 @@
     <string name="title_activity_search_friend">SearchFriend</string>
     <string name="title_activity_challenge__choose">Challenge_Choose</string>
     <string name="title_activity_choose_challenge">ChooseChallengeActivity</string>
+    <string name="title_activity_hot_potato_challenge">HotPotatoChallengeActivity</string>
+    <string name="title_activity_invite_friends">InviteFriendsActivity</string>
 
 </resources>

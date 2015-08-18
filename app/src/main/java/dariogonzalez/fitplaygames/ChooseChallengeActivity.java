@@ -1,5 +1,6 @@
 package dariogonzalez.fitplaygames;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -43,7 +44,15 @@ public class ChooseChallengeActivity extends AppCompatActivity {
         rv.addOnItemTouchListener(new RecyclerItemClickListener(this, rv, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Toast.makeText(view.getContext(), challengeGameList.get(position).getChallengeName(), Toast.LENGTH_SHORT).show();
+                String challengeName = challengeGameList.get(position).getChallengeName();
+                switch (challengeName) {
+                    case "Hot Potato":
+                        Intent intent = new Intent(ChooseChallengeActivity.this, HotPotatoChallengeActivity.class);
+                        startActivity(intent);
+                        break;
+                    default:
+                        break;
+                }
             }
 
             @Override
