@@ -65,6 +65,24 @@
         <item>Choose Picture</item>
     </string-array>
 
+    <string-array name="challenge_steps_array">
+        <item>Select steps</item>
+        <item>500</item>
+        <item>1000</item>
+        <item>1500</item>
+        <item>2000</item>
+        <item>2500</item>
+        <item>3000</item>
+        <item>3500</item>
+        <item>4000</item>
+        <item>4500</item>
+        <item>5000</item>
+        <item>5500</item>
+        <item>6000</item>
+        <item>6500</item>
+        <item>7000</item>
+    </string-array>
+
     <string name="leader_board_text">Leader Board</string>
     <string name="fitbit_sign_in_text">Fitbit Sign In</string>
     <string name="log_out_text">Log Out</string>

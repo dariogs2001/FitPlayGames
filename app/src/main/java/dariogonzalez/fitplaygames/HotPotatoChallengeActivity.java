@@ -7,10 +7,13 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 
 public class HotPotatoChallengeActivity extends AppCompatActivity {
 
+    private Spinner mSteps;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +27,11 @@ public class HotPotatoChallengeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        mSteps = (Spinner) findViewById(R.id.steps_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.challenge_steps_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mSteps.setAdapter(adapter);
     }
 
     @Override

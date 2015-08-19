@@ -41,20 +41,19 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
         userEmail = (TextView) view.findViewById(R.id.user_email);
 
         ParseUser user = ParseUser.getCurrentUser();
-        ParseFile file = user.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
-        Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
+        if (user != null) {
+            ParseFile file = user.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
+            Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
 
-        if (fileUri != null)
-        {
-            Picasso.with(getActivity().getBaseContext()).load(fileUri.toString()).into(profileImage);
-        }
-        else
-        {
-            profileImage.setImageResource(R.mipmap.ic_profile);
-        }
+            if (fileUri != null) {
+                Picasso.with(getActivity().getBaseContext()).load(fileUri.toString()).into(profileImage);
+            } else {
+                profileImage.setImageResource(R.mipmap.ic_profile);
+            }
 
-        userName.setText(user.getUsername());
-        userEmail.setText(user.getEmail());
+            userName.setText(user.getUsername());
+            userEmail.setText(user.getEmail());
+        }
 
         return view;
     }

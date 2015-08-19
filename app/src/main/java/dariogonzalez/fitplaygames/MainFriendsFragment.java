@@ -61,20 +61,19 @@ public class MainFriendsFragment extends android.support.v4.app.Fragment {
             }
         });
 
-        //TODO: also need to add friends in the list where "FriendId" = userId (kind of complicated to create an OR sentence with Parse.com, need to do more research).
-        final ParseUser userObject = ParseUser.getCurrentUser();
-        final String userId = userObject.getObjectId();
-        ParseQuery<ParseObject> query = new ParseQuery(ParseConstants.CLASS_USER_FRIENDS);
-        query.whereNotEqualTo(ParseConstants.USER_FRIENDS_STATUS, 3);
+        if (mFriendList!= null && mFriendList.size() == 0) {
+            //TODO: also need to add friends in the list where "FriendId" = userId (kind of complicated to create an OR sentence with Parse.com, need to do more research).
+            final ParseUser userObject = ParseUser.getCurrentUser();
+            final String userId = userObject.getObjectId();
+            ParseQuery<ParseObject> query = new ParseQuery(ParseConstants.CLASS_USER_FRIENDS);
+            query.whereNotEqualTo(ParseConstants.USER_FRIENDS_STATUS, 3);
 //        query.whereEqualTo(ParseConstants.KEY_USER_ID, userId);
-        query.whereEqualTo(ParseConstants.USER_OBJECT, userObject);
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> list, ParseException e) {
-                for (final ParseObject userFriend : list)
-                {
-                    try
-                    {
+            query.whereEqualTo(ParseConstants.USER_OBJECT, userObject);
+            query.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> list, ParseException e) {
+                    for (final ParseObject userFriend : list) {
+                        try {
 //                        ParseUser user = ParseUser.getQuery().get(userFriend.getString(ParseConstants.USER_FRIENDS_FRIEND_ID));
 //                        if (user != null)
 //                        {
@@ -83,21 +82,23 @@ public class MainFriendsFragment extends android.support.v4.app.Fragment {
 //                            mFriendList.add(new FriendListItem(user.getString(ParseConstants.USER_USERNAME), R.mipmap.ic_profile, fileUri, userId, user.getObjectId()));
 //                        }
 
-                        ParseUser friendObject = userFriend.getParseUser(ParseConstants.FRIEND_OBJECT).fetchIfNeeded();
-                        if (friendObject != null)
-                        {
-                            ParseFile file = friendObject.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
-                            Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
-                            mFriendList.add(new FriendListItem(friendObject.getUsername(), R.mipmap.ic_profile, fileUri, userId, friendObject.getObjectId(), userObject, friendObject));
+                            ParseUser friendObject = userFriend.getParseUser(ParseConstants.FRIEND_OBJECT).fetchIfNeeded();
+                            if (friendObject != null) {
+                                ParseFile file = friendObject.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
+                                Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
+                                mFriendList.add(new FriendListItem(friendObject.getUsername(), R.mipmap.ic_profile, fileUri, userId, friendObject.getObjectId(), userObject, friendObject));
+                            }
+
+                        } catch (ParseException ex) {
                         }
-
                     }
-                    catch (ParseException ex) {}
+                    populateListView();
                 }
-                populateListView();
-            }
-        });
-
+            });
+        }
+        else {
+            populateListView();
+        }
         return view;
     }
 
