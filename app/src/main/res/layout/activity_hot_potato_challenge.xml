@@ -13,13 +13,15 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText"
-        android:hint="Challenge Name" />
+        android:id="@+id/challenge_name_edit_text"
+        android:hint="Challenge Name"
+        android:layout_marginBottom="10dp"/>
 
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/steps_spinner" />
+        android:id="@+id/steps_spinner"
+        android:layout_marginBottom="10dp"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -46,7 +48,10 @@
         android:layout_height="wrap_content"
         android:divider="#b5b5b5"
         android:dividerHeight="1dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:id="@+id/challenge_friends_list_view"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -58,14 +63,14 @@
             android:text="Start"
             android:textAllCaps="false"
             android:layout_weight="1"
-            android:id="@+id/start_btn"/>
+            android:id="@+id/start_challenge_button"/>
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Cancel"
             android:layout_weight="1"
             android:textAllCaps="false"
-            android:id="@+id/cancel_btn"/>
+            android:id="@+id/cancel_challenge_button"/>
     </LinearLayout>
 
 </LinearLayout>

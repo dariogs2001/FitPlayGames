@@ -43,6 +43,8 @@
     <string name="error_file_too_long">The selected file is too large, select a new file!!!</string>
     <string name="gender_label">Gender:</string>
     <string name="age_range_label">Age Range:</string>
+    <string name="challenge_error_message">Please be sure you\'ve selected a challenge name and steps!!!</string>
+    <string name="challenge_error_title">Oops!!!</string>
 
     <string-array name="age_range_array">
         <item>Select age range</item>

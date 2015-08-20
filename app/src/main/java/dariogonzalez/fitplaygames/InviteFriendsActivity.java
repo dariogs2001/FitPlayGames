@@ -1,6 +1,7 @@
 package dariogonzalez.fitplaygames;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
@@ -25,6 +27,7 @@ import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import dariogonzalez.fitplaygames.classes.FriendListItem;
@@ -34,13 +37,26 @@ public class InviteFriendsActivity extends AppCompatActivity {
 
     private List<FriendListItem> mSearchFriendList = new ArrayList<FriendListItem>();
     ListView searchResultListView;
+    ParseObject mChallengeObject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invite_friends);
 
-        //TOD0: also need to check for FriendObject = ParseUser.getCurrentUser(), OR clause, need to research how to do this with Parse.com
+        Intent intent = getIntent();
+        String challengeId = intent.getExtras().get(ParseConstants.CHALLENGE_CHALLENGE_ID).toString();
+        if (challengeId.length() > 0)
+        {
+            try {
+                mChallengeObject = ParseQuery.getQuery(ParseConstants.CLASS_CHALLENGES).get(challengeId);
+            } catch (ParseException ex)
+            {
+                //TODO: handle this error...
+            }
+        }
+
+        //TODO: also need to check for FriendObject = ParseUser.getCurrentUser(), OR clause, need to research how to do this with Parse.com
         final ParseUser userObject = ParseUser.getCurrentUser();
         ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseConstants.CLASS_USER_FRIENDS);
         query.whereEqualTo(ParseConstants.USER_OBJECT, userObject);
@@ -48,11 +64,9 @@ public class InviteFriendsActivity extends AppCompatActivity {
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
-                if (e == null)
-                {
+                if (e == null) {
                     mSearchFriendList.clear();
-                    for (ParseObject ff : list)
-                    {
+                    for (ParseObject ff : list) {
                         try {
                             ParseUser friend = ff.getParseUser(ParseConstants.FRIEND_OBJECT).fetchIfNeeded();
                             ParseFile file = friend.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
@@ -63,13 +77,12 @@ public class InviteFriendsActivity extends AppCompatActivity {
                                     userObject,
                                     friend));
 
+                        } catch (ParseException ex) {
                         }
-                        catch (ParseException ex) {}
 
                     }
                     populateListView();
                 }
-
             }
         });
     }
@@ -131,21 +144,23 @@ public class InviteFriendsActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     //Adding invitation into the DB
                     ParseObject newObject = new ParseObject(ParseConstants.CLASS_CHALLENGE_PLAYERS);
-                  //TODO: save user in challenge.
+                    newObject.put(ParseConstants.CHALLENGE_OBJECT, mChallengeObject);
+                    newObject.put(ParseConstants.USER_OBJECT, current.getFriendObject());
+                    newObject.put(ParseConstants.CHALLENGE_PLAYER_STATUS, ParseConstants.CHALLENGE_PLAYER_STATUS_PENDING);
+                    newObject.put(ParseConstants.CHALLENGE_PLAYER_DATE_JOINED, new Date()); //TODO: need a real date here...will be updated when the user accept the invitation
 
-//                    newObject.saveInBackground(new SaveCallback() {
-//                        @Override
-//                        public void done(ParseException e) {
-//                            if (e == null)
-//                            {
+                    newObject.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null)
+                            {
                                 inviteButton.setVisibility(View.GONE);
                                 sentButton.setVisibility(View.VISIBLE);
-//                            }
-//                        }
-//                    });
+                            }
+                        }
+                    });
                 }
             });
-
             return itemView;
         }
     }

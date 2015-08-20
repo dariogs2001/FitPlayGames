@@ -12,6 +12,7 @@ public final class ParseConstants
     public static final String CLASS_LAST_SEVEN_DAYS =  "LastSevenDays";
     public static final String CLASS_USER_FRIENDS =  "UserFriends";
     public static final String CLASS_CHALLENGE_PLAYERS =  "UserFriends";
+    public static final String CLASS_CHALLENGES =  "Challenges";
 
     //Field name
     public static final String KEY_USERNAME = "username";
@@ -48,17 +49,44 @@ public final class ParseConstants
     public static final String FRIEND_OBJECT = "FriendObject";
 
     public static final String CHALLENGE_CHALLENGE_ID = "ChallengeId";
+    public static final String CHALLENGE_CHALLENGE_NAME = "ChallengeName";
+    public static final String CHALLENGE_CHALLENGE_TYPE = "ChallengeType";
+    public static final String CHALLENGE_CHALLENGE_STATUS = "ChallengeStatus";
+    public static final String CHALLENGE_DAILY_STEPS_GOAL = "DailyStepsGoal";
+    public static final String CHALLENGE_CHALLENGE_STEPS_GOAL = "ChallengeStepsGoal";
+    public static final String CHALLENGE_CHALLENGE_PASS = "ChallengePass";
+    public static final String CHALLENGE_CHALLENGE_START = "ChallengeStart";
+    public static final String CHALLENGE_CHALLENGE_END = "ChallengeEnd";
+    public static final String CHALLENGE_NUMBER_OF_DAYS = "NumberOfDays";
+    public static final String CHALLENGE_ACTIVE_MINUTES_GOAL = "ActiveMinutesGoal";
+
+    public static final String CHALLENGE_OBJECT = "ChallengeObject";
+
+
+
     public static final String CHALLENGE_PLAYER_STATUS = "ChallengePlayerStatus";
     public static final String CHALLENGE_PLAYER_DATE_JOINED = "DateJoined";
 
 
-
-
-
-    /********************************************************************************************/
+    /*******************FRIEND STATUS************************************************************/
     public static int FRIEND_STATUS_SENT = 0;
     public static int FRIEND_STATUS_ACCEPTED = 1;
     public static int FRIEND_STATUS_DECLINED = 2;
     public static int FRIEND_STATUS_CANCELED = 3;
     /********************************************************************************************/
+
+    /*******************CHALLENGE STATUS*********************************************************/
+    public static int CHALLENGE_STATUS_PROCESSING = 0;
+    public static int CHALLENGE_STATUS_PENDING = 1;
+    public static int CHALLENGE_STATUS_PLAYING = 2;
+    public static int CHALLENGE_STATUS_FINISHED = 3;
+    public static int CHALLENGE_STATUS_CANCELLED = 4;
+    /********************************************************************************************/
+
+    /*******************CHALLENGE PLAYER STATUS**************************************************/
+    public static int CHALLENGE_PLAYER_STATUS_PENDING = 0;
+    public static int CHALLENGE_PLAYER_STATUS_ACCEPTED = 1;
+    public static int CHALLENGE_PLAYER_STATUS_DECLINED = 2;
+    /********************************************************************************************/
+
 }
