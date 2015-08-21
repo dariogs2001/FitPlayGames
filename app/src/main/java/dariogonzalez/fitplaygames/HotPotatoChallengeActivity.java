@@ -54,13 +54,15 @@ public class HotPotatoChallengeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                //TODO: Save/Update challenge with the new data
             }
         });
 
         mCancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                //TODO: Cancel the challenge, we can remove it from the DB or simple left it there,
+                // because the status is CHALLENGE_STATUS_PROCESSING. Maybe we can add a DELETED status an update the DB
             }
         });
 
@@ -101,7 +103,7 @@ public class HotPotatoChallengeActivity extends AppCompatActivity {
                             if (e == null) {
                                 mChallengeId = object.getObjectId();
                                 Intent intent = new Intent(HotPotatoChallengeActivity.this, InviteFriendsActivity.class);
-                                intent.putExtra(ParseConstants.CHALLENGE_OBJECT, mChallengeId);
+                                intent.putExtra(ParseConstants.CHALLENGE_CHALLENGE_ID, mChallengeId);
                                 startActivity(intent);
                             } else {
                                 //TODO: show error message

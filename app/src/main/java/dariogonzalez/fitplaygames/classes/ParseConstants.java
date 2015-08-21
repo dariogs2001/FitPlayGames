@@ -11,7 +11,7 @@ public final class ParseConstants
     public static final String CLASS_ACTIVITY_HISTORY = "ActivityHistory";
     public static final String CLASS_LAST_SEVEN_DAYS =  "LastSevenDays";
     public static final String CLASS_USER_FRIENDS =  "UserFriends";
-    public static final String CLASS_CHALLENGE_PLAYERS =  "UserFriends";
+    public static final String CLASS_CHALLENGE_PLAYERS =  "ChallengePlayers";
     public static final String CLASS_CHALLENGES =  "Challenges";
 
     //Field name

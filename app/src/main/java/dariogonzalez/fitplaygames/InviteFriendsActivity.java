@@ -45,7 +45,7 @@ public class InviteFriendsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_invite_friends);
 
         Intent intent = getIntent();
-        String challengeId = intent.getExtras().get(ParseConstants.CHALLENGE_CHALLENGE_ID).toString();
+        String challengeId = intent.getStringExtra(ParseConstants.CHALLENGE_CHALLENGE_ID);
         if (challengeId.length() > 0)
         {
             try {

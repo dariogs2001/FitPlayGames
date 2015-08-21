@@ -24,7 +24,8 @@
             <include layout="@layout/challenge_layer"
                 android:layout_width="match_parent"
                 android:layout_height="182dp"
-                android:layout_marginBottom="5dp"/>
+                android:layout_marginBottom="5dp"
+                android:id="@+id/challenge_playing"/>
 
             <include layout="@layout/challenge_layer"
                 android:layout_width="match_parent"
