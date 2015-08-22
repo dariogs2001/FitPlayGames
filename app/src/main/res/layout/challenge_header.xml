@@ -20,7 +20,7 @@
     <ImageView
         android:layout_width="55dp"
         android:layout_height="55dp"
-        android:id="@+id/user_thumbnail"
+        android:id="@+id/challenge_view_more"
         android:src="@drawable/ic_more"
         android:layout_margin="2.5dp"/>
 </LinearLayout>

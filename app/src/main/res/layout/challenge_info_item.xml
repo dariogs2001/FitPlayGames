@@ -6,7 +6,7 @@
     <ImageView
         android:layout_width="55dp"
         android:layout_height="55dp"
-        android:id="@+id/user_thumbnail"
+        android:id="@+id/challenge_thumbnail"
         android:src="@mipmap/ic_launcher"
         android:layout_margin="2.5dp"/>
     <LinearLayout

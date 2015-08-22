@@ -3,13 +3,22 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <include layout="@layout/challenge_header"/>
-    <include layout="@layout/challenge_info_item"/>
+    <dariogonzalez.fitplaygames.FrameLayout.ChallengeHeaderFrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/challenge_header"/>
+    <dariogonzalez.fitplaygames.FrameLayout.ChallengeInfoItemFrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/challenge_info_1"/>
     <View
         android:layout_width="fill_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"/>
-    <include layout="@layout/challenge_info_item"/>
+    <dariogonzalez.fitplaygames.FrameLayout.ChallengeInfoItemFrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/challenge_info_2"/>
     <View
         android:layout_width="fill_parent"
         android:layout_height="1dp"
