@@ -93,7 +93,7 @@ public class SearchFriendActivity extends AppCompatActivity {
 //                                });
                                 ParseFile file = friend.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
                                 Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
-                                mSearchFriendList.add(new FriendListItem(friend.getString(ParseConstants.USER_USERNAME), R.mipmap.ic_profile, fileUri, userId, friend.getObjectId(), userObject, friend));
+                                mSearchFriendList.add(new FriendListItem(friend.getString(ParseConstants.USER_USERNAME), R.drawable.ic_user, fileUri, userId, friend.getObjectId(), userObject, friend));
 
                             }
                             populateListView();

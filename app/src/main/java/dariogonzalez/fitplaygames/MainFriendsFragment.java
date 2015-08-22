@@ -86,7 +86,7 @@ public class MainFriendsFragment extends android.support.v4.app.Fragment {
                             if (friendObject != null) {
                                 ParseFile file = friendObject.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
                                 Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
-                                mFriendList.add(new FriendListItem(friendObject.getUsername(), R.mipmap.ic_profile, fileUri, userId, friendObject.getObjectId(), userObject, friendObject));
+                                mFriendList.add(new FriendListItem(friendObject.getUsername(), R.drawable.ic_user, fileUri, userId, friendObject.getObjectId(), userObject, friendObject));
                             }
 
                         } catch (ParseException ex) {

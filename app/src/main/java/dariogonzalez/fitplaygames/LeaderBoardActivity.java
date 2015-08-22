@@ -70,7 +70,7 @@ public class LeaderBoardActivity extends ActionBarActivity {
                             {
                                 ParseFile file = user.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
                                 Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
-                                mLeadBoardList.add(new LeaderBoardListItem(user.getString(ParseConstants.USER_USERNAME), "" + obj.getDouble(ParseConstants.LAST_SEVEN_DAYS_STEPS), "15", R.mipmap.ic_profile, fileUri));
+                                mLeadBoardList.add(new LeaderBoardListItem(user.getString(ParseConstants.USER_USERNAME), "" + obj.getDouble(ParseConstants.LAST_SEVEN_DAYS_STEPS), "15", R.drawable.ic_user, fileUri));
                             }
 //                        }
 //                        catch (ParseException ex) {}

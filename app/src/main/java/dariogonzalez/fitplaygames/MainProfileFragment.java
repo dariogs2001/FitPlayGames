@@ -48,7 +48,7 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
             if (fileUri != null) {
                 Picasso.with(getActivity().getBaseContext()).load(fileUri.toString()).into(profileImage);
             } else {
-                profileImage.setImageResource(R.mipmap.ic_profile);
+                profileImage.setImageResource(R.drawable.ic_user);
             }
 
             userName.setText(user.getUsername());

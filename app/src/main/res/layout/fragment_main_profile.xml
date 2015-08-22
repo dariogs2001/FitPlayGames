@@ -11,7 +11,7 @@
         android:layout_marginTop="15dp"
         android:id="@+id/profile_image"
         android:layout_gravity="center_horizontal|top"
-        android:src="@mipmap/ic_profile" />
+        android:src="@drawable/ic_user" />
     <TextView
         android:id="@+id/user_name"
         android:layout_width="match_parent"
