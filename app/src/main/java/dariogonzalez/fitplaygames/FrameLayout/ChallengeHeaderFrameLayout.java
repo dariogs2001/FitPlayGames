@@ -15,10 +15,10 @@ import dariogonzalez.fitplaygames.R;
  * Created by Dario on 8/21/2015.
  */
 public class ChallengeHeaderFrameLayout extends LinearLayout {
-    private LayoutInflater mInflater;
     private View mView;
     private TextView mChallengeType;
     private ImageView mChallengeViewMore;
+    private LinearLayout mChallengeLayout;
 
 
     public ChallengeHeaderFrameLayout(Context context) {
@@ -41,11 +41,13 @@ public class ChallengeHeaderFrameLayout extends LinearLayout {
         mView = View.inflate(context, R.layout.challenge_header, this);
         mChallengeType = (TextView) mView.findViewById(R.id.challenge_type);
         mChallengeViewMore = (ImageView) mView.findViewById(R.id.challenge_view_more);
+        mChallengeLayout= (LinearLayout) mView.findViewById(R.id.challenge_type_layout);
     }
 
-    public void bind(int color)
+    public void bind(int backgroundColor, String challengeType)
     {
-        mChallengeType.setBackgroundColor(color);
+        mChallengeLayout.setBackgroundColor(backgroundColor);
+        mChallengeType.setText(challengeType);
     }
 
     @Override
