@@ -21,24 +21,38 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <include layout="@layout/challenge_layer"
+            <dariogonzalez.fitplaygames.FrameLayout.ChallengeFrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="182dp"
-                android:layout_marginBottom="5dp"
-                android:id="@+id/challenge_playing"/>
+                android:id="@+id/challenge_playing"
+                android:layout_marginBottom="5dp" />
+            <dariogonzalez.fitplaygames.FrameLayout.ChallengeFrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="182dp"
+                android:id="@+id/challenge_pending"
+                android:layout_marginBottom="5dp" />
+            <dariogonzalez.fitplaygames.FrameLayout.ChallengeFrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="182dp"
+                android:id="@+id/challenge_finished" />
 
-            <include layout="@layout/challenge_layer"
-                android:layout_width="match_parent"
-                android:layout_height="182dp"
-                android:layout_marginBottom="5dp"/>
+            <!--<include layout="@layout/challenge_layer"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="182dp"-->
+                <!--android:layout_marginBottom="5dp"-->
+                <!--android:id="@+id/challenge_pending"/>-->
 
-            <include layout="@layout/challenge_layer"
-                android:layout_width="match_parent"
-                android:layout_height="182dp"
-                android:layout_marginBottom="5dp"/>
+            <!--<include layout="@layout/challenge_layer"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="182dp"-->
+                <!--android:layout_marginBottom="5dp"/>-->
+
+            <!--<include layout="@layout/challenge_layer"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="182dp"-->
+                <!--android:layout_marginBottom="5dp"/>-->
         </LinearLayout>
 
     </ScrollView>
-
 
 </LinearLayout>

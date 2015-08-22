@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import dariogonzalez.fitplaygames.R;
@@ -13,7 +14,7 @@ import dariogonzalez.fitplaygames.R;
 /**
  * Created by Dario on 8/21/2015.
  */
-public class ChallengeHeaderFrameLayout extends FrameLayout {
+public class ChallengeHeaderFrameLayout extends LinearLayout {
     private LayoutInflater mInflater;
     private View mView;
     private TextView mChallengeType;

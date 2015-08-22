@@ -4,13 +4,14 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import dariogonzalez.fitplaygames.R;
 
 /**
  * Created by Dario on 8/21/2015.
  */
-public class ChallengeFrameLayout extends FrameLayout {
+public class ChallengeFrameLayout extends LinearLayout {
     private View mView;
     ChallengeHeaderFrameLayout mChallengeHeader;
     ChallengeInfoItemFrameLayout mChallengeInfo1;
@@ -54,5 +55,27 @@ public class ChallengeFrameLayout extends FrameLayout {
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+
+        int width = MeasureSpec.getSize(widthMeasureSpec);
+        int height = (int) (width * 0.5);
+        heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
+
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        // set again the dimensions, this time calculated as we want
+        setMeasuredDimension(getMeasuredWidth(), getMeasuredWidth() / 2);
+        // this is required because the children keep the super class calculated dimensions (which will not work with the new MyFrameLayout sizes)
+        final int count = getChildCount();
+        for (int i = 0; i < count; i++) {
+            final View v = getChildAt(i);
+            // this works because you set the dimensions of the ImageView to FILL_PARENT
+            v.measure(MeasureSpec.makeMeasureSpec(getMeasuredWidth(),
+                    MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(
+                    getMeasuredHeight(), MeasureSpec.EXACTLY));
+        }
+
     }
 }
