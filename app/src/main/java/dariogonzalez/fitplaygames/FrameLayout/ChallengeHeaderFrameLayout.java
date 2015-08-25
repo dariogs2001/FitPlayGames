@@ -46,7 +46,7 @@ public class ChallengeHeaderFrameLayout extends LinearLayout {
 
     public void bind(int backgroundColor, String challengeType)
     {
-        mChallengeLayout.setBackgroundColor(backgroundColor);
+        mChallengeLayout.setBackgroundResource(backgroundColor);
         mChallengeType.setText(challengeType);
     }
 
