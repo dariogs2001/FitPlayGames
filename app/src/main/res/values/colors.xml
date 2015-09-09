@@ -5,9 +5,15 @@
     <color name="light_purple_button">#e1d2f3</color>
     <color name="pressed_purple_button">#ba9dda</color>
     <color name="focused_purple_button">#d6c3ed</color>
-    <color name="text_color">#250054</color>
 
     <color name="challenge_playing">#81FF3D</color>
     <color name="challenge_pending">#FF4F49</color>
     <color name="challenge_finished">#437C7C</color>
+
+
+    <!-- Material Design Colors -->
+    <color name="primary">#80CBC4</color>
+    <color name="primary_dark">#0097A7</color>
+    <color name="primary_light">#B2EBF2</color>
+    <color name="accent">#FFD740</color>
 </resources>
