@@ -57,7 +57,8 @@
         android:id="@+id/loginButton"
         style="@style/AuthButton"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/editTextLayout"/>
+        android:layout_below="@+id/editTextLayout"
+        android:onClick="onClick"/>
 
     <TextView
         android:layout_width="wrap_content"
