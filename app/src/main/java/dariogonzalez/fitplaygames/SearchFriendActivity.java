@@ -25,6 +25,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import dariogonzalez.fitplaygames.Adapters.UserRowAdapter;
 import dariogonzalez.fitplaygames.classes.FriendListItem;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
 
@@ -70,27 +71,6 @@ public class SearchFriendActivity extends AppCompatActivity {
                         if (e == null) {
                             mSearchFriendList.clear();
                             for (final ParseUser friend : list) {
-//                                ParseQuery userFriendQuery = new ParseQuery(ParseConstants.CLASS_USER_FRIENDS);
-//                                userFriendQuery.whereEqualTo(ParseConstants.KEY_USER_ID, userId);
-//                                userFriendQuery.whereEqualTo(ParseConstants.USER_FRIENDS_FRIEND_ID, friend.getObjectId());
-//                                userFriendQuery.getFirstInBackground(new GetCallback() {
-//                                    @Override
-//                                    public void done(ParseObject parseObject, ParseException e) {
-//                                    }
-//
-//                                    @Override
-//                                    public void done(Object o, Throwable throwable) {
-//                                        if (throwable != null)
-//                                        {
-//                                            ParseFile file = friend.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
-//                                            Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
-//                                            mSearchFriendList.add(new FriendListItem(friend.getString(ParseConstants.USER_USERNAME), R.mipmap.ic_profile, fileUri, userId, friend.getObjectId()));
-//
-//                                            //TODO: move this outside of this if... Need to find a way to call it only once, at the end of the loop.
-//                                            populateListView();
-//                                        }
-//                                    }
-//                                });
                                 ParseFile file = friend.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
                                 Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
                                 mSearchFriendList.add(new FriendListItem(friend.getString(ParseConstants.USER_USERNAME), R.drawable.ic_user, fileUri, userId, friend.getObjectId(), userObject, friend));
@@ -107,67 +87,10 @@ public class SearchFriendActivity extends AppCompatActivity {
     }
 
     private void populateListView() {
-        ArrayAdapter<FriendListItem> adapter = new FriendSearchAdapterList(this, R.layout.friends_search_item);
+        boolean isInvite = true;
+        ArrayAdapter<FriendListItem> adapter = new UserRowAdapter(this, R.layout.row_user, mSearchFriendList, isInvite);
         searchResultListView = (ListView) findViewById(R.id.search_results_list_view);
         searchResultListView.setAdapter(adapter);
     }
 
-    private class FriendSearchAdapterList extends ArrayAdapter<FriendListItem> {
-        Context mContext;
-        public FriendSearchAdapterList(Context context, int resource) {
-            super(context, resource, mSearchFriendList);
-            mContext = context;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View itemView = convertView;
-            if (itemView == null){
-                itemView = LayoutInflater.from(mContext).inflate(R.layout.friends_search_item, parent, false);
-            }
-            final FriendListItem current = mSearchFriendList.get(position);
-
-            TextView userNameTextView = (TextView) itemView.findViewById(R.id.user_name);
-            userNameTextView.setText(current.getUserName());
-            ImageView imageView = (ImageView) itemView.findViewById(R.id.user_thumbnail);
-            Uri profilePicture = current.getImageUri();
-            if (profilePicture != null)
-            {
-                Picasso.with(mContext).load(profilePicture.toString()).into(imageView);
-            }
-            else
-            {
-                imageView.setImageResource(current.getIconId());
-            }
-
-            final Button inviteButton =  (Button) itemView.findViewById(R.id.btn_invite);
-            final Button sentButton =  (Button) itemView.findViewById(R.id.btn_sent);
-
-            inviteButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Adding invitation into the DB
-                    ParseObject newObject = new ParseObject(ParseConstants.CLASS_USER_FRIENDS);
-                    newObject.put(ParseConstants.KEY_USER_ID, current.getUserId());
-                    newObject.put(ParseConstants.USER_OBJECT, current.getUserObject());
-                    newObject.put(ParseConstants.USER_FRIENDS_FRIEND_ID, current.getFriendId());
-                    newObject.put(ParseConstants.FRIEND_OBJECT, current.getFriendObject());
-                    newObject.put(ParseConstants.USER_FRIENDS_STATUS, ParseConstants.FRIEND_STATUS_SENT);
-
-                    newObject.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e == null)
-                            {
-                                inviteButton.setVisibility(View.GONE);
-                                sentButton.setVisibility(View.VISIBLE);
-                            }
-                        }
-                    });
-                }
-            });
-
-            return itemView;
-        }
-    }
 }

@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import dariogonzalez.fitplaygames.Adapters.UserRowAdapter;
 import dariogonzalez.fitplaygames.classes.FriendListItem;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
 
@@ -88,7 +89,8 @@ public class InviteFriendsActivity extends AppCompatActivity {
     }
 
     private void populateListView() {
-        ArrayAdapter<FriendListItem> adapter = new FriendSearchAdapterList(this, R.layout.friends_search_item);
+        boolean isInvite = true;
+        ArrayAdapter<FriendListItem> adapter = new UserRowAdapter(this, R.layout.row_user, mSearchFriendList, isInvite);
         searchResultListView = (ListView) findViewById(R.id.invite_friends_list_view);
         searchResultListView.setAdapter(adapter);
     }
@@ -106,62 +108,5 @@ public class InviteFriendsActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private class FriendSearchAdapterList extends ArrayAdapter<FriendListItem> {
-        Context mContext;
-        public FriendSearchAdapterList(Context context, int resource) {
-            super(context, resource, mSearchFriendList);
-            mContext = context;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View itemView = convertView;
-            if (itemView == null){
-                itemView = LayoutInflater.from(mContext).inflate(R.layout.friends_search_item, parent, false);
-            }
-            final FriendListItem current = mSearchFriendList.get(position);
-
-            TextView userNameTextView = (TextView) itemView.findViewById(R.id.user_name);
-            userNameTextView.setText(current.getUserName());
-            ImageView imageView = (ImageView) itemView.findViewById(R.id.user_thumbnail);
-            Uri profilePicture = current.getImageUri();
-            if (profilePicture != null)
-            {
-                Picasso.with(mContext).load(profilePicture.toString()).into(imageView);
-            }
-            else
-            {
-                imageView.setImageResource(current.getIconId());
-            }
-
-            final Button inviteButton =  (Button) itemView.findViewById(R.id.btn_invite);
-            final Button sentButton =  (Button) itemView.findViewById(R.id.btn_sent);
-
-            inviteButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Adding invitation into the DB
-                    ParseObject newObject = new ParseObject(ParseConstants.CLASS_CHALLENGE_PLAYERS);
-                    newObject.put(ParseConstants.CHALLENGE_OBJECT, mChallengeObject);
-                    newObject.put(ParseConstants.USER_OBJECT, current.getFriendObject());
-                    newObject.put(ParseConstants.CHALLENGE_PLAYER_STATUS, ParseConstants.CHALLENGE_PLAYER_STATUS_PENDING);
-                    newObject.put(ParseConstants.CHALLENGE_PLAYER_DATE_JOINED, new Date()); //TODO: need a real date here...will be updated when the user accept the invitation
-
-                    newObject.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e == null)
-                            {
-                                inviteButton.setVisibility(View.GONE);
-                                sentButton.setVisibility(View.VISIBLE);
-                            }
-                        }
-                    });
-                }
-            });
-            return itemView;
-        }
     }
 }

@@ -107,5 +107,9 @@
     <string name="title_activity_choose_challenge">ChooseChallengeActivity</string>
     <string name="title_activity_hot_potato_challenge">HotPotatoChallengeActivity</string>
     <string name="title_activity_invite_friends">InviteFriendsActivity</string>
+    <string name="username">Username</string>
+    <string name="steps_colon">Steps:</string>
+    <string name="invite">Invite</string>
+    <string name="invite_sent">Invite Sent</string>
 
 </resources>

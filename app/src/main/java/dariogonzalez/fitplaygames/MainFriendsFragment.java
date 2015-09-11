@@ -1,7 +1,6 @@
 package dariogonzalez.fitplaygames;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -20,11 +18,11 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import dariogonzalez.fitplaygames.Adapters.UserRowAdapter;
 import dariogonzalez.fitplaygames.classes.FriendListItem;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
 
@@ -103,40 +101,10 @@ public class MainFriendsFragment extends android.support.v4.app.Fragment {
     }
 
     private void populateListView() {
-        ArrayAdapter<FriendListItem> adapter = new FriendsAdapterList(view.getContext(), R.layout.friends_list_item);
+        boolean isInvite = false;
+        ArrayAdapter<FriendListItem> adapter = new UserRowAdapter(view.getContext(), R.layout.row_user, mFriendList, isInvite);
         friendsResultListView = (ListView) view.findViewById(R.id.friends_list_view);
         friendsResultListView.setAdapter(adapter);
     }
 
-    private class FriendsAdapterList extends ArrayAdapter<FriendListItem> {
-        Context mContext;
-        public FriendsAdapterList(Context context, int resource) {
-            super(context, resource, mFriendList);
-            mContext = context;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View itemView = convertView;
-            if (itemView == null){
-                itemView = LayoutInflater.from(mContext).inflate(R.layout.friends_list_item, parent, false);
-            }
-            final FriendListItem current = mFriendList.get(position);
-
-            TextView userNameTextView = (TextView) itemView.findViewById(R.id.user_name);
-            userNameTextView.setText(current.getUserName());
-            ImageView imageView = (ImageView) itemView.findViewById(R.id.user_thumbnail);
-            Uri profilePicture = current.getImageUri();
-            if (profilePicture != null)
-            {
-                Picasso.with(mContext).load(profilePicture.toString()).into(imageView);
-            }
-            else
-            {
-                imageView.setImageResource(current.getIconId());
-            }
-
-            return itemView;
-        }
-    }
 }
