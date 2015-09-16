@@ -11,10 +11,10 @@
 
     <string name="action_settings">Settings</string>
     <string name="title_activity_login">Login</string>
-    <string name="title_activity_sign_up">SignUpActivity</string>
+    <string name="title_activity_sign_up">Sign Up</string>
     <string name="title">FitPlay Games</string>
-    <string name="subtitle">BYU</string>
-    <string name="username_hint">Username</string>
+    <string name="username_hint">Username or Email</string>
+    <string name="username_signup_hint">Username</string>
     <string name="password_hint">Password</string>
     <string name="sign_in_button_text">Sign In</string>
     <string name="sign_up_text">Don\'t have and account? Sign Up!</string>
@@ -45,6 +45,8 @@
     <string name="age_range_label">Age Range:</string>
     <string name="challenge_error_message">Please be sure you\'ve selected a challenge name and steps!!!</string>
     <string name="challenge_error_title">Oops!!!</string>
+    <string name="leader_board_friends">Friends</string>
+    <string name="leader_board_global">Global</string>
 
     <string-array name="age_range_array">
         <item>Select age range</item>
@@ -92,7 +94,7 @@
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_privacy_policy">PrivacyPolicy</string>
-    <string name="title_activity_leader_board">LeaderBoardActivity</string>
+    <string name="title_activity_leader_board">Leader Board</string>
     <string name="privacy_text">Add text here for this thing... Privacy Policy. Add text here for this thing... Privacy Policy. Add text here for this thing... Privacy Policy. Add text here for this thing... Privacy Policy. Add text here for this thing... Privacy Policy. Add text here for this thing... Privacy Policy. Add text here for this thing... Privacy Policy. Add text here for this thing... Privacy Policy.</string>
 
     <string name="fitbit_api_key">a2f813cf8c7420eff5629382ae6a25a4</string>
@@ -104,9 +106,9 @@
     <string name="fitbit_30_days">{"activities-steps":[{"dateTime":"2015-07-05","value":"3678"},{"dateTime":"2015-07-06","value":"9465"},{"dateTime":"2015-07-07","value":"8447"},{"dateTime":"2015-07-08","value":"10818"},{"dateTime":"2015-07-09","value":"17318"},{"dateTime":"2015-07-10","value":"9448"},{"dateTime":"2015-07-11","value":"8057"},{"dateTime":"2015-07-12","value":"7128"},{"dateTime":"2015-07-13","value":"12648"},{"dateTime":"2015-07-14","value":"7864"},{"dateTime":"2015-07-15","value":"9039"},{"dateTime":"2015-07-16","value":"7384"},{"dateTime":"2015-07-17","value":"6293"},{"dateTime":"2015-07-18","value":"14585"},{"dateTime":"2015-07-19","value":"10844"},{"dateTime":"2015-07-20","value":"11127"},{"dateTime":"2015-07-21","value":"6901"},{"dateTime":"2015-07-22","value":"6841"},{"dateTime":"2015-07-23","value":"5942"},{"dateTime":"2015-07-24","value":"4076"},{"dateTime":"2015-07-25","value":"2635"},{"dateTime":"2015-07-26","value":"7024"},{"dateTime":"2015-07-27","value":"6125"},{"dateTime":"2015-07-28","value":"15"},{"dateTime":"2015-07-29","value":"11995"},{"dateTime":"2015-07-30","value":"30"},{"dateTime":"2015-07-31","value":"198"},{"dateTime":"2015-08-01","value":"0"},{"dateTime":"2015-08-02","value":"4158"},{"dateTime":"2015-08-03","value":"9419"},{"dateTime":"2015-08-04","value":"156"}]}</string>
     <string name="title_activity_search_friend">SearchFriend</string>
     <string name="title_activity_challenge__choose">Challenge_Choose</string>
-    <string name="title_activity_choose_challenge">ChooseChallengeActivity</string>
-    <string name="title_activity_hot_potato_challenge">HotPotatoChallengeActivity</string>
-    <string name="title_activity_invite_friends">InviteFriendsActivity</string>
+    <string name="title_activity_choose_challenge">Choose Challenge</string>
+    <string name="title_activity_hot_potato_challenge">Hot Potato Challenge</string>
+    <string name="title_activity_invite_friends">Invite Friends</string>
     <string name="username">Username</string>
     <string name="steps_colon">Steps:</string>
     <string name="invite">Invite</string>

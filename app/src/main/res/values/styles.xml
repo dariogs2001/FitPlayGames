@@ -21,18 +21,12 @@
         <item name="android:textColor">@color/primary_dark</item>
         <item name="android:textStyle">bold</item>
     </style>
-    <style name="AuthSubtitle" parent="AuthTitle">
-        <item name="android:layout_below">@+id/title</item>
-        <item name="android:textSize">13sp</item>
-        <item name="android:layout_alignParentTop">false</item>
-        <item name="android:layout_marginTop">10dp</item>
-    </style>
+
 
     <style name="AuthFieldContainer">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:layout_below">@id/subTitle</item>
         <item name="android:layout_marginTop">@dimen/login_vertical_margin</item>
         <item name="android:layout_marginLeft">@dimen/activity_horizontal_margin</item>
         <item name="android:layout_marginRight">@dimen/activity_horizontal_margin</item>
