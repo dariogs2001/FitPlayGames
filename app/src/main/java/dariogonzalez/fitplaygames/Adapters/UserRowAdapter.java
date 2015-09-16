@@ -2,7 +2,6 @@ package dariogonzalez.fitplaygames.Adapters;
 
 import android.content.Context;
 import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,19 +22,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dariogonzalez.fitplaygames.R;
-import dariogonzalez.fitplaygames.classes.FriendListItem;
+import dariogonzalez.fitplaygames.classes.UserListItem;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
 
 /**
  * Created by Logan on 9/11/2015.
  */
 
-public class UserRowAdapter extends ArrayAdapter<FriendListItem> {
+public class UserRowAdapter extends ArrayAdapter<UserListItem> {
     Context mContext;
-    private List<FriendListItem> mFriendList = new ArrayList<>();
+    private List<UserListItem> mFriendList = new ArrayList<>();
     private boolean isInvite;
 
-    public UserRowAdapter(Context context, int resource, List<FriendListItem> mFriendList, boolean isInvite) {
+    public UserRowAdapter(Context context, int resource, List<UserListItem> mFriendList, boolean isInvite) {
         super(context, resource, mFriendList);
         mContext = context;
         this.mFriendList = mFriendList;
@@ -64,13 +63,13 @@ public class UserRowAdapter extends ArrayAdapter<FriendListItem> {
             holder = (UserRowHolder) row.getTag();
         }
 
-        final FriendListItem currentItem = mFriendList.get(position);
+        final UserListItem currentItem = mFriendList.get(position);
 
         if (isInvite) {
             holder.inviteButton.setVisibility(View.VISIBLE);
             final Button inviteButton = holder.inviteButton;
 
-            int friendStatusId = currentItem.getFriendStatusId();
+            int friendStatusId = currentItem.getmFriendStatusId();
             if (friendStatusId == ParseConstants.FRIEND_STATUS_SENT) {
                 inviteButton.setText(R.string.invite_sent);
                 inviteButton.setBackgroundColor(getContext().getResources().getColor(R.color.accent));
@@ -82,10 +81,10 @@ public class UserRowAdapter extends ArrayAdapter<FriendListItem> {
                 public void onClick(View v) {
                     //Adding invitation into the DB
                     ParseObject newObject = new ParseObject(ParseConstants.CLASS_USER_FRIENDS);
-                    newObject.put(ParseConstants.KEY_USER_ID, currentItem.getUserObject().getObjectId());
-                    newObject.put(ParseConstants.USER_OBJECT, currentItem.getUserObject());
-                    newObject.put(ParseConstants.USER_FRIENDS_FRIEND_ID, currentItem.getFriendObject().getObjectId());
-                    newObject.put(ParseConstants.FRIEND_OBJECT, currentItem.getFriendObject());
+                    newObject.put(ParseConstants.KEY_USER_ID, currentItem.getmUserObject().getObjectId());
+                    newObject.put(ParseConstants.USER_OBJECT, currentItem.getmUserObject());
+                    newObject.put(ParseConstants.USER_FRIENDS_FRIEND_ID, currentItem.getmFriendObject().getObjectId());
+                    newObject.put(ParseConstants.FRIEND_OBJECT, currentItem.getmFriendObject());
                     newObject.put(ParseConstants.USER_FRIENDS_STATUS, ParseConstants.FRIEND_STATUS_SENT);
 
                     newObject.saveInBackground(new SaveCallback() {
@@ -100,7 +99,7 @@ public class UserRowAdapter extends ArrayAdapter<FriendListItem> {
                 }
             });
         }
-        else if (currentItem.getFriendStatusId() == 0){
+        else if (currentItem.getmFriendStatusId() == 0){
             holder.friendRequestLayout.setVisibility(View.VISIBLE);
             final UserRowHolder rowHolder = holder;
 
@@ -119,24 +118,24 @@ public class UserRowAdapter extends ArrayAdapter<FriendListItem> {
             });
         }
 
-        holder.userNameTV.setText(currentItem.getUserName());
-        Uri profilePicture = currentItem.getImageUri();
+        holder.userNameTV.setText(currentItem.getmUserObject().getUsername());
+        Uri profilePicture = currentItem.getmImageUri();
         if (profilePicture != null)
         {
             Picasso.with(mContext).load(profilePicture.toString()).into(holder.userThumbnail);
         }
         else
         {
-            holder.userThumbnail.setImageResource(currentItem.getIconId());
+            holder.userThumbnail.setImageResource(currentItem.getmIconId());
         }
 
         return row;
     }
 
-    public void respondToFriendRequest(final boolean accept, final FriendListItem currentItem, final UserRowHolder holder, final int position) {
+    public void respondToFriendRequest(final boolean accept, final UserListItem currentItem, final UserRowHolder holder, final int position) {
         ParseQuery<ParseObject> updateFriendRequestQuery = ParseQuery.getQuery(ParseConstants.CLASS_USER_FRIENDS);
 
-        updateFriendRequestQuery.getInBackground(currentItem.getUserFriendId(), new GetCallback<ParseObject>() {
+        updateFriendRequestQuery.getInBackground(currentItem.getmUserFriendId(), new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject parseObject, ParseException e) {
                 if (e == null) {
@@ -148,7 +147,7 @@ public class UserRowAdapter extends ArrayAdapter<FriendListItem> {
                     }
                     parseObject.saveInBackground();
                     holder.friendRequestLayout.setVisibility(View.GONE);
-                    currentItem.setFriendStatusId(ParseConstants.FRIEND_STATUS_ACCEPTED);
+                    currentItem.setmFriendStatusId(ParseConstants.FRIEND_STATUS_ACCEPTED);
                 }
             }
         });

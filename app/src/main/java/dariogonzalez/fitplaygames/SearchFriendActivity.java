@@ -1,19 +1,11 @@
 package dariogonzalez.fitplaygames;
 
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -21,18 +13,16 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import dariogonzalez.fitplaygames.Adapters.UserRowAdapter;
-import dariogonzalez.fitplaygames.classes.FriendListItem;
+import dariogonzalez.fitplaygames.classes.UserListItem;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
 
 public class SearchFriendActivity extends AppCompatActivity {
-    private List<FriendListItem> mSearchFriendList = new ArrayList<FriendListItem>();
+    private List<UserListItem> mSearchFriendList = new ArrayList<UserListItem>();
     private ListView searchResultListView;
 
     @Override
@@ -76,7 +66,7 @@ public class SearchFriendActivity extends AppCompatActivity {
                         if (e == null) {
                             for (final ParseUser friendUser : list) {
                                 mSearchFriendList.clear();
-                                ParseObject userFriend = friendUser.getParseObject("ActivityHistory");
+                                final ParseObject userFriend = friendUser.getParseObject("ActivityHistory");
                                 if (userFriend != null) {
                                     Log.d("TEST", "UserFriend: " + userFriend.getInt(ParseConstants.USER_FRIENDS_STATUS));
                                 }
@@ -118,16 +108,15 @@ public class SearchFriendActivity extends AppCompatActivity {
                                         if (includeUser) {
                                             ParseFile file = friendUser.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
                                             Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
-                                            mSearchFriendList.add(new FriendListItem(
-                                                    friendUser.getString(ParseConstants.USER_USERNAME),
-                                                    R.drawable.ic_user, fileUri,
-                                                    userId,
-                                                    friendUser.getObjectId(),
-                                                    100,
-                                                    userObject,
-                                                    friendUser,
-                                                    userFriendStatus,
-                                                    ""));
+
+                                            UserListItem userListItem = new UserListItem();
+                                            userListItem.setmIconId(R.drawable.ic_user);
+                                            userListItem.setmImageUri(fileUri);
+                                            userListItem.setmUserObject(userObject);
+                                            userListItem.setmFriendObject(friendUser);
+                                            userListItem.setmFriendStatusId(userFriendStatus);
+                                            userListItem.setmSteps(15);
+                                            mSearchFriendList.add(userListItem);
                                         }
                                         populateListView();
                                     }
@@ -145,7 +134,7 @@ public class SearchFriendActivity extends AppCompatActivity {
 
     private void populateListView() {
         boolean isInvite = true;
-        ArrayAdapter<FriendListItem> adapter = new UserRowAdapter(this, R.layout.row_user, mSearchFriendList, isInvite);
+        ArrayAdapter<UserListItem> adapter = new UserRowAdapter(this, R.layout.row_user, mSearchFriendList, isInvite);
         searchResultListView = (ListView) findViewById(R.id.search_results_list_view);
         searchResultListView.setAdapter(adapter);
     }

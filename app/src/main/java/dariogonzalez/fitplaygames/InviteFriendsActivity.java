@@ -1,42 +1,30 @@
 package dariogonzalez.fitplaygames;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import dariogonzalez.fitplaygames.Adapters.UserRowAdapter;
-import dariogonzalez.fitplaygames.classes.FriendListItem;
+import dariogonzalez.fitplaygames.classes.UserListItem;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
 
 public class InviteFriendsActivity extends AppCompatActivity {
 
-    private List<FriendListItem> mSearchFriendList = new ArrayList<FriendListItem>();
+    private List<UserListItem> mSearchFriendList = new ArrayList<UserListItem>();
     ListView searchResultListView;
     ParseObject mChallengeObject;
 
@@ -76,11 +64,13 @@ public class InviteFriendsActivity extends AppCompatActivity {
                             ParseUser friend = ff.getParseUser(ParseConstants.FRIEND_OBJECT).fetchIfNeeded();
                             ParseFile file = friend.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
                             Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
-                            mSearchFriendList.add(new FriendListItem(friend.getString(ParseConstants.USER_USERNAME), R.drawable.ic_user, fileUri,
-                                    userObject,
-                                    friend,
-                                    0,
-                                    ""));
+                            UserListItem userListItem = new UserListItem();
+                            userListItem.setmIconId(R.drawable.ic_user);
+                            userListItem.setmImageUri(fileUri);
+                            userListItem.setmUserObject(userObject);
+                            userListItem.setmFriendObject(friend);
+                            userListItem.setmFriendStatusId(0);
+                            mSearchFriendList.add(userListItem);
 
                         } catch (ParseException ex) {
                         }
@@ -94,7 +84,7 @@ public class InviteFriendsActivity extends AppCompatActivity {
 
     private void populateListView() {
         boolean isInvite = true;
-        ArrayAdapter<FriendListItem> adapter = new UserRowAdapter(this, R.layout.row_user, mSearchFriendList, isInvite);
+        ArrayAdapter<UserListItem> adapter = new UserRowAdapter(this, R.layout.row_user, mSearchFriendList, isInvite);
         searchResultListView = (ListView) findViewById(R.id.invite_friends_list_view);
         searchResultListView.setAdapter(adapter);
     }

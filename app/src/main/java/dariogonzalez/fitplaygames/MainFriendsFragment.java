@@ -1,17 +1,14 @@
 package dariogonzalez.fitplaygames;
 
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.melnykov.fab.FloatingActionButton;
@@ -26,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dariogonzalez.fitplaygames.Adapters.UserRowAdapter;
-import dariogonzalez.fitplaygames.classes.FriendListItem;
+import dariogonzalez.fitplaygames.classes.UserListItem;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
 
 
@@ -34,7 +31,7 @@ import dariogonzalez.fitplaygames.classes.ParseConstants;
  * A simple {@link Fragment} subclass.
  */
 public class MainFriendsFragment extends android.support.v4.app.Fragment {
-    private List<FriendListItem> mFriendList = new ArrayList<FriendListItem>();
+    private List<UserListItem> mFriendList = new ArrayList<UserListItem>();
     ListView friendsResultListView;
     View view;
 
@@ -113,7 +110,15 @@ public class MainFriendsFragment extends android.support.v4.app.Fragment {
                                         location = mFriendList.size() - 1;
                                     }
                                 }
-                                mFriendList.add(location, new FriendListItem(friendObject.getUsername(), R.drawable.ic_user, fileUri, newUserObject, friendObject, friendStatusId, userFriend.getObjectId()));
+                                UserListItem userListItem = new UserListItem();
+                                userListItem.setmIconId(R.drawable.ic_user);
+                                userListItem.setmImageUri(fileUri);
+                                userListItem.setmUserObject(newUserObject);
+                                userListItem.setmFriendObject(friendObject);
+                                userListItem.setmFriendStatusId(friendStatusId);
+                                userListItem.setmSteps(15);
+                                userListItem.setmUserFriendId(userFriend.getObjectId());
+                                mFriendList.add(userListItem);
                             }
 
                         } catch (ParseException ex) {
@@ -131,7 +136,7 @@ public class MainFriendsFragment extends android.support.v4.app.Fragment {
 
     private void populateListView() {
         boolean isInvite = false;
-        ArrayAdapter<FriendListItem> adapter = new UserRowAdapter(view.getContext(), R.layout.row_user, mFriendList, isInvite);
+        ArrayAdapter<UserListItem> adapter = new UserRowAdapter(view.getContext(), R.layout.row_user, mFriendList, isInvite);
         friendsResultListView = (ListView) view.findViewById(R.id.friends_list_view);
         friendsResultListView.setAdapter(adapter);
         fab.attachToListView(friendsResultListView);

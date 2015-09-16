@@ -47,19 +47,20 @@
     <string name="challenge_error_title">Oops!!!</string>
     <string name="leader_board_friends">Friends</string>
     <string name="leader_board_global">Global</string>
+    <string name="read_privacy_policy">Read and Accept the Privacy Policy</string>
 
     <string-array name="age_range_array">
-        <item>Select age range</item>
+        <item>Age</item>
         <item>Younger than 18</item>
-        <item>between 18 and 29</item>
-        <item>between 30 and 39</item>
-        <item>between 40 and 49</item>
-        <item>between 50 and 59</item>
+        <item>Between 18 and 29</item>
+        <item>Between 30 and 39</item>
+        <item>Between 40 and 49</item>
+        <item>Between 50 and 59</item>
         <item>Older than 59</item>
     </string-array>
 
     <string-array name="gender_array">
-        <item>Select gender</item>
+        <item>Gender</item>
         <item>Male</item>
         <item>Female</item>
     </string-array>

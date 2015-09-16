@@ -24,12 +24,12 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-import dariogonzalez.fitplaygames.classes.LeaderBoardListItem;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
+import dariogonzalez.fitplaygames.classes.UserListItem;
 
 
 public class LeaderBoardActivity extends ActionBarActivity {
-    private List<LeaderBoardListItem> mLeadBoardList = new ArrayList<LeaderBoardListItem>();
+    private List<UserListItem> mLeadBoardList = new ArrayList<UserListItem>();
     private View view;
     protected List<ParseUser> mUsers;
 
@@ -63,14 +63,20 @@ public class LeaderBoardActivity extends ActionBarActivity {
 //                            {
 //                                ParseFile file = user.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
 //                                Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
-//                                mLeadBoardList.add(new LeaderBoardListItem(user.getString(ParseConstants.USER_USERNAME), "" + obj.getDouble(ParseConstants.LAST_SEVEN_DAYS_STEPS), "15", R.mipmap.ic_profile, fileUri));
+//                                mLeadBoardList.add(new UserListItem(user.getString(ParseConstants.USER_USERNAME), "" + obj.getDouble(ParseConstants.LAST_SEVEN_DAYS_STEPS), "15", R.mipmap.ic_profile, fileUri));
 //                            }
                         ParseUser user = obj.getParseUser(ParseConstants.USER_OBJECT);
                         if (user != null)
                         {
                             ParseFile file = user.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
                             Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
-                            mLeadBoardList.add(new LeaderBoardListItem(user.getString(ParseConstants.USER_USERNAME), "" + obj.getDouble(ParseConstants.LAST_SEVEN_DAYS_STEPS), "15", R.drawable.ic_user, fileUri));
+                            UserListItem userListItem = new UserListItem();
+                            userListItem.setmSteps((long)(obj.getDouble(ParseConstants.LAST_SEVEN_DAYS_STEPS)));
+                            userListItem.setmGamesPlayed(15);
+                            userListItem.setmIconId(R.drawable.ic_user);
+                            userListItem.setmImageUri(fileUri);
+                            mLeadBoardList.add(userListItem);
+
                         }
 //                        }
 //                        catch (ParseException ex) {}
@@ -82,7 +88,7 @@ public class LeaderBoardActivity extends ActionBarActivity {
     }
 
     private void populateListView() {
-        ArrayAdapter<LeaderBoardListItem> adapter = new LeaderBoardAdapterList(this, R.layout.leader_board_list_item);
+        ArrayAdapter<UserListItem> adapter = new LeaderBoardAdapterList(this, R.layout.leader_board_list_item);
         ListView list = (ListView) findViewById(R.id.leader_board_list_view);
         list.setAdapter(adapter);
     }
@@ -97,7 +103,7 @@ public class LeaderBoardActivity extends ActionBarActivity {
     }
 
 
-    private class LeaderBoardAdapterList extends ArrayAdapter<LeaderBoardListItem> {
+    private class LeaderBoardAdapterList extends ArrayAdapter<UserListItem> {
         Context mContext;
         public LeaderBoardAdapterList(Context context, int resource) {
             super(context, resource, mLeadBoardList);
@@ -110,24 +116,24 @@ public class LeaderBoardActivity extends ActionBarActivity {
             if (itemView == null){
                 itemView = LayoutInflater.from(mContext).inflate(R.layout.leader_board_list_item, parent, false);
             }
-            LeaderBoardListItem current = mLeadBoardList.get(position);
+            UserListItem current = mLeadBoardList.get(position);
 
             TextView userNameTextView = (TextView) itemView.findViewById(R.id.user_name);
-            userNameTextView.setText(current.getUserName());
+            userNameTextView.setText(current.getmUserObject().getUsername());
             ImageView imageView = (ImageView) itemView.findViewById(R.id.user_thumbnail);
-            Uri profilePicture = current.getImageUri();
+            Uri profilePicture = current.getmImageUri();
             if (profilePicture != null)
             {
                 Picasso.with(mContext).load(profilePicture.toString()).into(imageView);
             }
             else
             {
-                imageView.setImageResource(current.getIconId());
+                imageView.setImageResource(current.getmIconId());
             }
             TextView stepsTextView = (TextView) itemView.findViewById(R.id.steps_text_view);
-            stepsTextView.setText(current.getSteps());
+            stepsTextView.setText(String.valueOf(current.getmSteps()));
             TextView gamesTextView = (TextView) itemView.findViewById(R.id.games_text_view);
-            gamesTextView.setText(current.getGamesPlayed());
+            gamesTextView.setText(current.getmGamesPlayed());
 
             return itemView;
 
