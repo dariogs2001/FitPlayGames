@@ -89,7 +89,7 @@
                 android:layout_alignBottom="@+id/signUpButton"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:background="@mipmap/ic_launcher"
+                android:background="@drawable/ic_account_circle_white_24px"
                 android:minWidth="80dp"
                 android:maxWidth="80dp"
                 android:minHeight="80dp"
