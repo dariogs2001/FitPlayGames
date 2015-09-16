@@ -77,8 +77,6 @@ public class InviteFriendsActivity extends AppCompatActivity {
                             ParseFile file = friend.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
                             Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
                             mSearchFriendList.add(new FriendListItem(friend.getString(ParseConstants.USER_USERNAME), R.drawable.ic_user, fileUri,
-                                    userObject.getObjectId(),
-                                    friend.getObjectId(),
                                     userObject,
                                     friend,
                                     0,

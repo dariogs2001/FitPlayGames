@@ -69,15 +69,21 @@ public class MainFriendsFragment extends android.support.v4.app.Fragment {
             final String userId = userObject.getObjectId();
 
             List<ParseQuery<ParseObject>> queries = new ArrayList<>();
-            ParseQuery<ParseObject> acceptedQuery = new ParseQuery(ParseConstants.CLASS_USER_FRIENDS);
-            acceptedQuery.whereEqualTo(ParseConstants.USER_FRIENDS_STATUS, ParseConstants.FRIEND_STATUS_ACCEPTED);
-            acceptedQuery.whereEqualTo(ParseConstants.USER_OBJECT, userObject);
-            ParseQuery<ParseObject> pendingQuery = new ParseQuery(ParseConstants.CLASS_USER_FRIENDS);
-            pendingQuery.whereEqualTo(ParseConstants.USER_FRIENDS_STATUS, ParseConstants.FRIEND_STATUS_SENT);
-            pendingQuery.whereEqualTo(ParseConstants.USER_OBJECT, userObject);
+            ParseQuery<ParseObject> query1 = new ParseQuery(ParseConstants.CLASS_USER_FRIENDS);
+            query1.whereEqualTo(ParseConstants.USER_FRIENDS_STATUS, ParseConstants.FRIEND_STATUS_ACCEPTED);
+            query1.whereEqualTo(ParseConstants.USER_OBJECT, userObject);
 
-            queries.add(pendingQuery);
-            queries.add(acceptedQuery);
+            ParseQuery<ParseObject> query2 = new ParseQuery(ParseConstants.CLASS_USER_FRIENDS);
+            query2.whereEqualTo(ParseConstants.USER_FRIENDS_STATUS, ParseConstants.FRIEND_STATUS_SENT);
+            query2.whereEqualTo(ParseConstants.FRIEND_OBJECT, userObject);
+
+            ParseQuery<ParseObject> query3 = new ParseQuery(ParseConstants.CLASS_USER_FRIENDS);
+            query3.whereEqualTo(ParseConstants.USER_FRIENDS_STATUS, ParseConstants.FRIEND_STATUS_SENT);
+            query3.whereEqualTo(ParseConstants.FRIEND_OBJECT, userObject);
+
+            queries.add(query1);
+            queries.add(query2);
+            queries.add(query3);
 
             ParseQuery<ParseObject> superQuery = ParseQuery.or(queries);
             superQuery.findInBackground(new FindCallback<ParseObject>() {
@@ -85,7 +91,16 @@ public class MainFriendsFragment extends android.support.v4.app.Fragment {
                 public void done(List<ParseObject> list, ParseException e) {
                     for (final ParseObject userFriend : list) {
                         try {
-                            ParseUser friendObject = userFriend.getParseUser(ParseConstants.FRIEND_OBJECT).fetchIfNeeded();
+                            ParseUser friendObject;
+                            ParseUser newUserObject;
+                            if (userFriend.getString("FriendId").equals(userId)){
+                                friendObject = userFriend.getParseUser(ParseConstants.USER_OBJECT).fetchIfNeeded();
+                                newUserObject = userObject;
+                            }
+                            else {
+                                newUserObject = userFriend.getParseUser(ParseConstants.FRIEND_OBJECT).fetchIfNeeded();
+                                friendObject = userObject;
+                            }
                             if (friendObject != null) {
                                 ParseFile file = friendObject.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
                                 Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
@@ -94,12 +109,11 @@ public class MainFriendsFragment extends android.support.v4.app.Fragment {
                                 if (friendStatusId == ParseConstants.FRIEND_STATUS_SENT) {
                                     if (mFriendList.size() == 0) {
                                         location = mFriendList.size();
-                                    }
-                                    else {
+                                    } else {
                                         location = mFriendList.size() - 1;
                                     }
                                 }
-                                mFriendList.add(location, new FriendListItem(friendObject.getUsername(), R.drawable.ic_user, fileUri, userId, friendObject.getObjectId(), userObject, friendObject, friendStatusId, userFriend.getObjectId()));
+                                mFriendList.add(location, new FriendListItem(friendObject.getUsername(), R.drawable.ic_user, fileUri, newUserObject, friendObject, friendStatusId, userFriend.getObjectId()));
                             }
 
                         } catch (ParseException ex) {

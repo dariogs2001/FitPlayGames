@@ -13,21 +13,16 @@ public class FriendListItem {
     private Uri mImageUri;
     private long mSteps;
 
-    private String mUserId;
-    private String mFriendId;
-
     private ParseUser mUserObject;
     private ParseUser mFriendObject;
 
     private int mFriendStatusId;
     private String mUserFriendId;
 
-    public FriendListItem(String userName, int iconId, Uri imageUri, String userId, String friendId, ParseUser userObject, ParseUser friendObject, int friendStatusId, String userFriendId) {
+    public FriendListItem(String userName, int iconId, Uri imageUri, ParseUser userObject, ParseUser friendObject, int friendStatusId, String userFriendId) {
         this.mUserName = userName;
         this.mIconId = iconId;
         this.mImageUri = imageUri;
-        this.mUserId = userId;
-        this.mFriendId = friendId;
         this.mUserObject = userObject;
         this.mFriendObject = friendObject;
         this.mFriendStatusId = friendStatusId;
@@ -38,8 +33,6 @@ public class FriendListItem {
         this.mUserName = userName;
         this.mIconId = iconId;
         this.mImageUri = imageUri;
-        this.mUserId = userId;
-        this.mFriendId = friendId;
         this.mSteps = steps;
         this.mUserObject = userObject;
         this.mFriendObject = friendObject;
@@ -57,14 +50,6 @@ public class FriendListItem {
 
     public Uri getImageUri() {
         return mImageUri;
-    }
-
-    public String getUserId() {
-        return mUserId;
-    }
-
-    public String getFriendId() {
-        return mFriendId;
     }
 
     public long getSteps() {

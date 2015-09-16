@@ -82,9 +82,9 @@ public class UserRowAdapter extends ArrayAdapter<FriendListItem> {
                 public void onClick(View v) {
                     //Adding invitation into the DB
                     ParseObject newObject = new ParseObject(ParseConstants.CLASS_USER_FRIENDS);
-                    newObject.put(ParseConstants.KEY_USER_ID, currentItem.getUserId());
+                    newObject.put(ParseConstants.KEY_USER_ID, currentItem.getUserObject().getObjectId());
                     newObject.put(ParseConstants.USER_OBJECT, currentItem.getUserObject());
-                    newObject.put(ParseConstants.USER_FRIENDS_FRIEND_ID, currentItem.getFriendId());
+                    newObject.put(ParseConstants.USER_FRIENDS_FRIEND_ID, currentItem.getFriendObject().getObjectId());
                     newObject.put(ParseConstants.FRIEND_OBJECT, currentItem.getFriendObject());
                     newObject.put(ParseConstants.USER_FRIENDS_STATUS, ParseConstants.FRIEND_STATUS_SENT);
 
