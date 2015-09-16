@@ -78,7 +78,7 @@ public class MainFriendsFragment extends android.support.v4.app.Fragment {
             query2.whereEqualTo(ParseConstants.FRIEND_OBJECT, userObject);
 
             ParseQuery<ParseObject> query3 = new ParseQuery(ParseConstants.CLASS_USER_FRIENDS);
-            query3.whereEqualTo(ParseConstants.USER_FRIENDS_STATUS, ParseConstants.FRIEND_STATUS_SENT);
+            query3.whereEqualTo(ParseConstants.USER_FRIENDS_STATUS, ParseConstants.FRIEND_STATUS_ACCEPTED);
             query3.whereEqualTo(ParseConstants.FRIEND_OBJECT, userObject);
 
             queries.add(query1);
@@ -98,8 +98,8 @@ public class MainFriendsFragment extends android.support.v4.app.Fragment {
                                 newUserObject = userObject;
                             }
                             else {
-                                newUserObject = userFriend.getParseUser(ParseConstants.FRIEND_OBJECT).fetchIfNeeded();
-                                friendObject = userObject;
+                                friendObject = userFriend.getParseUser(ParseConstants.FRIEND_OBJECT).fetchIfNeeded();
+                                newUserObject = userObject;
                             }
                             if (friendObject != null) {
                                 ParseFile file = friendObject.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
