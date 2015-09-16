@@ -80,11 +80,22 @@ public class SearchFriendActivity extends AppCompatActivity {
                                 if (userFriend != null) {
                                     Log.d("TEST", "UserFriend: " + userFriend.getInt(ParseConstants.USER_FRIENDS_STATUS));
                                 }
-                                // Double check that the user doesn't already have a friend request history
-                                ParseQuery<ParseObject> friendQuery = ParseQuery.getQuery(ParseConstants.CLASS_USER_FRIENDS);
-                                friendQuery.whereEqualTo("UserObject", userObject);
-                                friendQuery.whereEqualTo("FriendObject", friendUser);
 
+                                List<ParseQuery<ParseObject>> queries = new ArrayList<>();
+
+                                // Double check that the user doesn't already have a friend request history
+                                ParseQuery<ParseObject> query1 = ParseQuery.getQuery(ParseConstants.CLASS_USER_FRIENDS);
+                                query1.whereEqualTo("UserObject", userObject);
+                                query1.whereEqualTo("FriendObject", friendUser);
+
+                                ParseQuery<ParseObject> query2 = ParseQuery.getQuery(ParseConstants.CLASS_USER_FRIENDS);
+                                query2.whereEqualTo("UserObject", friendUser);
+                                query2.whereEqualTo("FriendObject", userObject);
+
+                                queries.add(query1);
+                                queries.add(query2);
+
+                                ParseQuery<ParseObject> friendQuery = ParseQuery.or(queries);
                                 friendQuery.findInBackground(new FindCallback<ParseObject>() {
                                     @Override
                                     public void done(List<ParseObject> friendList, ParseException e) {
