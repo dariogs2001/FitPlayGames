@@ -2,6 +2,7 @@ package dariogonzalez.fitplaygames.Adapters;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import dariogonzalez.fitplaygames.classes.ParseConstants;
 /**
  * Created by Logan on 9/11/2015.
  */
+
 public class UserRowAdapter extends ArrayAdapter<FriendListItem> {
     Context mContext;
     private List<FriendListItem> mFriendList = new ArrayList<>();
@@ -50,9 +52,10 @@ public class UserRowAdapter extends ArrayAdapter<FriendListItem> {
             holder.userThumbnail = (ImageView) row.findViewById(R.id.user_thumbnail);
             holder.inviteButton = (Button) row.findViewById(R.id.btn_invite);
 
+            row.setTag(holder);
         }
         else {
-            row.setTag(holder);
+            holder = (UserRowHolder) row.getTag();
         }
 
         final FriendListItem currentItem = mFriendList.get(position);
@@ -60,6 +63,14 @@ public class UserRowAdapter extends ArrayAdapter<FriendListItem> {
         if (isInvite) {
             holder.inviteButton.setVisibility(View.VISIBLE);
             final Button inviteButton = holder.inviteButton;
+
+            int friendStatusId = currentItem.getFriendStatusId();
+            if (friendStatusId == ParseConstants.FRIEND_STATUS_SENT) {
+                inviteButton.setText(R.string.invite_sent);
+                inviteButton.setBackgroundColor(getContext().getResources().getColor(R.color.accent));
+            }
+
+
             holder.inviteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -76,6 +87,7 @@ public class UserRowAdapter extends ArrayAdapter<FriendListItem> {
                         public void done(ParseException e) {
                             if (e == null) {
                                 inviteButton.setText(R.string.invite_sent);
+                                inviteButton.setBackgroundColor(getContext().getResources().getColor(R.color.accent));
                             }
                         }
                     });

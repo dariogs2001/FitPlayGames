@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,29 +58,72 @@ public class SearchFriendActivity extends AppCompatActivity {
                     return false;
                 }
 
-                ParseQuery<ParseUser> users = ParseUser.getQuery();
-                users.whereStartsWith(ParseConstants.USER_USERNAME, newText);
-                users.setLimit(50);
 
                 final ParseUser userObject = ParseUser.getCurrentUser();
                 final String userId = userObject.getObjectId();
 
-                //TODO: Only search for those whom are not friends or have not received a friend request, or have not declined a friend request, or have not been deleted from a friend request...
-                users.findInBackground(new FindCallback<ParseUser>() {
+                ParseQuery<ParseUser> query = ParseUser.getQuery();
+                query.whereStartsWith(ParseConstants.USER_USERNAME, newText);
+                query.whereNotEqualTo(ParseConstants.OBJECT_ID, userId);
+                query.setLimit(25);
+                query.include(ParseConstants.CLASS_USER_FRIENDS);
+                query.findInBackground(new FindCallback<ParseUser>() {
                     @Override
                     public void done(List<ParseUser> list, ParseException e) {
                         if (e == null) {
-                            mSearchFriendList.clear();
-                            for (final ParseUser friend : list) {
-                                ParseFile file = friend.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
-                                Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
-                                mSearchFriendList.add(new FriendListItem(friend.getString(ParseConstants.USER_USERNAME), R.drawable.ic_user, fileUri, userId, friend.getObjectId(), userObject, friend));
+                            for (final ParseUser friendUser : list) {
+                                mSearchFriendList.clear();
+                                ParseObject userFriend = friendUser.getParseObject(ParseConstants.CLASS_USER_FRIENDS);
+                                if (userFriend != null) {
+                                    Log.d("TEST", "UserFriend: " + userFriend.getInt(ParseConstants.USER_FRIENDS_STATUS));
+                                }
+                                // Double check that the user doesn't already have a friend request history
+                                ParseQuery<ParseObject> friendQuery = ParseQuery.getQuery(ParseConstants.CLASS_USER_FRIENDS);
+                                friendQuery.whereEqualTo("UserObject", userObject);
+                                friendQuery.whereEqualTo("FriendObject", friendUser);
+
+                                friendQuery.findInBackground(new FindCallback<ParseObject>() {
+                                    @Override
+                                    public void done(List<ParseObject> friendList, ParseException e) {
+                                        // If there is no userfriends table record or the friend request hasn't been approved or declined
+                                        boolean includeUser = false;
+                                        int userFriendStatus = -1;
+                                        if (friendList.size() == 0) {
+                                            includeUser = true;
+                                        }
+                                        else {
+                                            for (ParseObject friendRecord : friendList) {
+                                                int friendStatusId = friendRecord.getInt(ParseConstants.USER_FRIENDS_STATUS);
+                                                if (friendStatusId != ParseConstants.FRIEND_STATUS_ACCEPTED &&
+                                                        friendStatusId != ParseConstants.FRIEND_STATUS_DECLINED) {
+                                                    includeUser = true;
+                                                    userFriendStatus = friendRecord.getInt(ParseConstants.USER_FRIENDS_STATUS);
+                                                }
+                                            }
+                                        }
+
+                                        if (includeUser) {
+                                            ParseFile file = friendUser.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
+                                            Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
+                                            mSearchFriendList.add(new FriendListItem(
+                                                    friendUser.getString(ParseConstants.USER_USERNAME),
+                                                    R.drawable.ic_user, fileUri,
+                                                    userId,
+                                                    friendUser.getObjectId(),
+                                                    100,
+                                                    userObject,
+                                                    friendUser,
+                                                    userFriendStatus));
+                                        }
+                                        populateListView();
+                                    }
+                                });
 
                             }
-                            populateListView();
                         }
                     }
                 });
+
 
                 return false;
             }

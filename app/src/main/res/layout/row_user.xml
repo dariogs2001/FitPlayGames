@@ -57,13 +57,15 @@
 
     <Button
         android:id="@+id/btn_invite"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="75dp"
+        android:layout_height="40dp"
         android:text="@string/invite"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:background="@color/primary"
+        android:textColor="@color/white"/>
 
 
 </RelativeLayout>

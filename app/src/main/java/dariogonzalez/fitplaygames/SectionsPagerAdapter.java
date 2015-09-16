@@ -60,13 +60,13 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     public int getIcon(int position) {
         switch (position) {
             case 0:
-                return R.drawable.home;
+                return R.drawable.ic_home_white;
             case 1:
-                return R.drawable.user;
+                return R.drawable.ic_person_white;
             case 2:
-                return R.drawable.users;
+                return R.drawable.ic_people_white;
             case 3:
-                return R.drawable.more;
+                return R.drawable.ic_settings_white;
         }
         return R.drawable.ic_action_go_to_today;
     }

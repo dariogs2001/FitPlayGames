@@ -15,6 +15,7 @@ public final class ParseConstants
     public static final String CLASS_CHALLENGES =  "Challenges";
 
     //Field name
+    public static final String OBJECT_ID = "objectId";
     public static final String KEY_USERNAME = "username";
     public static final String KEY_FRIENDS_RELATION = "friendsRelation";
 

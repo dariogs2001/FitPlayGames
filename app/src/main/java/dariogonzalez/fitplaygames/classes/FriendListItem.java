@@ -19,7 +19,9 @@ public class FriendListItem {
     private ParseUser mUserObject;
     private ParseUser mFriendObject;
 
-    public FriendListItem(String userName, int iconId, Uri imageUri, String userId, String friendId, ParseUser userObject, ParseUser friendObject) {
+    private int mFriendStatusId;
+
+    public FriendListItem(String userName, int iconId, Uri imageUri, String userId, String friendId, ParseUser userObject, ParseUser friendObject, int friendStatusId) {
         this.mUserName = userName;
         this.mIconId = iconId;
         this.mImageUri = imageUri;
@@ -27,9 +29,10 @@ public class FriendListItem {
         this.mFriendId = friendId;
         this.mUserObject = userObject;
         this.mFriendObject = friendObject;
+        this.mFriendStatusId = friendStatusId;
     }
 
-    public FriendListItem(String userName, int iconId, Uri imageUri, String userId, String friendId, long steps, ParseUser userObject, ParseUser friendObject) {
+    public FriendListItem(String userName, int iconId, Uri imageUri, String userId, String friendId, long steps, ParseUser userObject, ParseUser friendObject, int mFriendStatusId) {
         this.mUserName = userName;
         this.mIconId = iconId;
         this.mImageUri = imageUri;
@@ -38,6 +41,7 @@ public class FriendListItem {
         this.mSteps = steps;
         this.mUserObject = userObject;
         this.mFriendObject = friendObject;
+        this.mFriendStatusId = mFriendStatusId;
     }
 
     public String getUserName() {
@@ -71,4 +75,8 @@ public class FriendListItem {
     public ParseUser getFriendObject () {
         return mFriendObject;
     }
+
+    public int getFriendStatusId() { return mFriendStatusId; }
+
+    public void setFriendStatusId(int friendStatusId) { this.mFriendStatusId = friendStatusId; }
 }
