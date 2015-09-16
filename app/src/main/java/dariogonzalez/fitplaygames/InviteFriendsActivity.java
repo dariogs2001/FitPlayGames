@@ -59,7 +59,11 @@ public class InviteFriendsActivity extends AppCompatActivity {
 
         //TODO: also need to check for FriendObject = ParseUser.getCurrentUser(), OR clause, need to research how to do this with Parse.com
         final ParseUser userObject = ParseUser.getCurrentUser();
+        final String userId = userObject.getObjectId();
+
         ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseConstants.CLASS_USER_FRIENDS);
+        query.whereNotEqualTo(ParseConstants.USER_FRIENDS_STATUS, ParseConstants.FRIEND_STATUS_DECLINED);
+        query.whereNotEqualTo(ParseConstants.KEY_USER_ID, userId);
         query.whereEqualTo(ParseConstants.USER_OBJECT, userObject);
         query.whereEqualTo(ParseConstants.USER_FRIENDS_STATUS, ParseConstants.FRIEND_STATUS_ACCEPTED);
         query.findInBackground(new FindCallback<ParseObject>() {
@@ -76,7 +80,8 @@ public class InviteFriendsActivity extends AppCompatActivity {
                                     userObject.getObjectId(),
                                     friend.getObjectId(),
                                     userObject,
-                                    friend));
+                                    friend,
+                                    0));
 
                         } catch (ParseException ex) {
                         }
