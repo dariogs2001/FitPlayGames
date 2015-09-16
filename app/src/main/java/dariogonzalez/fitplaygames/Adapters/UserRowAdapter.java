@@ -9,10 +9,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 
@@ -40,7 +43,7 @@ public class UserRowAdapter extends ArrayAdapter<FriendListItem> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         View row = convertView;
         UserRowHolder holder = null;
 
@@ -51,6 +54,9 @@ public class UserRowAdapter extends ArrayAdapter<FriendListItem> {
             holder.userNameTV = (TextView) row.findViewById(R.id.user_name);
             holder.userThumbnail = (ImageView) row.findViewById(R.id.user_thumbnail);
             holder.inviteButton = (Button) row.findViewById(R.id.btn_invite);
+            holder.acceptButton = (Button) row.findViewById(R.id.btn_accept);
+            holder.declineButton = (Button) row.findViewById(R.id.btn_decline);
+            holder.friendRequestLayout = (LinearLayout) row.findViewById(R.id.friend_request_layout);
 
             row.setTag(holder);
         }
@@ -94,6 +100,24 @@ public class UserRowAdapter extends ArrayAdapter<FriendListItem> {
                 }
             });
         }
+        else if (currentItem.getFriendStatusId() == 0){
+            holder.friendRequestLayout.setVisibility(View.VISIBLE);
+            final UserRowHolder rowHolder = holder;
+
+            holder.acceptButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    respondToFriendRequest(true, currentItem, rowHolder, position);
+                }
+            });
+
+            holder.declineButton.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    respondToFriendRequest(false, currentItem, rowHolder, position);
+                }
+            });
+        }
 
         holder.userNameTV.setText(currentItem.getUserName());
         Uri profilePicture = currentItem.getImageUri();
@@ -109,10 +133,33 @@ public class UserRowAdapter extends ArrayAdapter<FriendListItem> {
         return row;
     }
 
+    public void respondToFriendRequest(final boolean accept, final FriendListItem currentItem, final UserRowHolder holder, final int position) {
+        ParseQuery<ParseObject> updateFriendRequestQuery = ParseQuery.getQuery(ParseConstants.CLASS_USER_FRIENDS);
+
+        updateFriendRequestQuery.getInBackground(currentItem.getUserFriendId(), new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject parseObject, ParseException e) {
+                if (e == null) {
+                    if (accept) {
+                        parseObject.put(ParseConstants.USER_FRIENDS_STATUS, ParseConstants.FRIEND_STATUS_ACCEPTED);
+                    } else {
+                        parseObject.put(ParseConstants.USER_FRIENDS_STATUS, ParseConstants.FRIEND_STATUS_DECLINED);
+                        mFriendList.remove(position);
+                    }
+                    parseObject.saveInBackground();
+                    holder.friendRequestLayout.setVisibility(View.GONE);
+                    currentItem.setFriendStatusId(ParseConstants.FRIEND_STATUS_ACCEPTED);
+                }
+            }
+        });
+
+    }
+
     static class UserRowHolder {
         TextView userNameTV;
         ImageView userThumbnail;
-        Button inviteButton;
+        Button inviteButton, acceptButton, declineButton;
+        LinearLayout friendRequestLayout;
     }
 }
 

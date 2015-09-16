@@ -44,7 +44,7 @@
                 android:gravity="center_vertical"/>
 
             <TextView
-                android:text="15.000"
+                android:text="15,000"
                 android:textColor="@color/secondary_text"
                 android:id="@+id/tv_steps"
                 android:layout_width="match_parent"
@@ -57,7 +57,7 @@
 
     <Button
         android:id="@+id/btn_invite"
-        android:layout_width="75dp"
+        android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:text="@string/invite"
         android:layout_centerVertical="true"
@@ -66,6 +66,38 @@
         android:visibility="gone"
         android:background="@color/primary"
         android:textColor="@color/white"/>
+
+    <LinearLayout
+        android:id="@+id/friend_request_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/btn_accept"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:text="@string/accept"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:background="@color/primary"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"/>
+
+        <Button
+            android:id="@+id/btn_decline"
+            android:layout_width="70dp"
+            android:layout_height="40dp"
+            android:text="@string/decline"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:background="@color/accent"/>
+
+    </LinearLayout>
 
 
 </RelativeLayout>

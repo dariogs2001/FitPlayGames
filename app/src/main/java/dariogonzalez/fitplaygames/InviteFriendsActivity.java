@@ -81,7 +81,8 @@ public class InviteFriendsActivity extends AppCompatActivity {
                                     friend.getObjectId(),
                                     userObject,
                                     friend,
-                                    0));
+                                    0,
+                                    ""));
 
                         } catch (ParseException ex) {
                         }

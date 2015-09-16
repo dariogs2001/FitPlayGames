@@ -1,5 +1,6 @@
 package dariogonzalez.fitplaygames;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
@@ -32,12 +33,15 @@ import dariogonzalez.fitplaygames.classes.ParseConstants;
 
 public class SearchFriendActivity extends AppCompatActivity {
     private List<FriendListItem> mSearchFriendList = new ArrayList<FriendListItem>();
-    ListView searchResultListView;
+    private ListView searchResultListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_friend);
+
+
+        setProgressBarIndeterminateVisibility(true);
 
         android.support.v7.widget.SearchView searchView = (android.support.v7.widget.SearchView) findViewById(R.id.search_friends);
         searchResultListView = (ListView) findViewById(R.id.search_results_list_view);
@@ -50,8 +54,7 @@ public class SearchFriendActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-
-                if (newText.length() == 0)
+                if (newText.length() < 2)
                 {
                     mSearchFriendList.clear();
                     populateListView();
@@ -66,14 +69,14 @@ public class SearchFriendActivity extends AppCompatActivity {
                 query.whereStartsWith(ParseConstants.USER_USERNAME, newText);
                 query.whereNotEqualTo(ParseConstants.OBJECT_ID, userId);
                 query.setLimit(25);
-                query.include(ParseConstants.CLASS_USER_FRIENDS);
+                query.include("activityHistoryPointer");
                 query.findInBackground(new FindCallback<ParseUser>() {
                     @Override
                     public void done(List<ParseUser> list, ParseException e) {
                         if (e == null) {
                             for (final ParseUser friendUser : list) {
                                 mSearchFriendList.clear();
-                                ParseObject userFriend = friendUser.getParseObject(ParseConstants.CLASS_USER_FRIENDS);
+                                ParseObject userFriend = friendUser.getParseObject("ActivityHistory");
                                 if (userFriend != null) {
                                     Log.d("TEST", "UserFriend: " + userFriend.getInt(ParseConstants.USER_FRIENDS_STATUS));
                                 }
@@ -90,8 +93,7 @@ public class SearchFriendActivity extends AppCompatActivity {
                                         int userFriendStatus = -1;
                                         if (friendList.size() == 0) {
                                             includeUser = true;
-                                        }
-                                        else {
+                                        } else {
                                             for (ParseObject friendRecord : friendList) {
                                                 int friendStatusId = friendRecord.getInt(ParseConstants.USER_FRIENDS_STATUS);
                                                 if (friendStatusId != ParseConstants.FRIEND_STATUS_ACCEPTED &&
@@ -113,12 +115,12 @@ public class SearchFriendActivity extends AppCompatActivity {
                                                     100,
                                                     userObject,
                                                     friendUser,
-                                                    userFriendStatus));
+                                                    userFriendStatus,
+                                                    ""));
                                         }
                                         populateListView();
                                     }
                                 });
-
                             }
                         }
                     }
