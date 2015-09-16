@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +40,7 @@ public class MainFriendsFragment extends android.support.v4.app.Fragment {
     View view;
 
     private FloatingActionButton fab;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public MainFriendsFragment() {
         // Required empty public constructor
@@ -52,6 +54,16 @@ public class MainFriendsFragment extends android.support.v4.app.Fragment {
         view = inflater.inflate(R.layout.fragment_main_friends, container, false);
 
         friendsResultListView = (ListView) view.findViewById(R.id.search_results_list_view);
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setColorSchemeResources(R.color.primary_light, R.color.primary, R.color.primary_dark);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mFriendList.clear();
+                getFriends();
+            }
+        });
 
         fab = (FloatingActionButton) view.findViewById(R.id.fab);
 
@@ -64,6 +76,11 @@ public class MainFriendsFragment extends android.support.v4.app.Fragment {
             }
         });
 
+        getFriends();
+        return view;
+    }
+
+    private void getFriends() {
         if (mFriendList!= null && mFriendList.size() == 0) {
             final ParseUser userObject = ParseUser.getCurrentUser();
             final String userId = userObject.getObjectId();
@@ -126,7 +143,6 @@ public class MainFriendsFragment extends android.support.v4.app.Fragment {
         else {
             populateListView();
         }
-        return view;
     }
 
     private void populateListView() {
@@ -135,6 +151,7 @@ public class MainFriendsFragment extends android.support.v4.app.Fragment {
         friendsResultListView = (ListView) view.findViewById(R.id.friends_list_view);
         friendsResultListView.setAdapter(adapter);
         fab.attachToListView(friendsResultListView);
+        swipeRefreshLayout.setRefreshing(false);
     }
 
 }
