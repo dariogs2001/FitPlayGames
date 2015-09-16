@@ -14,7 +14,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
@@ -37,7 +36,7 @@ public class LeaderBoardActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_leader_board);
+        setContentView(R.layout.fragment_leader_board);
 
         if (mLeadBoardList.size() == 0)
         {
@@ -57,13 +56,22 @@ public class LeaderBoardActivity extends ActionBarActivity {
             public void done(List<ParseObject> list, ParseException e) {
                 if (e == null) {
                     for (ParseObject obj : list) {
-                            ParseUser user = obj.getParseUser(ParseConstants.USER_OBJECT);
-                            if (user != null)
-                            {
-                                ParseFile file = user.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
-                                Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
-                                mLeadBoardList.add(new LeaderBoardListItem(user.getString(ParseConstants.USER_USERNAME), "" + obj.getDouble(ParseConstants.LAST_SEVEN_DAYS_STEPS), "15", R.drawable.ic_user, fileUri));
-                            }
+//                        try {
+//                            ParseQuery<ParseUser> query = ParseUser.getQuery();
+//                            ParseUser user = query.get(obj.getString(ParseConstants.KEY_USER_ID));
+//                            if (user != null)
+//                            {
+//                                ParseFile file = user.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
+//                                Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
+//                                mLeadBoardList.add(new LeaderBoardListItem(user.getString(ParseConstants.USER_USERNAME), "" + obj.getDouble(ParseConstants.LAST_SEVEN_DAYS_STEPS), "15", R.mipmap.ic_profile, fileUri));
+//                            }
+                        ParseUser user = obj.getParseUser(ParseConstants.USER_OBJECT);
+                        if (user != null)
+                        {
+                            ParseFile file = user.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
+                            Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
+                            mLeadBoardList.add(new LeaderBoardListItem(user.getString(ParseConstants.USER_USERNAME), "" + obj.getDouble(ParseConstants.LAST_SEVEN_DAYS_STEPS), "15", R.drawable.ic_user, fileUri));
+                        }
 //                        }
 //                        catch (ParseException ex) {}
                     }

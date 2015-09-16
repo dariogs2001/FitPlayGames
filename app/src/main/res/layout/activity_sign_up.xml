@@ -4,28 +4,29 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
+    android:background="@color/login_background_color"
     tools:context="dariogonzalez.fitplaygames.SignUpActivity">
 
-<!--
-    <TextView
-        android:text="@string/title"
-        android:id="@+id/title"
-        style="@style/AuthTitle"/>
-
-    <TextView
-        android:text="@string/subtitle"
-        android:id="@+id/subTitle"
-        style="@style/AuthSubtitle"/>
--->
 
     <LinearLayout
+        android:background="@color/login_background_color"
         android:id="@+id/editTextLayout"
         style="@style/AuthFieldContainer">
+
         <EditText
             style="@style/EditText"
-            android:id="@+id/userNameField"
-            android:hint="@string/username_hint">
+            android:inputType="textEmailAddress"
+            android:ems="10"
+            android:id="@+id/emailField"
+            android:hint="@string/email_hint">
             <requestFocus/>
+        </EditText>
+        <EditText
+            style="@style/EditText"
+            android:layout_below="@+id/emailField"
+            android:id="@+id/userNameField"
+            android:hint="@string/username_signup_hint">
+
         </EditText>
 
         <EditText
@@ -35,14 +36,6 @@
             android:id="@+id/passwordField"
             android:layout_below="@+id/userNameField"
             android:hint="@string/password_hint"/>
-
-        <EditText
-            style="@style/EditText"
-            android:inputType="textEmailAddress"
-            android:ems="10"
-            android:id="@+id/emailField"
-            android:layout_below="@+id/passwordField"
-            android:hint="@string/email_hint"/>
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -89,18 +82,18 @@
             android:orientation="horizontal"
             android:layout_below="@+id/age_range"
             android:layout_marginTop="10px">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/userPhoto"
-            android:layout_alignBottom="@+id/signUpButton"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:background="@drawable/ic_launcher"
-            android:minWidth="80dp"
-            android:maxWidth="80dp"
-            android:minHeight="80dp"
-            android:maxHeight="80dp"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/userPhoto"
+                android:layout_alignBottom="@+id/signUpButton"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:background="@mipmap/ic_launcher"
+                android:minWidth="80dp"
+                android:maxWidth="80dp"
+                android:minHeight="80dp"
+                android:maxHeight="80dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -112,11 +105,14 @@
         </LinearLayout>
     </LinearLayout>
 
+
     <Button
         android:id="@+id/signUpButton"
         style="@style/AuthButton"
         android:text="@string/sign_up_button_label"
         android:layout_below="@+id/editTextLayout"
-        android:layout_alignParentLeft="true"/>
+        android:textColor="@color/white"
+        android:layout_alignParentLeft="true"
+        android:background="@color/primary"/>
 
 </RelativeLayout>
