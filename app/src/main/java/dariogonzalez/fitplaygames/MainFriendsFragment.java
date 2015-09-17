@@ -110,13 +110,20 @@ public class MainFriendsFragment extends android.support.v4.app.Fragment {
                                         location = mFriendList.size() - 1;
                                     }
                                 }
+
+                                double steps = 0;
+                                ParseObject lastSevenDays = friendObject.getParseObject("lastSevenDays").fetchIfNeeded();
+                                if (lastSevenDays != null) {
+                                    steps =  lastSevenDays.getDouble(ParseConstants.LAST_SEVEN_DAYS_STEPS);
+                                }
+
                                 UserListItem userListItem = new UserListItem();
                                 userListItem.setmIconId(R.drawable.ic_user);
                                 userListItem.setmImageUri(fileUri);
                                 userListItem.setmUserObject(newUserObject);
                                 userListItem.setmFriendObject(friendObject);
                                 userListItem.setmFriendStatusId(friendStatusId);
-                                userListItem.setmSteps(15);
+                                userListItem.setmSteps((int)steps);
                                 userListItem.setmUserFriendId(userFriend.getObjectId());
                                 mFriendList.add(userListItem);
                             }

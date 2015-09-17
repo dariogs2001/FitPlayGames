@@ -16,8 +16,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingLeft="56dp"
-        android:paddingStart="56dp"
+        android:paddingLeft="64dp"
+        android:paddingStart="64dp"
         android:layout_centerVertical="true">
 
         <TextView
@@ -36,21 +36,26 @@
             android:weightSum="4">
 
             <TextView
-                android:text="@string/steps_colon"
+                android:id="@+id/tv_steps"
                 android:textColor="@color/secondary_text"
+                android:textSize="18sp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="3"
-                android:gravity="center_vertical"/>
+                android:layout_weight="1"
+                android:text="15,000"
+                android:gravity="center_vertical"
+                android:paddingRight="5dp"/>
 
             <TextView
-                android:text="15,000"
+                android:text="@string/steps"
                 android:textColor="@color/secondary_text"
-                android:id="@+id/tv_steps"
+                android:textSize="18sp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center_vertical"/>
+
+
         </LinearLayout>
 
     </LinearLayout>
@@ -77,25 +82,49 @@
         android:layout_alignParentEnd="true"
         android:visibility="gone">
 
-        <Button
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/btn_decline"
+                android:layout_width="70dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:src="@drawable/ic_decline_circle"
+                android:background="@android:color/transparent"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/decline"
+                android:layout_gravity="center"/>
+
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageButton
             android:id="@+id/btn_accept"
             android:layout_width="60dp"
-            android:layout_height="40dp"
-            android:text="@string/accept"
+            android:layout_height="0dp"
+            android:src="@drawable/ic_accept_circle"
             android:layout_weight="1"
-            android:textColor="@color/white"
-            android:background="@color/primary"
-            android:layout_marginRight="10dp"
-            android:layout_marginEnd="10dp"/>
+            android:background="@android:color/transparent"/>
 
-        <Button
-            android:id="@+id/btn_decline"
-            android:layout_width="70dp"
-            android:layout_height="40dp"
-            android:text="@string/decline"
-            android:layout_weight="1"
-            android:textColor="@color/white"
-            android:background="@color/accent"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/accept"
+            android:layout_gravity="center"/>
+
+    </LinearLayout>
+
+
 
     </LinearLayout>
 

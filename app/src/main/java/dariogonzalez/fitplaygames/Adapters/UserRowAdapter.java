@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -51,10 +52,11 @@ public class UserRowAdapter extends ArrayAdapter<UserListItem> {
 
             holder = new UserRowHolder();
             holder.userNameTV = (TextView) row.findViewById(R.id.user_name);
+            holder.stepsTV = (TextView) row.findViewById(R.id.tv_steps);
             holder.userThumbnail = (ImageView) row.findViewById(R.id.user_thumbnail);
             holder.inviteButton = (Button) row.findViewById(R.id.btn_invite);
-            holder.acceptButton = (Button) row.findViewById(R.id.btn_accept);
-            holder.declineButton = (Button) row.findViewById(R.id.btn_decline);
+            holder.acceptButton = (ImageButton) row.findViewById(R.id.btn_accept);
+            holder.declineButton = (ImageButton) row.findViewById(R.id.btn_decline);
             holder.friendRequestLayout = (LinearLayout) row.findViewById(R.id.friend_request_layout);
 
             row.setTag(holder);
@@ -118,7 +120,8 @@ public class UserRowAdapter extends ArrayAdapter<UserListItem> {
             });
         }
 
-        holder.userNameTV.setText(currentItem.getmUserObject().getUsername());
+        holder.userNameTV.setText(currentItem.getmFriendObject().getUsername());
+        holder.stepsTV.setText(String.valueOf(currentItem.getmSteps()));
         Uri profilePicture = currentItem.getmImageUri();
         if (profilePicture != null)
         {
@@ -155,9 +158,10 @@ public class UserRowAdapter extends ArrayAdapter<UserListItem> {
     }
 
     static class UserRowHolder {
-        TextView userNameTV;
+        TextView userNameTV, stepsTV;
         ImageView userThumbnail;
-        Button inviteButton, acceptButton, declineButton;
+        Button inviteButton;
+        ImageButton acceptButton, declineButton;
         LinearLayout friendRequestLayout;
     }
 }

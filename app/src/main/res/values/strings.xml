@@ -111,7 +111,7 @@
     <string name="title_activity_hot_potato_challenge">Hot Potato Challenge</string>
     <string name="title_activity_invite_friends">Invite Friends</string>
     <string name="username">Username</string>
-    <string name="steps_colon">Steps:</string>
+    <string name="steps">steps</string>
     <string name="invite">Invite</string>
     <string name="invite_sent">Invite Sent</string>
     <string name="loading">Loading...</string>

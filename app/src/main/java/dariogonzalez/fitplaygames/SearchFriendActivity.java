@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
@@ -59,7 +60,7 @@ public class SearchFriendActivity extends AppCompatActivity {
                 query.whereStartsWith(ParseConstants.USER_USERNAME, newText);
                 query.whereNotEqualTo(ParseConstants.OBJECT_ID, userId);
                 query.setLimit(25);
-                query.include("activityHistoryPointer");
+                query.include("lastSevenDays");
                 query.findInBackground(new FindCallback<ParseUser>() {
                     @Override
                     public void done(List<ParseUser> list, ParseException e) {
@@ -67,9 +68,6 @@ public class SearchFriendActivity extends AppCompatActivity {
                             for (final ParseUser friendUser : list) {
                                 mSearchFriendList.clear();
                                 final ParseObject userFriend = friendUser.getParseObject("ActivityHistory");
-                                if (userFriend != null) {
-                                    Log.d("TEST", "UserFriend: " + userFriend.getInt(ParseConstants.USER_FRIENDS_STATUS));
-                                }
 
                                 List<ParseQuery<ParseObject>> queries = new ArrayList<>();
 
@@ -89,7 +87,7 @@ public class SearchFriendActivity extends AppCompatActivity {
                                 friendQuery.findInBackground(new FindCallback<ParseObject>() {
                                     @Override
                                     public void done(List<ParseObject> friendList, ParseException e) {
-                                        // If there is no userfriends table record or the friend request hasn't been approved or declined
+                                        // If there is no userfriends table record or the friend request hasn't been approved
                                         boolean includeUser = false;
                                         int userFriendStatus = -1;
                                         if (friendList.size() == 0) {
@@ -97,8 +95,7 @@ public class SearchFriendActivity extends AppCompatActivity {
                                         } else {
                                             for (ParseObject friendRecord : friendList) {
                                                 int friendStatusId = friendRecord.getInt(ParseConstants.USER_FRIENDS_STATUS);
-                                                if (friendStatusId != ParseConstants.FRIEND_STATUS_ACCEPTED &&
-                                                        friendStatusId != ParseConstants.FRIEND_STATUS_DECLINED) {
+                                                if (friendStatusId != ParseConstants.FRIEND_STATUS_ACCEPTED) {
                                                     includeUser = true;
                                                     userFriendStatus = friendRecord.getInt(ParseConstants.USER_FRIENDS_STATUS);
                                                 }
@@ -109,13 +106,20 @@ public class SearchFriendActivity extends AppCompatActivity {
                                             ParseFile file = friendUser.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
                                             Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
 
+                                            double steps = 0;
+                                            ParseObject lastSevenDays = friendUser.getParseObject("lastSevenDays");
+                                            if (lastSevenDays != null) {
+                                                steps =  lastSevenDays.getDouble(ParseConstants.LAST_SEVEN_DAYS_STEPS);
+                                            }
+
+
                                             UserListItem userListItem = new UserListItem();
                                             userListItem.setmIconId(R.drawable.ic_user);
                                             userListItem.setmImageUri(fileUri);
                                             userListItem.setmUserObject(userObject);
                                             userListItem.setmFriendObject(friendUser);
                                             userListItem.setmFriendStatusId(userFriendStatus);
-                                            userListItem.setmSteps(15);
+                                            userListItem.setmSteps((int) steps);
                                             mSearchFriendList.add(userListItem);
                                         }
                                         populateListView();

@@ -32,13 +32,15 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
                 return new MainFriendsFragment();
             case 3:
                 return new MainMoreOptionsFragment();
+            case 4:
+                return new MainMoreOptionsFragment();
         }
         return null;
     }
 
     @Override
     public int getCount() {
-       return 4;
+       return 5;
     }
 
     @Override
@@ -52,6 +54,8 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
             case 2:
                 return mContext.getString(R.string.title_section3).toUpperCase(l);
             case 3:
+                return mContext.getString(R.string.title_section3).toUpperCase(l);
+            case 4:
                 return mContext.getString(R.string.title_section4).toUpperCase(l);
         }
         return null;
@@ -66,6 +70,8 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
             case 2:
                 return R.drawable.ic_people_white;
             case 3:
+                return R.drawable.ic_trophy;
+            case 4:
                 return R.drawable.ic_settings_white;
         }
         return R.drawable.ic_action_go_to_today;
