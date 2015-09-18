@@ -78,13 +78,12 @@
                 android:layout_weight="1"
                 android:background="@drawable/ic_account_circle_white_24px" />
 
-            <com.melnykov.fab.FloatingActionButton
+            <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:layout_gravity="bottom|end"
-
                 android:src="@drawable/fab_addphoto_orange"
                 fab:fab_colorNormal="@color/accent"
                 fab:fab_colorPressed="@color/primary_dark"

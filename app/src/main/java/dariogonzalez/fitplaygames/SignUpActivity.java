@@ -7,6 +7,7 @@ import android.media.Image;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,7 +21,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.melnykov.fab.FloatingActionButton;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
