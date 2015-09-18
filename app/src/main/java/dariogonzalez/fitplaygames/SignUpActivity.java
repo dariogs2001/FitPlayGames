@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.melnykov.fab.FloatingActionButton;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
@@ -42,6 +43,7 @@ public class SignUpActivity extends ActionBarActivity {
     protected Spinner mAgeRange;
     protected Spinner mGender;
     protected ImageView mPhoto;
+    private FloatingActionButton fab;
 
 
     protected Uri mMediaUri;
@@ -65,6 +67,7 @@ public class SignUpActivity extends ActionBarActivity {
         mPassword = (EditText) findViewById(R.id.passwordField);
         mEmail = (EditText) findViewById(R.id.emailField);
         mSignUpButton = (Button) findViewById(R.id.signUpButton);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         mPhoto = (ImageView) findViewById(R.id.userPhoto);
 
         mAgeRange = (Spinner) findViewById(R.id.age_range);
@@ -77,7 +80,7 @@ public class SignUpActivity extends ActionBarActivity {
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mGender.setAdapter(adapter2);
 
-        mPhoto.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new  AlertDialog.Builder(SignUpActivity.this);
