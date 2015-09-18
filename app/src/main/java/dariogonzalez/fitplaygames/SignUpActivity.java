@@ -3,6 +3,7 @@ package dariogonzalez.fitplaygames;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -12,10 +13,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.melnykov.fab.FloatingActionButton;
 import com.parse.ParseException;
@@ -43,6 +46,7 @@ public class SignUpActivity extends ActionBarActivity {
     protected Spinner mAgeRange;
     protected Spinner mGender;
     protected ImageView mPhoto;
+    protected ToggleButton mCheckBox;
     private FloatingActionButton fab;
 
 
@@ -69,6 +73,8 @@ public class SignUpActivity extends ActionBarActivity {
         mSignUpButton = (Button) findViewById(R.id.signUpButton);
         fab = (FloatingActionButton) findViewById(R.id.fab);
         mPhoto = (ImageView) findViewById(R.id.userPhoto);
+        mCheckBox = (ToggleButton) findViewById(R.id.checkBoxOutline);
+
 
         mAgeRange = (Spinner) findViewById(R.id.age_range);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.age_range_array, android.R.layout.simple_spinner_item);
@@ -83,10 +89,33 @@ public class SignUpActivity extends ActionBarActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new  AlertDialog.Builder(SignUpActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(SignUpActivity.this);
                 builder.setItems(R.array.camera_choices, mDialogListener);
                 AlertDialog dialog = builder.create();
                 dialog.show();
+            }
+        });
+
+
+        mCheckBox.setText(null);
+        mCheckBox.setTextOn(null);
+        mCheckBox.setTextOff(null);
+        mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    //
+                    mCheckBox.setText(null);
+                    mCheckBox.setTextOn(null);
+                    mCheckBox.setTextOff(null);
+                    mCheckBox.setBackgroundResource(R.drawable.ic_check_box_outline_blank_grey_24px);
+                }else{
+                    //
+                    mCheckBox.setText(null);
+                    mCheckBox.setTextOn(null);
+                    mCheckBox.setTextOff(null);
+                    mCheckBox.setBackgroundResource(R.drawable.ic_check_box_orange_24px);
+                }
             }
         });
 

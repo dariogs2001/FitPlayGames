@@ -107,15 +107,23 @@
         android:layout_marginTop="10dp"
         android:gravity="center">
 
-        <ImageView
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        <ToggleButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/checkBoxOutline"
+            android:checked="false"
             android:background="@drawable/ic_check_box_outline_blank_grey_24px"
             android:minWidth="20dp"
             android:maxWidth="20dp"
             android:minHeight="20dp"
             android:maxHeight="20dp"/>
+
+        </FrameLayout>
 
         <TextView
             android:layout_width="wrap_content"
