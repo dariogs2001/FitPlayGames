@@ -129,8 +129,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/read_privacy_policy"
-            android:id="@+id/image_label"
+            android:id="@+id/privacy_policy"
             android:layout_marginLeft="10dp"/>
         </LinearLayout>
 

@@ -3,6 +3,7 @@ package dariogonzalez.fitplaygames;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Environment;
@@ -10,6 +11,10 @@ import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -18,6 +23,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -100,6 +106,7 @@ public class SignUpActivity extends ActionBarActivity {
         mCheckBox.setText(null);
         mCheckBox.setTextOn(null);
         mCheckBox.setTextOff(null);
+        mSignUpButton.setEnabled(false);
         mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -108,16 +115,38 @@ public class SignUpActivity extends ActionBarActivity {
                     mCheckBox.setText(null);
                     mCheckBox.setTextOn(null);
                     mCheckBox.setTextOff(null);
-                    mCheckBox.setBackgroundResource(R.drawable.ic_check_box_outline_blank_grey_24px);
+                    mCheckBox.setBackgroundResource(R.drawable.ic_check_box_orange_24px);
+                    mSignUpButton.setEnabled(true);
+
                 }else{
                     //
                     mCheckBox.setText(null);
                     mCheckBox.setTextOn(null);
                     mCheckBox.setTextOff(null);
-                    mCheckBox.setBackgroundResource(R.drawable.ic_check_box_orange_24px);
+                    mCheckBox.setBackgroundResource(R.drawable.ic_check_box_outline_blank_grey_24px);
+                    mSignUpButton.setEnabled(false);
                 }
             }
         });
+
+
+        TextView myTextView = (TextView) findViewById(R.id.privacy_policy);
+        String myString = "Read and accept the Privacy Policy.";
+        int i1 = myString.indexOf("Privacy");
+        int i2 = myString.indexOf(".");
+        myTextView.setMovementMethod(LinkMovementMethod.getInstance());
+        myTextView.setText(myString, TextView.BufferType.SPANNABLE);
+        Spannable mySpannable = (Spannable)myTextView.getText();
+        ClickableSpan myClickableSpan = new ClickableSpan()
+        {
+            @Override
+            public void onClick(View widget) {
+                Intent intent = new Intent(SignUpActivity.this, PrivacyPolicyActivity.class);
+                startActivity(intent);
+            }
+        };
+        mySpannable.setSpan(new ForegroundColorSpan(Color.BLUE), i1, i2 + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        mySpannable.setSpan(myClickableSpan, i1, i2 + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
 
         mSignUpButton.setOnClickListener(new View.OnClickListener() {
