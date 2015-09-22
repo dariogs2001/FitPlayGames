@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.melnykov.fab.FloatingActionButton;
@@ -32,8 +34,12 @@ import dariogonzalez.fitplaygames.classes.ParseConstants;
  */
 public class MainFriendsFragment extends android.support.v4.app.Fragment {
     private List<UserListItem> mFriendList = new ArrayList<UserListItem>();
-    ListView friendsResultListView;
-    View view;
+    private ListView friendsResultListView;
+    private LinearLayout emptyStateLayout;
+    private View view;
+
+    private SwipeRefreshLayout swipeRefreshLayout;
+
     private FloatingActionButton fab;
 
     public MainFriendsFragment() {
@@ -47,9 +53,19 @@ public class MainFriendsFragment extends android.support.v4.app.Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_main_friends, container, false);
 
-        friendsResultListView = (ListView) view.findViewById(R.id.search_results_list_view);
-
+        friendsResultListView = (ListView) view.findViewById(R.id.friends_list_view);
         fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        emptyStateLayout = (LinearLayout) view.findViewById(R.id.empty_state_friends);
+
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setColorSchemeResources(R.color.primary_light, R.color.primary, R.color.primary_dark);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getFriendData();
+            }
+        });
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,6 +76,12 @@ public class MainFriendsFragment extends android.support.v4.app.Fragment {
             }
         });
 
+
+        getFriendData();
+        return view;
+    }
+
+    private void getFriendData() {
         if (mFriendList!= null && mFriendList.size() == 0) {
             final ParseUser userObject = ParseUser.getCurrentUser();
             final String userId = userObject.getObjectId();
@@ -111,9 +133,14 @@ public class MainFriendsFragment extends android.support.v4.app.Fragment {
                                 }
 
                                 double steps = 0;
-                                ParseObject lastSevenDays = friendObject.getParseObject("lastSevenDays").fetchIfNeeded();
-                                if (lastSevenDays != null) {
-                                    steps =  lastSevenDays.getDouble(ParseConstants.LAST_SEVEN_DAYS_STEPS);
+                                if (friendObject.has("lastSevenDays")) {
+                                    ParseObject lastSevenDays = friendObject.getParseObject("lastSevenDays").fetchIfNeeded();
+                                    if (lastSevenDays != null) {
+                                        steps =  lastSevenDays.getDouble(ParseConstants.LAST_SEVEN_DAYS_STEPS);
+                                    }
+                                }
+                                else {
+                                    steps = 0;
                                 }
 
                                 UserListItem userListItem = new UserListItem();
@@ -137,15 +164,22 @@ public class MainFriendsFragment extends android.support.v4.app.Fragment {
         else {
             populateListView();
         }
-        return view;
     }
 
     private void populateListView() {
-        boolean isInvite = false;
-        ArrayAdapter<UserListItem> adapter = new UserRowAdapter(view.getContext(), R.layout.row_user, mFriendList, isInvite);
-        friendsResultListView = (ListView) view.findViewById(R.id.friends_list_view);
-        friendsResultListView.setAdapter(adapter);
-        fab.attachToListView(friendsResultListView);
+        swipeRefreshLayout.setRefreshing(false);
+        if (mFriendList.size() > 0) {
+            friendsResultListView.setVisibility(View.VISIBLE);
+            emptyStateLayout.setVisibility(View.GONE);
+            boolean isInvite = false;
+            ArrayAdapter<UserListItem> adapter = new UserRowAdapter(view.getContext(), R.layout.row_user, mFriendList, isInvite);
+            friendsResultListView.setAdapter(adapter);
+            fab.attachToListView(friendsResultListView);
+        }
+        else {
+            friendsResultListView.setVisibility(View.GONE);
+            emptyStateLayout.setVisibility(View.VISIBLE);
+        }
     }
 
 }

@@ -1,10 +1,14 @@
 package dariogonzalez.fitplaygames;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.parse.FindCallback;
@@ -25,6 +29,7 @@ import dariogonzalez.fitplaygames.classes.ParseConstants;
 public class SearchFriendActivity extends AppCompatActivity {
     private List<UserListItem> mSearchFriendList = new ArrayList<UserListItem>();
     private ListView searchResultListView;
+    private LinearLayout noResultsLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +41,7 @@ public class SearchFriendActivity extends AppCompatActivity {
 
         android.support.v7.widget.SearchView searchView = (android.support.v7.widget.SearchView) findViewById(R.id.search_friends);
         searchResultListView = (ListView) findViewById(R.id.search_results_list_view);
+        noResultsLayout = (LinearLayout) findViewById(R.id.no_results_container);
 
         searchView.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
             @Override
@@ -44,11 +50,11 @@ public class SearchFriendActivity extends AppCompatActivity {
             }
 
             @Override
-            public boolean onQueryTextChange(String newText) {
+            public boolean onQueryTextChange(final String newText) {
                 if (newText.length() < 2)
                 {
                     mSearchFriendList.clear();
-                    populateListView();
+                    populateListView(newText);
                     return false;
                 }
 
@@ -122,10 +128,13 @@ public class SearchFriendActivity extends AppCompatActivity {
                                             userListItem.setmSteps((int) steps);
                                             mSearchFriendList.add(userListItem);
                                         }
-                                        populateListView();
+                                        if (mSearchFriendList.size() > 0) {
+                                            populateListView(newText);
+                                        }
                                     }
                                 });
                             }
+                                populateListView(newText);
                         }
                     }
                 });
@@ -136,11 +145,39 @@ public class SearchFriendActivity extends AppCompatActivity {
         });
     }
 
-    private void populateListView() {
-        boolean isInvite = true;
-        ArrayAdapter<UserListItem> adapter = new UserRowAdapter(this, R.layout.row_user, mSearchFriendList, isInvite);
-        searchResultListView = (ListView) findViewById(R.id.search_results_list_view);
-        searchResultListView.setAdapter(adapter);
+    private void populateListView(String newText) {
+        if (mSearchFriendList.size() > 0) {
+            noResultsLayout.setVisibility(View.GONE);
+            searchResultListView.setVisibility(View.VISIBLE);
+            boolean isInvite = true;
+            ArrayAdapter<UserListItem> adapter = new UserRowAdapter(this, R.layout.row_user, mSearchFriendList, isInvite);
+            searchResultListView = (ListView) findViewById(R.id.search_results_list_view);
+            searchResultListView.setAdapter(adapter);
+        }
+        else {
+            searchResultListView.setVisibility(View.GONE);
+            if (newText.length()  < 2) {
+                noResultsLayout.setVisibility(View.GONE);
+            }
+            else {
+                noResultsLayout.setVisibility(View.VISIBLE);
+            }
+
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }

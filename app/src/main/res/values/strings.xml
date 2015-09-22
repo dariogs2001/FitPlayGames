@@ -117,5 +117,7 @@
     <string name="loading">Loading...</string>
     <string name="accept">Accept</string>
     <string name="decline">Decline</string>
+    <string name="start_adding_friends">Start adding friends!</string>
+    <string name="no_results">No results have been found for this search.</string>
 
 </resources>
