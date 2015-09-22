@@ -13,12 +13,39 @@
         android:orientation="vertical">
 
 
+            <LinearLayout
+                android:id="@+id/empty_state_friends"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:layout_gravity="center">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/ic_smug"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="15dp"/>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/start_adding_friends"
+                    android:textSize="16sp" />
+
+
+            </LinearLayout>
+
+
             <ListView
+                android:id="@+id/friends_list_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/friends_list_view"
                 android:divider="@color/secondary_text"
-                android:dividerHeight="1px"/>
+                android:dividerHeight="1px"
+                android:visibility="gone"/>
 
 
             <com.melnykov.fab.FloatingActionButton

@@ -15,12 +15,31 @@
     android:id="@+id/search_friends"/>
 
     <ListView
+        android:id="@+id/search_results_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/search_results_list_view"
         android:divider="@color/secondary_text"
-        android:dividerHeight="1px">
-
+        android:dividerHeight="1px"
+        android:visibility="gone">
     </ListView>
+
+    <!-- I threw this into a linearlayout just to make it easy to throw in any image or whatever else in the future -->
+    <LinearLayout
+        android:id="@+id/no_results_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/no_results_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_results"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center_horizontal"/>
+
+
+    </LinearLayout>
 
 </LinearLayout>
