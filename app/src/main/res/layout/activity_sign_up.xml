@@ -103,7 +103,7 @@
         android:orientation="horizontal"
         android:gravity="center"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="60dp">
+        android:layout_marginBottom="70dp">
 
         <ToggleButton
             android:layout_width="wrap_content"
@@ -121,8 +121,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/privacy_policy"
-            android:layout_marginLeft="10dp"
-            />
+            android:layout_marginLeft="10dp"/>
         </LinearLayout>
 
         <Button
@@ -133,6 +132,7 @@
             android:layout_alignParentLeft="true"
             android:background="@color/primary"
             android:layout_marginTop="15dp"
+            android:layout_marginBottom="10dp"
             android:layout_alignParentBottom="true"/>
         </RelativeLayout>
 
