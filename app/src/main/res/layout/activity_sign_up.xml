@@ -41,24 +41,25 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:id="@+id/spinnersImageLayout"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="10dp"
+        android:layout_weight="0">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginTop="10dp"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            style="@style/AuthFieldContainer">>
 
             <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+               style="@style/Spinner"
                 android:id="@+id/gender"
                 android:hint="@string/gender_hint"
                 />
             <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/Spinner"
+                android:paddingTop="15dp"
                 android:id="@+id/age_range"
                 android:hint="@string/age_range__hint" />
 
@@ -69,48 +70,40 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <ImageView
+            <dariogonzalez.fitplaygames.utils.RoundedImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:id="@+id/userPhoto"
-                android:layout_weight="1"
                 android:background="@drawable/ic_account_circle_white_24px" />
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
                 android:layout_gravity="bottom|end"
                 android:src="@drawable/ic_photo_camera_white"
                 fab:fab_colorNormal="@color/accent"
                 fab:fab_colorPressed="@color/primary_dark"
-                fab:fab_colorRipple="@color/primary_light"
-                android:scaleType="center" />
+                fab:fab_colorRipple="@color/primary_light"/>
         </FrameLayout>
 
         </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_below="@+id/spinnersImageLayout"
-        android:layout_marginTop="10px">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:orientation="horizontal"
-        android:layout_marginTop="10dp"
-        android:gravity="center">
-
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="60dp">
 
         <ToggleButton
             android:layout_width="wrap_content"
@@ -123,14 +116,13 @@
             android:minHeight="20dp"
             android:maxHeight="20dp"/>
 
-        </FrameLayout>
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/privacy_policy"
-            android:layout_marginLeft="10dp"/>
+            android:layout_marginLeft="10dp"
+            />
         </LinearLayout>
 
         <Button
@@ -140,7 +132,9 @@
             android:textColor="@color/white"
             android:layout_alignParentLeft="true"
             android:background="@color/primary"
-            android:layout_marginTop="15dp"/>
-        </LinearLayout>
+            android:layout_marginTop="15dp"
+            android:layout_alignParentBottom="true"/>
+        </RelativeLayout>
+
 
 </LinearLayout>

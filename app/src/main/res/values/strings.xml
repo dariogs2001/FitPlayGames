@@ -51,12 +51,12 @@
 
     <string-array name="age_range_array">
         <item>Age</item>
-        <item>Younger than 18</item>
-        <item>Between 18 and 29</item>
-        <item>Between 30 and 39</item>
-        <item>Between 40 and 49</item>
-        <item>Between 50 and 59</item>
-        <item>Older than 59</item>
+        <item>18 or less</item>
+        <item>19–29</item>
+        <item>30–39</item>
+        <item>40–49</item>
+        <item>50–59</item>
+        <item>59+</item>
     </string-array>
 
     <string-array name="gender_array">

@@ -41,6 +41,7 @@ import java.util.Locale;
 
 import dariogonzalez.fitplaygames.utils.FileHelper;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
+import dariogonzalez.fitplaygames.utils.RoundedImageView;
 
 
 public class SignUpActivity extends ActionBarActivity {
@@ -51,7 +52,7 @@ public class SignUpActivity extends ActionBarActivity {
     protected Button mSignUpButton;
     protected Spinner mAgeRange;
     protected Spinner mGender;
-    protected ImageView mPhoto;
+    private RoundedImageView mPhoto;
     protected ToggleButton mCheckBox;
     private FloatingActionButton fab;
 
@@ -78,7 +79,7 @@ public class SignUpActivity extends ActionBarActivity {
         mEmail = (EditText) findViewById(R.id.emailField);
         mSignUpButton = (Button) findViewById(R.id.signUpButton);
         fab = (FloatingActionButton) findViewById(R.id.fab);
-        mPhoto = (ImageView) findViewById(R.id.userPhoto);
+        mPhoto = (RoundedImageView) findViewById(R.id.userPhoto);
         mCheckBox = (ToggleButton) findViewById(R.id.checkBoxOutline);
 
 
@@ -102,8 +103,18 @@ public class SignUpActivity extends ActionBarActivity {
             }
         });
 
+        mPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+             public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(SignUpActivity.this);
+                builder.setItems(R.array.camera_choices, mDialogListener);
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+            });
 
-        mCheckBox.setText(null);
+
+                mCheckBox.setText(null);
         mCheckBox.setTextOn(null);
         mCheckBox.setTextOff(null);
         mSignUpButton.setEnabled(false);
@@ -326,6 +337,10 @@ public class SignUpActivity extends ActionBarActivity {
             if (mMediaUri != null)
             {
                 Picasso.with(this).load(mMediaUri.toString()).resize(80, 80).into(mPhoto);
+                fab.setVisibility(View.INVISIBLE);
+            }
+            else {
+                mPhoto.setImageResource(R.drawable.ic_user);
             }
         }
         else if (resultCode != RESULT_CANCELED)

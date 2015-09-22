@@ -34,7 +34,6 @@ public class MainFriendsFragment extends android.support.v4.app.Fragment {
     private List<UserListItem> mFriendList = new ArrayList<UserListItem>();
     ListView friendsResultListView;
     View view;
-
     private FloatingActionButton fab;
 
     public MainFriendsFragment() {
