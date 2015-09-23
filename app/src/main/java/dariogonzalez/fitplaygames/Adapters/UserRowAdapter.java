@@ -1,10 +1,13 @@
 package dariogonzalez.fitplaygames.Adapters;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -54,10 +57,12 @@ public class UserRowAdapter extends ArrayAdapter<UserListItem> {
             holder.userNameTV = (TextView) row.findViewById(R.id.user_name);
             holder.stepsTV = (TextView) row.findViewById(R.id.tv_steps);
             holder.userThumbnail = (ImageView) row.findViewById(R.id.user_thumbnail);
-            holder.inviteButton = (Button) row.findViewById(R.id.btn_invite);
+            holder.inviteButton = (ImageButton) row.findViewById(R.id.btn_invite);
             holder.acceptButton = (ImageButton) row.findViewById(R.id.btn_accept);
             holder.declineButton = (ImageButton) row.findViewById(R.id.btn_decline);
-            holder.friendRequestLayout = (LinearLayout) row.findViewById(R.id.friend_request_layout);
+            holder.friendRequestResponseLayout = (LinearLayout) row.findViewById(R.id.friend_request_response_layout);
+            holder.inviteLayout = (LinearLayout) row.findViewById(R.id.invite_layout);
+            holder.sentLayout = (LinearLayout) row.findViewById(R.id.invite_sent_layout);
 
             row.setTag(holder);
         }
@@ -68,15 +73,16 @@ public class UserRowAdapter extends ArrayAdapter<UserListItem> {
         final UserListItem currentItem = mFriendList.get(position);
 
         if (isInvite) {
-            holder.inviteButton.setVisibility(View.VISIBLE);
-            final Button inviteButton = holder.inviteButton;
+            holder.inviteLayout.setVisibility(View.VISIBLE);
+            final ImageButton inviteButton = holder.inviteButton;
 
             int friendStatusId = currentItem.getmFriendStatusId();
             if (friendStatusId == ParseConstants.FRIEND_STATUS_SENT) {
-                inviteButton.setText(R.string.invite_sent);
-                inviteButton.setBackgroundColor(getContext().getResources().getColor(R.color.accent));
+                holder.inviteLayout.setVisibility(View.GONE);
+                holder.sentLayout.setVisibility(View.VISIBLE);
             }
 
+            final UserRowHolder tempHolder = holder;
 
             holder.inviteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -93,8 +99,10 @@ public class UserRowAdapter extends ArrayAdapter<UserListItem> {
                         @Override
                         public void done(ParseException e) {
                             if (e == null) {
-                                inviteButton.setText(R.string.invite_sent);
-                                inviteButton.setBackgroundColor(getContext().getResources().getColor(R.color.accent));
+                                tempHolder.inviteLayout.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.abc_fade_out));
+                                tempHolder.inviteLayout.setVisibility(View.GONE);
+                                tempHolder.sentLayout.setVisibility(View.VISIBLE);
+                                tempHolder.sentLayout.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.abc_fade_in));
                             }
                         }
                     });
@@ -102,7 +110,7 @@ public class UserRowAdapter extends ArrayAdapter<UserListItem> {
             });
         }
         else if (currentItem.getmFriendStatusId() == 0){
-            holder.friendRequestLayout.setVisibility(View.VISIBLE);
+            holder.friendRequestResponseLayout.setVisibility(View.VISIBLE);
             final UserRowHolder rowHolder = holder;
 
             holder.acceptButton.setOnClickListener(new View.OnClickListener() {
@@ -149,7 +157,7 @@ public class UserRowAdapter extends ArrayAdapter<UserListItem> {
                         mFriendList.remove(position);
                     }
                     parseObject.saveInBackground();
-                    holder.friendRequestLayout.setVisibility(View.GONE);
+                    holder.friendRequestResponseLayout.setVisibility(View.GONE);
                     currentItem.setmFriendStatusId(ParseConstants.FRIEND_STATUS_ACCEPTED);
                 }
             }
@@ -160,9 +168,9 @@ public class UserRowAdapter extends ArrayAdapter<UserListItem> {
     static class UserRowHolder {
         TextView userNameTV, stepsTV;
         ImageView userThumbnail;
-        Button inviteButton;
+        ImageButton inviteButton;
         ImageButton acceptButton, declineButton;
-        LinearLayout friendRequestLayout;
+        LinearLayout friendRequestResponseLayout, inviteLayout, sentLayout;
     }
 }
 

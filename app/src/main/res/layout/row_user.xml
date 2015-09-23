@@ -61,20 +61,8 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btn_invite"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:text="@string/invite"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:visibility="gone"
-        android:background="@color/primary"
-        android:textColor="@color/white"/>
-
     <LinearLayout
-        android:id="@+id/friend_request_layout"
+        android:id="@+id/friend_request_response_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -105,31 +93,88 @@
 
         </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <ImageButton
-            android:id="@+id/btn_accept"
-            android:layout_width="60dp"
-            android:layout_height="0dp"
-            android:src="@drawable/ic_accept_circle"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"/>
-
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/accept"
-            android:textSize="12sp"
-            android:layout_gravity="center"/>
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/btn_accept"
+                android:layout_width="60dp"
+                android:layout_height="0dp"
+                android:src="@drawable/ic_accept_circle"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/accept"
+                android:textSize="12sp"
+                android:layout_gravity="center"/>
+
+        </LinearLayout>
+
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/friend_request_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:visibility="visible">
 
+        <LinearLayout
+            android:id="@+id/invite_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageButton
+                android:id="@+id/btn_invite"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_invite"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/invite"
+                android:textSize="12sp"
+                android:layout_gravity="center"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/invite_sent_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_sent"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sent"
+                android:textSize="12sp"
+                android:layout_gravity="center"/>
+
+        </LinearLayout>
 
     </LinearLayout>
-
 
 </RelativeLayout>
