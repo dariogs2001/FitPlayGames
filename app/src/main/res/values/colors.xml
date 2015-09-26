@@ -21,4 +21,5 @@
     <color name="divider_color">#B6B6B6</color>
     <color name="white">#FFFFFF</color>
     <color name="dark_text">#36322D</color>
+    <color name="opaque_white">#BBDEFB</color>
 </resources>

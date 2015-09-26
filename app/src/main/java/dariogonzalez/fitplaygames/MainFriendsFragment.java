@@ -9,6 +9,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -21,6 +22,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.lang.Override;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +47,9 @@ public class MainFriendsFragment extends android.support.v4.app.Fragment {
     public MainFriendsFragment() {
         // Required empty public constructor
     }
+
+    @Override
+
 
 
     @Override
@@ -76,9 +81,18 @@ public class MainFriendsFragment extends android.support.v4.app.Fragment {
             }
         });
 
+        return view;
+    }
+
+    public static MainFriendsFragment newInstance(int sectionNumber) {
+        MainFriendsFragment fragment = new MainFriendsFragment();
+        Bundle args = new Bundle();
+        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+        fragment.setArguments(args);
 
         getFriendData();
-        return view;
+
+        return fragment;
     }
 
     private void getFriendData() {
@@ -175,6 +189,17 @@ public class MainFriendsFragment extends android.support.v4.app.Fragment {
             ArrayAdapter<UserListItem> adapter = new UserRowAdapter(view.getContext(), R.layout.row_user, mFriendList, isInvite);
             friendsResultListView.setAdapter(adapter);
             fab.attachToListView(friendsResultListView);
+            friendsResultListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent = new Intent(getActivity(), UserProfileActivity.class);
+                    Bundle extras = new Bundle();
+                    // Parse friend object Id
+                    extras.putString("userId", mFriendList.get(position).getmFriendObject().getObjectId());
+                    intent.putExtras(extras);
+                    startActivity(intent);
+                }
+            });
         }
         else {
             friendsResultListView.setVisibility(View.GONE);

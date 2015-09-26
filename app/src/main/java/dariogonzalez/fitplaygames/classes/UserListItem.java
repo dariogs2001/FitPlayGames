@@ -1,6 +1,8 @@
 package dariogonzalez.fitplaygames.classes;
 
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.parse.ParseUser;
 
@@ -29,7 +31,6 @@ public class UserListItem {
         mUserObject = null;
         mFriendObject = null;
     }
-
 
     public int getmIconId() {
         return mIconId;

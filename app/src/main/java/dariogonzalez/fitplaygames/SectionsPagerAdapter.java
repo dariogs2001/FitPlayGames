@@ -25,15 +25,15 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         switch (position)
         {
             case 0:
-                return new MainChallengeFragment();
+                return new MainChallengeFragment.newInstance(position + 1);
             case 1:
-                return new MainProfileFragment();
+                return new MainProfileFragment.newInstance(position + 1);
             case 2:
-                return new MainFriendsFragment();
+                return new MainFriendsFragment.newInstance(position + 1);
             case 3:
-                return new MainMoreOptionsFragment();
+                return new MainMoreOptionsFragment.newInstance(position + 1);
             case 4:
-                return new MainMoreOptionsFragment();
+                return new MainMoreOptionsFragment.newInstance(position + 1);
         }
         return null;
     }
