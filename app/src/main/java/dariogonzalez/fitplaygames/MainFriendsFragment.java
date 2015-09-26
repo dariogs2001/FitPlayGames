@@ -9,6 +9,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -46,6 +47,13 @@ public class MainFriendsFragment extends android.support.v4.app.Fragment {
         // Required empty public constructor
     }
 
+    public static MainFriendsFragment newInstance(int sectionNumber) {
+        MainFriendsFragment fragment = new MainFriendsFragment();
+        Bundle args = new Bundle();
+        args.putInt("section_num", sectionNumber);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -175,6 +183,18 @@ public class MainFriendsFragment extends android.support.v4.app.Fragment {
             ArrayAdapter<UserListItem> adapter = new UserRowAdapter(view.getContext(), R.layout.row_user, mFriendList, isInvite);
             friendsResultListView.setAdapter(adapter);
             fab.attachToListView(friendsResultListView);
+            friendsResultListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Intent intent = new Intent(getActivity(), UserProfileActivity.class);
+                        Bundle extras = new Bundle();
+                        // Parse friend object Id
+                        extras.putString("userId", mFriendList.get(position).getmFriendObject().getObjectId());
+                        extras.putString("username", mFriendList.get(position).getmFriendObject().getUsername());
+                        intent.putExtras(extras);
+                        startActivity(intent);
+                        }
+                });
         }
         else {
             friendsResultListView.setVisibility(View.GONE);

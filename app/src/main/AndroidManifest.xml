@@ -83,7 +83,7 @@
         <activity
             android:name=".HotPotatoChallengeActivity"
             android:label="@string/title_activity_hot_potato_challenge"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="dariogonzalez.fitplaygames.HotPotatoChallengeActivity" />
@@ -91,6 +91,10 @@
         <activity
             android:name=".InviteFriendsActivity"
             android:label="@string/title_activity_invite_friends" >
+        </activity>
+        <activity
+            android:name=".UserProfileActivity"
+            android:label="@string/title_activity_user_profile" >
         </activity>
     </application>
 

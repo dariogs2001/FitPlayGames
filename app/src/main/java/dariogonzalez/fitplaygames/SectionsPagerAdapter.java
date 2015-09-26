@@ -27,7 +27,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return new MainChallengeFragment();
             case 1:
-                return new MainProfileFragment();
+                return MainProfileFragment.newInstance();
             case 2:
                 return new MainFriendsFragment();
             case 3:
@@ -40,7 +40,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-       return 5;
+        return 5;
     }
 
     @Override

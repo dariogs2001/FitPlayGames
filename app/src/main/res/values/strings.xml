@@ -120,5 +120,11 @@
     <string name="start_adding_friends">Start adding friends!</string>
     <string name="no_results">No results have been found for this search.</string>
     <string name="sent">Sent</string>
+    <string name="title_activity_user_profile">UserProfile</string>
+    <string name="email">Email</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_remove">Remove</string>
+    <string name="action_message">Message</string>
+    <string name="close">Close</string>
 
 </resources>

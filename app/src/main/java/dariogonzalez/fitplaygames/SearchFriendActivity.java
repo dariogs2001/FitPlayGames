@@ -4,15 +4,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
@@ -134,7 +133,7 @@ public class SearchFriendActivity extends AppCompatActivity {
                                     }
                                 });
                             }
-                                populateListView(newText);
+                            populateListView(newText);
                         }
                     }
                 });
@@ -153,6 +152,17 @@ public class SearchFriendActivity extends AppCompatActivity {
             ArrayAdapter<UserListItem> adapter = new UserRowAdapter(this, R.layout.row_user, mSearchFriendList, isInvite);
             searchResultListView = (ListView) findViewById(R.id.search_results_list_view);
             searchResultListView.setAdapter(adapter);
+            searchResultListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent = new Intent(getApplicationContext(), UserProfileActivity.class);
+                    Bundle extras = new Bundle();
+                    // Parse friend object Id
+                    extras.putString("userId", mSearchFriendList.get(position).getmFriendObject().getObjectId());
+                    intent.putExtras(extras);
+                    startActivity(intent);
+                }
+            });
         }
         else {
             searchResultListView.setVisibility(View.GONE);
