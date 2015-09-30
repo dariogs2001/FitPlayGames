@@ -30,7 +30,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         mPasswordResetTV = (TextView) findViewById(R.id.resetPasswordTV);
         mPasswordResetET = (EditText) findViewById(R.id.resetPasswrodET);
         mPasswordResetBtn = (Button) findViewById(R.id.resetPasswordBtn);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        //getActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
     @Override
