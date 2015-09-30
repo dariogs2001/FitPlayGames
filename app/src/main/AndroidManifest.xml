@@ -28,6 +28,16 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:name=".ForgotPasswordActivity"
+            android:label="@string/title_activity_reset_password"
+            android:screenOrientation="portrait"
+            android:parentActivityName="dariogonzalez.fitplaygames.LoginActivity" >
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="dariogonzalez.fitplaygames.LoginActivity" />
+        </activity>
+        <activity
             android:name=".SignUpActivity"
             android:label="@string/title_activity_sign_up"
             android:parentActivityName=".MainActivity"
