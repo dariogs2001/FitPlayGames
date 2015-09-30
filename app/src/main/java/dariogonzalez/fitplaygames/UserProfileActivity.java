@@ -14,6 +14,7 @@ import android.view.MenuItem;
 public class UserProfileActivity extends AppCompatActivity {
 
     private String userId;
+    private boolean cameFromSearch = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,8 @@ public class UserProfileActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
+            // This is just used so that it will know how to handle the back button
+            cameFromSearch = extras.getBoolean("cameFromSearch");
             android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
             MainProfileFragment fragment = (MainProfileFragment) fragmentManager.findFragmentById(R.id.profile_fragment);
             if (actionBar != null) {
@@ -35,6 +38,8 @@ public class UserProfileActivity extends AppCompatActivity {
             }
             String userId = extras.getString("userId");
             fragment.setUserData(userId);
+            boolean isFriend = extras.getBoolean("isFriend", false);
+            fragment.setIsFriend(isFriend);
         }
 
     }
@@ -55,9 +60,16 @@ public class UserProfileActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == android.R.id.home) {
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
+            if ( ! cameFromSearch) {
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+            }
+            else {
+                // Finish is usually bad practice but it makes sense here to correctly go back to the search friends page and persist the search data and list
+                finish();
+            }
+
             return true;
         }
 

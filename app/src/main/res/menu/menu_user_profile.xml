@@ -11,11 +11,4 @@
         android:orderInCategory="100"
         app:showAsAction="ifRoom"/>
 
-    <item
-        android:id="@+id/action_message"
-        android:title="@string/action_message"
-        android:icon="@drawable/ic_message"
-        android:orderInCategory="110"
-        app:showAsAction="ifRoom"/>
-
 </menu>

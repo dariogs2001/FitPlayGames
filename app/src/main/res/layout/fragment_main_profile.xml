@@ -8,7 +8,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="130dp"
         android:orientation="horizontal"
         android:paddingTop="16dp"
         android:paddingBottom="16dp"
@@ -70,12 +70,28 @@
     </LinearLayout>
 
     <com.melnykov.fab.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/fab_add_friend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
+        android:layout_marginTop="100dp"
+        android:layout_gravity="end"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
         android:src="@drawable/ic_addfriend"
+        fab:fab_colorNormal="@color/accent"
+        fab:fab_colorPressed="@color/primary_dark"
+        fab:fab_colorRipple="@color/primary_light" />
+
+    <com.melnykov.fab.FloatingActionButton
+        android:id="@+id/fab_message_friend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:layout_gravity="end"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
+        android:visibility="gone"
+        android:src="@drawable/ic_message"
         fab:fab_colorNormal="@color/accent"
         fab:fab_colorPressed="@color/primary_dark"
         fab:fab_colorRipple="@color/primary_light" />

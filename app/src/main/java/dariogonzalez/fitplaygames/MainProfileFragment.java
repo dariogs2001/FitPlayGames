@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.melnykov.fab.FloatingActionButton;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -35,7 +36,9 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
     private RoundedImageView profileImage;
     private TextView userName, userEmail, userSteps;
     private ImageButton placeholderProfileImage;
+    private FloatingActionButton fabAddFriend, fabMessageFriend;
     private static boolean isSelf = false;
+    private boolean isFriend = false;
 
     public MainProfileFragment() {
         // Required empty public constructor
@@ -58,11 +61,20 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
         userName = (TextView) view.findViewById(R.id.user_name);
         userEmail = (TextView) view.findViewById(R.id.user_email);
         userSteps = (TextView) view.findViewById(R.id.user_steps);
+        fabAddFriend = (FloatingActionButton) view.findViewById(R.id.fab_add_friend);
+        fabMessageFriend = (FloatingActionButton) view.findViewById(R.id.fab_message_friend);
 
         if (isSelf) {
-            Log.d("TEST", "hmmmm");
+            fabAddFriend.setVisibility(View.GONE);
             setOwnData();
             isSelf = false;
+        }
+        else {
+            // If is friend show message fab
+            if (isFriend) {
+                fabAddFriend.setVisibility(View.GONE);
+                fabMessageFriend.setVisibility(View.VISIBLE);
+            }
         }
         return view;
     }
@@ -119,6 +131,18 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
                 }
             }
         });
+    }
+
+    public void setIsFriend(boolean isFriend) {
+        if (fabAddFriend != null && fabMessageFriend != null) {
+            if (isFriend) {
+                fabAddFriend.setVisibility(View.GONE);
+                fabMessageFriend.setVisibility(View.VISIBLE);
+            }
+        }
+        else {
+            this.isFriend = isFriend;
+        }
     }
 
     public void setOwnData() {
