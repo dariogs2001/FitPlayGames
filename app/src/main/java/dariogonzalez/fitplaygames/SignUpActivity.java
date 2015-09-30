@@ -159,6 +159,7 @@ public class SignUpActivity extends AppCompatActivity {
                 Intent intent = new Intent(SignUpActivity.this, PrivacyPolicyActivity.class);
                 startActivity(intent);
             }
+
             @Override
             public void updateDrawState(TextPaint ds) {// override updateDrawState
                 ds.setUnderlineText(false); // set to false to remove underline

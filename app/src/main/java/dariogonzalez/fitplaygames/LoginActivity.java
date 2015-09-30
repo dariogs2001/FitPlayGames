@@ -40,7 +40,6 @@ public class LoginActivity extends AppCompatActivity {
         mSignUpTextView = (TextView) findViewById(R.id.signUpText);
         mForgotPasswordTV = (TextView) findViewById(R.id.forgotPassword);
 
-
         String myString = "Don't have an account? Sign Up!";
         int i1 = myString.indexOf("S");
         int i2 = myString.indexOf("!");
@@ -55,6 +54,7 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
                 startActivity(intent);
             }
+
             @Override
             public void updateDrawState(TextPaint ds) {// override updateDrawState
                 ds.setUnderlineText(false); // set to false to remove underline
