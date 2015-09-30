@@ -73,7 +73,7 @@ public class LeaderBoardActivity extends AppCompatActivity {
 
 
     private void populateListView() {
-        ArrayAdapter<UserListItem> adapter = new UserRowAdapter(this, R.layout.leader_board_list_item, mLeadBoardList, false);
+        ArrayAdapter<UserListItem> adapter = new UserRowAdapter(this, R.layout.leader_board_list_item, mLeadBoardList, false, true);
         friendsResultListView.setAdapter(adapter);
     }
 

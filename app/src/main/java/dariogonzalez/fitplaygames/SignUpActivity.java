@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Spannable;
+import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
@@ -158,8 +159,11 @@ public class SignUpActivity extends AppCompatActivity {
                 Intent intent = new Intent(SignUpActivity.this, PrivacyPolicyActivity.class);
                 startActivity(intent);
             }
+            public void updateDrawState(TextPaint ds) {// override updateDrawState
+                ds.setUnderlineText(false); // set to false to remove underline
+            }
         };
-        mySpannable.setSpan(new ForegroundColorSpan(Color.BLUE), i1, i2 + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        mySpannable.setSpan(new ForegroundColorSpan(0xFF2196F3), i1, i2 + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         mySpannable.setSpan(myClickableSpan, i1, i2 + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
 
