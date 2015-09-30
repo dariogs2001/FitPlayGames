@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.Spannable;
+import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
@@ -37,7 +38,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         mSignUpTextView = (TextView) findViewById(R.id.signUpText);
-        mSignUpTextView.setLinkTextColor(Color.parseColor("#2196F3"));
         mForgotPasswordTV = (TextView) findViewById(R.id.forgotPassword);
 
 
@@ -55,7 +55,12 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
                 startActivity(intent);
             }
+            @Override
+            public void updateDrawState(TextPaint ds) {// override updateDrawState
+                ds.setUnderlineText(false); // set to false to remove underline
+            }
         };
+        mySpannable.setSpan(new ForegroundColorSpan(0xFF2196F3), i1, i2 + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         mySpannable.setSpan(myClickableSpan, i1, i2 + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         mForgotPasswordTV.setOnClickListener(new View.OnClickListener() {

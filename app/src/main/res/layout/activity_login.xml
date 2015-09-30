@@ -74,8 +74,7 @@
         android:layout_below="@id/loginButton"
         android:layout_centerHorizontal="true"
         android:textColor="@color/primary_text"
-        android:textStyle="bold"
-        android:textColorLink="@color/primary"/>
+        android:textStyle="bold" />
 
     <TextView
         android:layout_width="wrap_content"
