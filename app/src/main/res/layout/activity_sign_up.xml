@@ -123,7 +123,10 @@
             android:id="@+id/privacy_policy"
             android:layout_marginLeft="10dp"/>
         </LinearLayout>
-
+        <TextView
+            android:id="@+id/setErrorTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
         <Button
             android:id="@+id/signUpButton"
             style="@style/AuthButton"

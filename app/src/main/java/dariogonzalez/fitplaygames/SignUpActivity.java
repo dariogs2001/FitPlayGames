@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Spannable;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
@@ -44,11 +45,12 @@ import dariogonzalez.fitplaygames.classes.ParseConstants;
 import dariogonzalez.fitplaygames.utils.RoundedImageView;
 
 
-public class SignUpActivity extends ActionBarActivity {
+public class SignUpActivity extends AppCompatActivity {
 
     protected EditText mUserName;
     protected EditText mPassword;
     protected EditText mEmail;
+    //protected TextView mError;
     protected Button mSignUpButton;
     protected Spinner mAgeRange;
     protected Spinner mGender;
@@ -77,6 +79,7 @@ public class SignUpActivity extends ActionBarActivity {
         mUserName = (EditText) findViewById(R.id.userNameField);
         mPassword = (EditText) findViewById(R.id.passwordField);
         mEmail = (EditText) findViewById(R.id.emailField);
+        //mError = (TextView) findViewById(R.id.setErrorTV);
         mSignUpButton = (Button) findViewById(R.id.signUpButton);
         fab = (FloatingActionButton) findViewById(R.id.fab);
         mPhoto = (RoundedImageView) findViewById(R.id.userPhoto);
@@ -170,16 +173,32 @@ public class SignUpActivity extends ActionBarActivity {
                 String gender = mGender.getSelectedItem().toString();
                 String ageRange = mAgeRange.getSelectedItem().toString();
 
-                if (userName.isEmpty() || password.isEmpty() || email.isEmpty() || gender.contains("Select") || ageRange.contains("Select"))
-                {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(SignUpActivity.this);
-                    builder.setMessage(R.string.signup_error_message)
-                            .setTitle(R.string.signup_error_title)
-                            .setPositiveButton(android.R.string.ok, null);
+                //mError.setError(getString(R.string.sign_up_button_error));
 
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
+                if (userName.equals("")) {
+                    mUserName.setError(getString(R.string.username_required));
+                    return;
                 }
+                if (password.equals("")) {
+                    mPassword.setError(getString(R.string.password_required));
+                    return;
+                }
+                if (email.equals("")) {
+                    mEmail.setError(getString(R.string.email_required));
+                    return;
+                }
+                if (gender.contains("Gender")) {
+                    TextView validateGender = (TextView)mGender.getSelectedView();
+                    validateGender.setError(getString(R.string.gender_required));
+                    return;
+                }
+                if (ageRange.equals("Age")) {
+                    TextView validateAgeRange = (TextView)mAgeRange.getSelectedView();
+                    validateAgeRange.setError(getString(R.string.age_range_required));
+                    return;
+                }
+
+
                 else
                 {
 //                    setProgressBarIndeterminateVisibility(true);
@@ -209,7 +228,7 @@ public class SignUpActivity extends ActionBarActivity {
                         @Override
                         public void done(ParseException e) {
                             setProgressBarIndeterminateVisibility(false);
-                            if (e == null){
+                            if (e == null) {
                                 //Success
                                 FitPlayGamesApplication.updateParseInstallation(ParseUser.getCurrentUser());
 
@@ -217,8 +236,7 @@ public class SignUpActivity extends ActionBarActivity {
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
-                            }
-                            else{
+                            } else {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(SignUpActivity.this);
                                 builder.setMessage(e.getMessage())
                                         .setTitle(R.string.signup_error_title)

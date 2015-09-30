@@ -2,9 +2,14 @@ package dariogonzalez.fitplaygames;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -14,7 +19,6 @@ import android.widget.TextView;
 import com.parse.GetCallback;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -22,6 +26,7 @@ import com.parse.ParseUser;
 public class LoginActivity extends AppCompatActivity {
 
     protected TextView mSignUpTextView;
+    protected TextView mForgotPasswordTV;
     protected EditText mUserName;
     protected EditText mPassword;
     protected Button mLoginButton;
@@ -32,11 +37,31 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         mSignUpTextView = (TextView) findViewById(R.id.signUpText);
+        mSignUpTextView.setLinkTextColor(Color.parseColor("#2196F3"));
+        mForgotPasswordTV = (TextView) findViewById(R.id.forgotPassword);
 
-        mSignUpTextView.setOnClickListener(new View.OnClickListener() {
+
+        String myString = "Don't have an account? Sign Up!";
+        int i1 = myString.indexOf("S");
+        int i2 = myString.indexOf("!");
+        mSignUpTextView.setMovementMethod(LinkMovementMethod.getInstance());
+
+        mSignUpTextView.setText(myString, TextView.BufferType.SPANNABLE);
+        Spannable mySpannable = (Spannable)mSignUpTextView.getText();
+        ClickableSpan myClickableSpan = new ClickableSpan()
+        {
+            @Override
+            public void onClick(View widget) {
+                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+                startActivity(intent);
+            }
+        };
+        mySpannable.setSpan(myClickableSpan, i1, i2 + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        mForgotPasswordTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+                Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
                 startActivity(intent);
             }
         });
@@ -44,6 +69,10 @@ public class LoginActivity extends AppCompatActivity {
         mUserName = (EditText) findViewById(R.id.userNameField);
         mPassword = (EditText) findViewById(R.id.passwordField);
         mLoginButton = (Button) findViewById(R.id.loginButton);
+
+
+
+
     }
 
 
@@ -53,14 +82,13 @@ public class LoginActivity extends AppCompatActivity {
                 String userName = mUserName.getText().toString().trim();
                 final String password = mPassword.getText().toString().trim();
 
-                if (userName.isEmpty() || password.isEmpty()) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                    builder.setMessage(R.string.login_error_message)
-                            .setTitle(R.string.login_error_title)
-                            .setPositiveButton(android.R.string.ok, null);
-
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
+                if (userName.equals("")) {
+                    mUserName.setError(getString(R.string.username_required));
+                    return;
+                }
+                if (password.equals("")) {
+                    mPassword.setError(getString(R.string.password_required));
+                    return;
                 } else {
                     //   setProgressBarIndeterminateVisibility(true);
                     String key = "username";
