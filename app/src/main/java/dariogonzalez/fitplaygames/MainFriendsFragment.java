@@ -191,6 +191,11 @@ public class MainFriendsFragment extends android.support.v4.app.Fragment {
                         // Parse friend object Id
                         extras.putString("userId", mFriendList.get(position).getmFriendObject().getObjectId());
                         extras.putString("username", mFriendList.get(position).getmFriendObject().getUsername());
+                        boolean isFriend = false;
+                        if (mFriendList.get(position).getmFriendStatusId() == ParseConstants.FRIEND_STATUS_ACCEPTED) {
+                            isFriend = true;
+                        }
+                        extras.putBoolean("isFriend", isFriend);
                         intent.putExtras(extras);
                         startActivity(intent);
                         }

@@ -159,6 +159,9 @@ public class SearchFriendActivity extends AppCompatActivity {
                     Bundle extras = new Bundle();
                     // Parse friend object Id
                     extras.putString("userId", mSearchFriendList.get(position).getmFriendObject().getObjectId());
+                    extras.putString("username", mSearchFriendList.get(position).getmFriendObject().getUsername());
+                    extras.putBoolean("isFriend", false);
+                    extras.putBoolean("cameFromSearch", true);
                     intent.putExtras(extras);
                     startActivity(intent);
                 }
