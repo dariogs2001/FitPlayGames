@@ -155,66 +155,7 @@ public class SearchFriendActivity extends AppCompatActivity {
                                     }
                                 } catch (ParseException ex) {
                                 }
-
-
-//                                friendQuery.findInBackground(new FindCallback<ParseObject>() {
-//                                    @Override
-//                                    public void done(List<ParseObject> friendList, ParseException e) {
-//                                        // If there is no userfriends table record or the friend request hasn't been approved
-//                                        boolean includeUser = false;
-//                                        int userFriendStatus = -1;
-//                                        if (friendList.size() == 0) {
-//                                            includeUser = true;
-//                                        } else {
-//                                            for (ParseObject friendRecord : friendList) {
-//                                                int friendStatusId = friendRecord.getInt(ParseConstants.USER_FRIENDS_STATUS);
-//                                                if (friendStatusId != ParseConstants.FRIEND_STATUS_ACCEPTED) {
-//                                                    includeUser = true;
-//                                                    userFriendStatus = friendRecord.getInt(ParseConstants.USER_FRIENDS_STATUS);
-//                                                }
-//                                            }
-//                                        }
-//
-//                                        if (includeUser) {
-//                                            ParseFile file = friendUser.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
-//                                            Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
-//
-//                                            double steps = 0;
-//                                            ParseObject lastSevenDays = friendUser.getParseObject("lastSevenDays");
-//                                            if (lastSevenDays != null) {
-//                                                steps = lastSevenDays.getDouble(ParseConstants.LAST_SEVEN_DAYS_STEPS);
-//                                            }
-//
-//
-//                                            final UserListItem userListItem = new UserListItem();
-//                                            userListItem.setmIconId(R.drawable.ic_user);
-//                                            userListItem.setmImageUri(fileUri);
-//                                            userListItem.setmUserObject(userObject);
-//                                            userListItem.setmFriendObject(friendUser);
-//                                            userListItem.setmFriendStatusId(userFriendStatus);
-//                                            userListItem.setmSteps((int) steps);
-//
-////                                            runOnUiThread(new Runnable() {
-////                                                public void run() {
-//                                            mSearchFriendList.add(userListItem);
-//                                            mAdapter.notifyDataSetChanged();
-//                                            populateListView(newText);
-////                                                }
-////                                            });
-//                                        }
-////                                        if (mSearchFriendList.size() > 0) {
-////                                            populateListView(newText);
-////                                        }
-//                                    }
-//                                });
-
                             }
-
-//                            if (mSearchFriendList.size() > 0) {
-//                                populateListView(newText);
-//                            }
-
-                            // populateListView(newText);
                         } else {
                             //No results, so cleaning the list.
                             mSearchFriendList.clear();
@@ -228,38 +169,17 @@ public class SearchFriendActivity extends AppCompatActivity {
         });
     }
 
-    private void populateListView(String newText) {
-        if (mSearchFriendList.size() > 0) {
+    private void populateListView(String newText)
+    {
+        if (mSearchFriendList.size() > 0)
+        {
             noResultsLayout.setVisibility(View.GONE);
             searchResultListView.setVisibility(View.VISIBLE);
-//            boolean isInvite = true;
-//            ArrayAdapter<UserListItem> adapter = new UserRowAdapter(this, R.layout.row_user, mSearchFriendList, isInvite);
-//            mAdapter = new UserRowAdapter(this, R.layout.row_user, mSearchFriendList, isInvite);
-//            searchResultListView = (ListView) findViewById(R.id.search_results_list_view);
-//            searchResultListView.setAdapter(mAdapter);
-//            searchResultListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                @Override
-//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                    Intent intent = new Intent(getApplicationContext(), UserProfileActivity.class);
-//                    Bundle extras = new Bundle();
-//                    // Parse friend object Id
-//                    extras.putString("userId", mSearchFriendList.get(position).getmFriendObject().getObjectId());
-//                    extras.putString("username", mSearchFriendList.get(position).getmFriendObject().getUsername());
-//                    extras.putBoolean("isFriend", false);
-//                    extras.putBoolean("cameFromSearch", true);
-//                    intent.putExtras(extras);
-//                    startActivity(intent);
-//                }
-//            });
         }
-        else {
+        else
+        {
             searchResultListView.setVisibility(View.GONE);
-//            if (newText.length()  < 2) {
-//                noResultsLayout.setVisibility(View.GONE);
-//            }
-//            else {
-                noResultsLayout.setVisibility(View.VISIBLE);
-//            }
+            noResultsLayout.setVisibility(View.VISIBLE);
         }
     }
 
