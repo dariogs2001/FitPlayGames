@@ -59,8 +59,8 @@
     <string name="gender_required">Please input a Gender</string>
     <string name="age_range_required">Please input an Age Range</string>
     <string name="sign_up_button_error">Please accept the Privacy Policy</string>
-    <string name="reset_password">Enter your Email Address to Reset Your Password</string>
-    <string name="reset_password_button_label">Reset Password</string>
+    <string name="reset_password">Enter your email address and we\'ll send you a link to reset your password.</string>
+    <string name="reset_password_button_label">Send Email</string>
 
 
     <string-array name="age_range_array">

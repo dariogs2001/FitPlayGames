@@ -122,6 +122,7 @@ public class SignUpActivity extends AppCompatActivity {
         mCheckBox.setTextOn(null);
         mCheckBox.setTextOff(null);
         mSignUpButton.setEnabled(false);
+        mSignUpButton.setBackgroundDrawable(getApplicationContext().getResources().getDrawable(R.drawable.sign_up_button));
         mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -179,9 +180,12 @@ public class SignUpActivity extends AppCompatActivity {
                 String gender = mGender.getSelectedItem().toString();
                 String ageRange = mAgeRange.getSelectedItem().toString();
 
-                //mError.setError(getString(R.string.sign_up_button_error));
                 if (email.equals("")) {
                     mEmail.setError(getString(R.string.email_required));
+                    return;
+                }
+                if (!email.matches("[a-zA-Z0-9._-]+@[a-z]+.[a-z]+")) {
+                    mEmail.setError(getString(R.string.email_entry_failed));
                     return;
                 }
                 if (userName.equals("")) {
@@ -202,6 +206,9 @@ public class SignUpActivity extends AppCompatActivity {
                     validateAgeRange.setError(getString(R.string.age_range_required));
                     return;
                 }
+              //  if (mPhoto == null || mMediaUri == null) {
+                    //Toast.makeText(SignUpActivity.this, getString(R.string.email_entry_failed), Toast.LENGTH_LONG).show();
+               // }
 
 
                 else
