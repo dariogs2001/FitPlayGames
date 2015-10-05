@@ -221,19 +221,20 @@ public class SignUpActivity extends AppCompatActivity {
                     newUser.put(ParseConstants.USER_GENDER, gender);
                     newUser.put(ParseConstants.USER_AGE_RANGE, ageRange);
 
-                    byte[] fileBytes = FileHelper.getByteArrayFromFile(SignUpActivity.this, mMediaUri);
-                    if (fileBytes !=  null)
-                    {
-                        fileBytes = FileHelper.reduceImageForUpload(fileBytes);
-                        String fileName = FileHelper.getFileName(SignUpActivity.this, mMediaUri, ParseConstants.TYPE_IMAGE);
-                        ParseFile file = new ParseFile(fileName, fileBytes);
-                        try {
-                            file.save();
-                        } catch (ParseException e) {
-                            e.printStackTrace();
+                    if(mMediaUri != null) {
+                        byte[] fileBytes = FileHelper.getByteArrayFromFile(SignUpActivity.this, mMediaUri);
+                        if (fileBytes != null) {
+                            fileBytes = FileHelper.reduceImageForUpload(fileBytes);
+                            String fileName = FileHelper.getFileName(SignUpActivity.this, mMediaUri, ParseConstants.TYPE_IMAGE);
+                            ParseFile file = new ParseFile(fileName, fileBytes);
+                            try {
+                                file.save();
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            newUser.put(ParseConstants.USER_PROFILE_PICTURE, file);
                         }
-                        newUser.put(ParseConstants.USER_PROFILE_PICTURE, file);
-                     }
+                    }
 
 
                     newUser.signUpInBackground(new SignUpCallback() {
