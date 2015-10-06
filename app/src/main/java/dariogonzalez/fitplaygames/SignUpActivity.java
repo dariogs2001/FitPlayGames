@@ -122,6 +122,7 @@ public class SignUpActivity extends AppCompatActivity {
         mCheckBox.setTextOn(null);
         mCheckBox.setTextOff(null);
         mSignUpButton.setEnabled(false);
+        mSignUpButton.setBackgroundDrawable(getApplicationContext().getResources().getDrawable(R.drawable.sign_up_button));
         mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -179,9 +180,12 @@ public class SignUpActivity extends AppCompatActivity {
                 String gender = mGender.getSelectedItem().toString();
                 String ageRange = mAgeRange.getSelectedItem().toString();
 
-                //mError.setError(getString(R.string.sign_up_button_error));
                 if (email.equals("")) {
                     mEmail.setError(getString(R.string.email_required));
+                    return;
+                }
+                if (!email.matches("[a-zA-Z0-9._-]+@[a-z]+.[a-z]+")) {
+                    mEmail.setError(getString(R.string.email_entry_failed));
                     return;
                 }
                 if (userName.equals("")) {
@@ -202,6 +206,9 @@ public class SignUpActivity extends AppCompatActivity {
                     validateAgeRange.setError(getString(R.string.age_range_required));
                     return;
                 }
+              //  if (mPhoto == null || mMediaUri == null) {
+                    //Toast.makeText(SignUpActivity.this, getString(R.string.email_entry_failed), Toast.LENGTH_LONG).show();
+               // }
 
 
                 else
@@ -214,19 +221,20 @@ public class SignUpActivity extends AppCompatActivity {
                     newUser.put(ParseConstants.USER_GENDER, gender);
                     newUser.put(ParseConstants.USER_AGE_RANGE, ageRange);
 
-                    byte[] fileBytes = FileHelper.getByteArrayFromFile(SignUpActivity.this, mMediaUri);
-                    if (fileBytes !=  null)
-                    {
-                        fileBytes = FileHelper.reduceImageForUpload(fileBytes);
-                        String fileName = FileHelper.getFileName(SignUpActivity.this, mMediaUri, ParseConstants.TYPE_IMAGE);
-                        ParseFile file = new ParseFile(fileName, fileBytes);
-                        try {
-                            file.save();
-                        } catch (ParseException e) {
-                            e.printStackTrace();
+                    if(mMediaUri != null) {
+                        byte[] fileBytes = FileHelper.getByteArrayFromFile(SignUpActivity.this, mMediaUri);
+                        if (fileBytes != null) {
+                            fileBytes = FileHelper.reduceImageForUpload(fileBytes);
+                            String fileName = FileHelper.getFileName(SignUpActivity.this, mMediaUri, ParseConstants.TYPE_IMAGE);
+                            ParseFile file = new ParseFile(fileName, fileBytes);
+                            try {
+                                file.save();
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            newUser.put(ParseConstants.USER_PROFILE_PICTURE, file);
                         }
-                        newUser.put(ParseConstants.USER_PROFILE_PICTURE, file);
-                     }
+                    }
 
 
                     newUser.signUpInBackground(new SignUpCallback() {

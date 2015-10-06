@@ -133,7 +133,7 @@
             android:text="@string/sign_up_button_label"
             android:textColor="@color/white"
             android:layout_alignParentLeft="true"
-            android:background="@color/primary"
+            android:background="@drawable/sign_up_button"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="10dp"
             android:layout_alignParentBottom="true"/>
