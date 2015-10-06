@@ -115,32 +115,32 @@ public class SignUpActivity extends AppCompatActivity {
                 AlertDialog dialog = builder.create();
                 dialog.show();
             }
-            });
+        });
 
 
-                mCheckBox.setText(null);
+        mCheckBox.setText(null);
         mCheckBox.setTextOn(null);
         mCheckBox.setTextOff(null);
         mSignUpButton.setEnabled(false);
         mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    //
-                    mCheckBox.setText(null);
-                    mCheckBox.setTextOn(null);
-                    mCheckBox.setTextOff(null);
-                    mCheckBox.setBackgroundResource(R.drawable.ic_check_box_orange_24px);
-                    mSignUpButton.setEnabled(true);
+            if(isChecked){
+                //
+                mCheckBox.setText(null);
+                mCheckBox.setTextOn(null);
+                mCheckBox.setTextOff(null);
+                mCheckBox.setBackgroundResource(R.drawable.ic_check_box_orange_24px);
+                mSignUpButton.setEnabled(true);
 
-                }else{
-                    //
-                    mCheckBox.setText(null);
-                    mCheckBox.setTextOn(null);
-                    mCheckBox.setTextOff(null);
-                    mCheckBox.setBackgroundResource(R.drawable.ic_check_box_outline_blank_grey_24px);
-                    mSignUpButton.setEnabled(false);
-                }
+            }else{
+                //
+                mCheckBox.setText(null);
+                mCheckBox.setTextOn(null);
+                mCheckBox.setTextOff(null);
+                mCheckBox.setBackgroundResource(R.drawable.ic_check_box_outline_blank_grey_24px);
+                mSignUpButton.setEnabled(false);
+            }
             }
         });
 

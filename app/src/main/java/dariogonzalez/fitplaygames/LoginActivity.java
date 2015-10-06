@@ -80,68 +80,66 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    public void onClick(View view) {
 
+        String userName = mUserName.getText().toString().trim();
+        final String password = mPassword.getText().toString().trim();
 
-            public void onClick(View view) {
-
-                String userName = mUserName.getText().toString().trim();
-                final String password = mPassword.getText().toString().trim();
-
-                if (userName.equals("")) {
-                    mUserName.setError(getString(R.string.username_required));
-                    return;
-                }
-                if (password.equals("")) {
-                    mPassword.setError(getString(R.string.password_required));
-                    return;
-                } else {
-                    //   setProgressBarIndeterminateVisibility(true);
-                    String key = "username";
-                    if (userName.contains("@")) {
-                        key = "email";
-                    }
-
-                        ParseQuery<ParseUser> query = ParseUser.getQuery();
-                        query.whereEqualTo(key, userName);
-                        query.getFirstInBackground(new GetCallback<ParseUser>() {
-
-                            @Override
-                            public void done(ParseUser parseUser, ParseException e) {
-                                if (parseUser == null) {
-                                    Log.d("score", "The getFirst request failed.");
-                                } else {
-                                    String actualUsername = parseUser.getString("username");
-
-                                    ParseUser.logInInBackground(actualUsername, password, new LogInCallback() {
-                                        @Override
-                                        public void done(ParseUser parseUser, ParseException e) {
-                                            setProgressBarIndeterminateVisibility(false);
-
-                                            if (e == null) {
-                                                //Success
-                                                FitPlayGamesApplication.updateParseInstallation(parseUser);
-
-                                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                startActivity(intent);
-                                            } else {
-                                                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                                                builder.setMessage(e.getMessage())
-                                                        .setTitle(R.string.login_error_title)
-                                                        .setPositiveButton(android.R.string.ok, null);
-
-                                                AlertDialog dialog = builder.create();
-                                                dialog.show();
-                                            }
-                                        }
-                                    });
-                                }
-                            }
-                        });
-
-
-                }
+        if (userName.equals("")) {
+            mUserName.setError(getString(R.string.username_required));
+            return;
+        }
+        if (password.equals("")) {
+            mPassword.setError(getString(R.string.password_required));
+            return;
+        } else {
+            //   setProgressBarIndeterminateVisibility(true);
+            String key = "username";
+            if (userName.contains("@")) {
+                key = "email";
             }
+
+                ParseQuery<ParseUser> query = ParseUser.getQuery();
+                query.whereEqualTo(key, userName);
+                query.getFirstInBackground(new GetCallback<ParseUser>() {
+
+                    @Override
+                    public void done(ParseUser parseUser, ParseException e) {
+                        if (parseUser == null) {
+                            Log.d("score", "The getFirst request failed.");
+                        } else {
+                            String actualUsername = parseUser.getString("username");
+
+                            ParseUser.logInInBackground(actualUsername, password, new LogInCallback() {
+                                @Override
+                                public void done(ParseUser parseUser, ParseException e) {
+                                    setProgressBarIndeterminateVisibility(false);
+
+                                    if (e == null) {
+                                        //Success
+                                        FitPlayGamesApplication.updateParseInstallation(parseUser);
+
+                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        startActivity(intent);
+                                    } else {
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                                        builder.setMessage(e.getMessage())
+                                                .setTitle(R.string.login_error_title)
+                                                .setPositiveButton(android.R.string.ok, null);
+
+                                        AlertDialog dialog = builder.create();
+                                        dialog.show();
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+
+
+        }
+    }
 
 }

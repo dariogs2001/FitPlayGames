@@ -92,82 +92,82 @@ public class MainFriendsFragment extends android.support.v4.app.Fragment {
     private void getFriendData() {
         if (mFriendList!= null && mFriendList.size() == 0) {
             final ParseUser userObject = ParseUser.getCurrentUser();
-            final String userId = userObject.getObjectId();
+            if (userObject != null) {
+                final String userId = userObject.getObjectId();
 
-            List<ParseQuery<ParseObject>> queries = new ArrayList<>();
-            ParseQuery<ParseObject> query1 = new ParseQuery(ParseConstants.CLASS_USER_FRIENDS);
-            query1.whereEqualTo(ParseConstants.USER_FRIENDS_STATUS, ParseConstants.FRIEND_STATUS_ACCEPTED);
-            query1.whereEqualTo(ParseConstants.USER_OBJECT, userObject);
+                List<ParseQuery<ParseObject>> queries = new ArrayList<>();
+                ParseQuery<ParseObject> query1 = new ParseQuery(ParseConstants.CLASS_USER_FRIENDS);
+                query1.whereEqualTo(ParseConstants.USER_FRIENDS_STATUS, ParseConstants.FRIEND_STATUS_ACCEPTED);
+                query1.whereEqualTo(ParseConstants.USER_OBJECT, userObject);
 
-            ParseQuery<ParseObject> query2 = new ParseQuery(ParseConstants.CLASS_USER_FRIENDS);
-            query2.whereEqualTo(ParseConstants.USER_FRIENDS_STATUS, ParseConstants.FRIEND_STATUS_SENT);
-            query2.whereEqualTo(ParseConstants.FRIEND_OBJECT, userObject);
+                ParseQuery<ParseObject> query2 = new ParseQuery(ParseConstants.CLASS_USER_FRIENDS);
+                query2.whereEqualTo(ParseConstants.USER_FRIENDS_STATUS, ParseConstants.FRIEND_STATUS_SENT);
+                query2.whereEqualTo(ParseConstants.FRIEND_OBJECT, userObject);
 
-            ParseQuery<ParseObject> query3 = new ParseQuery(ParseConstants.CLASS_USER_FRIENDS);
-            query3.whereEqualTo(ParseConstants.USER_FRIENDS_STATUS, ParseConstants.FRIEND_STATUS_ACCEPTED);
-            query3.whereEqualTo(ParseConstants.FRIEND_OBJECT, userObject);
+                ParseQuery<ParseObject> query3 = new ParseQuery(ParseConstants.CLASS_USER_FRIENDS);
+                query3.whereEqualTo(ParseConstants.USER_FRIENDS_STATUS, ParseConstants.FRIEND_STATUS_ACCEPTED);
+                query3.whereEqualTo(ParseConstants.FRIEND_OBJECT, userObject);
 
-            queries.add(query1);
-            queries.add(query2);
-            queries.add(query3);
+                queries.add(query1);
+                queries.add(query2);
+                queries.add(query3);
 
-            ParseQuery<ParseObject> superQuery = ParseQuery.or(queries);
-            superQuery.findInBackground(new FindCallback<ParseObject>() {
-                @Override
-                public void done(List<ParseObject> list, ParseException e) {
-                    for (final ParseObject userFriend : list) {
-                        try {
-                            ParseUser friendObject;
-                            ParseUser newUserObject;
-                            if (userFriend.getString("FriendId").equals(userId)){
-                                friendObject = userFriend.getParseUser(ParseConstants.USER_OBJECT).fetchIfNeeded();
-                                newUserObject = userObject;
-                            }
-                            else {
-                                friendObject = userFriend.getParseUser(ParseConstants.FRIEND_OBJECT).fetchIfNeeded();
-                                newUserObject = userObject;
-                            }
-                            if (friendObject != null) {
-                                ParseFile file = friendObject.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
-                                Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
-                                int friendStatusId = userFriend.getInt(ParseConstants.USER_FRIENDS_STATUS);
-                                int location = 0;
-                                if (friendStatusId == ParseConstants.FRIEND_STATUS_SENT) {
-                                    if (mFriendList.size() == 0) {
-                                        location = mFriendList.size();
+                ParseQuery<ParseObject> superQuery = ParseQuery.or(queries);
+                superQuery.findInBackground(new FindCallback<ParseObject>() {
+                    @Override
+                    public void done(List<ParseObject> list, ParseException e) {
+                        for (final ParseObject userFriend : list) {
+                            try {
+                                ParseUser friendObject;
+                                ParseUser newUserObject;
+                                if (userFriend.getString("FriendId").equals(userId)) {
+                                    friendObject = userFriend.getParseUser(ParseConstants.USER_OBJECT).fetchIfNeeded();
+                                    newUserObject = userObject;
+                                } else {
+                                    friendObject = userFriend.getParseUser(ParseConstants.FRIEND_OBJECT).fetchIfNeeded();
+                                    newUserObject = userObject;
+                                }
+                                if (friendObject != null) {
+                                    ParseFile file = friendObject.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
+                                    Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
+                                    int friendStatusId = userFriend.getInt(ParseConstants.USER_FRIENDS_STATUS);
+                                    int location = 0;
+                                    if (friendStatusId == ParseConstants.FRIEND_STATUS_SENT) {
+                                        if (mFriendList.size() == 0) {
+                                            location = mFriendList.size();
+                                        } else {
+                                            location = mFriendList.size() - 1;
+                                        }
+                                    }
+
+                                    double steps = 0;
+                                    if (friendObject.has("lastSevenDays")) {
+                                        ParseObject lastSevenDays = friendObject.getParseObject("lastSevenDays").fetchIfNeeded();
+                                        if (lastSevenDays != null) {
+                                            steps = lastSevenDays.getDouble(ParseConstants.LAST_SEVEN_DAYS_STEPS);
+                                        }
                                     } else {
-                                        location = mFriendList.size() - 1;
+                                        steps = 0;
                                     }
+
+                                    UserListItem userListItem = new UserListItem();
+                                    userListItem.setmIconId(R.drawable.ic_user);
+                                    userListItem.setmImageUri(fileUri);
+                                    userListItem.setmUserObject(newUserObject);
+                                    userListItem.setmFriendObject(friendObject);
+                                    userListItem.setmFriendStatusId(friendStatusId);
+                                    userListItem.setmSteps((int) steps);
+                                    userListItem.setmUserFriendId(userFriend.getObjectId());
+                                    mFriendList.add(userListItem);
                                 }
 
-                                double steps = 0;
-                                if (friendObject.has("lastSevenDays")) {
-                                    ParseObject lastSevenDays = friendObject.getParseObject("lastSevenDays").fetchIfNeeded();
-                                    if (lastSevenDays != null) {
-                                        steps =  lastSevenDays.getDouble(ParseConstants.LAST_SEVEN_DAYS_STEPS);
-                                    }
-                                }
-                                else {
-                                    steps = 0;
-                                }
-
-                                UserListItem userListItem = new UserListItem();
-                                userListItem.setmIconId(R.drawable.ic_user);
-                                userListItem.setmImageUri(fileUri);
-                                userListItem.setmUserObject(newUserObject);
-                                userListItem.setmFriendObject(friendObject);
-                                userListItem.setmFriendStatusId(friendStatusId);
-                                userListItem.setmSteps((int)steps);
-                                userListItem.setmUserFriendId(userFriend.getObjectId());
-                                mFriendList.add(userListItem);
+                            } catch (ParseException ex) {
                             }
-
-                        } catch (ParseException ex) {
                         }
+                        populateListView();
                     }
-                    populateListView();
-                }
-            });
+                });
+            }
         }
         else {
             populateListView();

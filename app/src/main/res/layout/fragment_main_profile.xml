@@ -44,7 +44,6 @@
                 android:id="@+id/user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/username"
                 android:textColor="@color/white"
                 android:textSize="28sp"/>
 
@@ -52,7 +51,6 @@
                 android:id="@+id/user_steps"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/steps"
                 android:textColor="@color/white"
                 android:textSize="20sp"/>
 
@@ -60,7 +58,6 @@
                 android:id="@+id/user_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/email"
                 android:textColor="@color/opaque_white"
                 android:textSize="12sp"/>
 

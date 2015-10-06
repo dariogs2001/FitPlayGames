@@ -140,5 +140,6 @@
     <string name="action_remove">Remove</string>
     <string name="action_message">Message</string>
     <string name="close">Close</string>
+    <string name="loading_profile">Loading profile, please wait...</string>
 
 </resources>
