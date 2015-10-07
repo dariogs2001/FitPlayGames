@@ -14,17 +14,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dariogonzalez.fitplaygames.Adapters.ChallengeRecyclerViewAdapter;
-import dariogonzalez.fitplaygames.classes.ChallengeGame;
+import dariogonzalez.fitplaygames.classes.ParentGame;
 import dariogonzalez.fitplaygames.utils.RecyclerItemClickListener;
 
 public class ChooseChallengeActivity extends AppCompatActivity {
 
-    private List<ChallengeGame> challengeGameList;
+    private List<ParentGame> parentGameList;
 
     private void initializeData(){
-        challengeGameList = new ArrayList<>();
-        challengeGameList.add(new ChallengeGame("Hot Potato", R.mipmap.fitbit_black));
-        challengeGameList.add(new ChallengeGame("Running", R.mipmap.fitbit_white));
+        parentGameList = new ArrayList<>();
+        parentGameList.add(new ParentGame("Hot Potato", R.mipmap.fitbit_black));
+        parentGameList.add(new ParentGame("Running", R.mipmap.fitbit_white));
     }
 
     @Override
@@ -38,13 +38,13 @@ public class ChooseChallengeActivity extends AppCompatActivity {
         rv.setHasFixedSize(true);
         StaggeredGridLayoutManager llm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         rv.setLayoutManager(llm);
-        ChallengeRecyclerViewAdapter adapter = new ChallengeRecyclerViewAdapter(challengeGameList);
+        ChallengeRecyclerViewAdapter adapter = new ChallengeRecyclerViewAdapter(parentGameList);
         rv.setAdapter(adapter);
 
         rv.addOnItemTouchListener(new RecyclerItemClickListener(this, rv, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                String challengeName = challengeGameList.get(position).getChallengeName();
+                String challengeName = parentGameList.get(position).getChallengeName();
                 switch (challengeName) {
                     case "Hot Potato":
                         Intent intent = new Intent(ChooseChallengeActivity.this, HotPotatoChallengeActivity.class);
