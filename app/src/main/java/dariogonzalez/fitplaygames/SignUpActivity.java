@@ -206,61 +206,53 @@ public class SignUpActivity extends AppCompatActivity {
                     validateAgeRange.setError(getString(R.string.age_range_required));
                     return;
                 }
-              //  if (mPhoto == null || mMediaUri == null) {
-                    //Toast.makeText(SignUpActivity.this, getString(R.string.email_entry_failed), Toast.LENGTH_LONG).show();
-               // }
 
 
-                else
-                {
-//                    setProgressBarIndeterminateVisibility(true);
-                    ParseUser newUser = new ParseUser();
-                    newUser.setUsername(userName);
-                    newUser.setPassword(password);
-                    newUser.setEmail(email);
-                    newUser.put(ParseConstants.USER_GENDER, gender);
-                    newUser.put(ParseConstants.USER_AGE_RANGE, ageRange);
+                ParseUser newUser = new ParseUser();
+                newUser.setUsername(userName);
+                newUser.setPassword(password);
+                newUser.setEmail(email);
+                newUser.put(ParseConstants.USER_GENDER, gender);
+                newUser.put(ParseConstants.USER_AGE_RANGE, ageRange);
 
-                    if(mMediaUri != null) {
-                        byte[] fileBytes = FileHelper.getByteArrayFromFile(SignUpActivity.this, mMediaUri);
-                        if (fileBytes != null) {
-                            fileBytes = FileHelper.reduceImageForUpload(fileBytes);
-                            String fileName = FileHelper.getFileName(SignUpActivity.this, mMediaUri, ParseConstants.TYPE_IMAGE);
-                            ParseFile file = new ParseFile(fileName, fileBytes);
-                            try {
-                                file.save();
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            }
-                            newUser.put(ParseConstants.USER_PROFILE_PICTURE, file);
+                if(mMediaUri != null) {
+                    byte[] fileBytes = FileHelper.getByteArrayFromFile(SignUpActivity.this, mMediaUri);
+                    if (fileBytes != null) {
+                        fileBytes = FileHelper.reduceImageForUpload(fileBytes);
+                        String fileName = FileHelper.getFileName(SignUpActivity.this, mMediaUri, ParseConstants.TYPE_IMAGE);
+                        ParseFile file = new ParseFile(fileName, fileBytes);
+                        try {
+                            file.save();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        newUser.put(ParseConstants.USER_PROFILE_PICTURE, file);
+                    }
+                }
+
+                newUser.signUpInBackground(new SignUpCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        setProgressBarIndeterminateVisibility(false);
+                        if (e == null) {
+                            //Success
+                            FitPlayGamesApplication.updateParseInstallation(ParseUser.getCurrentUser());
+
+                            Intent intent = new Intent(SignUpActivity.this, FitbitAuthenticationActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                        } else {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(SignUpActivity.this);
+                            builder.setMessage(e.getMessage())
+                                    .setTitle(R.string.signup_error_title)
+                                    .setPositiveButton(android.R.string.ok, null);
+
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
                         }
                     }
-
-
-                    newUser.signUpInBackground(new SignUpCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            setProgressBarIndeterminateVisibility(false);
-                            if (e == null) {
-                                //Success
-                                FitPlayGamesApplication.updateParseInstallation(ParseUser.getCurrentUser());
-
-                                Intent intent = new Intent(SignUpActivity.this, FitbitAuthenticationActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
-                            } else {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(SignUpActivity.this);
-                                builder.setMessage(e.getMessage())
-                                        .setTitle(R.string.signup_error_title)
-                                        .setPositiveButton(android.R.string.ok, null);
-
-                                AlertDialog dialog = builder.create();
-                                dialog.show();
-                            }
-                        }
-                    });
-                }
+                });
             }
         });
     }
