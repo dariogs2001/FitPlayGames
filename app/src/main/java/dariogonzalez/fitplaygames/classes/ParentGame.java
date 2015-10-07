@@ -2,6 +2,8 @@ package dariogonzalez.fitplaygames.classes;
 
 import android.graphics.drawable.Drawable;
 
+import com.parse.ParseObject;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,7 +11,8 @@ import java.util.Date;
 /**
  * Created by Dario on 8/15/2015.
  */
-public class ParentGame {
+public abstract class ParentGame {
+    private ParseObject gameObject; // The parseObject from the DB of the game
     private int gameType; // This comes from the game type constants class
     private String name; // Name of the game
     private String userGameName; // Name that the user gives the game
@@ -17,12 +20,13 @@ public class ParentGame {
     private int stepsGoal; // Step goal for the game
     private enum GameType {
         ACTIVE, PENDING, FINISHED
-    }
+        }
     private Drawable icon; // The game icon
     private Date startDate; // The user set startDate/time
     private Date endDate; // The system set endDate/time
     private ArrayList<String> playerIds; // A list of all the player ids of the game. This should be > 2 for game to start
     private ArrayList<String> activePlayers; // A list of all the activate players of the game. This could be 1 or more
+
 
     // This method will return a default game name based on the name of the game and possibly the date or something
     public String getDefaultGameName() {
@@ -56,10 +60,15 @@ public class ParentGame {
 
     }
 
+    // This method will call checkUserStatus after it gets the Challenge data from parse
+    private void initGame() {
+
+    }
+
     // This method will check the game status and the players status when they open up the game. It should be called for every game that the user is involved with.
     // It will hold all the logic to know what it needs to do every time a user opens up the app.
     public void checkUserStatus() {
-        
+
     }
 
     public int getGameType() {
