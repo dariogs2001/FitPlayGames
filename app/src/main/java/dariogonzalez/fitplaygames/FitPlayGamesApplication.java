@@ -29,4 +29,5 @@ public class FitPlayGamesApplication extends Application {
 
         installation.saveInBackground( );
     }
+
 }

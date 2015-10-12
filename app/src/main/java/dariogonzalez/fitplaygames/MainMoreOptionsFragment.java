@@ -72,7 +72,7 @@ public class MainMoreOptionsFragment extends android.support.v4.app.Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 0:
-                        showIntent(getActivity(), LeaderBoardActivity.class);
+                        showIntent(getActivity(), LeaderBoardFragment.class);
                         break;
                     case 1:
                         showIntent(getActivity(), FitbitAuthenticationActivity.class);

@@ -78,14 +78,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="dariogonzalez.fitplaygames.MainActivity" />
         </activity>
-        <activity
-            android:name=".LeaderBoardActivity"
+        <!--<activity
+            android:name=".LeaderBoardFragment"
             android:label="@string/title_activity_leader_board"
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="dariogonzalez.fitplaygames.MainActivity" />
-        </activity>
+        </activity> -->
         <activity
             android:name=".SearchFriendActivity"
             android:label="@string/title_activity_search_friend"
@@ -143,7 +143,7 @@
                 <category android:name="dariogonzalez.fitplaygames" />
             </intent-filter>
         </receiver>
-        <meta-data android:name="com.parse.push.notification_icon" android:resource="@drawable/ic_launcher"/>
+        <meta-data android:name="com.parse.push.notification_icon" android:resource="@drawable/ic_notify_big"/>
     </application>
 
 </manifest>

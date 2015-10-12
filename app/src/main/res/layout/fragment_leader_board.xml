@@ -13,21 +13,44 @@
         android:dividerHeight="1dp"
         android:layout_weight="1">
     </ListView>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
-    <!--
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/> -->
-    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/friendsFrag"
+            android:orientation="horizontal"
+            android:background="@color/primary"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="friendsTabClick"
+            android:drawableLeft="@drawable/ic_statsbar"
+            android:text="@string/friends_icon"
+            android:paddingLeft="40dip"
+            android:paddingRight="40dip"
+            android:textColor="@color/white"/>
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/globalFrag"
+            android:orientation="horizontal"
+            android:background="@color/primary"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="globalTabClick"
+            android:drawableLeft="@drawable/ic_global"
+            android:text="@string/global_icon"
+            android:paddingLeft="40dip"
+            android:paddingRight="40dip"
+            android:textColor="@color/white"/>
+
+    </LinearLayout>
 </LinearLayout>
