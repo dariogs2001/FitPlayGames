@@ -11,17 +11,17 @@ import android.widget.TextView;
 import java.util.List;
 
 import dariogonzalez.fitplaygames.R;
-import dariogonzalez.fitplaygames.classes.ParentGame;
+import dariogonzalez.fitplaygames.classes.ParentChallenge;
 
 /**
  * Created by Dario on 8/15/2015.
  */
 public class ChallengeRecyclerViewAdapter  extends RecyclerView.Adapter<ChallengeRecyclerViewAdapter.ChallengeViewHolder> {
 
-    List<ParentGame> mParentGames;
+    List<ParentChallenge> mParentChallenges;
 
-    public ChallengeRecyclerViewAdapter(List<ParentGame> parentGames) {
-        this.mParentGames = parentGames;
+    public ChallengeRecyclerViewAdapter(List<ParentChallenge> parentChallenges) {
+        this.mParentChallenges = parentChallenges;
     }
 
     @Override
@@ -31,9 +31,9 @@ public class ChallengeRecyclerViewAdapter  extends RecyclerView.Adapter<Challeng
 
     @Override
     public void onBindViewHolder(final ChallengeViewHolder personViewHolder, final int i) {
-        personViewHolder.challengeName.setText(mParentGames.get(i).getChallengeName());
-//        personViewHolder.challengeName.setBackgroundResource(mParentGames.get(i).getPhotoId());
-        personViewHolder.challengeThumbnail.setImageResource(mParentGames.get(i).getPhotoId());
+//        personViewHolder.challengeName.setText(mParentChallenges.get(i).getChallengeName());
+//        personViewHolder.challengeName.setBackgroundResource(mParentChallenges.get(i).getPhotoId());
+//        personViewHolder.challengeThumbnail.setImageResource(mParentChallenges.get(i).getPhotoId());
     }
 
     @Override
@@ -45,7 +45,7 @@ public class ChallengeRecyclerViewAdapter  extends RecyclerView.Adapter<Challeng
 
     @Override
     public int getItemCount() {
-        return mParentGames.size();
+        return mParentChallenges.size();
     }
 
     public static class ChallengeViewHolder extends RecyclerView.ViewHolder {

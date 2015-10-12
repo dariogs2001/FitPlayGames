@@ -86,30 +86,7 @@ public class HotPotatoChallengeActivity extends AppCompatActivity {
                 if (mChallengeId == null || mChallengeId.length() == 0) {
                     String challengeName =  mChallengeName.getText().toString();
                     //Create challenge
-                    final ParseObject object = new ParseObject(ParseConstants.CLASS_CHALLENGES);
-                    object.put(ParseConstants.CHALLENGE_CHALLENGE_NAME, challengeName);
-                    object.put(ParseConstants.CHALLENGE_CHALLENGE_TYPE, 0); //TODO: need a value for this
-                    object.put(ParseConstants.CHALLENGE_CHALLENGE_STATUS, ParseConstants.CHALLENGE_STATUS_PROCESSING);
-                    object.put(ParseConstants.CHALLENGE_DAILY_STEPS_GOAL, Integer.valueOf(mSteps.getSelectedItem().toString()));
-                    object.put(ParseConstants.CHALLENGE_CHALLENGE_PASS, 0); //TODO: need a value for this
-                    object.put(ParseConstants.CHALLENGE_CHALLENGE_START, new Date()); //TODO: need a value for this
-                    object.put(ParseConstants.CHALLENGE_CHALLENGE_END, new Date()); //TODO: need a value for this
-                    object.put(ParseConstants.CHALLENGE_NUMBER_OF_DAYS, 5); //TODO: need a value for this
-                    object.put(ParseConstants.CHALLENGE_ACTIVE_MINUTES_GOAL, 0);
 
-                    object.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e == null) {
-                                mChallengeId = object.getObjectId();
-                                Intent intent = new Intent(HotPotatoChallengeActivity.this, InviteFriendsActivity.class);
-                                intent.putExtra(ParseConstants.CHALLENGE_CHALLENGE_ID, mChallengeId);
-                                startActivity(intent);
-                            } else {
-                                //TODO: show error message
-                            }
-                        }
-                    });
                 }
                 else
                 {

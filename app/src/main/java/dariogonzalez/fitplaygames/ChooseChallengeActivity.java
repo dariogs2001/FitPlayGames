@@ -1,30 +1,26 @@
 package dariogonzalez.fitplaygames;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import dariogonzalez.fitplaygames.Adapters.ChallengeRecyclerViewAdapter;
-import dariogonzalez.fitplaygames.classes.ParentGame;
-import dariogonzalez.fitplaygames.utils.RecyclerItemClickListener;
+import dariogonzalez.fitplaygames.classes.ParentChallenge;
 
 public class ChooseChallengeActivity extends AppCompatActivity {
 
-    private List<ParentGame> parentGameList;
+    private List<ParentChallenge> parentChallengeList;
 
     private void initializeData(){
-        parentGameList = new ArrayList<>();
-        parentGameList.add(new ParentGame("Hot Potato", R.mipmap.fitbit_black));
-        parentGameList.add(new ParentGame("Running", R.mipmap.fitbit_white));
+        parentChallengeList = new ArrayList<>();
+//        parentChallengeList.add(new ParentChallenge("Hot Potato", R.mipmap.fitbit_black));
+//        parentChallengeList.add(new ParentChallenge("Running", R.mipmap.fitbit_white));
     }
 
     @Override
@@ -38,28 +34,28 @@ public class ChooseChallengeActivity extends AppCompatActivity {
         rv.setHasFixedSize(true);
         StaggeredGridLayoutManager llm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         rv.setLayoutManager(llm);
-        ChallengeRecyclerViewAdapter adapter = new ChallengeRecyclerViewAdapter(parentGameList);
+        ChallengeRecyclerViewAdapter adapter = new ChallengeRecyclerViewAdapter(parentChallengeList);
         rv.setAdapter(adapter);
 
-        rv.addOnItemTouchListener(new RecyclerItemClickListener(this, rv, new RecyclerItemClickListener.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                String challengeName = parentGameList.get(position).getChallengeName();
-                switch (challengeName) {
-                    case "Hot Potato":
-                        Intent intent = new Intent(ChooseChallengeActivity.this, HotPotatoChallengeActivity.class);
-                        startActivity(intent);
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            @Override
-            public void onItemLongClick(View view, int position) {
-                Toast.makeText(view.getContext(), "LONG LONG LONG", Toast.LENGTH_SHORT).show();
-            }
-        }));
+//        rv.addOnItemTouchListener(new RecyclerItemClickListener(this, rv, new RecyclerItemClickListener.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(View view, int position) {
+//                String challengeName = parentChallengeList.get(position).getChallengeName();
+//                switch (challengeName) {
+//                    case "Hot Potato":
+//                        Intent intent = new Intent(ChooseChallengeActivity.this, HotPotatoChallengeActivity.class);
+//                        startActivity(intent);
+//                        break;
+//                    default:
+//                        break;
+//                }
+//            }
+//
+//            @Override
+//            public void onItemLongClick(View view, int position) {
+//                Toast.makeText(view.getContext(), "LONG LONG LONG", Toast.LENGTH_SHORT).show();
+//            }
+//        }));
 
     }
 
