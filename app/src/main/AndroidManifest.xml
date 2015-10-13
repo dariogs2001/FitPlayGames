@@ -143,7 +143,7 @@
                 <category android:name="dariogonzalez.fitplaygames" />
             </intent-filter>
         </receiver>
-        <meta-data android:name="com.parse.push.notification_icon" android:resource="@drawable/ic_notify_big"/>
+        <meta-data android:name="com.parse.push.notification_icon" android:resource="@drawable/ic_notify_small"/>
     </application>
 
 </manifest>
