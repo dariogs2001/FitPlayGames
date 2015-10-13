@@ -2,6 +2,7 @@ package dariogonzalez.fitplaygames;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -77,6 +78,8 @@ public class LeaderBoardFragment extends Fragment {
     }
 
     public void showFriendsList() {
+        friendsButtonClick.getBackground().setAlpha(128);  // 50% transparent
+        globalButtonClick.setBackgroundColor(0XFF2196F3);
         if (mLeadBoardList!= null && mLeadBoardList.size() == 0) {
             final ParseUser userObject = ParseUser.getCurrentUser();
             if (userObject != null) {
@@ -162,6 +165,8 @@ public class LeaderBoardFragment extends Fragment {
     }
 
     public void showGlobalList() {
+        globalButtonClick.getBackground().setAlpha(128);  // 50% transparent
+        friendsButtonClick.setBackgroundColor(0XFF2196F3);
         ParseQuery<ParseObject> stepsQuery = ParseQuery.getQuery(ParseConstants.CLASS_LAST_SEVEN_DAYS);
         stepsQuery.orderByDescending(ParseConstants.LAST_SEVEN_DAYS_STEPS);
         stepsQuery.setLimit(10);
