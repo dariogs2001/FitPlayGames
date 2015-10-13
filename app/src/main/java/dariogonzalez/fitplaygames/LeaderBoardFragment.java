@@ -163,7 +163,7 @@ public class LeaderBoardFragment extends Fragment {
 
     public void showGlobalList() {
         ParseQuery<ParseObject> stepsQuery = ParseQuery.getQuery(ParseConstants.CLASS_LAST_SEVEN_DAYS);
-        stepsQuery.orderByAscending(ParseConstants.LAST_SEVEN_DAYS_STEPS);
+        stepsQuery.orderByDescending(ParseConstants.LAST_SEVEN_DAYS_STEPS);
         stepsQuery.setLimit(10);
         stepsQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override

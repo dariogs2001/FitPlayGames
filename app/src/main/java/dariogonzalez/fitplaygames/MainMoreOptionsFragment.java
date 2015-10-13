@@ -52,7 +52,6 @@ public class MainMoreOptionsFragment extends android.support.v4.app.Fragment {
     }
 
     private void populateMoreOptionsList() {
-        mOptions.add(new MoreOptionsListItem(getString(R.string.leader_board_text), R.mipmap.leaderboard));
         mOptions.add(new MoreOptionsListItem(getString(R.string.fitbit_sign_in_text), R.mipmap.fitbit_white));
         mOptions.add(new MoreOptionsListItem(getString(R.string.log_out_text), R.mipmap.logout));
         mOptions.add(new MoreOptionsListItem(getString(R.string.privacy_policy_text), R.mipmap.privacy));
@@ -72,19 +71,16 @@ public class MainMoreOptionsFragment extends android.support.v4.app.Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 0:
-                        showIntent(getActivity(), LeaderBoardFragment.class);
-                        break;
-                    case 1:
                         showIntent(getActivity(), FitbitAuthenticationActivity.class);
                         break;
-                    case 2:
+                    case 1:
                         ParseUser.logOut();
                         showIntent(getActivity(), LoginActivity.class);
                         break;
-                    case 3:
+                    case 2:
                         showIntent(getActivity(), PrivacyPolicyActivity.class);
                         break;
-                    case 4:
+                    case 3:
                         FitbitHelper fh = new FitbitHelper(getActivity());
                         fh.getUserLastMonthData();
                         fh.lastSevenDaySumAndAverage(ParseUser.getCurrentUser().getObjectId());
