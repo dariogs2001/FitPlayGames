@@ -8,23 +8,20 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.Button;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import dariogonzalez.fitplaygames.Adapters.ChallengeRecyclerViewAdapter;
-import dariogonzalez.fitplaygames.classes.ChallengeGame;
-import dariogonzalez.fitplaygames.utils.RecyclerItemClickListener;
+import dariogonzalez.fitplaygames.classes.ParentChallenge;
 
 public class ChooseChallengeActivity extends AppCompatActivity {
 
-    private List<ChallengeGame> challengeGameList;
+    private List<ParentChallenge> parentChallengeList;
 
     private void initializeData(){
-        challengeGameList = new ArrayList<>();
-        challengeGameList.add(new ChallengeGame("Hot Potato", R.mipmap.fitbit_black));
-        challengeGameList.add(new ChallengeGame("Running", R.mipmap.fitbit_white));
+        parentChallengeList = new ArrayList<>();
     }
 
     @Override
@@ -34,32 +31,15 @@ public class ChooseChallengeActivity extends AppCompatActivity {
 
         initializeData();
 
-        RecyclerView rv = (RecyclerView)findViewById(R.id.choose_challenge_recyclerView);
-        rv.setHasFixedSize(true);
-        StaggeredGridLayoutManager llm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        rv.setLayoutManager(llm);
-        ChallengeRecyclerViewAdapter adapter = new ChallengeRecyclerViewAdapter(challengeGameList);
-        rv.setAdapter(adapter);
-
-        rv.addOnItemTouchListener(new RecyclerItemClickListener(this, rv, new RecyclerItemClickListener.OnItemClickListener() {
+        Button button = (Button) findViewById(R.id.hot_potato);
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(View view, int position) {
-                String challengeName = challengeGameList.get(position).getChallengeName();
-                switch (challengeName) {
-                    case "Hot Potato":
-                        Intent intent = new Intent(ChooseChallengeActivity.this, HotPotatoChallengeActivity.class);
-                        startActivity(intent);
-                        break;
-                    default:
-                        break;
-                }
+            public void onClick(View view) {
+                Intent intent = new Intent(ChooseChallengeActivity.this, HotPotatoChallengeActivity.class);
+                startActivity(intent);
             }
+        });
 
-            @Override
-            public void onItemLongClick(View view, int position) {
-                Toast.makeText(view.getContext(), "LONG LONG LONG", Toast.LENGTH_SHORT).show();
-            }
-        }));
 
     }
 
