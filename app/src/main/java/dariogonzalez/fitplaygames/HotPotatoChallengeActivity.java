@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -19,19 +20,20 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.SaveCallback;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 import dariogonzalez.fitplaygames.classes.ParseConstants;
 
 public class HotPotatoChallengeActivity extends AppCompatActivity {
 
-    private Spinner mSteps;
-    private ImageView mAddFriend;
+    private Spinner stepSpinner, startTimeSpinner, startDaySpinner;
+    private ImageButton mAddFriend;
     private EditText mChallengeName;
     private ListView mChallengeFriendsList;
-    private Button mStartBtn;
-    private Button mCancelBtn;
-
     private String mChallengeId;
 
     @Override
@@ -41,36 +43,37 @@ public class HotPotatoChallengeActivity extends AppCompatActivity {
 
 
         mChallengeName = (EditText) findViewById(R.id.challenge_name_edit_text);
-        mAddFriend = (ImageView)findViewById(R.id.add_friend_image_view);
-        mSteps = (Spinner) findViewById(R.id.steps_spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.challenge_steps_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mSteps.setAdapter(adapter);
-        mChallengeFriendsList = (ListView) findViewById(R.id.challenge_friends_list_view);
-        mStartBtn = (Button) findViewById(R.id.start_challenge_button);
-        mCancelBtn = (Button) findViewById(R.id.cancel_challenge_button);
+        startDaySpinner = (Spinner) findViewById(R.id.start_day_spinner);
+        startTimeSpinner = (Spinner) findViewById(R.id.start_time_spinner);
+        stepSpinner = (Spinner) findViewById(R.id.steps_spinner);
+        mAddFriend = (ImageButton) findViewById(R.id.add_friend_button);
 
-        mStartBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this, R.array.challenge_steps_array, android.R.layout.simple_spinner_item);
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        stepSpinner.setAdapter(adapter1);
 
-                //TODO: Save/Update challenge with the new data
-            }
-        });
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd", Locale.getDefault());
+        Date date = new Date();
+        ArrayList<String> dateArray = new ArrayList<>();
+        dateArray.add(0, dateFormat.format(date));
+        ArrayAdapter adapter2 = new ArrayAdapter(this, android.R.layout.simple_spinner_item, dateArray);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        startDaySpinner.setAdapter(adapter2);
 
-        mCancelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO: Cancel the challenge, we can remove it from the DB or simple left it there,
-                // because the status is CHALLENGE_STATUS_PROCESSING. Maybe we can add a DELETED status an update the DB
-            }
-        });
+        DateFormat dateFormat2 = new SimpleDateFormat("HH:mm a", Locale.getDefault());
+        Date date2 = new Date();
+        ArrayList<String> dateArray2 = new ArrayList<>();
+        dateArray2.add(0, dateFormat2.format(date2));
+        ArrayAdapter adapter3 = new ArrayAdapter(this, android.R.layout.simple_spinner_item, dateArray2);
+        adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        startTimeSpinner.setAdapter(adapter3);
+
 
         mAddFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 boolean isReady = true;
-                if (mChallengeName.getText().length() == 0 || mSteps.getSelectedItem().toString().equals("Select steps"))  isReady = false;
+                if (mChallengeName.getText().length() == 0 || stepSpinner.getSelectedItem().toString().equals("Select steps"))  isReady = false;
 
                 if (!isReady) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(HotPotatoChallengeActivity.this);

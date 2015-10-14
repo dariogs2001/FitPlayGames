@@ -22,4 +22,5 @@
     <color name="white">#FFFFFF</color>
     <color name="dark_text">#36322D</color>
     <color name="opaque_white">#BBDEFB</color>
+    <color name="very_light_grey">#F8F6F3</color>
 </resources>
