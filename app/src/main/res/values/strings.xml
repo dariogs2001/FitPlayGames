@@ -43,7 +43,7 @@
     <string name="error_invalid_email">Email not found. Please try again.</string>
     <string name="success_email_sent">An email has been sent to reset your password.</string>
     <string name="email_entry_failed">Invalid Email Address</string>
-    <string name="general_error">Sorry, there was an error!!!</string>
+    <string name="general_error">Error</string>
     <string name="video_file_size_warning">The selected video must be less than 10MB</string>
     <string name="error_file_too_long">The selected file is too large, select a new file!!!</string>
     <string name="gender_label">Gender:</string>
@@ -52,7 +52,7 @@
     <string name="challenge_error_title">Error</string>
     <string name="leader_board_friends">Friends</string>
     <string name="leader_board_global">Global</string>
-    <string name="read_privacy_policy">Read and Accept the Privacy Policy</string>
+    <string name="read_privacy_policy">Read and Accept the Privacy Policy.</string>
     <string name="username_required">Please input a Username</string>
     <string name="password_required">Please input a Password</string>
     <string name="email_required">Please input an Email Address</string>

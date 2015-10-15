@@ -47,6 +47,7 @@ import dariogonzalez.fitplaygames.utils.RoundedImageView;
  */
 public class MainProfileFragment extends android.support.v4.app.Fragment {
 
+    private static String TAG = MainProfileFragment.class.getSimpleName();
     private RoundedImageView profileImage;
     private TextView userName, userEmail, userSteps;
     private ImageButton placeholderProfileImage;
@@ -269,7 +270,7 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
             {
                 if (!mediaStorageDir.mkdir())
                 {
-                    Log.e("MainProfileFragment", "Failed to create directory.");
+                    Log.e(TAG, "Failed to create directory.");
                     return null;
                 }
             }
@@ -290,7 +291,7 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
             else
                 return null;
 
-            Log.d("MainProfileFragment", "File: " + Uri.fromFile(mediaFile));
+            Log.d(TAG, "File: " + Uri.fromFile(mediaFile));
 
             //5. Return the file's URI
             return Uri.fromFile(mediaFile);
