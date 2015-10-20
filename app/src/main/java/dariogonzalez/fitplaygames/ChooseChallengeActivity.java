@@ -40,7 +40,21 @@ public class ChooseChallengeActivity extends AppCompatActivity {
             }
         });
 
+        Button testPush = (Button) findViewById(R.id.test_push);
+        testPush.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final ParentChallenge parentChallenge = new ParentChallenge() {
+                    @Override
+                    public void sendPushNotification() {
+                        super.sendPushNotification();
+                    }
 
+                };
+                parentChallenge.sendPushNotification();
+            }
+
+        });
     }
 
     @Override
@@ -64,4 +78,6 @@ public class ChooseChallengeActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 }
