@@ -2,12 +2,19 @@ package dariogonzalez.fitplaygames.classes;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import com.parse.Parse;
 import com.parse.ParseException;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
-import com.parse.ParsePushBroadcastReceiver;
+
+import com.parse.ParsePush;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+
 import com.parse.SaveCallback;
+import com.parse.SendCallback;
 
 import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
@@ -15,12 +22,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+
 import dariogonzalez.fitplaygames.InviteFriendsActivity;
 
 /**
  * Created by Dario on 8/15/2015.
  */
 public abstract class ParentChallenge {
+    private static String TAG = ParentChallenge.class.getSimpleName();
     private ParseObject challengeObject; // The parseObject from the DB of the challenge
     private int challengeType; // This comes from the challenge type constants class
     private String name; // Name of the challenge
@@ -33,6 +42,10 @@ public abstract class ParentChallenge {
     private Date endDate; // The system set endDate/time
     private ArrayList<String> playerIds; // A list of all the player ids of the challenge. This should be > 2 for challenge to start
     private ArrayList<String> activePlayers; // A list of all the active player ids of the challenge. This could be 1 or more
+    private String startChallengeMessage; // A push message to be sent when a challenge starts
+    private String endChallengeMessage; // A push message to be sent when a challenge ends
+    private String inviteChallengeMessage; // A push message to be sent when a user gets invited to a challenge
+    private String mainPushMessage = ""; // This is the message that will be sent as a push notification
 
     public ParentChallenge(int challengeType) {
         this.challengeType = challengeType;
@@ -41,6 +54,8 @@ public abstract class ParentChallenge {
     public ParentChallenge(String challengeId) {
         // TODO: Get challengeobject from challenge
     }
+
+    public ParentChallenge() {}
 
     // This method will return a default challenge name based on the name of the challenge and possibly the date or something
     public String getDefaultChallengeName() {
@@ -55,8 +70,31 @@ public abstract class ParentChallenge {
 
     // This method will do the sending of push notifications to the other players (playerIds)
     // This could be for inviting, starting, ending etc.
-    public void sendPushNotification(String message, Drawable icon, ArrayList<String> userIds) {
+    public void sendPushNotification(/*String challengeId, String message*/) {
+// Associate the device with a user
+        ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+        installation.put("user",ParseUser.getCurrentUser());
+        //installation.put(ParseConstants.CHALLENGE_ID,challengeId);
+        installation.saveInBackground();
 
+// Create our Installation query
+        ParseQuery pushQuery = ParseInstallation.getQuery();
+        //pushQuery.whereEqualTo("challengeId", challengeId);
+        pushQuery.whereEqualTo("user", ParseUser.getCurrentUser());
+
+// Send push notification to query
+        ParsePush push = new ParsePush();
+        push.setQuery(pushQuery); // Set our Installation query
+        push.setMessage("This is my test message string to show push notifications working!");
+        push.sendInBackground(new SendCallback() {
+            public void done(ParseException e) {
+                if (e == null) {
+                    Log.d("push", "success!");
+                } else {
+                    Log.d("push", "failure");
+                }
+            }
+        });
     }
 
     public void createChallenge(final String userId, String challengeName, int stepsGoal, Date startDate, Date endDate) {
@@ -120,7 +158,16 @@ public abstract class ParentChallenge {
 
     // This method will have the logic needed to send invitations and will be calling sendPushNotification
     public void sendInvitation(String playerId) {
-        // Todo: Call sendNotification from here
+        startChallengeMessage = "[ChallengeName] has started";
+        endChallengeMessage = "[ChallengeName] has ended";
+        inviteChallengeMessage = "[username] has invited you to play to play [ChallengeName]";
+        /*if(starting challenge)
+           mainPushMessage = startChallengeMessage; */
+        /* if(inviting challenge )
+            mainPushMessage = endChallengeMessage; */
+        /* if(ending challenge)
+            mainPushMessage = inviteChallengeMessage; */
+        sendPushNotification(/*playerId, mainPushMessage*/);
     }
 
     // To be called by children classes

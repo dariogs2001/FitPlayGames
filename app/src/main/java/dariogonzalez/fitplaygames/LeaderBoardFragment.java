@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -56,9 +57,24 @@ public class LeaderBoardFragment extends Fragment {
         friendsButtonClick = (Button) view.findViewById(R.id.friendsFrag);
         globalButtonClick = (Button) view.findViewById(R.id.globalFrag);
 
+        float transparent = 0.5f;
+        AlphaAnimation alphaUp = new AlphaAnimation(transparent, transparent);
+        alphaUp.setFillAfter(true);
+        friendsButtonClick.startAnimation(alphaUp);
+
         friendsButtonClick.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            float transparent = 0.5f;
+            AlphaAnimation alphaUp = new AlphaAnimation(transparent, transparent);
+            alphaUp.setFillAfter(true);
+            friendsButtonClick.startAnimation(alphaUp);
+
+            float solid = 1;
+            AlphaAnimation alphaDown = new AlphaAnimation(solid,solid);
+            alphaDown.setFillAfter(true);
+            globalButtonClick.startAnimation(alphaDown);
+
             clearListView();
             showFriendsList();
 
@@ -68,6 +84,16 @@ public class LeaderBoardFragment extends Fragment {
         globalButtonClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                float transparent = 0.5f;
+                AlphaAnimation alphaUp = new AlphaAnimation(transparent, transparent);
+                alphaUp.setFillAfter(true);
+                globalButtonClick.startAnimation(alphaUp);
+
+                float solid = 1;
+                AlphaAnimation alphaDown = new AlphaAnimation(solid,solid);
+                alphaDown.setFillAfter(true);
+                friendsButtonClick.startAnimation(alphaDown);
+
                 clearListView();
                 showGlobalList();
             }
@@ -78,8 +104,6 @@ public class LeaderBoardFragment extends Fragment {
     }
 
     public void showFriendsList() {
-        friendsButtonClick.getBackground().setAlpha(128);  // 50% transparent
-        globalButtonClick.setBackgroundColor(0XFF2196F3);
         if (mLeadBoardList!= null && mLeadBoardList.size() == 0) {
             final ParseUser userObject = ParseUser.getCurrentUser();
             if (userObject != null) {
@@ -165,8 +189,6 @@ public class LeaderBoardFragment extends Fragment {
     }
 
     public void showGlobalList() {
-        globalButtonClick.getBackground().setAlpha(128);  // 50% transparent
-        friendsButtonClick.setBackgroundColor(0XFF2196F3);
         ParseQuery<ParseObject> stepsQuery = ParseQuery.getQuery(ParseConstants.CLASS_LAST_SEVEN_DAYS);
         stepsQuery.orderByDescending(ParseConstants.LAST_SEVEN_DAYS_STEPS);
         stepsQuery.setLimit(10);

@@ -20,6 +20,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.Firebase;
 import com.melnykov.fab.FloatingActionButton;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -47,6 +48,7 @@ import dariogonzalez.fitplaygames.utils.RoundedImageView;
  */
 public class MainProfileFragment extends android.support.v4.app.Fragment {
 
+    private static String TAG = MainProfileFragment.class.getSimpleName();
     private RoundedImageView profileImage;
     private TextView userName, userEmail, userSteps;
     private ImageButton placeholderProfileImage;
@@ -100,6 +102,14 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
                 fabMessageFriend.setVisibility(View.VISIBLE);
             }
         }
+
+        fabMessageFriend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Firebase myFirebaseRef = new Firebase("https://fitplaygames.firebaseio.com/");
+                myFirebaseRef.child("message").setValue("Do you have data? You'll love Firebase.");
+            }
+        });
         return view;
     }
 
@@ -269,7 +279,7 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
             {
                 if (!mediaStorageDir.mkdir())
                 {
-                    Log.e("MainProfileFragment", "Failed to create directory.");
+                    Log.e(TAG, "Failed to create directory.");
                     return null;
                 }
             }
@@ -290,7 +300,7 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
             else
                 return null;
 
-            Log.d("MainProfileFragment", "File: " + Uri.fromFile(mediaFile));
+            Log.d(TAG, "File: " + Uri.fromFile(mediaFile));
 
             //5. Return the file's URI
             return Uri.fromFile(mediaFile);

@@ -17,6 +17,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE-FIREBASE.txt'
+        exclude 'META-INF/NOTICE'
+    }
 }
 
 dependencies {
@@ -32,6 +37,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:22.0.+'
     compile 'com.melnykov:floatingactionbutton:1.3.0'
     compile 'com.android.support:design:22.2.0'
+    compile 'com.firebase:firebase-client-android:2.4.0+'
 
     //Library needed for FAB Button
 //    compile 'com.android.support:design:22.2.0'

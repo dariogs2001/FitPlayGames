@@ -147,7 +147,7 @@ public class SignUpActivity extends AppCompatActivity {
 
 
         TextView myTextView = (TextView) findViewById(R.id.privacy_policy);
-        String myString = "Read and accept the Privacy Policy.";
+        String myString = getResources().getString(R.string.read_privacy_policy);
         int i1 = myString.indexOf("Privacy");
         int i2 = myString.indexOf(".");
         myTextView.setMovementMethod(LinkMovementMethod.getInstance());
@@ -166,7 +166,7 @@ public class SignUpActivity extends AppCompatActivity {
                 ds.setUnderlineText(false); // set to false to remove underline
             }
         };
-        mySpannable.setSpan(new ForegroundColorSpan(0xFF2196F3), i1, i2 + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        mySpannable.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.primary)), i1, i2 + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         mySpannable.setSpan(myClickableSpan, i1, i2 + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
 

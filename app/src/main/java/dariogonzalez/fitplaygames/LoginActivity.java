@@ -26,6 +26,7 @@ import com.parse.ParseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private static String TAG = LoginActivity.class.getSimpleName();
     protected TextView mSignUpTextView;
     protected TextView mForgotPasswordTV;
     protected EditText mUserName;
@@ -40,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
         mSignUpTextView = (TextView) findViewById(R.id.signUpText);
         mForgotPasswordTV = (TextView) findViewById(R.id.forgotPassword);
 
-        String myString = "Don't have an account? Sign Up!";
+        String myString = getResources().getString(R.string.sign_up_text);
         int i1 = myString.indexOf("S");
         int i2 = myString.indexOf("!");
         mSignUpTextView.setMovementMethod(LinkMovementMethod.getInstance());
@@ -60,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
                 ds.setUnderlineText(false); // set to false to remove underline
             }
         };
-        mySpannable.setSpan(new ForegroundColorSpan(0xFF2196F3), i1, i2 + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        mySpannable.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.primary)), i1, i2 + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         mySpannable.setSpan(myClickableSpan, i1, i2 + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         mForgotPasswordTV.setOnClickListener(new View.OnClickListener() {
@@ -106,7 +107,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void done(ParseUser parseUser, ParseException e) {
                         if (parseUser == null) {
-                            Log.d("score", "The getFirst request failed.");
+                            Log.d(TAG, "The getFirst request failed.");
                         } else {
                             String actualUsername = parseUser.getString("username");
 

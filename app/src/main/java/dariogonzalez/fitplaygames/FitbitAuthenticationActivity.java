@@ -105,7 +105,7 @@ public class FitbitAuthenticationActivity extends ActionBarActivity {
                 catch (Exception ex)
                 {
                     String eee = ex.getMessage();
-                    Log.i("Error signing in Fitbit", ex.getMessage());
+                    Log.i(TAG, ex.getMessage());
                 }
             }
         }).start();

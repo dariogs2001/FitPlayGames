@@ -1,10 +1,14 @@
 package dariogonzalez.fitplaygames;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.parse.Parse;
+import com.parse.ParseException;
 import com.parse.ParseInstallation;
+import com.parse.ParsePush;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import dariogonzalez.fitplaygames.classes.ParseConstants;
 
@@ -12,6 +16,7 @@ import dariogonzalez.fitplaygames.classes.ParseConstants;
  * Created by Dario on 4/25/2015.
  */
 public class FitPlayGamesApplication extends Application {
+    private static String TAG = FitPlayGamesApplication.class.getSimpleName();
 
     @Override
     public void onCreate() {
@@ -27,7 +32,8 @@ public class FitPlayGamesApplication extends Application {
         ParseInstallation installation = ParseInstallation.getCurrentInstallation();
         installation.put(ParseConstants.KEY_USER_ID, parseUser.getObjectId());
 
-        installation.saveInBackground( );
+        installation.saveInBackground();
+        ParsePush.subscribeInBackground("FitPlayChannel");
     }
 
 }

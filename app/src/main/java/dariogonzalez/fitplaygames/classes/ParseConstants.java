@@ -24,6 +24,7 @@ public final class ParseConstants
     public static final String KEY_SENDER_NAME = "senderName";
     public static final String KEY_FILE_TYPE = "fileType";
     public static final String KEY_CREATED_AT = "createdAt";
+    public static final String CHALLENGE_ID = "challengeId";
 
     public static final String KEY_USER_ID = "userId";
 

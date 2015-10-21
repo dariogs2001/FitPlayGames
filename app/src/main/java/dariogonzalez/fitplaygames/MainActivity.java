@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.firebase.client.Firebase;
 import com.parse.ParseAnalytics;
 import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements TabListener {
         setContentView(R.layout.activity_main);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
+        Firebase.setAndroidContext(this);
         ParseAnalytics.trackAppOpenedInBackground(getIntent());
 
         ParseUser currentUser = ParseUser.getCurrentUser();
