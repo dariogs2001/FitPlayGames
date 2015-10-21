@@ -1,0 +1,27 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:elevation="3dp"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context="dariogonzalez.fitplaygames.SearchFriendsFragment">
+
+    <android.support.v7.widget.SearchView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        app:iconifiedByDefault="false"
+        app:queryHint="@string/search"
+        android:id="@+id/search_friends"/>
+
+    <ListView
+        android:id="@+id/search_results_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@color/secondary_text"
+        android:dividerHeight="1px"
+        android:visibility="gone" />
+
+</LinearLayout>

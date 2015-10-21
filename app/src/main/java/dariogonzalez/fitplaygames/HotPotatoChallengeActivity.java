@@ -1,19 +1,24 @@
 package dariogonzalez.fitplaygames;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TimePicker;
 
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -23,6 +28,7 @@ import com.parse.SaveCallback;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -31,10 +37,12 @@ import dariogonzalez.fitplaygames.classes.ParseConstants;
 public class HotPotatoChallengeActivity extends AppCompatActivity {
 
     private Spinner stepSpinner, startTimeSpinner, startDaySpinner;
-    private ImageButton mAddFriend;
     private EditText mChallengeName;
     private ListView mChallengeFriendsList;
     private String mChallengeId;
+
+    private int mYear, mMonth, mDay, mHour, mMinute;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,60 +54,147 @@ public class HotPotatoChallengeActivity extends AppCompatActivity {
         startDaySpinner = (Spinner) findViewById(R.id.start_day_spinner);
         startTimeSpinner = (Spinner) findViewById(R.id.start_time_spinner);
         stepSpinner = (Spinner) findViewById(R.id.steps_spinner);
-        mAddFriend = (ImageButton) findViewById(R.id.add_friend_button);
 
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this, R.array.challenge_steps_array, android.R.layout.simple_spinner_item);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         stepSpinner.setAdapter(adapter1);
 
         DateFormat dateFormat = new SimpleDateFormat("MM/dd", Locale.getDefault());
-        Date date = new Date();
+        Calendar cal = Calendar.getInstance(Locale.getDefault());
+        cal.add(Calendar.DATE, 1);
+        mYear = cal.get(Calendar.YEAR);
+        mMonth = cal.get(Calendar.MONTH);
+        mDay = cal.get(Calendar.DATE);
+        Date date = cal.getTime();
         ArrayList<String> dateArray = new ArrayList<>();
         dateArray.add(0, dateFormat.format(date));
         ArrayAdapter adapter2 = new ArrayAdapter(this, android.R.layout.simple_spinner_item, dateArray);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         startDaySpinner.setAdapter(adapter2);
 
+        startDaySpinner.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    showDateDialog();
+                    return true;
+                }
+                return true;
+            }
+        });
+
+
         DateFormat dateFormat2 = new SimpleDateFormat("HH:mm a", Locale.getDefault());
-        Date date2 = new Date();
+        Calendar cal2 = Calendar.getInstance(Locale.getDefault());
+        mHour = 6;
+        mMinute = 0;
+        cal2.set(Calendar.HOUR_OF_DAY, mHour);
+        cal2.set(Calendar.MILLISECOND, mMinute);
+        Date date2 = cal2.getTime();
         ArrayList<String> dateArray2 = new ArrayList<>();
         dateArray2.add(0, dateFormat2.format(date2));
         ArrayAdapter adapter3 = new ArrayAdapter(this, android.R.layout.simple_spinner_item, dateArray2);
         adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         startTimeSpinner.setAdapter(adapter3);
 
-
-        mAddFriend.setOnClickListener(new View.OnClickListener() {
+        startTimeSpinner.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                boolean isReady = true;
-                if (mChallengeName.getText().length() == 0 || stepSpinner.getSelectedItem().toString().equals("Select steps"))  isReady = false;
-
-                if (!isReady) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(HotPotatoChallengeActivity.this);
-                    builder.setMessage(R.string.challenge_error_message)
-                            .setTitle(R.string.challenge_error_title)
-                            .setPositiveButton(android.R.string.ok, null);
-
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                    return;
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    showTimeDialog();
+                    return true;
                 }
-
-                if (mChallengeId == null || mChallengeId.length() == 0) {
-                    String challengeName =  mChallengeName.getText().toString();
-                    //Create challenge
-
-                }
-                else
-                {
-                    Intent intent = new Intent(HotPotatoChallengeActivity.this, InviteFriendsActivity.class);
-                    intent.putExtra(ParseConstants.CHALLENGE_CHALLENGE_ID, mChallengeId);
-                    startActivity(intent);
-                }
+                return false;
             }
         });
+
+
+
+//                boolean isReady = true;
+//                if (mChallengeName.getText().length() == 0 || stepSpinner.getSelectedItem().toString().equals("Select steps"))
+//                    isReady = false;
+//
+//                if (!isReady) {
+//                    AlertDialog.Builder builder = new AlertDialog.Builder(HotPotatoChallengeActivity.this);
+//                    builder.setMessage(R.string.challenge_error_message)
+//                            .setTitle(R.string.challenge_error_title)
+//                            .setPositiveButton(android.R.string.ok, null);
+//
+//                    AlertDialog dialog = builder.create();
+//                    dialog.show();
+//                    return;
+//                }
+//
+//                if (mChallengeId == null || mChallengeId.length() == 0) {
+//                    String challengeName = mChallengeName.getText().toString();
+//                    //Create challenge
+//
+//                } else {
+//                    Intent intent = new Intent(HotPotatoChallengeActivity.this, InviteFriendsActivity.class);
+//                    intent.putExtra(ParseConstants.CHALLENGE_CHALLENGE_ID, mChallengeId);
+//                    startActivity(intent);
+//                }
+//            }
     }
+
+
+    public void showDateDialog() {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, datePickerListener, mYear, mMonth, mDay);
+        datePickerDialog.show();
+    }
+
+    private DatePickerDialog.OnDateSetListener datePickerListener
+            = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+            mYear = year;
+            mMonth = month;
+            mDay = day;
+
+            DateFormat dateFormat = new SimpleDateFormat("MM/dd", Locale.getDefault());
+            Calendar cal = Calendar.getInstance(Locale.getDefault());
+            cal.set(Calendar.YEAR, year);
+            cal.set(Calendar.MONTH, month);
+            cal.set(Calendar.DATE, day);
+            Date date = cal.getTime();
+            ArrayList<String> dateArray = new ArrayList<>();
+            dateArray.add(0, dateFormat.format(date));
+            ArrayAdapter adapter2 = new ArrayAdapter(HotPotatoChallengeActivity.this, android.R.layout.simple_spinner_item, dateArray);
+            adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            startDaySpinner.setAdapter(adapter2);
+        }
+    };
+
+    public void showTimeDialog() {
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this, timePickerListener, mHour, mMinute, false);
+        timePickerDialog.show();
+    }
+
+    private TimePickerDialog.OnTimeSetListener timePickerListener
+            = new TimePickerDialog.OnTimeSetListener() {
+        @Override
+        public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+            mHour = hour;
+            mMinute = minute;
+
+            DateFormat dateFormat2 = new SimpleDateFormat("HH:mm a", Locale.getDefault());
+            Calendar cal2 = Calendar.getInstance(Locale.getDefault());
+//            int amOrPm = Calendar.AM;
+//            if (hour > 12) {
+//                hour = hour - 12;
+//                amOrPm = Calendar.PM;
+//            }
+            cal2.set(Calendar.HOUR_OF_DAY, hour);
+            cal2.set(Calendar.MILLISECOND, minute);
+//            cal2.set(Calendar.AM_PM, amOrPm);
+            Date date2 = cal2.getTime();
+            ArrayList<String> dateArray2 = new ArrayList<>();
+            dateArray2.add(0, dateFormat2.format(date2));
+            ArrayAdapter adapter3 = new ArrayAdapter(HotPotatoChallengeActivity.this, android.R.layout.simple_spinner_item, dateArray2);
+            adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            startTimeSpinner.setAdapter(adapter3);
+        }
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

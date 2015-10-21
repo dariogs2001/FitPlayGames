@@ -11,7 +11,7 @@
     android:layout_height="wrap_content"
     android:inputType="text"
     app:iconifiedByDefault="false"
-    app:queryHint="Search friends"
+    app:queryHint="@string/search"
     android:id="@+id/search_friends"/>
 
     <ListView

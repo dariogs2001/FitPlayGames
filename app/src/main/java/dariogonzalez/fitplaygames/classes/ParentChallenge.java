@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParsePushBroadcastReceiver;
 import com.parse.SaveCallback;
 
 import java.lang.reflect.Array;

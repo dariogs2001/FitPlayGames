@@ -147,5 +147,8 @@
     <string name="start_time">Start Time</string>
     <string name="step_goal">Step Goal</string>
     <string name="invite_friends">Invite friends to join!</string>
+    <string name="search">Search</string>
+    <string name="cancel">Cancel</string>
+    <string name="create_game">Create Game</string>
 
 </resources>
