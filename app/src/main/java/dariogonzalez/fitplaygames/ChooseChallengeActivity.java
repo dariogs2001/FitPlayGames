@@ -10,6 +10,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.parse.ParseUser;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,12 +48,12 @@ public class ChooseChallengeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 final ParentChallenge parentChallenge = new ParentChallenge() {
                     @Override
-                    public void sendPushNotification() {
-                        super.sendPushNotification();
+                    public void sendPushNotification(ParseUser user) {
+                        super.sendPushNotification(user);
                     }
 
                 };
-                parentChallenge.sendPushNotification();
+                parentChallenge.sendPushNotification(ParseUser.getCurrentUser());
             }
 
         });

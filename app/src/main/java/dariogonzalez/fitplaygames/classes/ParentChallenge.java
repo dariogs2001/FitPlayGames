@@ -70,17 +70,17 @@ public abstract class ParentChallenge {
 
     // This method will do the sending of push notifications to the other players (playerIds)
     // This could be for inviting, starting, ending etc.
-    public void sendPushNotification(/*String challengeId, String message*/) {
+    public void sendPushNotification(/*String challengeId, String message*/ParseUser user) {
 // Associate the device with a user
         ParseInstallation installation = ParseInstallation.getCurrentInstallation();
-        installation.put("user",ParseUser.getCurrentUser());
+        installation.put("user", user);
         //installation.put(ParseConstants.CHALLENGE_ID,challengeId);
         installation.saveInBackground();
 
 // Create our Installation query
         ParseQuery pushQuery = ParseInstallation.getQuery();
         //pushQuery.whereEqualTo("challengeId", challengeId);
-        pushQuery.whereEqualTo("user", ParseUser.getCurrentUser());
+        pushQuery.whereEqualTo("user", user);
 
 // Send push notification to query
         ParsePush push = new ParsePush();
@@ -167,7 +167,7 @@ public abstract class ParentChallenge {
             mainPushMessage = endChallengeMessage; */
         /* if(ending challenge)
             mainPushMessage = inviteChallengeMessage; */
-        sendPushNotification(/*playerId, mainPushMessage*/);
+//        sendPushNotification(/*playerId, mainPushMessage*/);
     }
 
     // To be called by children classes

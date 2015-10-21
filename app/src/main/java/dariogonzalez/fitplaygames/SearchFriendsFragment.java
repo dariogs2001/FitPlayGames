@@ -201,4 +201,8 @@ public class SearchFriendsFragment extends Fragment {
         });
     }
 
+    public List<UserListItem> getSelectedFriends() {
+        return mFriendList;
+    }
+
 }

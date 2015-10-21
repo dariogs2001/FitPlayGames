@@ -6,6 +6,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -23,6 +24,7 @@ import android.widget.TimePicker;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.text.DateFormat;
@@ -30,9 +32,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
+import dariogonzalez.fitplaygames.classes.ParentChallenge;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
+import dariogonzalez.fitplaygames.classes.UserListItem;
 
 public class HotPotatoChallengeActivity extends AppCompatActivity {
 
@@ -41,6 +46,7 @@ public class HotPotatoChallengeActivity extends AppCompatActivity {
     private ListView mChallengeFriendsList;
     private String mChallengeId;
     private Button mCreateGameButton, mCancelButton;
+    private SearchFriendsFragment mSearchFriendsFragment;
 
     private int mYear, mMonth, mDay, mHour, mMinute;
 
@@ -58,9 +64,13 @@ public class HotPotatoChallengeActivity extends AppCompatActivity {
         mCreateGameButton = (Button) findViewById(R.id.create_game_button);
         mCancelButton = (Button) findViewById(R.id.cancel_button);
 
+
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this, R.array.challenge_steps_array, android.R.layout.simple_spinner_item);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         stepSpinner.setAdapter(adapter1);
+
+        mSearchFriendsFragment = (SearchFriendsFragment) getFragmentManager().findFragmentById(R.id.search_friends_fragment);
+
 
         DateFormat dateFormat = new SimpleDateFormat("MM/dd", Locale.getDefault());
         Calendar cal = Calendar.getInstance(Locale.getDefault());
@@ -115,6 +125,29 @@ public class HotPotatoChallengeActivity extends AppCompatActivity {
         mCreateGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                List<UserListItem> selectedFriends = mSearchFriendsFragment.getSelectedFriends();
+                final ParentChallenge parentChallenge = new ParentChallenge() {
+                    @Override
+                    public void sendPushNotification(ParseUser user) {
+                        super.sendPushNotification(user);
+                    }
+
+                };
+
+                if (selectedFriends.size() > 0) {
+                    for(int i = 0; i < selectedFriends.size(); i++) {
+                        ParseUser user;
+                        if (selectedFriends.get(i).getmFriendObject().getUsername().equals(ParseUser.getCurrentUser().getUsername())) {
+                            user = selectedFriends.get(i).getmUserObject();
+                        }
+                        else {
+                            user = selectedFriends.get(i).getmFriendObject();
+                        }
+                        parentChallenge.sendPushNotification(user);
+                    }
+                }
+
                 boolean isReady = true;
                 if (mChallengeName.getText().length() == 0 || stepSpinner.getSelectedItem().toString().equals("Select steps"))
                     isReady = false;
