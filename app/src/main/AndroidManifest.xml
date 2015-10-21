@@ -105,7 +105,8 @@
         <activity
             android:name=".HotPotatoChallengeActivity"
             android:label="@string/title_activity_hot_potato_challenge"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustNothing">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="dariogonzalez.fitplaygames.HotPotatoChallengeActivity" />

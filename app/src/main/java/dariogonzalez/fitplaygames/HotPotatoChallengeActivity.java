@@ -40,6 +40,7 @@ public class HotPotatoChallengeActivity extends AppCompatActivity {
     private EditText mChallengeName;
     private ListView mChallengeFriendsList;
     private String mChallengeId;
+    private Button mCreateGameButton, mCancelButton;
 
     private int mYear, mMonth, mDay, mHour, mMinute;
 
@@ -54,6 +55,8 @@ public class HotPotatoChallengeActivity extends AppCompatActivity {
         startDaySpinner = (Spinner) findViewById(R.id.start_day_spinner);
         startTimeSpinner = (Spinner) findViewById(R.id.start_time_spinner);
         stepSpinner = (Spinner) findViewById(R.id.steps_spinner);
+        mCreateGameButton = (Button) findViewById(R.id.create_game_button);
+        mCancelButton = (Button) findViewById(R.id.cancel_button);
 
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this, R.array.challenge_steps_array, android.R.layout.simple_spinner_item);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -109,32 +112,37 @@ public class HotPotatoChallengeActivity extends AppCompatActivity {
         });
 
 
+        mCreateGameButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean isReady = true;
+                if (mChallengeName.getText().length() == 0 || stepSpinner.getSelectedItem().toString().equals("Select steps"))
+                    isReady = false;
 
-//                boolean isReady = true;
-//                if (mChallengeName.getText().length() == 0 || stepSpinner.getSelectedItem().toString().equals("Select steps"))
-//                    isReady = false;
-//
-//                if (!isReady) {
-//                    AlertDialog.Builder builder = new AlertDialog.Builder(HotPotatoChallengeActivity.this);
-//                    builder.setMessage(R.string.challenge_error_message)
-//                            .setTitle(R.string.challenge_error_title)
-//                            .setPositiveButton(android.R.string.ok, null);
-//
-//                    AlertDialog dialog = builder.create();
-//                    dialog.show();
-//                    return;
-//                }
-//
-//                if (mChallengeId == null || mChallengeId.length() == 0) {
-//                    String challengeName = mChallengeName.getText().toString();
-//                    //Create challenge
-//
-//                } else {
-//                    Intent intent = new Intent(HotPotatoChallengeActivity.this, InviteFriendsActivity.class);
-//                    intent.putExtra(ParseConstants.CHALLENGE_CHALLENGE_ID, mChallengeId);
-//                    startActivity(intent);
-//                }
-//            }
+                if (!isReady) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(HotPotatoChallengeActivity.this);
+                    builder.setMessage(R.string.challenge_error_message)
+                            .setTitle(R.string.challenge_error_title)
+                            .setPositiveButton(android.R.string.ok, null);
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                    return;
+                }
+
+                if (mChallengeId == null || mChallengeId.length() == 0) {
+                    String challengeName = mChallengeName.getText().toString();
+                    //Create challenge
+
+                } else {
+                    Intent intent = new Intent(HotPotatoChallengeActivity.this, InviteFriendsActivity.class);
+                    intent.putExtra(ParseConstants.CHALLENGE_CHALLENGE_ID, mChallengeId);
+                    startActivity(intent);
+                }
+            }
+        });
+
+
     }
 
 

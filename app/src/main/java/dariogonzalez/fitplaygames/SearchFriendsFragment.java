@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import dariogonzalez.fitplaygames.Adapters.UserRowAdapter;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
@@ -29,7 +31,9 @@ import dariogonzalez.fitplaygames.classes.UserListItem;
 
 public class SearchFriendsFragment extends Fragment {
     private List<UserListItem> mFriendList = new ArrayList<UserListItem>();
+    private List<UserListItem> mQueriedFriendList = new ArrayList<>();
     private ListView friendsResultListView;
+    ArrayAdapter<UserListItem> adapter;
 
     public static SearchFriendsFragment newInstance() {
         SearchFriendsFragment fragment = new SearchFriendsFragment();
@@ -48,12 +52,55 @@ public class SearchFriendsFragment extends Fragment {
         final View rootView = inflater.inflate(R.layout.fragment_search_friends, container, false);
 
         friendsResultListView = (ListView) rootView.findViewById(R.id.search_results_list_view);
+        android.support.v7.widget.SearchView searchView = (android.support.v7.widget.SearchView) rootView.findViewById(R.id.search_friends);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if (query.length() > 0) {
+                    updateList(query);
+                }
+                else {
+                    populateListView(mFriendList);
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (newText.length() > 0) {
+                    updateList(newText);
+                }
+                else {
+                    populateListView(mFriendList);
+                }
+                return false;
+            }
+        });
 
 
         getFriendData();
         // Inflate the layout for this fragment
         return rootView;
     }
+
+    private void updateList(String queryText) {
+        mQueriedFriendList.clear();
+        if(mFriendList.size() > 0)
+        {
+            for(int i = 0; i < mFriendList.size(); i++)
+            {
+                Locale locale = Locale.getDefault();
+                // Prefix is whatever the user has entered into the edittext. It will check lower/upper case names and check conf number
+                if(mFriendList.get(i).getmFriendObject().get(ParseConstants.USER_USERNAME).toString().contains(queryText) || mFriendList.get(i).getmFriendObject().get(ParseConstants.USER_USERNAME).toString().toLowerCase().contains(queryText))
+                {
+                    mQueriedFriendList.add(mFriendList.get(i));
+                }
+            }
+            populateListView(mQueriedFriendList);
+        }
+    }
+
 
     private void getFriendData() {
         if (mFriendList!= null && mFriendList.size() == 0) {
@@ -130,36 +177,26 @@ public class SearchFriendsFragment extends Fragment {
                             } catch (ParseException ex) {
                             }
                         }
-                        populateListView();
+                        populateListView(mFriendList);
                     }
                 });
             }
         }
         else {
-            populateListView();
+            populateListView(mFriendList);
         }
     }
 
-    private void populateListView() {
-        friendsResultListView.setVisibility(View.VISIBLE);
+    private void populateListView(List<UserListItem> list) {
         boolean isInvite = false;
-        ArrayAdapter<UserListItem> adapter = new UserRowAdapter(getActivity(), R.layout.row_user, mFriendList, isInvite);
+        adapter = new UserRowAdapter(getActivity(), R.layout.row_user, list, isInvite);
+
+        friendsResultListView.setVisibility(View.VISIBLE);
         friendsResultListView.setAdapter(adapter);
         friendsResultListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), UserProfileActivity.class);
-                Bundle extras = new Bundle();
-                // Parse friend object Id
-                extras.putString("userId", mFriendList.get(position).getmFriendObject().getObjectId());
-                extras.putString("username", mFriendList.get(position).getmFriendObject().getUsername());
-                boolean isFriend = false;
-                if (mFriendList.get(position).getmFriendStatusId() == ParseConstants.FRIEND_STATUS_ACCEPTED) {
-                    isFriend = true;
-                }
-                extras.putBoolean("isFriend", isFriend);
-                intent.putExtras(extras);
-                startActivity(intent);
+
             }
         });
     }

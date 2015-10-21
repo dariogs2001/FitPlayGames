@@ -5,166 +5,160 @@
     tools:context="dariogonzalez.fitplaygames.HotPotatoChallengeActivity"
     android:background="@color/very_light_grey">
 
-    <ScrollView
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="6dp"
+            android:elevation="3dp"
+            android:background="@color/white"
             android:orientation="vertical">
-
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="6dp"
-                android:elevation="3dp"
-                android:background="@color/white"
-                android:orientation="vertical">
+                android:orientation="horizontal">
 
-                <LinearLayout
+                <dariogonzalez.fitplaygames.utils.RoundedImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_user"
+                    android:layout_margin="10dp"/>
+
+                <EditText
+                    android:id="@+id/challenge_name_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="15dp"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="22sp"/>
 
-                    <dariogonzalez.fitplaygames.utils.RoundedImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:src="@drawable/ic_user"
-                        android:layout_margin="10dp"/>
+            </LinearLayout>
 
-                    <EditText
-                        android:id="@+id/challenge_name_edit_text"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:layout_margin="3dp"
+                    android:padding="6dp"
+                    android:clipToPadding="false">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/start_day"
+                        android:layout_gravity="center_horizontal"
+                        android:textColor="@color/divider_color"
+                        android:textSize="13sp"/>
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="15dp"
-                        android:textColor="@color/secondary_text"
-                        android:textSize="22sp"/>
+                        android:orientation="vertical">
+
+                        <Spinner
+                            android:id="@+id/start_day_spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/secondary_text"
+                            android:textSize="18sp"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/divider_color"/>
+
+                    </LinearLayout>
+
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="8dp">
+                    android:orientation="vertical"
+                    android:layout_weight="1.2"
+                    android:layout_marginTop="3dp"
+                    android:padding="6dp"
+                    android:clipToPadding="false">
 
-                    <LinearLayout
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_weight="1"
-                        android:layout_margin="3dp"
-                        android:padding="6dp"
-                        android:clipToPadding="false">
+                        android:text="@string/start_time"
+                        android:layout_gravity="center_horizontal"
+                        android:textColor="@color/divider_color"
+                        android:textSize="13sp"/>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/start_day"
-                            android:layout_gravity="center_horizontal"
-                            android:textColor="@color/divider_color"
-                            android:textSize="13sp"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
-                        <LinearLayout
+                        <Spinner
+                            android:id="@+id/start_time_spinner"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                            android:textColor="@color/secondary_text"
+                            android:textSize="18sp"/>
 
-                            <Spinner
-                                android:id="@+id/start_day_spinner"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/secondary_text"
-                                android:textSize="18sp"/>
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:background="@color/divider_color"/>
-
-                        </LinearLayout>
-
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/divider_color"/>
 
                     </LinearLayout>
 
-                    <LinearLayout
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:layout_margin="3dp"
+                    android:padding="6dp"
+                    android:clipToPadding="false">
+
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_weight="1.2"
-                        android:layout_marginTop="3dp"
-                        android:padding="6dp"
-                        android:clipToPadding="false">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/start_time"
-                            android:layout_gravity="center_horizontal"
-                            android:textColor="@color/divider_color"
-                            android:textSize="13sp"/>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <Spinner
-                                android:id="@+id/start_time_spinner"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/secondary_text"
-                                android:textSize="18sp"/>
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:background="@color/divider_color"/>
-
-                        </LinearLayout>
-
-
-                    </LinearLayout>
+                        android:text="@string/step_goal"
+                        android:layout_gravity="center_horizontal"
+                        android:textColor="@color/divider_color"
+                        android:textSize="13sp"/>
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_weight="1"
-                        android:layout_margin="3dp"
-                        android:padding="6dp"
-                        android:clipToPadding="false">
+                        android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/step_goal"
-                            android:layout_gravity="center_horizontal"
-                            android:textColor="@color/divider_color"
-                            android:textSize="13sp"/>
-
-                        <LinearLayout
+                        <Spinner
+                            android:id="@+id/steps_spinner"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                            android:textColor="@color/secondary_text"
+                            android:textSize="18sp"/>
 
-                            <Spinner
-                                android:id="@+id/steps_spinner"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/secondary_text"
-                                android:textSize="18sp"/>
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:background="@color/divider_color"/>
-
-                        </LinearLayout>
-
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/divider_color"/>
 
                     </LinearLayout>
 
@@ -174,17 +168,19 @@
 
             </LinearLayout>
 
-            <fragment
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/search_friends_fragment"
-                android:layout_margin="6dp"
-                android:name="dariogonzalez.fitplaygames.SearchFriendsFragment"
-                xmlns:android="http://schemas.android.com/apk/res/android"/>
 
         </LinearLayout>
 
-    </ScrollView>
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/search_friends_fragment"
+            android:layout_margin="6dp"
+            android:name="dariogonzalez.fitplaygames.SearchFriendsFragment"
+            xmlns:android="http://schemas.android.com/apk/res/android"/>
+
+    </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -194,6 +190,7 @@
         android:padding="16dp">
 
         <Button
+            android:id="@+id/create_game_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="6dp"
@@ -204,6 +201,7 @@
             android:background="@color/light_gray"/>
 
         <Button
+            android:id="@+id/cancel_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="6dp"
