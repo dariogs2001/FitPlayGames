@@ -145,6 +145,10 @@
             </intent-filter>
         </receiver>
         <meta-data android:name="com.parse.push.notification_icon" android:resource="@drawable/ic_notify_small"/>
+
+        <receiver android:name=".AlarmManager.AlarmReceiver" />
+        <service android:name=".AlarmManager.SchedulingService" />
+
     </application>
 
 </manifest>

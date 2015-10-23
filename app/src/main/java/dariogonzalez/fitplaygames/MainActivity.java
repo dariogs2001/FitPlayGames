@@ -21,6 +21,8 @@ import com.squareup.picasso.Picasso;
 
 import java.io.InputStream;
 
+import dariogonzalez.fitplaygames.AlarmManager.AlarmReceiver;
+
 
 public class MainActivity extends AppCompatActivity implements TabListener {
 
@@ -41,6 +43,8 @@ public class MainActivity extends AppCompatActivity implements TabListener {
      */
     ViewPager mViewPager;
 
+    private AlarmReceiver mAlarmReceiver;
+
     private void navigateToLogin() {
         Intent intent = new Intent(this, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -56,6 +60,9 @@ public class MainActivity extends AppCompatActivity implements TabListener {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         Firebase.setAndroidContext(this);
         ParseAnalytics.trackAppOpenedInBackground(getIntent());
+
+//        mAlarmReceiver = new AlarmReceiver();
+//        mAlarmReceiver.setAlarm(this);
 
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser == null) {
