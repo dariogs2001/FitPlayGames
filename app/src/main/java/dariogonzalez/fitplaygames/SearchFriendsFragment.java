@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import dariogonzalez.fitplaygames.Adapters.ChallengeInviteAdapter;
 import dariogonzalez.fitplaygames.Adapters.UserRowAdapter;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
 import dariogonzalez.fitplaygames.classes.UserListItem;
@@ -189,20 +191,23 @@ public class SearchFriendsFragment extends Fragment {
 
     private void populateListView(List<UserListItem> list) {
         boolean isInvite = false;
-        adapter = new UserRowAdapter(getActivity(), R.layout.row_user, list, isInvite);
+        adapter = new ChallengeInviteAdapter(getActivity(), R.layout.row_challenge_invite, list);
 
         friendsResultListView.setVisibility(View.VISIBLE);
         friendsResultListView.setAdapter(adapter);
-        friendsResultListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-            }
-        });
     }
 
     public List<UserListItem> getSelectedFriends() {
-        return mFriendList;
+        List<UserListItem> selectedItems = new ArrayList<>();
+
+        for (int i = 0; i < mFriendList.size(); i++) {
+            UserListItem user = adapter.getItem(i);
+            if (user.getChecked()) {
+                selectedItems.add(user);
+            }
+        }
+
+        return selectedItems;
     }
 
 }

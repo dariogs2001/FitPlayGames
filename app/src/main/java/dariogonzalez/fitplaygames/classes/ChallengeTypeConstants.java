@@ -5,7 +5,7 @@ package dariogonzalez.fitplaygames.classes;
  * This class is used to store the game types that are used in the parse column for games
  */
 public class ChallengeTypeConstants {
-    private static final int HOT_POTATO = 0;
+    public static final int HOT_POTATO = 0;
 
 
     public static String getChallengeName(int gameType) {

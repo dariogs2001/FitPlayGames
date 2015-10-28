@@ -47,12 +47,9 @@ public abstract class ParentChallenge {
     private String inviteChallengeMessage; // A push message to be sent when a user gets invited to a challenge
     private String mainPushMessage = ""; // This is the message that will be sent as a push notification
 
-    public ParentChallenge(int challengeType) {
-        this.challengeType = challengeType;
-    }
-
-    public ParentChallenge(String challengeId) {
-        // TODO: Get challengeobject from challenge
+    public void initialize() {
+        playerIds = new ArrayList<>();
+        activePlayers = new ArrayList<>();
     }
 
     public ParentChallenge() {}
@@ -160,7 +157,7 @@ public abstract class ParentChallenge {
     public void sendInvitation(String playerId) {
         startChallengeMessage = "[ChallengeName] has started";
         endChallengeMessage = "[ChallengeName] has ended";
-        inviteChallengeMessage = "[username] has invited you to play to play [ChallengeName]";
+        inviteChallengeMessage = "[username] has invited you to play to play " + ChallengeTypeConstants.getChallengeName(getChallengeType());
         /*if(starting challenge)
            mainPushMessage = startChallengeMessage; */
         /* if(inviting challenge )
