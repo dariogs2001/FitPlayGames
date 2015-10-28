@@ -12,6 +12,7 @@ public class UserListItem {
     private Uri mImageUri;
     private long mSteps;
     private int mGamesPlayed;
+    private boolean mChecked = false;
 
     private ParseUser mUserObject;
     private ParseUser mFriendObject;
@@ -93,5 +94,13 @@ public class UserListItem {
 
     public void setmUserFriendId(String mUserFriendId) {
         this.mUserFriendId = mUserFriendId;
+    }
+
+    public void setChecked(Boolean checked) {
+        this.mChecked = checked;
+    }
+
+    public boolean getChecked() {
+        return this.mChecked;
     }
 }

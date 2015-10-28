@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,6 +36,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import dariogonzalez.fitplaygames.classes.ChallengeTypeConstants;
+import dariogonzalez.fitplaygames.classes.HotPotatoChallenge;
 import dariogonzalez.fitplaygames.classes.ParentChallenge;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
 import dariogonzalez.fitplaygames.classes.UserListItem;
@@ -47,6 +50,7 @@ public class HotPotatoChallengeActivity extends AppCompatActivity {
     private String mChallengeId;
     private Button mCreateGameButton, mCancelButton;
     private SearchFriendsFragment mSearchFriendsFragment;
+    private HotPotatoChallenge mHotPotatoChallenge;
 
     private int mYear, mMonth, mDay, mHour, mMinute;
 
@@ -56,6 +60,8 @@ public class HotPotatoChallengeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hot_potato_challenge);
 
+        mHotPotatoChallenge = new HotPotatoChallenge(ChallengeTypeConstants.HOT_POTATO);
+
 
         mChallengeName = (EditText) findViewById(R.id.challenge_name_edit_text);
         startDaySpinner = (Spinner) findViewById(R.id.start_day_spinner);
@@ -63,6 +69,10 @@ public class HotPotatoChallengeActivity extends AppCompatActivity {
         stepSpinner = (Spinner) findViewById(R.id.steps_spinner);
         mCreateGameButton = (Button) findViewById(R.id.create_game_button);
         mCancelButton = (Button) findViewById(R.id.cancel_button);
+
+
+        mChallengeName.setText(mHotPotatoChallenge.getDefaultChallengeName());
+        mChallengeName.setSelection(mChallengeName.getText().length(), mChallengeName.getText().length());
 
 
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this, R.array.challenge_steps_array, android.R.layout.simple_spinner_item);
@@ -127,29 +137,21 @@ public class HotPotatoChallengeActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 List<UserListItem> selectedFriends = mSearchFriendsFragment.getSelectedFriends();
-                final ParentChallenge parentChallenge = new ParentChallenge() {
-                    @Override
-                    public void sendPushNotification(ParseUser user) {
-                        super.sendPushNotification(user);
-                    }
-
-                };
 
                 if (selectedFriends.size() > 0) {
-                    for(int i = 0; i < selectedFriends.size(); i++) {
+                    for (int i = 0; i < selectedFriends.size(); i++) {
                         ParseUser user;
                         if (selectedFriends.get(i).getmFriendObject().getUsername().equals(ParseUser.getCurrentUser().getUsername())) {
                             user = selectedFriends.get(i).getmUserObject();
-                        }
-                        else {
+                        } else {
                             user = selectedFriends.get(i).getmFriendObject();
                         }
-                        parentChallenge.sendPushNotification(user);
+                        mHotPotatoChallenge.sendPushNotification(user);
                     }
                 }
 
                 boolean isReady = true;
-                if (mChallengeName.getText().length() == 0 || stepSpinner.getSelectedItem().toString().equals("Select steps"))
+                if (mChallengeName.getText().length() < 1 || stepSpinner.getSelectedItemPosition() == 0)
                     isReady = false;
 
                 if (!isReady) {
@@ -166,12 +168,21 @@ public class HotPotatoChallengeActivity extends AppCompatActivity {
                 if (mChallengeId == null || mChallengeId.length() == 0) {
                     String challengeName = mChallengeName.getText().toString();
                     //Create challenge
-
+                    mHotPotatoChallenge.createChallenge(ParseUser.getCurrentUser().getObjectId(), mChallengeName.getText().toString(), Integer.parseInt(stepSpinner.getSelectedItem().toString()), new Date(1446003440060L), mHotPotatoChallenge.generateRandomEndDate(0, 0));
+                    Intent intent = new Intent(HotPotatoChallengeActivity.this, MainActivity.class);
+                    startActivity(intent);
                 } else {
                     Intent intent = new Intent(HotPotatoChallengeActivity.this, InviteFriendsActivity.class);
                     intent.putExtra(ParseConstants.CHALLENGE_CHALLENGE_ID, mChallengeId);
                     startActivity(intent);
                 }
+            }
+        });
+
+        mCancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavUtils.navigateUpFromSameTask(HotPotatoChallengeActivity.this);
             }
         });
 
