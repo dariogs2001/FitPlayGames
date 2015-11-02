@@ -70,6 +70,7 @@ public final class ParseConstants
     public static final String CHALLENGE_PLAYER_DATE_JOINED = "DateJoined";
     public static final String CHALLENGE_PLAYER_USER_ID = "UserObject";
     public static final String CHALLENGE_PLAYER_CHALLENGE_ID = "ChallengeObject";
+    public static final String CHALLENGE_PLAYER_OWNER = "IsOwner";
 
 
 

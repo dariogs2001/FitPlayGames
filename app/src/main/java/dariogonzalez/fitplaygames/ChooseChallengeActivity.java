@@ -3,8 +3,6 @@ package dariogonzalez.fitplaygames;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,7 +13,6 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.List;
 
-import dariogonzalez.fitplaygames.Adapters.ChallengeRecyclerViewAdapter;
 import dariogonzalez.fitplaygames.classes.ParentChallenge;
 
 public class ChooseChallengeActivity extends AppCompatActivity {
@@ -37,7 +34,7 @@ public class ChooseChallengeActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ChooseChallengeActivity.this, HotPotatoChallengeActivity.class);
+                Intent intent = new Intent(ChooseChallengeActivity.this, HotPotatoCreateActivity.class);
                 startActivity(intent);
             }
         });

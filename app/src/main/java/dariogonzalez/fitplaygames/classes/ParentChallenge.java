@@ -95,6 +95,11 @@ public abstract class ParentChallenge {
     }
 
     public void createChallenge(final String userId, String challengeName, int stepsGoal, Date startDate, Date endDate) {
+        this.userChallengeName = challengeName;
+        this.stepsGoal = stepsGoal;
+        this.startDate = startDate;
+        this.endDate = endDate;
+
         challengeObject = new ParseObject(ParseConstants.CLASS_CHALLENGES);
         challengeObject.put(ParseConstants.CHALLENGE_CHALLENGE_NAME, challengeName);
         challengeObject.put(ParseConstants.CHALLENGE_CHALLENGE_TYPE, challengeType);
@@ -111,6 +116,7 @@ public abstract class ParentChallenge {
                     challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_STATUS, ParseConstants.CHALLENGE_PLAYER_STATUS_PENDING);
                     challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_USER_ID, userId);
                     challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID, challengeObject.getObjectId());
+                    challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_OWNER, true);
                     challengePlayer.saveInBackground();
 
                     createChallengePlayers(challengeObject.getObjectId());

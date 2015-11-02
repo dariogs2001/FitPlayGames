@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -16,17 +15,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 
-import com.parse.Parse;
-import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -38,11 +31,10 @@ import java.util.Locale;
 
 import dariogonzalez.fitplaygames.classes.ChallengeTypeConstants;
 import dariogonzalez.fitplaygames.classes.HotPotatoChallenge;
-import dariogonzalez.fitplaygames.classes.ParentChallenge;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
 import dariogonzalez.fitplaygames.classes.UserListItem;
 
-public class HotPotatoChallengeActivity extends AppCompatActivity {
+public class HotPotatoCreateActivity extends AppCompatActivity {
 
     private Spinner stepSpinner, startTimeSpinner, startDaySpinner;
     private EditText mChallengeName;
@@ -58,7 +50,7 @@ public class HotPotatoChallengeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_hot_potato_challenge);
+        setContentView(R.layout.activity_hot_potato_create);
 
         mHotPotatoChallenge = new HotPotatoChallenge(ChallengeTypeConstants.HOT_POTATO);
 
@@ -155,7 +147,7 @@ public class HotPotatoChallengeActivity extends AppCompatActivity {
                     isReady = false;
 
                 if (!isReady) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(HotPotatoChallengeActivity.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(HotPotatoCreateActivity.this);
                     builder.setMessage(R.string.challenge_error_message)
                             .setTitle(R.string.challenge_error_title)
                             .setPositiveButton(android.R.string.ok, null);
@@ -169,10 +161,13 @@ public class HotPotatoChallengeActivity extends AppCompatActivity {
                     String challengeName = mChallengeName.getText().toString();
                     //Create challenge
                     mHotPotatoChallenge.createChallenge(ParseUser.getCurrentUser().getObjectId(), mChallengeName.getText().toString(), Integer.parseInt(stepSpinner.getSelectedItem().toString()), new Date(1446003440060L), mHotPotatoChallenge.generateRandomEndDate(0, 0));
-                    Intent intent = new Intent(HotPotatoChallengeActivity.this, MainActivity.class);
+                    Intent intent = new Intent(HotPotatoCreateActivity.this, HotPotatoDetailsActivity.class);
+                    Bundle extras = new Bundle();
+                    extras.putParcelable("game-details", mHotPotatoChallenge);
+                    intent.putExtras(extras);
                     startActivity(intent);
                 } else {
-                    Intent intent = new Intent(HotPotatoChallengeActivity.this, InviteFriendsActivity.class);
+                    Intent intent = new Intent(HotPotatoCreateActivity.this, InviteFriendsActivity.class);
                     intent.putExtra(ParseConstants.CHALLENGE_CHALLENGE_ID, mChallengeId);
                     startActivity(intent);
                 }
@@ -182,7 +177,7 @@ public class HotPotatoChallengeActivity extends AppCompatActivity {
         mCancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NavUtils.navigateUpFromSameTask(HotPotatoChallengeActivity.this);
+                NavUtils.navigateUpFromSameTask(HotPotatoCreateActivity.this);
             }
         });
 
@@ -211,7 +206,7 @@ public class HotPotatoChallengeActivity extends AppCompatActivity {
             Date date = cal.getTime();
             ArrayList<String> dateArray = new ArrayList<>();
             dateArray.add(0, dateFormat.format(date));
-            ArrayAdapter adapter2 = new ArrayAdapter(HotPotatoChallengeActivity.this, android.R.layout.simple_spinner_item, dateArray);
+            ArrayAdapter adapter2 = new ArrayAdapter(HotPotatoCreateActivity.this, android.R.layout.simple_spinner_item, dateArray);
             adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             startDaySpinner.setAdapter(adapter2);
         }
@@ -242,7 +237,7 @@ public class HotPotatoChallengeActivity extends AppCompatActivity {
             Date date2 = cal2.getTime();
             ArrayList<String> dateArray2 = new ArrayList<>();
             dateArray2.add(0, dateFormat2.format(date2));
-            ArrayAdapter adapter3 = new ArrayAdapter(HotPotatoChallengeActivity.this, android.R.layout.simple_spinner_item, dateArray2);
+            ArrayAdapter adapter3 = new ArrayAdapter(HotPotatoCreateActivity.this, android.R.layout.simple_spinner_item, dateArray2);
             adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             startTimeSpinner.setAdapter(adapter3);
         }

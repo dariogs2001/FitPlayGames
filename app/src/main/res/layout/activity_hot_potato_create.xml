@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="dariogonzalez.fitplaygames.HotPotatoChallengeActivity"
+    tools:context="dariogonzalez.fitplaygames.HotPotatoCreateActivity"
     android:background="@color/very_light_grey">
 
 
