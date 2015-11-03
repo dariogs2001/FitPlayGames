@@ -13,7 +13,9 @@ import android.widget.Button;
 import dariogonzalez.fitplaygames.FrameLayout.ChallengeFrameLayout;
 import dariogonzalez.fitplaygames.classes.FitbitAccountInfo;
 import dariogonzalez.fitplaygames.classes.NamesIds;
+import dariogonzalez.fitplaygames.classes.ParseConstants;
 import dariogonzalez.fitplaygames.utils.ComplexPreferences;
+import dariogonzalez.fitplaygames.utils.Utils;
 
 /**
  * A simple {@link Fragment} subclass.

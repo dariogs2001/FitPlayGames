@@ -41,6 +41,7 @@ import dariogonzalez.fitplaygames.classes.ParseConstants;
 import dariogonzalez.fitplaygames.dialogs.FullImageDialog;
 import dariogonzalez.fitplaygames.utils.FileHelper;
 import dariogonzalez.fitplaygames.utils.RoundedImageView;
+import dariogonzalez.fitplaygames.utils.Utils;
 
 
 /**
@@ -110,6 +111,9 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
                 myFirebaseRef.child("message").setValue("Do you have data? You'll love Firebase.");
             }
         });
+
+        Utils.trackData(MainProfileFragment.class.getSimpleName(), ParseConstants.KEY_ANALYTICS_PROFILE);
+
         return view;
     }
 
