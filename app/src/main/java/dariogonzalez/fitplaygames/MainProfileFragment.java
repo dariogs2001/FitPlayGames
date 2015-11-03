@@ -101,15 +101,19 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
                 fabAddFriend.setVisibility(View.GONE);
                 fabMessageFriend.setVisibility(View.VISIBLE);
             }
+
+        if(fabMessageFriend != null) {
+            fabMessageFriend.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getActivity(), MainChatActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
         }
 
-        fabMessageFriend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Firebase myFirebaseRef = new Firebase("https://fitplaygames.firebaseio.com/");
-                myFirebaseRef.child("message").setValue("Do you have data? You'll love Firebase.");
-            }
-        });
+
         return view;
     }
 
