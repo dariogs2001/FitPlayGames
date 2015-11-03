@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dariogonzalez.fitplaygames.classes.ParentChallenge;
+import dariogonzalez.fitplaygames.classes.ParseConstants;
+import dariogonzalez.fitplaygames.utils.Utils;
 
 public class ChooseChallengeActivity extends AppCompatActivity {
 
@@ -54,6 +56,8 @@ public class ChooseChallengeActivity extends AppCompatActivity {
             }
 
         });
+
+        Utils.trackData(ChooseChallengeActivity.class.getSimpleName(), ParseConstants.KEY_ANALYTICS_NEW_GAME);
     }
 
     @Override

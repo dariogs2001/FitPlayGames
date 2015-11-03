@@ -95,4 +95,15 @@ public final class ParseConstants
     public static int CHALLENGE_PLAYER_STATUS_DECLINED = 2;
     /********************************************************************************************/
 
+
+    /*******************PARSE.COM ANALYTICS******************************************************/
+    public static String KEY_ANALYTICS_MAIN_ACTIVITY = "MainActivity";
+    public static String KEY_ANALYTICS_PROFILE = "Profile";
+    public static String KEY_ANALYTICS_NEW_GAME = "SelectNewGame";
+    public static String KEY_ANALYTICS_NEW_GAME_HOT_POTATO = "CreateGameHotPotato";
+    public static String KEY_ANALYTICS_CANCEL_GAME_HOT_POTATO = "CancelGameHotPotato";
+    public static String KEY_ANALYTICS_HELP_HOT_POTATO = "HelpGameHotPotato";
+
+    /********************************************************************************************/
+
 }
