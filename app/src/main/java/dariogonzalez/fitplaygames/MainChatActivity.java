@@ -114,7 +114,7 @@ public class MainChatActivity extends ListActivity {
     private void setupUsername() {
         ParseUser user = ParseUser.getCurrentUser();
         SharedPreferences prefs = getApplication().getSharedPreferences("ChatPrefs", 0);
-        mUsername = prefs.getString("username", null);
+        mUsername = user.getUsername();
         if (mUsername == null) {
             Random r = new Random();
             // Assign a random user name if we don't have one saved.

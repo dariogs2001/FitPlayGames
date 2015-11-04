@@ -239,6 +239,7 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
         userSteps.setText(steps);
     }
 
+
     protected DialogInterface.OnClickListener mDialogListener;
     {
         mDialogListener = new DialogInterface.OnClickListener() {

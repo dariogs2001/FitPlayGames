@@ -123,6 +123,10 @@
              android:name="android.support.PARENT_ACTIVITY"
              android:value="dariogonzalez.fitplaygames.SearchFriendActivity" />
         </activity>
+        <activity
+            android:name=".MainChatActivity"
+            android:label="@string/title_activity_main_chat" >
+        </activity>
 
         <service android:name="com.parse.PushService" />
         <receiver android:name="dariogonzalez.fitplaygames.Receiver.CustomPushReceiver"
