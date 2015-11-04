@@ -40,7 +40,8 @@ public class ChallengeHeaderFrameLayout extends LinearLayout {
     {
         mView = View.inflate(context, R.layout.challenge_header, this);
         mChallengeType = (TextView) mView.findViewById(R.id.challenge_type);
-        mChallengeViewMore = (ImageView) mView.findViewById(R.id.challenge_view_more);
+        //
+        // mChallengeViewMore = (ImageView) mView.findViewById(R.id.challenge_view_more);
         mChallengeLayout= (LinearLayout) mView.findViewById(R.id.challenge_type_layout);
     }
 

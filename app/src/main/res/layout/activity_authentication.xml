@@ -16,4 +16,12 @@
         android:paddingRight="50pt"
         />
 
+    <Button
+        android:text="@string/go_home"
+        android:id="@+id/goHomeButton"
+        style="@style/AuthButton"
+        android:background="@color/primary"
+        android:textColor="@color/white"
+        android:layout_alignParentBottom="true"/>
+
 </RelativeLayout>

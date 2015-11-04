@@ -8,10 +8,16 @@
 
     <Button
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:text="New Challenge"
+        android:layout_height="45dp"
+        android:background="@color/accent"
+        android:text="@string/create_new_game_button"
+        android:textColor="@color/white"
+        android:textSize="15sp"
         android:textAllCaps="false"
-        android:layout_marginBottom="5dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
         android:id="@+id/new_challenge_btn"/>
 
     <ScrollView

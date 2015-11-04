@@ -7,8 +7,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.model.Token;
@@ -30,6 +32,7 @@ public class FitbitAuthenticationActivity extends ActionBarActivity {
     private OAuthService service;
     private Token requestToken;
     private Token accessToken;
+    private Button goHome;
 
 //    private String apiKey = "a2f813cf8c7420eff5629382ae6a25a4";
 //    private String apiSecret = "0129ef7d53df74e1bb428fdaec8df9c1";
@@ -41,6 +44,14 @@ public class FitbitAuthenticationActivity extends ActionBarActivity {
 
         wvAuthorise = (WebView) findViewById(R.id.wvAuthorise);
         wvAuthorise.getSettings().setJavaScriptEnabled(true);
+        goHome = (Button) findViewById(R.id.goHomeButton);
+        goHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(FitbitAuthenticationActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
 
         wvAuthorise.setWebViewClient(new WebViewClient() {
             @Override
