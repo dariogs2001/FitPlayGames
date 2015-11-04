@@ -160,7 +160,7 @@ public class HotPotatoCreateActivity extends AppCompatActivity {
                 if (mChallengeId == null || mChallengeId.length() == 0) {
                     String challengeName = mChallengeName.getText().toString();
                     //Create challenge
-                    mHotPotatoChallenge.createChallenge(ParseUser.getCurrentUser().getObjectId(), mChallengeName.getText().toString(), Integer.parseInt(stepSpinner.getSelectedItem().toString()), new Date(1446003440060L), mHotPotatoChallenge.generateRandomEndDate(0, 0));
+                    mHotPotatoChallenge.createChallenge(ParseUser.getCurrentUser().getObjectId(), mChallengeName.getText().toString(), Integer.parseInt(stepSpinner.getSelectedItem().toString()), new Date(), mHotPotatoChallenge.generateRandomEndDate(0, 0));
                     Intent intent = new Intent(HotPotatoCreateActivity.this, HotPotatoDetailsActivity.class);
                     Bundle extras = new Bundle();
                     extras.putParcelable("game-details", mHotPotatoChallenge);

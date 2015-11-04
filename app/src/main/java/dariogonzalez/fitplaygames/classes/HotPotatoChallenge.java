@@ -14,6 +14,10 @@ import java.util.Map;
 public class HotPotatoChallenge extends ParentChallenge implements Parcelable{
 
     private int totalSteps, totalPasses;
+    private Map<Integer, Integer> hours = new HashMap<>();
+    private Map<Integer, Integer> passes = new HashMap<>();
+
+    private static final long hourInMilli = 3600000;
 
     public HotPotatoChallenge(int type) {
         setChallengeType(type);
@@ -21,6 +25,21 @@ public class HotPotatoChallenge extends ParentChallenge implements Parcelable{
 
         totalSteps = 0;
         totalPasses = 0;
+
+        // Initialize hours map
+        // This is a relationship of stepGoal to hours
+        hours.put(1000, 2);
+        hours.put(2000, 4);
+        hours.put(3000, 6);
+        hours.put(4000, 8);
+        hours.put(5000, 12);
+
+        // Initialize passes map
+        // This is a relationship of people to # of passes for the game
+        passes.put(2, 12);
+        passes.put(3, 12);
+        passes.put(4, 12);
+        passes.put(5, 12);
     }
 
     protected HotPotatoChallenge(Parcel source) {
@@ -33,7 +52,15 @@ public class HotPotatoChallenge extends ParentChallenge implements Parcelable{
     }
 
     public Date generateRandomEndDate(int stepsGoal, int numOfPlayers) {
-        Date date = new Date(1446006440060L);
+
+        int hourAmt = hours.get(stepsGoal);
+        int passesAmt = passes.get(numOfPlayers);
+
+        long hoursInMilli = hourAmt * hourInMilli;
+
+        long dateInMilli = hoursInMilli * passesAmt;
+
+        Date date = new Date(dateInMilli);
         return date;
     }
 
