@@ -67,6 +67,8 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
         //Testing this
         mChallengeFinished.setVisibility(View.GONE);
 
+        Utils.logoutRedirect(getActivity());
+
         return view;
     }
 }

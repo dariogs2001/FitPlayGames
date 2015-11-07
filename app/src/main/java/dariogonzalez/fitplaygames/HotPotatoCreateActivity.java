@@ -33,6 +33,7 @@ import dariogonzalez.fitplaygames.classes.ChallengeTypeConstants;
 import dariogonzalez.fitplaygames.classes.HotPotatoChallenge;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
 import dariogonzalez.fitplaygames.classes.UserListItem;
+import dariogonzalez.fitplaygames.utils.Utils;
 
 public class HotPotatoCreateActivity extends AppCompatActivity {
 
@@ -128,6 +129,8 @@ public class HotPotatoCreateActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                Utils.trackData(ParseConstants.KEY_ANALYTICS_CREATE_GAME_HOT_POTATO, ParseConstants.KEY_ANALYTICS_CREATE_GAME_HOT_POTATO);
+
                 List<UserListItem> selectedFriends = mSearchFriendsFragment.getSelectedFriends();
 
                 if (selectedFriends.size() > 0) {
@@ -177,6 +180,8 @@ public class HotPotatoCreateActivity extends AppCompatActivity {
         mCancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Utils.trackData(ParseConstants.KEY_ANALYTICS_CANCEL_GAME_HOT_POTATO, ParseConstants.KEY_ANALYTICS_CANCEL_GAME_HOT_POTATO);
+
                 NavUtils.navigateUpFromSameTask(HotPotatoCreateActivity.this);
             }
         });

@@ -36,6 +36,7 @@ public class ChooseChallengeActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Utils.trackData(ParseConstants.KEY_ANALYTICS_SELECT_GAME_HOT_POTATO, ParseConstants.KEY_ANALYTICS_SELECT_GAME_HOT_POTATO);
                 Intent intent = new Intent(ChooseChallengeActivity.this, HotPotatoCreateActivity.class);
                 startActivity(intent);
             }
@@ -54,10 +55,7 @@ public class ChooseChallengeActivity extends AppCompatActivity {
                 };
                 parentChallenge.sendPushNotification(ParseUser.getCurrentUser());
             }
-
         });
-
-        Utils.trackData(ChooseChallengeActivity.class.getSimpleName(), ParseConstants.KEY_ANALYTICS_NEW_GAME);
     }
 
     @Override
