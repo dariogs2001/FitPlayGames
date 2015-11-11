@@ -96,9 +96,17 @@ public class MainMoreOptionsFragment extends android.support.v4.app.Fragment {
     private void showIntent(Context context, Class<?> intentClass)
     {
         Intent intent = new Intent(context, intentClass);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+
+        if (intentClass == LoginActivity.class)
+        {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        }
+        else
+        {
+            intent.addFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+        }
+
         startActivity(intent);
     }
 

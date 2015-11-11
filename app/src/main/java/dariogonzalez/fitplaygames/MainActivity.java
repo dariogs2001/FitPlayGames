@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements TabListener {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         Firebase.setAndroidContext(this);
         ParseAnalytics.trackAppOpenedInBackground(getIntent());
-        Utils.trackData(MainActivity.class.getSimpleName(), ParseConstants.KEY_ANALYTICS_MAIN_ACTIVITY);
+//        Utils.trackData(MainActivity.class.getSimpleName(), ParseConstants.KEY_ANALYTICS_MAIN_ACTIVITY);
 
 //        mAlarmReceiver = new AlarmReceiver();
 //        mAlarmReceiver.setAlarm(this);
