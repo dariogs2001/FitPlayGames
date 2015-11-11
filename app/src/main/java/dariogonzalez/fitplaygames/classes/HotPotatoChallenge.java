@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.parse.ParseObject;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -18,7 +20,7 @@ public class HotPotatoChallenge extends ParentChallenge implements Parcelable{
     private Map<Integer, Integer> hours = new HashMap<>();
     private Map<Integer, HashMap<Integer, Integer>> passes = new HashMap<>();
 
-    private static final long hourInMilli = 3600000;
+    private static final long HOUR_IN_MILLI = 3600000;
 
     public HotPotatoChallenge(int type) {
         setChallengeType(type);
@@ -80,6 +82,7 @@ public class HotPotatoChallenge extends ParentChallenge implements Parcelable{
         this.setStepsGoal(source.readInt());
         this.setTotalPasses(source.readInt());
         this.setTotalSteps(source.readInt());
+        this.setChallengeId(source.readString());
     }
 
     public Date generateRandomEndDate(int stepsGoal, int numOfPlayers) {
@@ -87,7 +90,7 @@ public class HotPotatoChallenge extends ParentChallenge implements Parcelable{
         int hourAmt = hours.get(stepsGoal);
         int passesAmt = passes.get(numOfPlayers).get(stepsGoal);
 
-        long hoursInMilli = hourAmt * hourInMilli;
+        long hoursInMilli = hourAmt * HOUR_IN_MILLI;
 
         long timeToAddInMilli = hoursInMilli * passesAmt;
 
@@ -113,6 +116,7 @@ public class HotPotatoChallenge extends ParentChallenge implements Parcelable{
         parcel.writeInt(this.getStepsGoal());
         parcel.writeInt(this.getTotalPasses());
         parcel.writeInt(this.getTotalSteps());
+        parcel.writeString(this.getChallengeId());
     }
 
     public static final Creator<HotPotatoChallenge> CREATOR = new Creator<HotPotatoChallenge>() {

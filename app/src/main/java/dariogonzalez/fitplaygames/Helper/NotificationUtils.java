@@ -46,7 +46,7 @@ public class NotificationUtils {
 
             int smallIcon = R.drawable.ic_notify_small;
 
-            int mNotificationId = PushConfig.NOTIFICATION_ID;;
+            int mNotificationId = PushConfig.NOTIFICATION_ID;
 
             PendingIntent resultPendingIntent =
                     PendingIntent.getActivity(

@@ -225,7 +225,7 @@
             android:layout_height="match_parent"
             android:divider="@color/secondary_text"
             android:dividerHeight="1px"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
     </LinearLayout>
 

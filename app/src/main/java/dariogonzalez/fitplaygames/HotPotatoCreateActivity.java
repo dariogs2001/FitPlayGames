@@ -31,6 +31,7 @@ import java.util.Locale;
 
 import dariogonzalez.fitplaygames.classes.ChallengeTypeConstants;
 import dariogonzalez.fitplaygames.classes.HotPotatoChallenge;
+import dariogonzalez.fitplaygames.classes.ParentChallenge;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
 import dariogonzalez.fitplaygames.classes.UserListItem;
 import dariogonzalez.fitplaygames.utils.Utils;
@@ -138,8 +139,10 @@ public class HotPotatoCreateActivity extends AppCompatActivity {
                         ParseUser user;
                         if (selectedFriends.get(i).getmFriendObject().getUsername().equals(ParseUser.getCurrentUser().getUsername())) {
                             user = selectedFriends.get(i).getmUserObject();
+                            mHotPotatoChallenge.getPlayerObjects().add(user);
                         } else {
                             user = selectedFriends.get(i).getmFriendObject();
+                            mHotPotatoChallenge.getPlayerObjects().add(user);
                         }
 //                        mHotPotatoChallenge.sendPushNotification(user);
                     }
@@ -163,12 +166,16 @@ public class HotPotatoCreateActivity extends AppCompatActivity {
                 if (mChallengeId == null || mChallengeId.length() == 0) {
                     String challengeName = mChallengeName.getText().toString();
                     //Create challenge
-                    mHotPotatoChallenge.createChallenge(ParseUser.getCurrentUser().getObjectId(), mChallengeName.getText().toString(), Integer.parseInt(stepSpinner.getSelectedItem().toString()), new Date(), mHotPotatoChallenge.generateRandomEndDate(1000, 2));
-                    Intent intent = new Intent(HotPotatoCreateActivity.this, HotPotatoDetailsActivity.class);
-                    Bundle extras = new Bundle();
-                    extras.putParcelable("game-details", mHotPotatoChallenge);
-                    intent.putExtras(extras);
-                    startActivity(intent);
+                    mHotPotatoChallenge.createChallenge(ParseUser.getCurrentUser(), mChallengeName.getText().toString(), Integer.parseInt(stepSpinner.getSelectedItem().toString()), new Date(), mHotPotatoChallenge.generateRandomEndDate(1000, 2), new ParentChallenge.GetObjectIdCallback() {
+                        @Override
+                        public void done(String objectId) {
+                            Intent intent = new Intent(HotPotatoCreateActivity.this, HotPotatoDetailsActivity.class);
+                            Bundle extras = new Bundle();
+                            extras.putParcelable("game-details", mHotPotatoChallenge);
+                            intent.putExtras(extras);
+                            startActivity(intent);
+                        }
+                    });
                 } else {
                     Intent intent = new Intent(HotPotatoCreateActivity.this, InviteFriendsActivity.class);
                     intent.putExtra(ParseConstants.CHALLENGE_CHALLENGE_ID, mChallengeId);

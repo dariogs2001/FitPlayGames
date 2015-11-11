@@ -5,13 +5,23 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
+import java.util.List;
 import java.util.Map;
 
+import dariogonzalez.fitplaygames.Adapters.HotPotatoPlayersAdapter;
 import dariogonzalez.fitplaygames.classes.HotPotatoChallenge;
+import dariogonzalez.fitplaygames.classes.ParseConstants;
 
 public class HotPotatoDetailsActivity extends AppCompatActivity {
 
@@ -38,11 +48,12 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             mHotPotatoChallenge = extras.getParcelable("game-details");
-            setGameDetails();
+            setChallengeDetails();
         }
     }
 
-    private void setGameDetails() {
+    private void setChallengeDetails() {
+        getChallengePlayers();
         challengeName.setText(mHotPotatoChallenge.getUserChallengeName());
         Map map = mHotPotatoChallenge.splitDateAndTime(mHotPotatoChallenge.getStartDate());
         String date = (String) map.get("date");
@@ -52,6 +63,41 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
         stepsGoal.setText(String.valueOf(mHotPotatoChallenge.getStepsGoal()));
         totalGameSteps.setText(String.valueOf(mHotPotatoChallenge.getTotalSteps()));
         passes.setText(String.valueOf(mHotPotatoChallenge.getTotalPasses()));
+    }
+
+    private void getChallengePlayers() {
+
+        ParseQuery<ParseObject> challengeQuery = new ParseQuery<>(ParseConstants.CLASS_CHALLENGES);
+        challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_ID, mHotPotatoChallenge.getChallengeId());
+
+        challengeQuery.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if (e == null) {
+                    if (list.size() > 0) {
+                        ParseQuery<ParseObject> query = new ParseQuery<>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
+                        query.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID, list.get(0));
+
+                        query.findInBackground(new FindCallback<ParseObject>() {
+                            @Override
+                            public void done(List<ParseObject> challengePlayers, ParseException e) {
+                                if (e == null) {
+                                    ArrayAdapter<ParseObject> adapter = new HotPotatoPlayersAdapter(HotPotatoDetailsActivity.this, R.layout.row_hot_potato_players, challengePlayers, mHotPotatoChallenge.getStepsGoal());
+                                    playingFriendsList.setAdapter(adapter);
+                                }
+                                else {
+                                    Log.d("TEST", "Erro: " + e.toString());
+                                }
+                            }
+                        });
+                    }
+                }
+                else {
+
+                }
+            }
+        });
+
     }
 
 }
