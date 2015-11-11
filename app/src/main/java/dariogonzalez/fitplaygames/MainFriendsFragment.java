@@ -4,7 +4,7 @@ package dariogonzalez.fitplaygames;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,7 +33,7 @@ import dariogonzalez.fitplaygames.classes.ParseConstants;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MainFriendsFragment extends android.support.v4.app.Fragment {
+public class MainFriendsFragment extends Fragment {
     private List<UserListItem> mFriendList = new ArrayList<UserListItem>();
     private ListView friendsResultListView;
     private LinearLayout emptyStateLayout;

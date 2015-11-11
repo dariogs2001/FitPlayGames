@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.squareup.picasso.Picasso;
 
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dariogonzalez.fitplaygames.R;
+import dariogonzalez.fitplaygames.classes.ParseConstants;
 import dariogonzalez.fitplaygames.classes.UserListItem;
 
 /**
@@ -62,17 +64,17 @@ public class HotPotatoPlayersAdapter extends ArrayAdapter<ParseObject> {
 
         final ParseObject currentItem = mChallengePlayers.get(position);
 
-//        holder.userNameTV.setText(currentItem.getmFriendObject().getUsername());
-
-//        Uri profilePicture = currentItem.getmImageUri();
-//        if (profilePicture != null)
-//        {
-//            Picasso.with(mContext).load(profilePicture.toString()).into(holder.userThumbnail);
-//        }
-//        else
-//        {
-//            holder.userThumbnail.setImageResource(currentItem.getmIconId());
-//        }
+        holder.userNameTV.setText(currentItem.get(ParseConstants.USER_USERNAME).toString());
+        ParseFile file = currentItem.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
+        final Uri profilePicture = file != null ? Uri.parse(file.getUrl()) : null;
+        if (profilePicture != null)
+        {
+            Picasso.with(mContext).load(profilePicture.toString()).into(holder.userThumbnail);
+        }
+        else
+        {
+            holder.userThumbnail.setImageResource(R.drawable.ic_action_person);
+        }
 
         return row;
     }

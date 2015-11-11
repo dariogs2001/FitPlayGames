@@ -2,6 +2,7 @@ package dariogonzalez.fitplaygames.classes;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,17 +16,20 @@ public class HotPotatoChallenge extends ParentChallenge implements Parcelable{
 
     private int totalSteps, totalPasses;
     private Map<Integer, Integer> hours = new HashMap<>();
-    private Map<Integer, Integer> passes = new HashMap<>();
+    private Map<Integer, HashMap<Integer, Integer>> passes = new HashMap<>();
 
     private static final long hourInMilli = 3600000;
 
     public HotPotatoChallenge(int type) {
         setChallengeType(type);
+        createEndDateMapping();
         initialize();
 
         totalSteps = 0;
         totalPasses = 0;
+    }
 
+    public void createEndDateMapping() {
         // Initialize hours map
         // This is a relationship of stepGoal to hours
         hours.put(1000, 2);
@@ -36,10 +40,37 @@ public class HotPotatoChallenge extends ParentChallenge implements Parcelable{
 
         // Initialize passes map
         // This is a relationship of people to # of passes for the game
-        passes.put(2, 12);
-        passes.put(3, 12);
-        passes.put(4, 12);
-        passes.put(5, 12);
+        HashMap<Integer, Integer> twoPeople = new HashMap<>();
+        twoPeople.put(1000, 24);
+        twoPeople.put(2000, 12);
+        twoPeople.put(3000, 8);
+        twoPeople.put(4000, 6);
+        twoPeople.put(5000, 4);
+        passes.put(2, twoPeople);
+
+        HashMap<Integer, Integer> threePeople = new HashMap<>();
+        threePeople.put(1000, 12);
+        threePeople.put(2000, 9);
+        threePeople.put(3000, 7);
+        threePeople.put(4000, 6);
+        threePeople.put(5000, 6);
+        passes.put(3, threePeople);
+
+        HashMap<Integer, Integer> fourPeople = new HashMap<>();
+        fourPeople.put(1000, 12);
+        fourPeople.put(2000, 8);
+        fourPeople.put(3000, 8);
+        fourPeople.put(4000, 4);
+        fourPeople.put(5000, 4);
+        passes.put(4, fourPeople);
+
+        HashMap<Integer, Integer> fivePeople = new HashMap<>();
+        fivePeople.put(1000, 15);
+        fivePeople.put(2000, 10);
+        fivePeople.put(3000, 10);
+        fivePeople.put(4000, 5);
+        fivePeople.put(5000, 5);
+        passes.put(5, fivePeople);
     }
 
     protected HotPotatoChallenge(Parcel source) {
@@ -54,13 +85,18 @@ public class HotPotatoChallenge extends ParentChallenge implements Parcelable{
     public Date generateRandomEndDate(int stepsGoal, int numOfPlayers) {
 
         int hourAmt = hours.get(stepsGoal);
-        int passesAmt = passes.get(numOfPlayers);
+        int passesAmt = passes.get(numOfPlayers).get(stepsGoal);
 
         long hoursInMilli = hourAmt * hourInMilli;
 
-        long dateInMilli = hoursInMilli * passesAmt;
+        long timeToAddInMilli = hoursInMilli * passesAmt;
 
-        Date date = new Date(dateInMilli);
+        // TODO: should not be currentTime but the starttime of game
+        long today = System.currentTimeMillis();
+
+        // Randomness
+
+        Date date = new Date(timeToAddInMilli + today);
         return date;
     }
 

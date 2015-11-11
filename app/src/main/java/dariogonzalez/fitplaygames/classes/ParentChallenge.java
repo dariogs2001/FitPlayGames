@@ -122,6 +122,7 @@ public abstract class ParentChallenge {
                     createChallengePlayers(challengeObject.getObjectId());
                 } else {
                     //TODO: show error message
+                    Log.d("TEST", "Error: " + e.toString());
                 }
             }
         });
