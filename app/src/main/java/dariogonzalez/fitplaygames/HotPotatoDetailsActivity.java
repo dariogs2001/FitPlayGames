@@ -16,6 +16,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +29,7 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
     private TextView challengeName, startDate, startTime, stepsGoal, totalGameSteps, passes;
     private HotPotatoChallenge mHotPotatoChallenge;
     private ListView playingFriendsList;
+    private List<ParseObject> users;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +45,7 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
 
         playingFriendsList = (ListView) findViewById(R.id.playing_friends_listview);
 
-
+        users = new ArrayList<>();
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -82,8 +84,29 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
                             @Override
                             public void done(List<ParseObject> challengePlayers, ParseException e) {
                                 if (e == null) {
-                                    ArrayAdapter<ParseObject> adapter = new HotPotatoPlayersAdapter(HotPotatoDetailsActivity.this, R.layout.row_hot_potato_players, challengePlayers, mHotPotatoChallenge.getStepsGoal());
-                                    playingFriendsList.setAdapter(adapter);
+                                    for (ParseObject challengePlayer : challengePlayers) {
+                                        ParseQuery<ParseObject> userQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_USER);
+                                        ParseObject user = (ParseObject) challengePlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_ID);
+                                        Log.d("TEST", "Where " + ParseConstants.OBJECT_ID + " = " + user.getObjectId());
+                                        userQuery.whereEqualTo(ParseConstants.OBJECT_ID, user.getObjectId());
+                                        userQuery.findInBackground(new FindCallback<ParseObject>() {
+                                            @Override
+                                            public void done(List<ParseObject> list, ParseException e) {
+                                                Log.d("TEST", "size: " + list.size());
+                                                if (e == null) {
+                                                    if (list.size() > 0) {
+                                                        Log.d("TEST", "Here breh");
+                                                        users.add(list.get(0));
+                                                        ArrayAdapter<ParseObject> adapter = new HotPotatoPlayersAdapter(HotPotatoDetailsActivity.this, R.layout.row_hot_potato_players, users, mHotPotatoChallenge.getStepsGoal());
+                                                        playingFriendsList.setAdapter(adapter);
+                                                    }
+                                                } else {
+                                                    Log.d("TEST", e.toString());
+                                                }
+                                            }
+                                        });
+                                    }
+
                                 }
                                 else {
                                     Log.d("TEST", "Erro: " + e.toString());

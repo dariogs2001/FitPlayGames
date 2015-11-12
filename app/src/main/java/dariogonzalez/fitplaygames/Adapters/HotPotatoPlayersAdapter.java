@@ -34,13 +34,13 @@ import dariogonzalez.fitplaygames.classes.UserListItem;
 public class HotPotatoPlayersAdapter extends ArrayAdapter<ParseObject> {
 
     private Context mContext;
-    private List<ParseObject> mChallengePlayers = new ArrayList<>();
+    private List<ParseObject> mUsers = new ArrayList<>();
     private int mStepsGoal;
 
     public HotPotatoPlayersAdapter(Context context, int resource, List<ParseObject> challengePlayers, int stepsGoal) {
         super(context, resource, challengePlayers);
         this.mContext = context;
-        this.mChallengePlayers = challengePlayers;
+        this.mUsers = challengePlayers;
         this.mStepsGoal = stepsGoal;
     }
 
@@ -67,42 +67,21 @@ public class HotPotatoPlayersAdapter extends ArrayAdapter<ParseObject> {
             holder = (ChallengeInviteHolder) row.getTag();
         }
 
-        final ParseObject challengePlayerObject = mChallengePlayers.get(position);
+        final ParseObject userObject = mUsers.get(position);
 
-        getUserObjects(holder, challengePlayerObject);
+        holder.userNameTV.setText(userObject.get(ParseConstants.USER_USERNAME).toString());
+        ParseFile file = userObject.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
+        final Uri profilePicture = file != null ? Uri.parse(file.getUrl()) : null;
+        if (profilePicture != null)
+        {
+            Picasso.with(mContext).load(profilePicture.toString()).into(holder.userThumbnail);
+        }
+        else
+        {
+            holder.userThumbnail.setImageResource(R.drawable.ic_action_person);
+        }
 
         return row;
-    }
-
-    private void getUserObjects(final ChallengeInviteHolder holder, ParseObject challengePlayerObject) {
-        Log.d("TEST", "here: " + challengePlayerObject.getObjectId());
-        ParseQuery<ParseObject> userQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_USER);
-        userQuery.whereEqualTo(ParseConstants.KEY_USER_ID, challengePlayerObject.getObjectId());
-        userQuery.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> list, ParseException e) {
-                if (e == null) {
-                    Log.d("TEST", "size: " + list.size());
-                    if (list.size() > 0) {
-                        ParseObject userObject = list.get(0);
-                        holder.userNameTV.setText(userObject.get(ParseConstants.USER_USERNAME).toString());
-                        ParseFile file = userObject.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
-                        final Uri profilePicture = file != null ? Uri.parse(file.getUrl()) : null;
-                        if (profilePicture != null)
-                        {
-                            Picasso.with(mContext).load(profilePicture.toString()).into(holder.userThumbnail);
-                        }
-                        else
-                        {
-                            holder.userThumbnail.setImageResource(R.drawable.ic_action_person);
-                        }
-                    }
-                }
-                else {
-
-                }
-            }
-        });
     }
 
     static class ChallengeInviteHolder {
