@@ -13,6 +13,8 @@ public final class ParseConstants
     public static final String CLASS_USER_FRIENDS =  "UserFriends";
     public static final String CLASS_CHALLENGE_PLAYERS =  "ChallengePlayers";
     public static final String CLASS_CHALLENGES =  "Challenges";
+    public static final String CLASS_ACTIVITY_STEPS_BY_DAY = "ActivityStepsByDay";
+    public static final String CLASS_ACTIVITY_STEPS_BY_DAY_15M = "ActivityStepsByDay15Min";
 
     //Field name
     public static final String OBJECT_ID = "objectId";
@@ -38,6 +40,7 @@ public final class ParseConstants
     public static final String USER_PROFILE_PICTURE = "ProfilePicture";
 
     public static final String ACTIVITY_HISTORY_DATE = "Date";
+    public static final String ACTIVITY_HISTORY_TIME = "Time";
     public static final String ACTIVITY_HISTORY_STEPS = "Steps";
     public static final String ACTIVITY_HISTORY_ACTIVE_MINUTES = "ActiveMinutes";
 

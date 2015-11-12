@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:orientation="horizontal"/>
+
+<!--<RelativeLayout-->
+    <!--style="@style/GalleryThumb"-->
+    <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--xmlns:ancestry="http://schemas.android.com/apk/res-auto"-->
+    <!--android:layout_width="@dimen/gallery_thumb_width_default"-->
+    <!--android:layout_height="@dimen/gallery_thumb_height_default"-->
+    <!--ancestry:aspectRatio="0.763">-->
+
+    <!--<ImageView-->
+        <!--android:id="@+id/thumb_image"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:visibility="visible"/>-->
+
+    <!--<TextView-->
+        <!--style="@style/TextView.GalleryThumbTitle"-->
+        <!--android:id="@+id/thumb_title"-->
+        <!--android:layout_gravity="bottom|center_horizontal"-->
+        <!--android:padding="@dimen/gallery_thumb_title_padding"-->
+        <!--android:text="(This is the gallery thumbnail title)"-->
+        <!--android:visibility="visible"/>-->
+
+    <!--<LinearLayout-->
+        <!--android:id="@+id/add_item_overlay"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:orientation="vertical"-->
+        <!--android:visibility="gone">-->
+
+        <!--<ImageView-->
+            <!--android:id="@+id/add_item_img"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center_horizontal"-->
+            <!--android:background="@drawable/img_add_item"/>-->
+
+        <!--<TextView-->
+            <!--style="@style/TextView"-->
+            <!--android:id="@+id/add_item_text"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="@dimen/widget_margin"-->
+            <!--android:text="(Add item)"-->
+            <!--android:textColor="@color/pebble5"/>-->
+    <!--</LinearLayout>-->
+<!--</RelativeLayout>-->

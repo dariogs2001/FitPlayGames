@@ -97,7 +97,7 @@ public class MainMoreOptionsFragment extends android.support.v4.app.Fragment {
 //                        fh.getUserLastMonthData();
 //                        fh.lastSevenDaySumAndAverage(ParseUser.getCurrentUser().getObjectId());
 
-                        String result = fh.getStepsRangeDateTime();
+                        fh.getStepsRangeDateTime();
 
                         break;
                     default:
