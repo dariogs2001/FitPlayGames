@@ -69,8 +69,8 @@ public class FitbitHelper {
 
     private String executeQuery(String url)
     {
-        if (mService == null)
-        {
+//        if (mService == null)
+//        {
 //            mService = new ServiceBuilder().provider(FitbitApi.class)
 //                    .apiKey(Resources.getSystem().getString(R.string.fitbit_api_key))
 //                    .apiSecret(Resources.getSystem().getString(R.string.fitbit_api_secret))
@@ -80,7 +80,7 @@ public class FitbitHelper {
                 .apiSecret(apiSecret)
                 .callback("http://localhost").build();
             mAccessToken = new Token(mUserInfo.getAccessToken(), mUserInfo.getSecret());
-        }
+//        }
 
         OAuthRequest request = new OAuthRequest(Verb.GET, url);
         mService.signRequest(mAccessToken, request); // the access token from step
@@ -90,11 +90,44 @@ public class FitbitHelper {
         return result;
     }
 
+    private void executeQuery2(final String url)
+    {
+        if (mService == null) {
+            mService = new ServiceBuilder().provider(FitbitApi.class)
+                    .apiKey(apiKey)
+                    .apiSecret(apiSecret)
+                    .callback("http://localhost").build();
+            mAccessToken = new Token(mUserInfo.getAccessToken(), mUserInfo.getSecret());
+        }
+
+        new Thread(new Runnable() {
+            public void run() {
+                OAuthRequest request = new OAuthRequest(Verb.GET, url);
+                mService.signRequest(mAccessToken, request); // the access token from step
+
+                final Response response = request.send();
+                final String result = response.getBody();
+
+                Log.d(TAG, result);
+            }
+        }).start();
+
+    }
+
     public void getUserLastMonthData()
     {
         FitbitLastMonthTask task = new FitbitLastMonthTask();
         task.execute("https://api.fitbit.com/1/user/-/activities/steps/date/today/1m.json");
     }
+
+    public String getStepsRangeDateTime()
+    {
+//        executeQuery2("https://api.fitbit.com/1/user/-/activities/steps/date/2015-10-20/1d/15min.json");
+//        executeQuery2("https://api.fitbit.com/1/user/-/activities/steps/date/2015-11-11/1d/time/3:30/22:45.json");
+        executeQuery2("https://api.fitbit.com/1/user/-/activities/steps/date/2015-11-11/2015-11-11/time/3:30/22:45.json");
+        return "";
+    }
+
 
     public boolean isFitbitUserAlive()
     {

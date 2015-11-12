@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
@@ -82,8 +84,20 @@ public class MainMoreOptionsFragment extends android.support.v4.app.Fragment {
                         break;
                     case 3:
                         FitbitHelper fh = new FitbitHelper(getActivity());
-                        fh.getUserLastMonthData();
-                        fh.lastSevenDaySumAndAverage(ParseUser.getCurrentUser().getObjectId());
+                        if (!fh.isFitbitUserAlive())
+                        {
+                            Context context = getActivity();
+                            CharSequence text = "Your are not logged in Fitbit!";
+                            int duration = Toast.LENGTH_LONG;
+
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                            return;
+                        }
+//                        fh.getUserLastMonthData();
+//                        fh.lastSevenDaySumAndAverage(ParseUser.getCurrentUser().getObjectId());
+
+                        String result = fh.getStepsRangeDateTime();
 
                         break;
                     default:
