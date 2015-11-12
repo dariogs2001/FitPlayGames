@@ -20,6 +20,7 @@ import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -31,6 +32,7 @@ import dariogonzalez.fitplaygames.InviteFriendsActivity;
 public abstract class ParentChallenge {
     private static String TAG = ParentChallenge.class.getSimpleName();
     private ParseObject challengeObject; // The parseObject from the DB of the challenge
+    private String challengeId;
     private int challengeType; // This comes from the challenge type constants class
     private String name; // Name of the challenge
     private String userChallengeName; // Name that the user gives the challenge
@@ -40,7 +42,7 @@ public abstract class ParentChallenge {
     private Drawable icon; // The challenge icon
     private Date startDate; // The user set startDate/time
     private Date endDate; // The system set endDate/time
-    private ArrayList<String> playerIds; // A list of all the player ids of the challenge. This should be > 2 for challenge to start
+    private ArrayList<ParseUser> playerObjects; // A list of all the player ids of the challenge. This should be > 2 for challenge to start
     private ArrayList<String> activePlayers; // A list of all the active player ids of the challenge. This could be 1 or more
     private String startChallengeMessage; // A push message to be sent when a challenge starts
     private String endChallengeMessage; // A push message to be sent when a challenge ends
@@ -48,7 +50,7 @@ public abstract class ParentChallenge {
     private String mainPushMessage = ""; // This is the message that will be sent as a push notification
 
     public void initialize() {
-        playerIds = new ArrayList<>();
+        playerObjects = new ArrayList<>();
         activePlayers = new ArrayList<>();
     }
 
@@ -94,7 +96,7 @@ public abstract class ParentChallenge {
         });
     }
 
-    public void createChallenge(final String userId, String challengeName, int stepsGoal, Date startDate, Date endDate) {
+    public void createChallenge(final ParseUser user, String challengeName, int stepsGoal, Date startDate, Date endDate, final GetObjectIdCallback callback) {
         this.userChallengeName = challengeName;
         this.stepsGoal = stepsGoal;
         this.startDate = startDate;
@@ -108,34 +110,41 @@ public abstract class ParentChallenge {
         challengeObject.put(ParseConstants.CHALLENGE_CHALLENGE_START, startDate);
         challengeObject.put(ParseConstants.CHALLENGE_CHALLENGE_END, endDate);
 
+
         challengeObject.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
+                    setChallengeId(challengeObject.getObjectId());
+                    callback.done(challengeObject.getObjectId());
                     ParseObject challengePlayer = new ParseObject(ParseConstants.CLASS_CHALLENGE_PLAYERS);
                     challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_STATUS, ParseConstants.CHALLENGE_PLAYER_STATUS_PENDING);
-                    challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_USER_ID, userId);
-                    challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID, challengeObject.getObjectId());
+                    challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_USER_ID, user);
+                    challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID, challengeObject);
                     challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_OWNER, true);
+                    challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_DATE_JOINED, new Date());
                     challengePlayer.saveInBackground();
 
-                    createChallengePlayers(challengeObject.getObjectId());
+                    createChallengePlayers();
                 } else {
                     //TODO: show error message
+
                 }
             }
         });
     }
 
-    public void createChallengePlayers(String challengeId) {
+    public void createChallengePlayers() {
         // Create a new challenge player object for each player id
 
-        int size = playerIds.size();
+        int size = playerObjects.size();
         for (int i = 0; i < size; i++) {
             final ParseObject challengePlayer = new ParseObject(ParseConstants.CLASS_CHALLENGE_PLAYERS);
             challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_STATUS, ParseConstants.CHALLENGE_PLAYER_STATUS_PENDING);
-            challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_USER_ID, playerIds.get(i));
-            challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID, challengeId);
+            challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_USER_ID, playerObjects.get(i));
+            challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID, challengeObject);
+            challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_OWNER, false);
+            challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_DATE_JOINED, new Date());
             challengePlayer.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(ParseException e) {
@@ -254,12 +263,12 @@ public abstract class ParentChallenge {
         this.endDate = endDate;
     }
 
-    public ArrayList<String> getPlayerIds() {
-        return playerIds;
+    public ArrayList<ParseUser> getPlayerObjects() {
+        return playerObjects;
     }
 
-    public void setPlayerIds(ArrayList<String> playerIds) {
-        this.playerIds = playerIds;
+    public void setPlayerObjects(ArrayList<ParseUser> playerObjects) {
+        this.playerObjects = playerObjects;
     }
 
     public ArrayList<String> getActivePlayers() {
@@ -268,5 +277,25 @@ public abstract class ParentChallenge {
 
     public void setActivePlayers(ArrayList<String> activePlayers) {
         this.activePlayers = activePlayers;
+    }
+
+    public ParseObject getChallengeObject() {
+        return challengeObject;
+    }
+
+    public void setChallengeObject(ParseObject challengeObject) {
+        this.challengeObject = challengeObject;
+    }
+
+    public String getChallengeId() {
+        return challengeId;
+    }
+
+    public void setChallengeId(String challengeId) {
+        this.challengeId = challengeId;
+    }
+
+    public interface GetObjectIdCallback {
+        void done(String objectId);
     }
 }

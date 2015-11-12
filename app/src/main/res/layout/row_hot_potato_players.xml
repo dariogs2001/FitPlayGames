@@ -78,7 +78,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:id="@+id/progressBar"
-            android:layout_gravity="right" />
+            android:layout_gravity="right"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/steps_tv"

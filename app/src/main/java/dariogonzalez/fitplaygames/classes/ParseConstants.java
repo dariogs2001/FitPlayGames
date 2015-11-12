@@ -50,7 +50,7 @@ public final class ParseConstants
     public static final String USER_OBJECT = "UserObject";
     public static final String FRIEND_OBJECT = "FriendObject";
 
-    public static final String CHALLENGE_CHALLENGE_ID = "ChallengeId";
+    public static final String CHALLENGE_CHALLENGE_ID = "objectId";
     public static final String CHALLENGE_CHALLENGE_NAME = "ChallengeName";
     public static final String CHALLENGE_CHALLENGE_TYPE = "ChallengeType";
     public static final String CHALLENGE_CHALLENGE_STATUS = "ChallengeStatus";

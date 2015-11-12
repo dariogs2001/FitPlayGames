@@ -3,6 +3,7 @@ package dariogonzalez.fitplaygames.Adapters;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,13 +14,18 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import dariogonzalez.fitplaygames.R;
+import dariogonzalez.fitplaygames.classes.ParseConstants;
 import dariogonzalez.fitplaygames.classes.UserListItem;
 
 /**
@@ -46,6 +52,7 @@ public class HotPotatoPlayersAdapter extends ArrayAdapter<ParseObject> {
         if (row == null){
             row = LayoutInflater.from(mContext).inflate(R.layout.row_hot_potato_players, parent, false);
 
+            holder = new ChallengeInviteHolder();
             holder.userNameTV = (TextView) row.findViewById(R.id.user_name);
             holder.passesTV = (TextView) row.findViewById(R.id.tv_passes);
             holder.stepsTV = (TextView) row.findViewById(R.id.steps_tv);
@@ -60,21 +67,42 @@ public class HotPotatoPlayersAdapter extends ArrayAdapter<ParseObject> {
             holder = (ChallengeInviteHolder) row.getTag();
         }
 
-        final ParseObject currentItem = mChallengePlayers.get(position);
+        final ParseObject challengePlayerObject = mChallengePlayers.get(position);
 
-//        holder.userNameTV.setText(currentItem.getmFriendObject().getUsername());
-
-//        Uri profilePicture = currentItem.getmImageUri();
-//        if (profilePicture != null)
-//        {
-//            Picasso.with(mContext).load(profilePicture.toString()).into(holder.userThumbnail);
-//        }
-//        else
-//        {
-//            holder.userThumbnail.setImageResource(currentItem.getmIconId());
-//        }
+        getUserObjects(holder, challengePlayerObject);
 
         return row;
+    }
+
+    private void getUserObjects(final ChallengeInviteHolder holder, ParseObject challengePlayerObject) {
+        Log.d("TEST", "here: " + challengePlayerObject.getObjectId());
+        ParseQuery<ParseObject> userQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_USER);
+        userQuery.whereEqualTo(ParseConstants.KEY_USER_ID, challengePlayerObject.getObjectId());
+        userQuery.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if (e == null) {
+                    Log.d("TEST", "size: " + list.size());
+                    if (list.size() > 0) {
+                        ParseObject userObject = list.get(0);
+                        holder.userNameTV.setText(userObject.get(ParseConstants.USER_USERNAME).toString());
+                        ParseFile file = userObject.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
+                        final Uri profilePicture = file != null ? Uri.parse(file.getUrl()) : null;
+                        if (profilePicture != null)
+                        {
+                            Picasso.with(mContext).load(profilePicture.toString()).into(holder.userThumbnail);
+                        }
+                        else
+                        {
+                            holder.userThumbnail.setImageResource(R.drawable.ic_action_person);
+                        }
+                    }
+                }
+                else {
+
+                }
+            }
+        });
     }
 
     static class ChallengeInviteHolder {

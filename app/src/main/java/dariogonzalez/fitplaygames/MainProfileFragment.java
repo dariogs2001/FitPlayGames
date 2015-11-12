@@ -1,6 +1,7 @@
 package dariogonzalez.fitplaygames;
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -317,7 +318,7 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == getActivity().RESULT_OK)
+        if (resultCode == Activity.RESULT_OK)
         {
             if (requestCode == PICK_PHOTO_REQUEST )
             {
@@ -351,7 +352,7 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
                 placeholderProfileImage.setImageResource(R.drawable.ic_user);
             }
         }
-        else if (resultCode != getActivity().RESULT_CANCELED)
+        else if (resultCode != Activity.RESULT_CANCELED)
         {
             Toast.makeText(getActivity(), getString(R.string.general_error), Toast.LENGTH_LONG).show();
         }

@@ -199,6 +199,7 @@
                 android:textColor="@color/divider_color"
                 android:textSize="13sp"/>
 
+
             <TextView
                 android:id="@+id/passes_value"
                 android:layout_width="wrap_content"
@@ -206,7 +207,6 @@
                 android:textColor="@color/secondary_text"
                 android:layout_gravity="center_horizontal"
                 android:textSize="18sp"/>
-
         </LinearLayout>
 
     </LinearLayout>
@@ -225,7 +225,7 @@
             android:layout_height="match_parent"
             android:divider="@color/secondary_text"
             android:dividerHeight="1px"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
     </LinearLayout>
 
