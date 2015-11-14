@@ -154,5 +154,7 @@
     <string name="title_activity_hot_potato_details">Playing - Hot Potato</string>
     <string name="total_game_steps">Total Game Steps</string>
     <string name="passes">Passes</string>
+    <string name="title_activity_leadboard">LeadboardActivity</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 
 </resources>

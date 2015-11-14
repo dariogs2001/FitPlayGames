@@ -3,6 +3,7 @@ package dariogonzalez.fitplaygames;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,8 +33,8 @@ public class ChooseChallengeActivity extends AppCompatActivity {
 
         initializeData();
 
-        Button button = (Button) findViewById(R.id.hot_potato);
-        button.setOnClickListener(new View.OnClickListener() {
+        CardView hotPotatoBtn = (CardView) findViewById(R.id.hot_potato);
+        hotPotatoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Utils.trackData(ParseConstants.KEY_ANALYTICS_SELECT_GAME_HOT_POTATO, ParseConstants.KEY_ANALYTICS_SELECT_GAME_HOT_POTATO);
@@ -42,8 +43,8 @@ public class ChooseChallengeActivity extends AppCompatActivity {
             }
         });
 
-        Button testPush = (Button) findViewById(R.id.test_push);
-        testPush.setOnClickListener(new View.OnClickListener() {
+        CardView stealTheCandyBtn = (CardView) findViewById(R.id.steal_the_flag);
+        stealTheCandyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final ParentChallenge parentChallenge = new ParentChallenge() {
