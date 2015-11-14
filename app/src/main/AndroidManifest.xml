@@ -175,7 +175,6 @@
         <activity
             android:name=".LeadboardActivity"
             android:label="@string/title_activity_leadboard"
-            android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
