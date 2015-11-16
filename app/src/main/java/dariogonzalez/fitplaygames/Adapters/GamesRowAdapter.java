@@ -57,16 +57,6 @@ public class GamesRowAdapter extends ArrayAdapter<GamesListItem> {
         holder.challengeTitleTV.setText(currentItem.getmChallengeTitle());
         holder.numberOfPlayersTV.setText(String.valueOf(currentItem.getmNumberOfPlayers()));
 
-        Uri challengeImage = currentItem.getmImageUri();
-        if(challengeImage != null)
-        {
-            Picasso.with(mContext).load(challengeImage.toString()).into(holder.challengeThumbnail);
-        }
-        else
-        {
-            holder.challengeThumbnail.setImageResource(currentItem.getmIconId());
-        }
-
         return row;
     }
 

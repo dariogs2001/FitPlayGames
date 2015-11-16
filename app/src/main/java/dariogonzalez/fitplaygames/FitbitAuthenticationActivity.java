@@ -90,8 +90,6 @@ public class FitbitAuthenticationActivity extends ActionBarActivity {
                 });
             }
         }).start();
-
-
     }
 
     private void GetTokens(final Verifier v)

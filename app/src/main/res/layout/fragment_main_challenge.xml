@@ -43,6 +43,10 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="45dp"
@@ -64,9 +68,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"/>
         </LinearLayout>
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+
         <ListView
             android:id="@+id/games_list_view_playing"
             android:layout_width="match_parent"
@@ -74,8 +76,6 @@
             android:divider="@color/secondary_text"
             android:dividerHeight="1px"
             android:visibility="gone"/>
-
-    </ScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -98,17 +98,15 @@
             android:layout_marginLeft="10dp"
             android:layout_weight="1"/>
     </LinearLayout>
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+
         <ListView
             android:id="@+id/games_list_view_pending"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:divider="@color/secondary_text"
             android:dividerHeight="1px"
             android:visibility="gone"/>
-    </ScrollView>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -131,15 +129,14 @@
             android:layout_marginLeft="10dp"
             android:layout_weight="1"/>
     </LinearLayout>
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+
         <ListView
             android:id="@+id/games_list_view_finished"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:divider="@color/secondary_text"
             android:dividerHeight="1px"
             android:visibility="gone"/>
-    </ScrollView>
+    </LinearLayout>
+
 </LinearLayout>

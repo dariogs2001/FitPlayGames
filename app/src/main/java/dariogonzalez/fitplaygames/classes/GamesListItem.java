@@ -7,13 +7,11 @@ import android.net.Uri;
  */
 public class GamesListItem {
     private int mIconId;
-    private Uri mImageUri;
     private String mChallengeTitle;
     private int mNumberOfPlayers;
 
     public GamesListItem() {
         mIconId = -1;
-        mImageUri = null;
         mChallengeTitle = "";
         mNumberOfPlayers = 0;
     }
@@ -25,14 +23,6 @@ public class GamesListItem {
 
     public void setmIconId(int mIconId) {
         this.mIconId = mIconId;
-    }
-
-    public Uri getmImageUri() {
-        return mImageUri;
-    }
-
-    public void setmImageUri(Uri mImageUri) {
-        this.mImageUri = mImageUri;
     }
 
     public String getmChallengeTitle() {
