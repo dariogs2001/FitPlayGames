@@ -15,6 +15,7 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,26 +87,11 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
                                 if (e == null) {
                                     for (ParseObject challengePlayer : challengePlayers) {
                                         ParseQuery<ParseObject> userQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_USER);
-                                        ParseObject user = (ParseObject) challengePlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_ID);
-                                        Log.d("TEST", "Where " + ParseConstants.OBJECT_ID + " = " + user.getObjectId());
-                                        userQuery.whereEqualTo(ParseConstants.OBJECT_ID, user.getObjectId());
-                                        userQuery.findInBackground(new FindCallback<ParseObject>() {
-                                            @Override
-                                            public void done(List<ParseObject> list, ParseException e) {
-                                                Log.d("TEST", "size: " + list.size());
-                                                if (e == null) {
-                                                    if (list.size() > 0) {
-                                                        Log.d("TEST", "Here breh");
-                                                        users.add(list.get(0));
-                                                        ArrayAdapter<ParseObject> adapter = new HotPotatoPlayersAdapter(HotPotatoDetailsActivity.this, R.layout.row_hot_potato_players, users, mHotPotatoChallenge.getStepsGoal());
-                                                        playingFriendsList.setAdapter(adapter);
-                                                    }
-                                                } else {
-                                                    Log.d("TEST", e.toString());
-                                                }
-                                            }
-                                        });
+                                        ParseUser user = (ParseUser) challengePlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_ID);
+                                        users.add(user);
                                     }
+                                    ArrayAdapter<ParseObject> adapter = new HotPotatoPlayersAdapter(HotPotatoDetailsActivity.this, R.layout.row_hot_potato_players, users, mHotPotatoChallenge.getStepsGoal());
+                                    playingFriendsList.setAdapter(adapter);
 
                                 }
                                 else {
