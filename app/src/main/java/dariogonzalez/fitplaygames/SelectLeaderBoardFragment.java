@@ -9,8 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import dariogonzalez.fitplaygames.classes.ParseConstants;
-import dariogonzalez.fitplaygames.utils.Utils;
+import dariogonzalez.fitplaygames.LeaderBoard.LeadboardActivity;
 
 
 /**

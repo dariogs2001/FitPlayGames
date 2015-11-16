@@ -1,4 +1,4 @@
-package dariogonzalez.fitplaygames;
+package dariogonzalez.fitplaygames.LeaderBoard;
 
 import android.content.Context;
 import android.content.Intent;
@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dariogonzalez.fitplaygames.Adapters.UserRowAdapter;
+import dariogonzalez.fitplaygames.R;
+import dariogonzalez.fitplaygames.UserProfileActivity;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
 import dariogonzalez.fitplaygames.classes.UserListItem;
 
