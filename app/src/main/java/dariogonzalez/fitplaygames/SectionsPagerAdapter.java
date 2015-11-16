@@ -31,7 +31,8 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
             case 2:
                 return new MainFriendsFragment();
             case 3:
-                return new LeaderBoardFragment();
+//                return new LeaderBoardFragment();
+                return new SelectLeaderBoardFragment();
             case 4:
                 return new MainMoreOptionsFragment();
         }

@@ -1,17 +1,16 @@
 package dariogonzalez.fitplaygames;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
-import android.support.v7.widget.SearchView;
-import android.util.Log;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.parse.FindCallback;
@@ -23,108 +22,59 @@ import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
-import dariogonzalez.fitplaygames.Adapters.ChallengeInviteAdapter;
 import dariogonzalez.fitplaygames.Adapters.UserRowAdapter;
+import dariogonzalez.fitplaygames.Adapters.UserRowAdapterNew;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
 import dariogonzalez.fitplaygames.classes.UserListItem;
 
-
-public class SearchFriendsFragment extends Fragment {
-    private List<UserListItem> mFriendList = new ArrayList<UserListItem>();
-    private List<UserListItem> mQueriedFriendList = new ArrayList<>();
+/**
+ * Created by ChristensenKC on 10/7/2015.
+ */
+public class LeaderBoardFragmentNew extends Fragment {
+    private List<UserListItem> mLeadBoardList = new ArrayList<UserListItem>();
     private ListView friendsResultListView;
-    ArrayAdapter<UserListItem> adapter;
+    private View view;
 
-    public static SearchFriendsFragment newInstance() {
-        SearchFriendsFragment fragment = new SearchFriendsFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    public SearchFriendsFragment() {
+    public LeaderBoardFragmentNew() {
         // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.fragment_search_friends, container, false);
-
-        friendsResultListView = (ListView) rootView.findViewById(R.id.search_results_list_view);
-        android.support.v7.widget.SearchView searchView = (android.support.v7.widget.SearchView) rootView.findViewById(R.id.search_friends);
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                if (query.length() > 0) {
-                    updateList(query);
-                }
-                else {
-                    populateListView(mFriendList);
-                }
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                if (newText.length() > 0) {
-                    updateList(newText);
-                }
-                else {
-                    populateListView(mFriendList);
-                }
-                return false;
-            }
-        });
-
-
-        getFriendData();
         // Inflate the layout for this fragment
-        return rootView;
+        view = inflater.inflate(R.layout.fragment_leader_board_new, container, false);
+        friendsResultListView = (ListView) view.findViewById(R.id.leader_board_list_view);
+//
+//            clearListView();
+//            showFriendsList();
+
+//                clearListView();
+//                showGlobalList();
+
+        showFriendsList();
+        return view;
     }
 
-    private void updateList(String queryText) {
-        mQueriedFriendList.clear();
-        if(mFriendList.size() > 0)
-        {
-            for(int i = 0; i < mFriendList.size(); i++)
-            {
-                Locale locale = Locale.getDefault();
-                // Prefix is whatever the user has entered into the edittext. It will check lower/upper case names and check conf number
-                if(mFriendList.get(i).getmFriendObject().get(ParseConstants.USER_USERNAME).toString().contains(queryText) || mFriendList.get(i).getmFriendObject().get(ParseConstants.USER_USERNAME).toString().toLowerCase().contains(queryText))
-                {
-                    mQueriedFriendList.add(mFriendList.get(i));
-                }
-            }
-            populateListView(mQueriedFriendList);
-        }
-    }
-
-
-    private void getFriendData() {
-        if (mFriendList!= null && mFriendList.size() == 0) {
+    public void showFriendsList() {
+        if (mLeadBoardList!= null && mLeadBoardList.size() == 0) {
             final ParseUser userObject = ParseUser.getCurrentUser();
             if (userObject != null) {
                 final String userId = userObject.getObjectId();
 
                 List<ParseQuery<ParseObject>> queries = new ArrayList<>();
-                ParseQuery<ParseObject> query1 = new ParseQuery<>(ParseConstants.CLASS_USER_FRIENDS);
+                ParseQuery<ParseObject> query1 = new ParseQuery(ParseConstants.CLASS_USER_FRIENDS);
                 query1.whereEqualTo(ParseConstants.USER_FRIENDS_STATUS, ParseConstants.FRIEND_STATUS_ACCEPTED);
                 query1.whereEqualTo(ParseConstants.USER_OBJECT, userObject);
-                query1.whereEqualTo(ParseConstants.USER_FRIENDS_STATUS, ParseConstants.FRIEND_STATUS_ACCEPTED);
 
-                ParseQuery<ParseObject> query2 = new ParseQuery<>(ParseConstants.CLASS_USER_FRIENDS);
+                ParseQuery<ParseObject> query2 = new ParseQuery(ParseConstants.CLASS_USER_FRIENDS);
                 query2.whereEqualTo(ParseConstants.USER_FRIENDS_STATUS, ParseConstants.FRIEND_STATUS_SENT);
                 query2.whereEqualTo(ParseConstants.FRIEND_OBJECT, userObject);
-                query2.whereEqualTo(ParseConstants.USER_FRIENDS_STATUS, ParseConstants.FRIEND_STATUS_ACCEPTED);
 
-                ParseQuery<ParseObject> query3 = new ParseQuery<>(ParseConstants.CLASS_USER_FRIENDS);
+                ParseQuery<ParseObject> query3 = new ParseQuery(ParseConstants.CLASS_USER_FRIENDS);
                 query3.whereEqualTo(ParseConstants.USER_FRIENDS_STATUS, ParseConstants.FRIEND_STATUS_ACCEPTED);
                 query3.whereEqualTo(ParseConstants.FRIEND_OBJECT, userObject);
-                query3.whereEqualTo(ParseConstants.USER_FRIENDS_STATUS, ParseConstants.FRIEND_STATUS_ACCEPTED);
 
                 queries.add(query1);
                 queries.add(query2);
@@ -151,10 +101,10 @@ public class SearchFriendsFragment extends Fragment {
                                     int friendStatusId = userFriend.getInt(ParseConstants.USER_FRIENDS_STATUS);
                                     int location = 0;
                                     if (friendStatusId == ParseConstants.FRIEND_STATUS_SENT) {
-                                        if (mFriendList.size() == 0) {
-                                            location = mFriendList.size();
+                                        if (mLeadBoardList.size() == 0) {
+                                            location = mLeadBoardList.size();
                                         } else {
-                                            location = mFriendList.size() - 1;
+                                            location = mLeadBoardList.size() - 1;
                                         }
                                     }
 
@@ -176,41 +126,81 @@ public class SearchFriendsFragment extends Fragment {
                                     userListItem.setmFriendStatusId(friendStatusId);
                                     userListItem.setmSteps((int) steps);
                                     userListItem.setmUserFriendId(userFriend.getObjectId());
-                                    mFriendList.add(userListItem);
+                                    mLeadBoardList.add(userListItem);
                                 }
 
                             } catch (ParseException ex) {
                             }
                         }
-                        populateListView(mFriendList);
+                        populateListView();
                     }
                 });
             }
         }
         else {
-            populateListView(mFriendList);
+            populateListView();
         }
     }
 
-    private void populateListView(List<UserListItem> list) {
-        boolean isInvite = false;
-        adapter = new ChallengeInviteAdapter(getActivity(), R.layout.row_challenge_invite, list);
+    public void showGlobalList() {
+        ParseQuery<ParseObject> stepsQuery = ParseQuery.getQuery(ParseConstants.CLASS_LAST_SEVEN_DAYS);
+        stepsQuery.orderByDescending(ParseConstants.LAST_SEVEN_DAYS_STEPS);
+        stepsQuery.setLimit(10);
+        stepsQuery.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                for (ParseObject userFriend : list) {
+                    try {
+                        ParseUser user = userFriend.getParseUser(ParseConstants.USER_OBJECT).fetchIfNeeded();
+                        if (user != null) {
+                            ParseFile file = user.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
+                            Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
 
-        friendsResultListView.setVisibility(View.VISIBLE);
-        friendsResultListView.setAdapter(adapter);
-    }
 
-    public List<UserListItem> getSelectedFriends() {
-        List<UserListItem> selectedItems = new ArrayList<>();
-
-        for (int i = 0; i < mFriendList.size(); i++) {
-            UserListItem user = adapter.getItem(i);
-            if (user.getChecked()) {
-                selectedItems.add(user);
+                            UserListItem userListItem = new UserListItem();
+                            userListItem.setmIconId(R.drawable.ic_user);
+                            userListItem.setmImageUri(fileUri);
+                            userListItem.setmSteps((long) (userFriend.getDouble(ParseConstants.LAST_SEVEN_DAYS_STEPS)));
+                            userListItem.setmFriendObject(user);
+                            userListItem.setmGamesPlayed(15);
+                            mLeadBoardList.add(userListItem);
+                        }
+                    } catch (ParseException ex) {
+                    }
+                }
+                populateListView();
             }
-        }
+        });
 
-        return selectedItems;
+    }
+
+    private void populateListView() {
+
+            ArrayAdapter<UserListItem> adapter = new UserRowAdapterNew(view.getContext(), R.layout.leader_board_list_item_new, mLeadBoardList, false, true);
+            friendsResultListView.setAdapter(adapter);
+            friendsResultListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent = new Intent(getActivity(), UserProfileActivity.class);
+                    Bundle extras = new Bundle();
+                    // Parse friend object Id
+                    extras.putString("userId", mLeadBoardList.get(position).getmFriendObject().getObjectId());
+                    extras.putString("username", mLeadBoardList.get(position).getmFriendObject().getUsername());
+                    boolean isFriend = false;
+                    if (mLeadBoardList.get(position).getmFriendStatusId() == ParseConstants.FRIEND_STATUS_ACCEPTED) {
+                        isFriend = true;
+                    }
+                    extras.putBoolean("isFriend", isFriend);
+                    intent.putExtras(extras);
+                    startActivity(intent);
+                }
+            });
+    }
+
+    public void clearListView() {
+        friendsResultListView.setAdapter(null);
+        mLeadBoardList.clear();
+
     }
 
 }

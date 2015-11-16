@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,20 +8,52 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="dariogonzalez.fitplaygames.ChooseChallengeActivity">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-    <Button
-        android:id="@+id/hot_potato"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="190dp"
+            style="@style/CardView_Main"
+            android:id="@+id/hot_potato"
+            android:layout_weight="1"
+            android:layout_marginRight="10dp">
 
-    <Button
-        android:id="@+id/test_push"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="test push"/>
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/thumb_image_hot_potato"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible"
+                android:src="@drawable/ic_smug"/>
 
-</RelativeLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_gravity="bottom|center_horizontal"
+                android:padding="10dp"
+                android:text="Hot Potato"
+                android:visibility="visible"
+                style="@style/CardView_TextView"/>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="190dp"
+            style="@style/CardView_Main"
+            android:id="@+id/steal_the_flag"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/thumb_image_flag"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible"
+                android:src="@drawable/ic_equalizer"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_gravity="bottom|center_horizontal"
+                android:padding="10dp"
+                android:text="Steal the Flag"
+                android:visibility="visible"
+                style="@style/CardView_TextView"/>
+        </android.support.v7.widget.CardView>
+</LinearLayout>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:orientation="horizontal">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="1"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:padding="5dp"
+        android:id="@+id/position_text_view"
+        android:textSize="18dp"/>
+
+    <dariogonzalez.fitplaygames.utils.RoundedImageView
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:id="@+id/user_thumbnail"
+        android:src="@drawable/ic_user"
+        android:layout_margin="2.5dp"
+        android:layout_gravity="center_horizontal|center_vertical"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:layout_weight="1">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="User Name"
+            android:layout_gravity="center_vertical"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:paddingTop="3dp"
+            android:id="@+id/user_name"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="5 games / 0 losses"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:id="@+id/stats_text_view"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:layout_weight="2">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="35 min"
+            android:layout_gravity="center_vertical"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:paddingTop="3dp"
+            android:textColor="@color/accent"
+            android:layout_weight="1"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="avg potato time"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:textSize="10dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

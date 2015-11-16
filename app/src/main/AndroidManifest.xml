@@ -15,8 +15,10 @@
       IMPORTANT: Change "com.parse.starter.permission.C2D_MESSAGE" in the lines below
       to match your app's package name + ".permission.C2D_MESSAGE".
     -->
-    <permission android:protectionLevel="signature"
-        android:name="dariogonzalez.fitplaygames.permission.C2D_MESSAGE" />
+    <permission
+        android:name="dariogonzalez.fitplaygames.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
     <uses-permission android:name="dariogonzalez.fitplaygames.permission.C2D_MESSAGE" />
 
     <application
@@ -43,8 +45,9 @@
         <activity
             android:name=".ForgotPasswordActivity"
             android:label="@string/title_activity_reset_password"
-            android:screenOrientation="portrait"
-            android:parentActivityName="dariogonzalez.fitplaygames.LoginActivity" >
+            android:parentActivityName=".LoginActivity"
+            android:screenOrientation="portrait" >
+
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -79,14 +82,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="dariogonzalez.fitplaygames.MainActivity" />
         </activity>
-        <!--<activity
+        <!--
+        <activity
             android:name=".LeaderBoardFragment"
             android:label="@string/title_activity_leader_board"
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="dariogonzalez.fitplaygames.MainActivity" />
-        </activity> -->
+        </activity>
+        -->
         <activity
             android:name=".SearchFriendActivity"
             android:label="@string/title_activity_search_friend"
@@ -107,7 +112,7 @@
             android:name=".HotPotatoCreateActivity"
             android:label="@string/title_activity_hot_potato_challenge"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustNothing">
+            android:windowSoftInputMode="adjustNothing" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="dariogonzalez.fitplaygames.HotPotatoCreateActivity" />
@@ -119,9 +124,9 @@
         <activity
             android:name=".UserProfileActivity"
             android:label="@string/title_activity_user_profile" >
-             <meta-data
-             android:name="android.support.PARENT_ACTIVITY"
-             android:value="dariogonzalez.fitplaygames.SearchFriendActivity" />
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="dariogonzalez.fitplaygames.SearchFriendActivity" />
         </activity>
         <activity
             android:name=".MainChatActivity"
@@ -129,29 +134,34 @@
         </activity>
 
         <service android:name="com.parse.PushService" />
-        <receiver android:name="dariogonzalez.fitplaygames.Receiver.CustomPushReceiver"
-            android:exported="false">
+
+        <receiver
+            android:name=".Receiver.CustomPushReceiver"
+            android:exported="false" >
             <intent-filter>
                 <action android:name="com.parse.push.intent.RECEIVE" />
                 <action android:name="com.parse.push.intent.DELETE" />
                 <action android:name="com.parse.push.intent.OPEN" />
             </intent-filter>
         </receiver>
-        <receiver android:name="com.parse.GcmBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND">
+        <receiver
+            android:name="com.parse.GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
 
-                <!--
-                  IMPORTANT: Change "com.parse.starter" to match your app's package name.
-                -->
+<!--                   IMPORTANT: Change "com.parse.starter" to match your app's package name. -->
                 <category android:name="dariogonzalez.fitplaygames" />
             </intent-filter>
         </receiver>
-        <meta-data android:name="com.parse.push.notification_icon" android:resource="@drawable/ic_notify_small"/>
+
+        <meta-data
+            android:name="com.parse.push.notification_icon"
+            android:resource="@drawable/ic_notify_small" />
 
         <receiver android:name=".AlarmManager.AlarmReceiver" />
+
         <service android:name=".AlarmManager.SchedulingService" />
 
         <activity
@@ -162,7 +172,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="dariogonzalez.fitplaygames.MainActivity" />
         </activity>
-
+        <activity
+            android:name=".LeadboardActivity"
+            android:label="@string/title_activity_leadboard"
+            android:screenOrientation="portrait" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="dariogonzalez.fitplaygames.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
