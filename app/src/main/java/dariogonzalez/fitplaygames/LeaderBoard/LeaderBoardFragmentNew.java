@@ -1,20 +1,18 @@
-package dariogonzalez.fitplaygames;
-
+package dariogonzalez.fitplaygames.LeaderBoard;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
+import android.widget.Button;
 import android.widget.ListView;
 
-import com.melnykov.fab.FloatingActionButton;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -26,71 +24,43 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dariogonzalez.fitplaygames.Adapters.UserRowAdapter;
-import dariogonzalez.fitplaygames.classes.UserListItem;
+import dariogonzalez.fitplaygames.Adapters.UserRowAdapterNew;
+import dariogonzalez.fitplaygames.R;
+import dariogonzalez.fitplaygames.UserProfileActivity;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
-
+import dariogonzalez.fitplaygames.classes.UserListItem;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Created by ChristensenKC on 10/7/2015.
  */
-public class MainFriendsFragment extends Fragment {
-    private List<UserListItem> mFriendList = new ArrayList<UserListItem>();
+public class LeaderBoardFragmentNew extends Fragment {
+    private List<UserListItem> mLeadBoardList = new ArrayList<UserListItem>();
     private ListView friendsResultListView;
-    private LinearLayout emptyStateLayout;
     private View view;
 
-    private SwipeRefreshLayout swipeRefreshLayout;
-
-    private FloatingActionButton fab;
-
-    public MainFriendsFragment() {
+    public LeaderBoardFragmentNew() {
         // Required empty public constructor
-    }
-
-    public static MainFriendsFragment newInstance(int sectionNumber) {
-        MainFriendsFragment fragment = new MainFriendsFragment();
-        Bundle args = new Bundle();
-        args.putInt("section_num", sectionNumber);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_main_friends, container, false);
+        view = inflater.inflate(R.layout.fragment_leader_board_new, container, false);
+        friendsResultListView = (ListView) view.findViewById(R.id.leader_board_list_view);
+//
+//            clearListView();
+//            showFriendsList();
 
-        friendsResultListView = (ListView) view.findViewById(R.id.friends_list_view);
-        fab = (FloatingActionButton) view.findViewById(R.id.fab);
-        emptyStateLayout = (LinearLayout) view.findViewById(R.id.empty_state_friends);
+//                clearListView();
+//                showGlobalList();
 
-        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
-        swipeRefreshLayout.setColorSchemeResources(R.color.primary_light, R.color.primary, R.color.primary_dark);
-
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                getFriendData();
-            }
-        });
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), SearchFriendActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-                startActivity(intent);
-            }
-        });
-
-
-        getFriendData();
+        showFriendsList();
         return view;
     }
 
-    private void getFriendData() {
-        if (mFriendList!= null && mFriendList.size() == 0) {
+    public void showFriendsList() {
+        if (mLeadBoardList!= null && mLeadBoardList.size() == 0) {
             final ParseUser userObject = ParseUser.getCurrentUser();
             if (userObject != null) {
                 final String userId = userObject.getObjectId();
@@ -133,10 +103,10 @@ public class MainFriendsFragment extends Fragment {
                                     int friendStatusId = userFriend.getInt(ParseConstants.USER_FRIENDS_STATUS);
                                     int location = 0;
                                     if (friendStatusId == ParseConstants.FRIEND_STATUS_SENT) {
-                                        if (mFriendList.size() == 0) {
-                                            location = mFriendList.size();
+                                        if (mLeadBoardList.size() == 0) {
+                                            location = mLeadBoardList.size();
                                         } else {
-                                            location = mFriendList.size() - 1;
+                                            location = mLeadBoardList.size() - 1;
                                         }
                                     }
 
@@ -158,7 +128,7 @@ public class MainFriendsFragment extends Fragment {
                                     userListItem.setmFriendStatusId(friendStatusId);
                                     userListItem.setmSteps((int) steps);
                                     userListItem.setmUserFriendId(userFriend.getObjectId());
-                                    mFriendList.add(userListItem);
+                                    mLeadBoardList.add(userListItem);
                                 }
 
                             } catch (ParseException ex) {
@@ -174,37 +144,65 @@ public class MainFriendsFragment extends Fragment {
         }
     }
 
+    public void showGlobalList() {
+        ParseQuery<ParseObject> stepsQuery = ParseQuery.getQuery(ParseConstants.CLASS_LAST_SEVEN_DAYS);
+        stepsQuery.orderByDescending(ParseConstants.LAST_SEVEN_DAYS_STEPS);
+        stepsQuery.setLimit(10);
+        stepsQuery.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                for (ParseObject userFriend : list) {
+                    try {
+                        ParseUser user = userFriend.getParseUser(ParseConstants.USER_OBJECT).fetchIfNeeded();
+                        if (user != null) {
+                            ParseFile file = user.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
+                            Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
+
+
+                            UserListItem userListItem = new UserListItem();
+                            userListItem.setmIconId(R.drawable.ic_user);
+                            userListItem.setmImageUri(fileUri);
+                            userListItem.setmSteps((long) (userFriend.getDouble(ParseConstants.LAST_SEVEN_DAYS_STEPS)));
+                            userListItem.setmFriendObject(user);
+                            userListItem.setmGamesPlayed(15);
+                            mLeadBoardList.add(userListItem);
+                        }
+                    } catch (ParseException ex) {
+                    }
+                }
+                populateListView();
+            }
+        });
+
+    }
+
     private void populateListView() {
-        swipeRefreshLayout.setRefreshing(false);
-        if (mFriendList.size() > 0) {
-            friendsResultListView.setVisibility(View.VISIBLE);
-            emptyStateLayout.setVisibility(View.GONE);
-            boolean isInvite = false;
-            ArrayAdapter<UserListItem> adapter = new UserRowAdapter(view.getContext(), R.layout.row_user, mFriendList, isInvite);
+
+            ArrayAdapter<UserListItem> adapter = new UserRowAdapterNew(view.getContext(), R.layout.leader_board_list_item_new, mLeadBoardList, false, true);
             friendsResultListView.setAdapter(adapter);
-            fab.attachToListView(friendsResultListView);
             friendsResultListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Intent intent = new Intent(getActivity(), UserProfileActivity.class);
-                        Bundle extras = new Bundle();
-                        // Parse friend object Id
-                        extras.putString("userId", mFriendList.get(position).getmFriendObject().getObjectId());
-                        extras.putString("username", mFriendList.get(position).getmFriendObject().getUsername());
-                        boolean isFriend = false;
-                        if (mFriendList.get(position).getmFriendStatusId() == ParseConstants.FRIEND_STATUS_ACCEPTED) {
-                            isFriend = true;
-                        }
-                        extras.putBoolean("isFriend", isFriend);
-                        intent.putExtras(extras);
-                        startActivity(intent);
-                        }
-                });
-        }
-        else {
-            friendsResultListView.setVisibility(View.GONE);
-            emptyStateLayout.setVisibility(View.VISIBLE);
-        }
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent = new Intent(getActivity(), UserProfileActivity.class);
+                    Bundle extras = new Bundle();
+                    // Parse friend object Id
+                    extras.putString("userId", mLeadBoardList.get(position).getmFriendObject().getObjectId());
+                    extras.putString("username", mLeadBoardList.get(position).getmFriendObject().getUsername());
+                    boolean isFriend = false;
+                    if (mLeadBoardList.get(position).getmFriendStatusId() == ParseConstants.FRIEND_STATUS_ACCEPTED) {
+                        isFriend = true;
+                    }
+                    extras.putBoolean("isFriend", isFriend);
+                    intent.putExtras(extras);
+                    startActivity(intent);
+                }
+            });
+    }
+
+    public void clearListView() {
+        friendsResultListView.setAdapter(null);
+        mLeadBoardList.clear();
+
     }
 
 }

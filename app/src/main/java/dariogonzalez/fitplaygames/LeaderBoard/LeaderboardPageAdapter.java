@@ -1,4 +1,4 @@
-package dariogonzalez.fitplaygames;
+package dariogonzalez.fitplaygames.LeaderBoard;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
@@ -6,6 +6,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import java.util.Locale;
+
+import dariogonzalez.fitplaygames.R;
 
 /**
  * Created by dgonzalez on 11/14/15.

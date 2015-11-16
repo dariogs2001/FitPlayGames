@@ -7,6 +7,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import java.util.Locale;
 
+import dariogonzalez.fitplaygames.Friends.MainFriendsFragment;
+
 
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
     protected Context mContext;

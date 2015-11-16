@@ -29,6 +29,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import dariogonzalez.fitplaygames.Friends.SearchFriendsFragment;
 import dariogonzalez.fitplaygames.classes.ChallengeTypeConstants;
 import dariogonzalez.fitplaygames.classes.HotPotatoChallenge;
 import dariogonzalez.fitplaygames.classes.ParentChallenge;

@@ -1,4 +1,4 @@
-package dariogonzalez.fitplaygames;
+package dariogonzalez.fitplaygames.Friends;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -22,6 +22,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dariogonzalez.fitplaygames.Adapters.UserRowAdapter;
+import dariogonzalez.fitplaygames.MainActivity;
+import dariogonzalez.fitplaygames.R;
+import dariogonzalez.fitplaygames.UserProfileActivity;
 import dariogonzalez.fitplaygames.classes.UserListItem;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
 

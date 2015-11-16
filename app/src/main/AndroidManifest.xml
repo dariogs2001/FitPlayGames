@@ -93,7 +93,7 @@
         </activity>
         -->
         <activity
-            android:name=".SearchFriendActivity"
+            android:name=".Friends.SearchFriendActivity"
             android:label="@string/title_activity_search_friend"
             android:screenOrientation="portrait" >
             <meta-data
@@ -126,7 +126,7 @@
             android:label="@string/title_activity_user_profile" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="dariogonzalez.fitplaygames.SearchFriendActivity" />
+                android:value=".Friends.SearchFriendActivity" />
         </activity>
         <activity
             android:name=".MainChatActivity"
@@ -173,7 +173,7 @@
                 android:value="dariogonzalez.fitplaygames.MainActivity" />
         </activity>
         <activity
-            android:name=".LeadboardActivity"
+            android:name=".LeaderBoard.LeadboardActivity"
             android:label="@string/title_activity_leadboard"
             android:screenOrientation="portrait" >
             <meta-data

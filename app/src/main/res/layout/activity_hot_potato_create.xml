@@ -176,7 +176,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/search_friends_fragment"
             android:layout_margin="6dp"
-            android:name="dariogonzalez.fitplaygames.SearchFriendsFragment"
+            android:name="dariogonzalez.fitplaygames.Friends.SearchFriendsFragment"
             xmlns:android="http://schemas.android.com/apk/res/android"/>
 
     </LinearLayout>

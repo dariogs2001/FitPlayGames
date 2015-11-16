@@ -6,7 +6,7 @@
     android:elevation="3dp"
     android:orientation="vertical"
     android:background="@color/white"
-    tools:context="dariogonzalez.fitplaygames.SearchFriendsFragment">
+    tools:context="dariogonzalez.fitplaygames.Friends.SearchFriendsFragment">
 
     <android.support.v7.widget.SearchView
         android:layout_width="match_parent"

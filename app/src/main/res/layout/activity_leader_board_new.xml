@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context="dariogonzalez.fitplaygames.LeadboardActivity">
+    tools:context="dariogonzalez.fitplaygames.LeaderBoard.LeadboardActivity">
 
     <!--<android.support.design.widget.AppBarLayout-->
         <!--android:id="@+id/appbar"-->
