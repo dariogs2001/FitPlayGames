@@ -44,12 +44,17 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
             android:orientation="horizontal"
             android:id="@+id/challenge_type_layout_playing"
             android:layout_marginLeft="5dp"
@@ -76,10 +81,15 @@
             android:divider="@color/secondary_text"
             android:dividerHeight="1px"
             android:visibility="gone"/>
-
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="30dp"
         android:orientation="horizontal"
         android:id="@+id/challenge_type_layout_pending"
         android:layout_marginLeft="5dp"
@@ -106,11 +116,15 @@
             android:divider="@color/secondary_text"
             android:dividerHeight="1px"
             android:visibility="gone"/>
-
-
+</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="30dp"
         android:orientation="horizontal"
         android:id="@+id/challenge_type_layout_finished"
         android:layout_marginLeft="5dp"
@@ -137,6 +151,7 @@
             android:divider="@color/secondary_text"
             android:dividerHeight="1px"
             android:visibility="gone"/>
+            </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

@@ -32,6 +32,7 @@ import dariogonzalez.fitplaygames.classes.FitbitAccountInfo;
 import dariogonzalez.fitplaygames.classes.GamesListItem;
 import dariogonzalez.fitplaygames.classes.HotPotatoChallenge;
 import dariogonzalez.fitplaygames.classes.NamesIds;
+import dariogonzalez.fitplaygames.classes.ParentChallenge;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
 import dariogonzalez.fitplaygames.classes.UserListItem;
 import dariogonzalez.fitplaygames.utils.ComplexPreferences;
@@ -42,7 +43,9 @@ import dariogonzalez.fitplaygames.utils.Utils;
  */
 public class MainChallengeFragment extends android.support.v4.app.Fragment {
     private Button btnNewChallenge;
-    private List<GamesListItem> mGamesList = new ArrayList<GamesListItem>();
+    private List<ParentChallenge> mGamesListPlaying = new ArrayList<ParentChallenge>();
+    private List<ParentChallenge> mGamesListPending = new ArrayList<ParentChallenge>();
+    private List<ParentChallenge> mGamesListFinished = new ArrayList<ParentChallenge>();
     private ListView gamesResultListViewPlaying;
     private ListView gamesResultListViewPending;
     private ListView gamesResultListViewFinished;
@@ -99,7 +102,6 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
     }
 
     private void getGameData() {
-        if(mGamesList != null && mGamesList.size() == 0) {
             final ParseUser userObject = ParseUser.getCurrentUser();
             if(userObject != null) {
                 ParseQuery<ParseObject> query1 = new ParseQuery(ParseConstants.CLASS_CHALLENGE_PLAYERS);
@@ -122,28 +124,33 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
                                                 Object i = challenge.get(ParseConstants.CHALLENGE_CHALLENGE_STATUS);
                                                 if (i.equals(ParseConstants.CHALLENGE_STATUS_PENDING)) {
                                                     Log.d("Pending","Here");
-                                                    GamesListItem gamesListItem = new GamesListItem();
+                                                    HotPotatoChallenge hotPotatoChallenge = new HotPotatoChallenge(challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE));
                                                     //TODO: change icon to game icon once we have it
-                                                    gamesListItem.setmIconId(R.drawable.ic_notify_big);
-                                                    gamesListItem.setmChallengeTitle(challengeName);
-                                                    gamesListItem.setmNumberOfPlayers(numberOfPlayers);
-                                                    mGamesList.add(gamesListItem);
+                                                    //hotPotatoChallenge.setIcon(challenge.get(ParseConstants.));
+                                                   // hotPotatoChallenge.setName(challenge.get(ParseConstants));
+                                                    hotPotatoChallenge.setChallengeId(challenge.getObjectId());
+                                                    hotPotatoChallenge.setUserChallengeName(challenge.getString(ParseConstants.CHALLENGE_CHALLENGE_NAME));
+                                                    hotPotatoChallenge.setStepsGoal(challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STEPS_GOAL));
+                                                    hotPotatoChallenge.setChallengeStatusType(challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS));
+                                                    hotPotatoChallenge.setStartDate(challenge.getDate(ParseConstants.CHALLENGE_CHALLENGE_START));
+                                                    hotPotatoChallenge.setEndDate(challenge.getDate(ParseConstants.CHALLENGE_CHALLENGE_END));
+                                                    mGamesListPending.add(hotPotatoChallenge);
                                                 }
                                                 else if (i.equals(ParseConstants.CHALLENGE_STATUS_PLAYING)) {
-                                                    GamesListItem gamesListItem = new GamesListItem();
+                                                    HotPotatoChallenge hotPotatoChallenge = new HotPotatoChallenge();
                                                     //TODO: change icon to game icon once we have it
-                                                    gamesListItem.setmIconId(R.drawable.ic_notify_big);
-                                                    gamesListItem.setmChallengeTitle(challengeName);
-                                                    gamesListItem.setmNumberOfPlayers(numberOfPlayers);
-                                                    mGamesList.add(gamesListItem);
+                                                    hotPotatoChallenge.setmIconId(R.drawable.ic_notify_big);
+                                                    hotPotatoChallenge.setmChallengeTitle(challengeName);
+                                                    hotPotatoChallenge.setmNumberOfPlayers(numberOfPlayers);
+                                                    mGamesListPlaying.add(hotPotatoChallenge);
                                                 }
                                                 else if (i.equals(ParseConstants.CHALLENGE_STATUS_FINISHED)) {
-                                                    GamesListItem gamesListItem = new GamesListItem();
+                                                    HotPotatoChallenge hotPotatoChallenge = new HotPotatoChallenge();
                                                     //TODO: change icon to game icon once we have it
-                                                    gamesListItem.setmIconId(R.drawable.ic_notify_big);
-                                                    gamesListItem.setmChallengeTitle(challengeName);
-                                                    gamesListItem.setmNumberOfPlayers(numberOfPlayers);
-                                                    mGamesList.add(gamesListItem);
+                                                    hotPotatoChallenge.setmIconId(R.drawable.ic_notify_big);
+                                                    hotPotatoChallenge.setmChallengeTitle(challengeName);
+                                                    hotPotatoChallenge.setmNumberOfPlayers(numberOfPlayers);
+                                                    mGamesListFinished.add(hotPotatoChallenge);
                                                 }
                                             }
                                             populateListView();
@@ -156,21 +163,16 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
                     }
                 });
             }
-        }
     }
 
     private void populateListView() {
-        //swipeRefreshLayout.setRefreshing(false);
-        if (mGamesList.size() > 0) {
-            gamesResultListViewPlaying.setVisibility(View.VISIBLE);
-            gamesResultListViewPending.setVisibility(View.VISIBLE);
-            gamesResultListViewFinished.setVisibility(View.VISIBLE);
-            emptyStateLayout.setVisibility(View.GONE);
+        Boolean isLayoutEmpty = true;
 
-            ArrayAdapter<GamesListItem> adapter = new GamesRowAdapter(view.getContext(), R.layout.row_games, mGamesList);
+        if (mGamesListPlaying.size() > 0) {
+            gamesResultListViewPlaying.setVisibility(View.VISIBLE);
+            isLayoutEmpty = false;
+            ArrayAdapter<GamesListItem> adapter = new GamesRowAdapter(view.getContext(), R.layout.row_games, mGamesListPlaying);
             gamesResultListViewPlaying.setAdapter(adapter);
-            gamesResultListViewPending.setAdapter(adapter);
-            gamesResultListViewFinished.setAdapter(adapter);
 
             gamesResultListViewPlaying.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -181,6 +183,13 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
                     startActivity(intent);
                 }
             });
+        }
+        if (mGamesListPending.size() > 0) {
+            gamesResultListViewPending.setVisibility(View.VISIBLE);
+            isLayoutEmpty = false;
+            ArrayAdapter<GamesListItem> adapter = new GamesRowAdapter(view.getContext(), R.layout.row_games, mGamesListPending);
+            gamesResultListViewPending.setAdapter(adapter);
+
             gamesResultListViewPending.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -190,6 +199,13 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
                     startActivity(intent);
                 }
             });
+        }
+        if (mGamesListFinished.size() > 0) {
+            gamesResultListViewFinished.setVisibility(View.VISIBLE);
+            isLayoutEmpty = false;
+            ArrayAdapter<GamesListItem> adapter = new GamesRowAdapter(view.getContext(), R.layout.row_games, mGamesListFinished);
+            gamesResultListViewFinished.setAdapter(adapter);
+
             gamesResultListViewFinished.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -200,7 +216,7 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
                 }
             });
             }
-        else {
+        if(isLayoutEmpty) {
             gamesResultListViewPlaying.setVisibility(View.GONE);
             gamesResultListViewPending.setVisibility(View.GONE);
             gamesResultListViewFinished.setVisibility(View.GONE);
