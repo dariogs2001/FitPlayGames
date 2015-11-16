@@ -2,9 +2,11 @@ package dariogonzalez.fitplaygames;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,9 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.parse.FindCallback;
+import com.parse.Parse;
+import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -25,8 +30,10 @@ import dariogonzalez.fitplaygames.Adapters.GamesRowAdapter;
 import dariogonzalez.fitplaygames.FrameLayout.ChallengeFrameLayout;
 import dariogonzalez.fitplaygames.classes.FitbitAccountInfo;
 import dariogonzalez.fitplaygames.classes.GamesListItem;
+import dariogonzalez.fitplaygames.classes.HotPotatoChallenge;
 import dariogonzalez.fitplaygames.classes.NamesIds;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
+import dariogonzalez.fitplaygames.classes.UserListItem;
 import dariogonzalez.fitplaygames.utils.ComplexPreferences;
 import dariogonzalez.fitplaygames.utils.Utils;
 
@@ -87,30 +94,69 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
             }
         });
 
-        getGamePlayingData();
-        getGamePendingData();
-        getGameFinishedData();
+        getGameData();
         return view;
     }
 
-    private void getGamePlayingData() {
+    private void getGameData() {
         if(mGamesList != null && mGamesList.size() == 0) {
             final ParseUser userObject = ParseUser.getCurrentUser();
             if(userObject != null) {
-                final String userId = userObject.getObjectId();
+                ParseQuery<ParseObject> query1 = new ParseQuery(ParseConstants.CLASS_CHALLENGE_PLAYERS);
+                query1.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_ID, userObject);
+                query1.findInBackground(new FindCallback<ParseObject>() {
+                    @Override
+                    public void done(List<ParseObject> challengeplayers, ParseException e) {
+                        if(e == null) {
+                            for(ParseObject challengeplayer:challengeplayers) {
+                                ParseQuery<ParseObject> query2 = new ParseQuery(ParseConstants.CLASS_CHALLENGES);
+                                ParseObject challenge = (ParseObject) challengeplayer.get(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID);
+                                query2.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_ID, challenge.getObjectId());
+                                query2.findInBackground(new FindCallback<ParseObject>() {
+                                    @Override
+                                    public void done(List<ParseObject> challenges, ParseException e) {
+                                        if(e == null) {
+                                            for (ParseObject challenge:challenges) {
+                                                String challengeName = challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME).toString();
+                                                int numberOfPlayers = 0;
+                                                Object i = challenge.get(ParseConstants.CHALLENGE_CHALLENGE_STATUS);
+                                                if (i.equals(ParseConstants.CHALLENGE_STATUS_PENDING)) {
+                                                    Log.d("Pending","Here");
+                                                    GamesListItem gamesListItem = new GamesListItem();
+                                                    //TODO: change icon to game icon once we have it
+                                                    gamesListItem.setmIconId(R.drawable.ic_notify_big);
+                                                    gamesListItem.setmChallengeTitle(challengeName);
+                                                    gamesListItem.setmNumberOfPlayers(numberOfPlayers);
+                                                    mGamesList.add(gamesListItem);
+                                                }
+                                                else if (i.equals(ParseConstants.CHALLENGE_STATUS_PLAYING)) {
+                                                    GamesListItem gamesListItem = new GamesListItem();
+                                                    //TODO: change icon to game icon once we have it
+                                                    gamesListItem.setmIconId(R.drawable.ic_notify_big);
+                                                    gamesListItem.setmChallengeTitle(challengeName);
+                                                    gamesListItem.setmNumberOfPlayers(numberOfPlayers);
+                                                    mGamesList.add(gamesListItem);
+                                                }
+                                                else if (i.equals(ParseConstants.CHALLENGE_STATUS_FINISHED)) {
+                                                    GamesListItem gamesListItem = new GamesListItem();
+                                                    //TODO: change icon to game icon once we have it
+                                                    gamesListItem.setmIconId(R.drawable.ic_notify_big);
+                                                    gamesListItem.setmChallengeTitle(challengeName);
+                                                    gamesListItem.setmNumberOfPlayers(numberOfPlayers);
+                                                    mGamesList.add(gamesListItem);
+                                                }
+                                            }
+                                            populateListView();
+                                        }
 
-                List<ParseQuery<ParseObject>> queries = new ArrayList<>();
-                //ParseQuery<ParseObject> query1 = new ParseQuery()
+                                    }
+                                });
+                            }
+                        }
+                    }
+                });
             }
         }
-    }
-
-    private void getGamePendingData() {
-
-    }
-
-    private void getGameFinishedData() {
-
     }
 
     private void populateListView() {
@@ -129,7 +175,25 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
             gamesResultListViewPlaying.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Intent intent = new Intent(getActivity(), UserProfileActivity.class);
+                    Intent intent = new Intent(getActivity(), HotPotatoDetailsActivity.class);
+                    Bundle extras = new Bundle();
+                    intent.putExtras(extras);
+                    startActivity(intent);
+                }
+            });
+            gamesResultListViewPending.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent = new Intent(getActivity(), HotPotatoDetailsActivity.class);
+                    Bundle extras = new Bundle();
+                    intent.putExtras(extras);
+                    startActivity(intent);
+                }
+            });
+            gamesResultListViewFinished.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent = new Intent(getActivity(), HotPotatoDetailsActivity.class);
                     Bundle extras = new Bundle();
                     intent.putExtras(extras);
                     startActivity(intent);

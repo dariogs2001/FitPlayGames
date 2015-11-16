@@ -68,6 +68,7 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
     private void getChallengePlayers() {
 
         ParseQuery<ParseObject> challengeQuery = new ParseQuery<>(ParseConstants.CLASS_CHALLENGES);
+        Log.d("Challenge ID:",mHotPotatoChallenge.getChallengeId());
         challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_ID, mHotPotatoChallenge.getChallengeId());
 
         challengeQuery.findInBackground(new FindCallback<ParseObject>() {

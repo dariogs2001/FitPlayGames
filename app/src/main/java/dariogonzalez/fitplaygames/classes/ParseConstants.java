@@ -82,11 +82,11 @@ public final class ParseConstants
     /********************************************************************************************/
 
     /*******************CHALLENGE STATUS*********************************************************/
-    public static int CHALLENGE_STATUS_PROCESSING = 0;
-    public static int CHALLENGE_STATUS_PENDING = 1;
-    public static int CHALLENGE_STATUS_PLAYING = 2;
-    public static int CHALLENGE_STATUS_FINISHED = 3;
-    public static int CHALLENGE_STATUS_CANCELLED = 4;
+    public static final int  CHALLENGE_STATUS_PROCESSING = 1;
+    public static final int CHALLENGE_STATUS_PENDING = 1;
+    public static final int CHALLENGE_STATUS_PLAYING = 2;
+    public static final int CHALLENGE_STATUS_FINISHED = 3;
+    public static final int CHALLENGE_STATUS_CANCELLED = 4;
     /********************************************************************************************/
 
     /*******************CHALLENGE PLAYER STATUS**************************************************/

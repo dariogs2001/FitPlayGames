@@ -19,7 +19,7 @@
     <string name="password_hint">Password</string>
     <string name="sign_in_button_text">Sign In</string>
     <string name="create_new_game_button">CREATE NEW GAME</string>
-    <string name="sign_up_text">Don\'t have and account? Sign Up!</string>
+    <string name="sign_up_text">Don\'t have an account? Sign Up!</string>
     <string name="forgot_password">Forgot your password?</string>
     <string name="email_hint">Email</string>
     <string name="sign_up_button_label">Sign Up</string>
