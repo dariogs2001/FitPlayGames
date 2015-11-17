@@ -18,15 +18,17 @@ import java.util.List;
 
 import dariogonzalez.fitplaygames.R;
 import dariogonzalez.fitplaygames.classes.GamesListItem;
+import dariogonzalez.fitplaygames.classes.HotPotatoChallenge;
+import dariogonzalez.fitplaygames.classes.ParentChallenge;
 
 /**
  * Created by ChristensenKC on 11/9/2015.
  */
-public class GamesRowAdapter extends ArrayAdapter<GamesListItem> {
+public class GamesRowAdapter extends ArrayAdapter<ParentChallenge> {
     Context mContext;
-    private List<GamesListItem> mGamesList = new ArrayList<>();
+    private List<ParentChallenge> mGamesList = new ArrayList<>();
 
-    public GamesRowAdapter(Context context, int resource, List<GamesListItem> mGamesList) {
+    public GamesRowAdapter(Context context, int resource, List<ParentChallenge> mGamesList) {
         super(context, resource, mGamesList);
         mContext = context;
         this.mGamesList = mGamesList;
@@ -52,10 +54,10 @@ public class GamesRowAdapter extends ArrayAdapter<GamesListItem> {
             holder = (GamesRowHolder) row.getTag();
         }
 
-        final GamesListItem currentItem = mGamesList.get(position);
+        final ParentChallenge currentItem = mGamesList.get(position);
 
-        holder.challengeTitleTV.setText(currentItem.getmChallengeTitle());
-        holder.numberOfPlayersTV.setText(String.valueOf(currentItem.getmNumberOfPlayers()));
+        holder.challengeTitleTV.setText(currentItem.getUserChallengeName());
+        holder.numberOfPlayersTV.setText(String.valueOf(1));
 
         return row;
     }

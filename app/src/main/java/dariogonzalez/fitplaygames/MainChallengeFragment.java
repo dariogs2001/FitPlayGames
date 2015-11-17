@@ -28,6 +28,7 @@ import java.util.List;
 
 import dariogonzalez.fitplaygames.Adapters.GamesRowAdapter;
 import dariogonzalez.fitplaygames.FrameLayout.ChallengeFrameLayout;
+import dariogonzalez.fitplaygames.classes.ChallengeTypeConstants;
 import dariogonzalez.fitplaygames.classes.FitbitAccountInfo;
 import dariogonzalez.fitplaygames.classes.GamesListItem;
 import dariogonzalez.fitplaygames.classes.HotPotatoChallenge;
@@ -119,43 +120,13 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
                                     public void done(List<ParseObject> challenges, ParseException e) {
                                         if(e == null) {
                                             for (ParseObject challenge:challenges) {
-                                                String challengeName = challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME).toString();
-                                                int numberOfPlayers = 0;
                                                 Object i = challenge.get(ParseConstants.CHALLENGE_CHALLENGE_STATUS);
-                                                if (i.equals(ParseConstants.CHALLENGE_STATUS_PENDING)) {
-                                                    Log.d("Pending","Here");
-                                                    HotPotatoChallenge hotPotatoChallenge = new HotPotatoChallenge(challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE));
-                                                    //TODO: change icon to game icon once we have it
-                                                    //hotPotatoChallenge.setIcon(challenge.get(ParseConstants.));
-                                                   // hotPotatoChallenge.setName(challenge.get(ParseConstants));
-                                                    hotPotatoChallenge.setChallengeId(challenge.getObjectId());
-                                                    hotPotatoChallenge.setUserChallengeName(challenge.getString(ParseConstants.CHALLENGE_CHALLENGE_NAME));
-                                                    hotPotatoChallenge.setStepsGoal(challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STEPS_GOAL));
-                                                    hotPotatoChallenge.setChallengeStatusType(challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS));
-                                                    hotPotatoChallenge.setStartDate(challenge.getDate(ParseConstants.CHALLENGE_CHALLENGE_START));
-                                                    hotPotatoChallenge.setEndDate(challenge.getDate(ParseConstants.CHALLENGE_CHALLENGE_END));
-                                                    mGamesListPending.add(hotPotatoChallenge);
-                                                }
-                                                else if (i.equals(ParseConstants.CHALLENGE_STATUS_PLAYING)) {
-                                                    HotPotatoChallenge hotPotatoChallenge = new HotPotatoChallenge();
-                                                    //TODO: change icon to game icon once we have it
-                                                    hotPotatoChallenge.setmIconId(R.drawable.ic_notify_big);
-                                                    hotPotatoChallenge.setmChallengeTitle(challengeName);
-                                                    hotPotatoChallenge.setmNumberOfPlayers(numberOfPlayers);
-                                                    mGamesListPlaying.add(hotPotatoChallenge);
-                                                }
-                                                else if (i.equals(ParseConstants.CHALLENGE_STATUS_FINISHED)) {
-                                                    HotPotatoChallenge hotPotatoChallenge = new HotPotatoChallenge();
-                                                    //TODO: change icon to game icon once we have it
-                                                    hotPotatoChallenge.setmIconId(R.drawable.ic_notify_big);
-                                                    hotPotatoChallenge.setmChallengeTitle(challengeName);
-                                                    hotPotatoChallenge.setmNumberOfPlayers(numberOfPlayers);
-                                                    mGamesListFinished.add(hotPotatoChallenge);
+                                                if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO) {
+                                                    addHotPotatoChallenge(challenge, challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS));
                                                 }
                                             }
-                                            populateListView();
                                         }
-
+                                        populateListView();
                                     }
                                 });
                             }
@@ -165,13 +136,35 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
             }
     }
 
+    private void addHotPotatoChallenge(ParseObject challenge, int challengeStatus) {
+        HotPotatoChallenge hotPotatoChallenge = new HotPotatoChallenge(challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE));
+        //TODO: change icon to game icon once we have it
+        //hotPotatoChallenge.setIcon(challenge.get(ParseConstants.));
+        hotPotatoChallenge.setChallengeId(challenge.getObjectId());
+        hotPotatoChallenge.setUserChallengeName(challenge.getString(ParseConstants.CHALLENGE_CHALLENGE_NAME));
+        hotPotatoChallenge.setStepsGoal(challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STEPS_GOAL));
+        hotPotatoChallenge.setChallengeStatusType(challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS));
+        hotPotatoChallenge.setStartDate(challenge.getDate(ParseConstants.CHALLENGE_CHALLENGE_START));
+        hotPotatoChallenge.setEndDate(challenge.getDate(ParseConstants.CHALLENGE_CHALLENGE_END));
+
+        if (challengeStatus == ParseConstants.CHALLENGE_STATUS_PLAYING) {
+            mGamesListPlaying.add(hotPotatoChallenge);
+        }
+        else if (challengeStatus == ParseConstants.CHALLENGE_STATUS_PENDING) {
+            mGamesListPending.add(hotPotatoChallenge);
+        }
+        else if (challengeStatus == ParseConstants.CHALLENGE_STATUS_FINISHED) {
+            mGamesListFinished.add(hotPotatoChallenge);
+        }
+    }
+
     private void populateListView() {
         Boolean isLayoutEmpty = true;
 
         if (mGamesListPlaying.size() > 0) {
             gamesResultListViewPlaying.setVisibility(View.VISIBLE);
             isLayoutEmpty = false;
-            ArrayAdapter<GamesListItem> adapter = new GamesRowAdapter(view.getContext(), R.layout.row_games, mGamesListPlaying);
+            ArrayAdapter<ParentChallenge> adapter = new GamesRowAdapter(view.getContext(), R.layout.row_games, mGamesListPlaying);
             gamesResultListViewPlaying.setAdapter(adapter);
 
             gamesResultListViewPlaying.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -179,15 +172,17 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Intent intent = new Intent(getActivity(), HotPotatoDetailsActivity.class);
                     Bundle extras = new Bundle();
+                    extras.putParcelable("game-details", (HotPotatoChallenge) mGamesListPlaying.get(position));
                     intent.putExtras(extras);
                     startActivity(intent);
                 }
             });
         }
+
         if (mGamesListPending.size() > 0) {
             gamesResultListViewPending.setVisibility(View.VISIBLE);
             isLayoutEmpty = false;
-            ArrayAdapter<GamesListItem> adapter = new GamesRowAdapter(view.getContext(), R.layout.row_games, mGamesListPending);
+            ArrayAdapter<ParentChallenge> adapter = new GamesRowAdapter(view.getContext(), R.layout.row_games, mGamesListPending);
             gamesResultListViewPending.setAdapter(adapter);
 
             gamesResultListViewPending.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -195,15 +190,17 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Intent intent = new Intent(getActivity(), HotPotatoDetailsActivity.class);
                     Bundle extras = new Bundle();
+                    extras.putParcelable("game-details", (HotPotatoChallenge) mGamesListPending.get(position));
                     intent.putExtras(extras);
                     startActivity(intent);
                 }
             });
         }
+
         if (mGamesListFinished.size() > 0) {
             gamesResultListViewFinished.setVisibility(View.VISIBLE);
             isLayoutEmpty = false;
-            ArrayAdapter<GamesListItem> adapter = new GamesRowAdapter(view.getContext(), R.layout.row_games, mGamesListFinished);
+            ArrayAdapter<ParentChallenge> adapter = new GamesRowAdapter(view.getContext(), R.layout.row_games, mGamesListFinished);
             gamesResultListViewFinished.setAdapter(adapter);
 
             gamesResultListViewFinished.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -211,11 +208,14 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Intent intent = new Intent(getActivity(), HotPotatoDetailsActivity.class);
                     Bundle extras = new Bundle();
+                    extras.putParcelable("game-details", (HotPotatoChallenge) mGamesListFinished.get(position));
                     intent.putExtras(extras);
                     startActivity(intent);
                 }
             });
-            }
+        }
+
+
         if(isLayoutEmpty) {
             gamesResultListViewPlaying.setVisibility(View.GONE);
             gamesResultListViewPending.setVisibility(View.GONE);
