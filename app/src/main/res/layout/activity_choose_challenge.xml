@@ -52,6 +52,7 @@
                 android:layout_gravity="bottom|center_horizontal"
                 android:padding="10dp"
                 android:text="Steal the Flag"
-                style="@style/CardView_TextView"/>
+                style="@style/CardView_TextView"
+                />
         </android.support.v7.widget.CardView>
 </LinearLayout>
