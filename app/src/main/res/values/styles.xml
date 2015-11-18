@@ -80,8 +80,10 @@
         <item name="android:radius">20dp</item>
     </style>
     <style name="CardViewImage">
-        <item name="android:paddingBottom">55dp</item>
-        <item name="android:paddingTop">20dp</item>
+        <item name="android:paddingBottom">65dp</item>
+        <item name="android:paddingTop">30dp</item>
+        <item name="android:paddingLeft">30dp</item>
+        <item name="android:paddingRight">30dp</item>
         <item name="android:background">@color/card_view_image_background</item>
     </style>
 
