@@ -61,7 +61,7 @@
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <ProgressBar
             style="?android:attr/progressBarStyleHorizontal"

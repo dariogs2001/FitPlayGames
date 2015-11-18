@@ -68,6 +68,7 @@ public class HotPotatoPlayersAdapter extends ArrayAdapter<ChallengePlayerItem> {
             holder.gameResponse = (LinearLayout) row.findViewById(R.id.game_response);
             holder.acceptBtn = (ImageButton) row.findViewById(R.id.btn_accept);
             holder.declineBtn = (ImageButton) row.findViewById(R.id.btn_decline);
+            holder.progressLayout = (LinearLayout) row.findViewById(R.id.progressLayout);
 
             holder.progressBar.setMax(mStepsGoal);
 
@@ -111,6 +112,7 @@ public class HotPotatoPlayersAdapter extends ArrayAdapter<ChallengePlayerItem> {
             }
         }
         else if (mGameStatus == ParseConstants.CHALLENGE_STATUS_PLAYING) {
+            holder.progressLayout.setVisibility(View.VISIBLE);
             holder.passesTV.setText(String.valueOf(userObject.getmPasses() + " passes"));
             if (position == 0) {
                 row.setBackgroundColor(getContext().getResources().getColor(R.color.light_light_grey));
@@ -157,7 +159,7 @@ public class HotPotatoPlayersAdapter extends ArrayAdapter<ChallengePlayerItem> {
         TextView userNameTV, passesTV, stepsTV;
         ImageView userThumbnail;
         ProgressBar progressBar;
-        LinearLayout gameResponse;
+        LinearLayout gameResponse, progressLayout;
         ImageButton acceptBtn, declineBtn;
     }
 }
