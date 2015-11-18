@@ -2,6 +2,7 @@ package dariogonzalez.fitplaygames.Adapters;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.media.Image;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,7 +11,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -62,6 +65,9 @@ public class HotPotatoPlayersAdapter extends ArrayAdapter<ChallengePlayerItem> {
             holder.stepsTV = (TextView) row.findViewById(R.id.steps_tv);
             holder.userThumbnail = (ImageView) row.findViewById(R.id.user_thumbnail);
             holder.progressBar = (ProgressBar) row.findViewById(R.id.progressBar);
+            holder.gameResponse = (LinearLayout) row.findViewById(R.id.game_response);
+            holder.acceptBtn = (ImageButton) row.findViewById(R.id.btn_accept);
+            holder.declineBtn = (ImageButton) row.findViewById(R.id.btn_decline);
 
             holder.progressBar.setMax(mStepsGoal);
 
@@ -74,7 +80,6 @@ public class HotPotatoPlayersAdapter extends ArrayAdapter<ChallengePlayerItem> {
         final ChallengePlayerItem userObject = mUsers.get(position);
 
         holder.userNameTV.setText(userObject.getmUserName());
-        holder.passesTV.setText(String.valueOf(userObject.getmPasses()));
         final Uri profilePicture = userObject.getmImageUri();
         if (profilePicture != null)
         {
@@ -82,34 +87,77 @@ public class HotPotatoPlayersAdapter extends ArrayAdapter<ChallengePlayerItem> {
         }
         else
         {
-            holder.userThumbnail.setImageResource(R.drawable.ic_action_person);
+            holder.userThumbnail.setImageResource(R.drawable.ic_user);
         }
 
         if (mGameStatus == ParseConstants.CHALLENGE_STATUS_PENDING) {
+            if (userObject.getmStatus() == ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED) {
+                holder.passesTV.setText(getContext().getResources().getString(R.string.accepted));
+            }
+            else if (userObject.getmStatus() == ParseConstants.CHALLENGE_PLAYER_STATUS_PENDING) {
+                holder.passesTV.setText(getContext().getResources().getString(R.string.pending));
+            }
+
             String objectId = ParseUser.getCurrentUser().getObjectId();
             if (objectId.equals(userObject.getmUserObject().getObjectId())) {
-                Log.d("TEST", "objectId: " + objectId + " positionObjectId: " + userObject.getmUserObject().getObjectId());
                 row.setBackgroundColor(getContext().getResources().getColor(R.color.light_light_grey));
+                if (userObject.getmStatus() == ParseConstants.CHALLENGE_PLAYER_STATUS_PENDING) {
+                    holder.gameResponse.setVisibility(View.VISIBLE);
+                }
             }
             else {
                 row.setBackgroundColor(getContext().getResources().getColor(R.color.white));
+                holder.gameResponse.setVisibility(View.GONE);
             }
         }
         else if (mGameStatus == ParseConstants.CHALLENGE_STATUS_PLAYING) {
+            holder.passesTV.setText(String.valueOf(userObject.getmPasses() + " passes"));
             if (position == 0) {
                 row.setBackgroundColor(getContext().getResources().getColor(R.color.light_light_grey));
             }
         }
+
+        final ChallengeInviteHolder rowHolder = holder;
+        holder.acceptBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendPlayerResponse(ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED, userObject, rowHolder);
+            }
+        });
+
+        holder.declineBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendPlayerResponse(ParseConstants.CHALLENGE_PLAYER_STATUS_DECLINED, userObject, rowHolder);
+            }
+        });
 
 
 
         return row;
     }
 
+    private void sendPlayerResponse(final int status, ChallengePlayerItem user, final ChallengeInviteHolder holder) {
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
+        query.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_ID, user.getmUserObject());
+        query.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID, user.getmChallengeObject());
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> challengePlayers, ParseException e) {
+                if (e == null) {
+                    challengePlayers.get(0).put(ParseConstants.CHALLENGE_PLAYER_STATUS, status);
+                }
+                challengePlayers.get(0).saveInBackground();
+                holder.gameResponse.setVisibility(View.GONE);
+            }
+        });
+    }
+
     static class ChallengeInviteHolder {
         TextView userNameTV, passesTV, stepsTV;
         ImageView userThumbnail;
         ProgressBar progressBar;
-
+        LinearLayout gameResponse;
+        ImageButton acceptBtn, declineBtn;
     }
 }

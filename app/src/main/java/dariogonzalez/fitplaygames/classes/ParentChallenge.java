@@ -118,7 +118,7 @@ public abstract class ParentChallenge {
                     setChallengeId(challengeObject.getObjectId());
                     callback.done(challengeObject.getObjectId());
                     ParseObject challengePlayer = new ParseObject(ParseConstants.CLASS_CHALLENGE_PLAYERS);
-                    challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_STATUS, ParseConstants.CHALLENGE_PLAYER_STATUS_PENDING);
+                    challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_STATUS, ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED);
                     challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_USER_ID, user);
                     challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID, challengeObject);
                     challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_OWNER, true);

@@ -92,6 +92,7 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
                     if (challenge.size() > 0) {
                         ParseQuery<ParseObject> query = new ParseQuery<>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
                         query.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID, challenge.get(0));
+                        query.whereNotEqualTo(ParseConstants.CHALLENGE_PLAYER_STATUS, ParseConstants.CHALLENGE_PLAYER_STATUS_DECLINED);
 
                         query.findInBackground(new FindCallback<ParseObject>() {
                             @Override
@@ -111,6 +112,7 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
                                                 player.setmPasses(challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_PASSES));
                                                 player.setmStatus(challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_STATUS));
                                                 player.setmUserName(user.getString(ParseConstants.USER_USERNAME));
+                                                player.setmChallengeObject(challenge.get(0));
                                                 player.setmUserObject((ParseUser) user);
                                                 users.add(player);
                                             }
@@ -120,8 +122,7 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
                                     ArrayAdapter<ChallengePlayerItem> adapter = new HotPotatoPlayersAdapter(HotPotatoDetailsActivity.this, R.layout.row_hot_potato_players, users, mHotPotatoChallenge.getStepsGoal(), challenge.get(0).getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS));
                                     playingFriendsList.setAdapter(adapter);
 
-                                }
-                                else {
+                                } else {
                                     Log.d("TEST", "Error: " + e.toString());
                                 }
                             }

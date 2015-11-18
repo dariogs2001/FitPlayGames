@@ -2,6 +2,7 @@ package dariogonzalez.fitplaygames.classes;
 
 import android.net.Uri;
 
+import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 /**
@@ -13,6 +14,7 @@ public class ChallengePlayerItem {
     private long mSteps;
     private boolean mIsOwner;
     private ParseUser mUserObject;
+    private ParseObject mChallengeObject;
     private String mUserName;
 
     public int getmIconId() {
@@ -77,5 +79,13 @@ public class ChallengePlayerItem {
 
     public void setmUserName(String mUserName) {
         this.mUserName = mUserName;
+    }
+
+    public ParseObject getmChallengeObject() {
+        return mChallengeObject;
+    }
+
+    public void setmChallengeObject(ParseObject mChallengeObject) {
+        this.mChallengeObject = mChallengeObject;
     }
 }

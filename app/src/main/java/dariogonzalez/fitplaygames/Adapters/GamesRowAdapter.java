@@ -58,6 +58,7 @@ public class GamesRowAdapter extends ArrayAdapter<ParentChallenge> {
 
         holder.challengeTitleTV.setText(currentItem.getUserChallengeName());
         holder.numberOfPlayersTV.setText(String.valueOf(1));
+        holder.challengeThumbnail.setImageDrawable(currentItem.getIcon());
 
         return row;
     }

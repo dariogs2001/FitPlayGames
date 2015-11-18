@@ -88,7 +88,11 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
             }
         });
 
+        mGamesListPlaying.clear();
+        mGamesListPending.clear();
+        mGamesListFinished.clear();
         getGameData();
+
         return view;
     }
 
@@ -127,7 +131,7 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
     private void addHotPotatoChallenge(ParseObject challenge, int challengeStatus) {
         HotPotatoChallenge hotPotatoChallenge = new HotPotatoChallenge(challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE));
         //TODO: change icon to game icon once we have it
-        //hotPotatoChallenge.setIcon(challenge.get(ParseConstants.));
+        hotPotatoChallenge.setIcon(getResources().getDrawable(R.drawable.ic_hotpotato));
         hotPotatoChallenge.setChallengeId(challenge.getObjectId());
         hotPotatoChallenge.setUserChallengeName(challenge.getString(ParseConstants.CHALLENGE_CHALLENGE_NAME));
         hotPotatoChallenge.setStepsGoal(challenge.getInt(ParseConstants.CHALLENGE_DAILY_STEPS_GOAL));
