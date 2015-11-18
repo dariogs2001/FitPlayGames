@@ -21,4 +21,5 @@
     <color name="very_light_grey">#F8F6F3</color>
     <color name="card_view_text_view_background">#CC000000</color>
     <color name="card_view_background">#dedcd6</color>
+    <color name="card_view_image_background">#DEDEDE</color>
 </resources>
