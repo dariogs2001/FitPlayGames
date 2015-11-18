@@ -20,8 +20,8 @@
                 android:id="@+id/thumb_image_hot_potato"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="visible"
-                android:src="@drawable/ic_smug"/>
+                android:src="@drawable/ic_hotpotato"
+                style="@style/CardViewImage"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -29,7 +29,6 @@
                 android:layout_gravity="bottom|center_horizontal"
                 android:padding="10dp"
                 android:text="Hot Potato"
-                android:visibility="visible"
                 style="@style/CardView_TextView"/>
         </android.support.v7.widget.CardView>
 
@@ -44,8 +43,8 @@
                 android:id="@+id/thumb_image_flag"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="visible"
-                android:src="@drawable/ic_equalizer"/>
+                android:src="@drawable/ic_flag"
+                style="@style/CardViewImage"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -53,7 +52,7 @@
                 android:layout_gravity="bottom|center_horizontal"
                 android:padding="10dp"
                 android:text="Steal the Flag"
-                android:visibility="visible"
-                style="@style/CardView_TextView"/>
+                style="@style/CardView_TextView"
+                />
         </android.support.v7.widget.CardView>
 </LinearLayout>
