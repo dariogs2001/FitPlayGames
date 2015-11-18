@@ -1,6 +1,7 @@
 <resources>
     <color name="background_purple">#3F2466</color>
     <color name="light_gray">#bbbbbb</color>
+    <color name="light_light_grey">#dedede</color>
     <color name="apptheme_color">#61408c</color>
     <color name="light_purple_button">#e1d2f3</color>
     <color name="pressed_purple_button">#ba9dda</color>

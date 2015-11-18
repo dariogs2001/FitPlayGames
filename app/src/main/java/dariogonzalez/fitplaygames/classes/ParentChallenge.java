@@ -105,7 +105,7 @@ public abstract class ParentChallenge {
         challengeObject = new ParseObject(ParseConstants.CLASS_CHALLENGES);
         challengeObject.put(ParseConstants.CHALLENGE_CHALLENGE_NAME, challengeName);
         challengeObject.put(ParseConstants.CHALLENGE_CHALLENGE_TYPE, challengeType);
-        challengeObject.put(ParseConstants.CHALLENGE_CHALLENGE_STATUS, ParseConstants.CHALLENGE_STATUS_PROCESSING);
+        challengeObject.put(ParseConstants.CHALLENGE_CHALLENGE_STATUS, ParseConstants.CHALLENGE_STATUS_PENDING);
         challengeObject.put(ParseConstants.CHALLENGE_DAILY_STEPS_GOAL, stepsGoal);
         challengeObject.put(ParseConstants.CHALLENGE_CHALLENGE_START, startDate);
         challengeObject.put(ParseConstants.CHALLENGE_CHALLENGE_END, endDate);

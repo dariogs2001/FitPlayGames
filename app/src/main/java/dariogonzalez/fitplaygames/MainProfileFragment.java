@@ -214,23 +214,26 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
                 });
             }
 
-            double steps = 0;
-            if (user.has("lastSevenDays")) {
-                ParseObject lastSevenDays = null;
-                try {
-                    lastSevenDays = user.getParseObject("lastSevenDays").fetchIfNeeded();
-                } catch (ParseException e1) {
-                    e1.printStackTrace();
-                }
-                if (lastSevenDays != null) {
-                    steps =  lastSevenDays.getDouble(ParseConstants.LAST_SEVEN_DAYS_STEPS);
-                }
-            }
-            else {
-                steps = 0;
-            }
 
-            setView(user.getUsername(), user.getEmail(), (int)steps + " " + getResources().getString(R.string.steps));
+            ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(ParseConstants.CLASS_LAST_SEVEN_DAYS);
+            query.whereEqualTo(ParseConstants.USER_OBJECT, user);
+
+            query.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> list, ParseException e) {
+                    if (e == null) {
+                        double steps = 0;
+                        if (list.size() > 0) {
+                            steps =  list.get(0).getDouble(ParseConstants.LAST_SEVEN_DAYS_STEPS);
+                        }
+                        setView(user.getUsername(), user.getEmail(), (int) steps + " " + getResources().getString(R.string.steps));
+                    }
+                    else {
+                        Log.d("TEST", e.toString());
+                    }
+                }
+            });
+
         }
     }
 

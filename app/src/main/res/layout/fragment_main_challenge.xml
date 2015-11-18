@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="dariogonzalez.fitplaygames.MainChallengeFragment"
-    android:layout_marginBottom="8dp"
     android:orientation="vertical">
 
     <Button
@@ -21,137 +20,120 @@
         android:id="@+id/new_challenge_btn"/>
 
     <LinearLayout
-        android:id="@+id/empty_state_friends"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone"
-        android:layout_gravity="center">
-
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/ic_smug"
-            android:layout_gravity="center"
-            android:layout_marginBottom="15dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/currently_no_challenges"
-            android:textSize="16sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical">
+
         <LinearLayout
+            android:id="@+id/playing_layout"
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1"
             android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:orientation="horizontal"
+                android:id="@+id/challenge_type_layout_playing"
+                android:background="@color/primary">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/challenge_title_playing"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:id="@+id/challenge_type_playing"
+                    android:layout_marginLeft="10dp"/>
+
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/games_list_view_playing"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@color/secondary_text"
+                android:dividerHeight="1px"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+
         <LinearLayout
+            android:id="@+id/pending_layout"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:orientation="horizontal"
-            android:id="@+id/challenge_type_layout_playing"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:background="@color/primary">
-            <TextView
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:orientation="horizontal"
+                android:id="@+id/challenge_type_layout_pending"
+                android:background="@color/divider_color">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/challenge_title_pending"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:id="@+id/challenge_type_pending"/>
+
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/games_list_view_pending"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/challenge_title_playing"
-                android:layout_gravity="center_vertical"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="@color/white"
-                android:paddingTop="3dp"
-                android:id="@+id/challenge_type_playing"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"/>
+                android:divider="@color/secondary_text"
+                android:dividerHeight="1px"
+                android:visibility="gone"/>
+
         </LinearLayout>
 
-        <ListView
-            android:id="@+id/games_list_view_playing"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:divider="@color/secondary_text"
-            android:dividerHeight="1px"
-            android:visibility="gone"/>
-        </LinearLayout>
         <LinearLayout
+            android:id="@+id/finished_layout"
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1"
             android:orientation="vertical">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:orientation="horizontal"
-        android:id="@+id/challenge_type_layout_pending"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:background="@color/divider_color">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/challenge_title_pending"
-            android:layout_gravity="center_vertical"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            android:paddingTop="3dp"
-            android:id="@+id/challenge_type_pending"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1"/>
-    </LinearLayout>
 
-        <ListView
-            android:id="@+id/games_list_view_pending"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:divider="@color/secondary_text"
-            android:dividerHeight="1px"
-            android:visibility="gone"/>
-</LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:orientation="horizontal"
-        android:id="@+id/challenge_type_layout_finished"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:background="@color/opaque_white">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/challenge_title_finished"
-            android:layout_gravity="center_vertical"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            android:paddingTop="3dp"
-            android:id="@+id/challenge_type_finished"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1"/>
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:orientation="horizontal"
+                android:id="@+id/challenge_type_layout_finished"
+                android:background="@color/opaque_white">
 
-        <ListView
-            android:id="@+id/games_list_view_finished"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:divider="@color/secondary_text"
-            android:dividerHeight="1px"
-            android:visibility="gone"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/challenge_title_finished"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:id="@+id/challenge_type_finished"
+                    android:layout_marginLeft="10dp"/>
+
             </LinearLayout>
+
+            <ListView
+                android:id="@+id/games_list_view_finished"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@color/secondary_text"
+                android:dividerHeight="1px"
+                android:visibility="gone"/>
+            </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>

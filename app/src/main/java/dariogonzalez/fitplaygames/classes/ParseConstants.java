@@ -74,7 +74,7 @@ public final class ParseConstants
     public static final String CHALLENGE_PLAYER_USER_ID = "UserObject";
     public static final String CHALLENGE_PLAYER_CHALLENGE_ID = "ChallengeObject";
     public static final String CHALLENGE_PLAYER_OWNER = "IsOwner";
-
+    public static final String CHALLENGE_PLAYER_PASSES = "Passes";
 
 
     /*******************FRIEND STATUS************************************************************/
@@ -85,7 +85,6 @@ public final class ParseConstants
     /********************************************************************************************/
 
     /*******************CHALLENGE STATUS*********************************************************/
-    public static final int  CHALLENGE_STATUS_PROCESSING = 1;
     public static final int CHALLENGE_STATUS_PENDING = 1;
     public static final int CHALLENGE_STATUS_PLAYING = 2;
     public static final int CHALLENGE_STATUS_FINISHED = 3;

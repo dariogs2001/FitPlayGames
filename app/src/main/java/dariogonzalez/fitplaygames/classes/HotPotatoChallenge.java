@@ -83,6 +83,7 @@ public class HotPotatoChallenge extends ParentChallenge implements Parcelable{
         this.setTotalPasses(source.readInt());
         this.setTotalSteps(source.readInt());
         this.setChallengeId(source.readString());
+        this.setChallengeStatusType(source.readInt());
     }
 
     public Date generateRandomEndDate(int stepsGoal, int numOfPlayers) {
@@ -117,6 +118,7 @@ public class HotPotatoChallenge extends ParentChallenge implements Parcelable{
         parcel.writeInt(this.getTotalPasses());
         parcel.writeInt(this.getTotalSteps());
         parcel.writeString(this.getChallengeId());
+        parcel.writeInt(this.getChallengeStatusType());
     }
 
     public static final Creator<HotPotatoChallenge> CREATOR = new Creator<HotPotatoChallenge>() {
@@ -137,7 +139,7 @@ public class HotPotatoChallenge extends ParentChallenge implements Parcelable{
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd");
         String dateStr = simpleDateFormat.format(date);
 
-        SimpleDateFormat simpleTimeFormat = new SimpleDateFormat("hh:mm");
+        SimpleDateFormat simpleTimeFormat = new SimpleDateFormat("hh:mm a");
         String timeStr = simpleTimeFormat.format(date);
 
         keyVal.put("date", dateStr);

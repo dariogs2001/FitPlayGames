@@ -47,10 +47,8 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
     private List<ParentChallenge> mGamesListPlaying = new ArrayList<ParentChallenge>();
     private List<ParentChallenge> mGamesListPending = new ArrayList<ParentChallenge>();
     private List<ParentChallenge> mGamesListFinished = new ArrayList<ParentChallenge>();
-    private ListView gamesResultListViewPlaying;
-    private ListView gamesResultListViewPending;
-    private ListView gamesResultListViewFinished;
-    private LinearLayout emptyStateLayout;
+    private ListView gamesResultListViewPlaying, gamesResultListViewPending, gamesResultListViewFinished;
+    private LinearLayout playingLayout, pendingLayout, finishedLayout;
     private View view;
 
    // private SwipeRefreshLayout swipeRefreshLayout;
@@ -77,18 +75,10 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
         gamesResultListViewPlaying = (ListView) view.findViewById(R.id.games_list_view_playing);
         gamesResultListViewPending = (ListView) view.findViewById(R.id.games_list_view_pending);
         gamesResultListViewFinished = (ListView) view.findViewById(R.id.games_list_view_finished);
-        emptyStateLayout = (LinearLayout) view.findViewById(R.id.empty_state_friends);
-/*
-        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
-        swipeRefreshLayout.setColorSchemeResources(R.color.primary_light, R.color.primary, R.color.primary_dark);
-
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-
-            }
-        }); */
         btnNewChallenge = (Button) view.findViewById(R.id.new_challenge_btn);
+        playingLayout = (LinearLayout) view.findViewById(R.id.playing_layout);
+        pendingLayout = (LinearLayout) view.findViewById(R.id.pending_layout);
+        finishedLayout = (LinearLayout) view.findViewById(R.id.finished_layout);
 
         btnNewChallenge.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,14 +109,12 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
                                     @Override
                                     public void done(List<ParseObject> challenges, ParseException e) {
                                         if(e == null) {
-                                            for (ParseObject challenge:challenges) {
-                                                Object i = challenge.get(ParseConstants.CHALLENGE_CHALLENGE_STATUS);
+                                            for (ParseObject challenge : challenges) {
                                                 if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO) {
                                                     addHotPotatoChallenge(challenge, challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS));
                                                 }
                                             }
                                         }
-                                        populateListView();
                                     }
                                 });
                             }
@@ -142,7 +130,7 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
         //hotPotatoChallenge.setIcon(challenge.get(ParseConstants.));
         hotPotatoChallenge.setChallengeId(challenge.getObjectId());
         hotPotatoChallenge.setUserChallengeName(challenge.getString(ParseConstants.CHALLENGE_CHALLENGE_NAME));
-        hotPotatoChallenge.setStepsGoal(challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STEPS_GOAL));
+        hotPotatoChallenge.setStepsGoal(challenge.getInt(ParseConstants.CHALLENGE_DAILY_STEPS_GOAL));
         hotPotatoChallenge.setChallengeStatusType(challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS));
         hotPotatoChallenge.setStartDate(challenge.getDate(ParseConstants.CHALLENGE_CHALLENGE_START));
         hotPotatoChallenge.setEndDate(challenge.getDate(ParseConstants.CHALLENGE_CHALLENGE_END));
@@ -156,14 +144,18 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
         else if (challengeStatus == ParseConstants.CHALLENGE_STATUS_FINISHED) {
             mGamesListFinished.add(hotPotatoChallenge);
         }
+        populateListView();
     }
 
     private void populateListView() {
-        Boolean isLayoutEmpty = true;
+        int numGone = 3;
 
         if (mGamesListPlaying.size() > 0) {
+            numGone--;
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) playingLayout.getLayoutParams();
+            params.weight = 1f;
+            playingLayout.setLayoutParams(params);
             gamesResultListViewPlaying.setVisibility(View.VISIBLE);
-            isLayoutEmpty = false;
             ArrayAdapter<ParentChallenge> adapter = new GamesRowAdapter(view.getContext(), R.layout.row_games, mGamesListPlaying);
             gamesResultListViewPlaying.setAdapter(adapter);
 
@@ -180,8 +172,11 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
         }
 
         if (mGamesListPending.size() > 0) {
+            numGone--;
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) pendingLayout.getLayoutParams();
+            params.weight = 1f;
+            pendingLayout.setLayoutParams(params);
             gamesResultListViewPending.setVisibility(View.VISIBLE);
-            isLayoutEmpty = false;
             ArrayAdapter<ParentChallenge> adapter = new GamesRowAdapter(view.getContext(), R.layout.row_games, mGamesListPending);
             gamesResultListViewPending.setAdapter(adapter);
 
@@ -198,8 +193,11 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
         }
 
         if (mGamesListFinished.size() > 0) {
+            numGone--;
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) finishedLayout.getLayoutParams();
+            params.weight = 1f;
+            finishedLayout.setLayoutParams(params);
             gamesResultListViewFinished.setVisibility(View.VISIBLE);
-            isLayoutEmpty = false;
             ArrayAdapter<ParentChallenge> adapter = new GamesRowAdapter(view.getContext(), R.layout.row_games, mGamesListFinished);
             gamesResultListViewFinished.setAdapter(adapter);
 
@@ -216,11 +214,37 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
         }
 
 
-        if(isLayoutEmpty) {
-            gamesResultListViewPlaying.setVisibility(View.GONE);
-            gamesResultListViewPending.setVisibility(View.GONE);
-            gamesResultListViewFinished.setVisibility(View.GONE);
-            emptyStateLayout.setVisibility(View.VISIBLE);
+        if (mGamesListPlaying.size() < 1) {
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) playingLayout.getLayoutParams();
+            if (numGone == 1) {
+                params.weight = 1.75f;
+            }
+            else if (numGone == 2) {
+                params.weight = 5f;
+            }
+            playingLayout.setLayoutParams(params);
         }
+        if (mGamesListPending.size() < 1) {
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) pendingLayout.getLayoutParams();
+            if (numGone == 1) {
+                params.weight = 1.75f;
+            }
+            else if (numGone == 2) {
+                params.weight = 5f;
+            }
+            pendingLayout.setLayoutParams(params);
+        }
+        if (mGamesListFinished.size() < 1) {
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) finishedLayout.getLayoutParams();
+            if (numGone == 1) {
+                params.weight = 1.75f;
+            }
+            else if (numGone == 2) {
+                params.weight = 5f;
+            }
+            finishedLayout.setLayoutParams(params);
+        }
+
+
     }
 }
