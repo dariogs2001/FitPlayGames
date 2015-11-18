@@ -14,7 +14,8 @@
             android:src="@drawable/ic_action_refresh"
             android:cropToPadding="true"
             android:layout_gravity="center_horizontal|center_vertical"
-            android:padding="2.5dp"/>
+            android:padding="2.5dp"
+            android:layout_marginLeft="10dp"/>
         <TextView
             android:id="@+id/tvText"
             android:layout_width="match_parent"

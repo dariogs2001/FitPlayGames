@@ -54,9 +54,9 @@ public class MainMoreOptionsFragment extends android.support.v4.app.Fragment {
     }
 
     private void populateMoreOptionsList() {
-        mOptions.add(new MoreOptionsListItem(getString(R.string.fitbit_sign_in_text), R.mipmap.fitbit_white));
-        mOptions.add(new MoreOptionsListItem(getString(R.string.log_out_text), R.mipmap.logout));
-        mOptions.add(new MoreOptionsListItem(getString(R.string.privacy_policy_text), R.mipmap.privacy));
+        mOptions.add(new MoreOptionsListItem(getString(R.string.fitbit_sign_in_text), R.drawable.ic_fitbit));
+        mOptions.add(new MoreOptionsListItem(getString(R.string.log_out_text), R.drawable.ic_logout));
+        mOptions.add(new MoreOptionsListItem(getString(R.string.privacy_policy_text), R.drawable.ic_privacy));
         mOptions.add(new MoreOptionsListItem("Test", R.drawable.ic_launcher));
     }
 
