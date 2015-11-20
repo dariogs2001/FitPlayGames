@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 
+import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
@@ -182,9 +183,40 @@ public abstract class ParentChallenge {
 //        sendPushNotification(/*playerId, mainPushMessage*/);
     }
 
-    // To be called by children classes
-    // This method will do the logic to update the challenge per user and will be called from checkPlayerStatus
-    protected void updateChallenge() {}
+    public static void updateChallenges() {
+        ParseUser user = ParseUser.getCurrentUser();
+        // Grab all of the users challenges
+        ParseQuery<ParseObject> challengePlayerQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
+        challengePlayerQuery.whereNotEqualTo(ParseConstants.CHALLENGE_PLAYER_STATUS, ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED);
+        challengePlayerQuery.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> challengePlayers, ParseException e) {
+                if (e == null) {
+                    for (final ParseObject challengePlayer : challengePlayers) {
+                        ParseQuery<ParseObject> challengeQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGES);
+                        challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_ID, challengePlayer);
+                        challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_STATUS, ParseConstants.CHALLENGE_STATUS_PLAYING);
+                        challengeQuery.findInBackground(new FindCallback<ParseObject>() {
+                            @Override
+                            public void done(List<ParseObject> challenges, ParseException e) {
+                                if (e == null) {
+                                    for (ParseObject challenge : challenges) {
+                                        updateChallenge(challenge, challengePlayer);
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    }
+
+    public static void updateChallenge(ParseObject challenge, ParseObject challengePlayer) {
+        // Update the challengePlayer table, challenge table and challengeEvent table if necessary
+
+        ParseQuery<ParseObject> challengeEventQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_EVENTS);
+    }
 
 
     // This method will check the challenge status and the players status when they open up the challenge. It should be called for every challenge that the user is involved with.

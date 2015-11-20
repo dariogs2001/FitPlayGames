@@ -101,6 +101,7 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
             if(userObject != null) {
                 ParseQuery<ParseObject> query1 = new ParseQuery(ParseConstants.CLASS_CHALLENGE_PLAYERS);
                 query1.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_ID, userObject);
+                query1.whereNotEqualTo(ParseConstants.CHALLENGE_PLAYER_STATUS, ParseConstants.CHALLENGE_PLAYER_STATUS_DECLINED);
                 query1.findInBackground(new FindCallback<ParseObject>() {
                     @Override
                     public void done(List<ParseObject> challengeplayers, ParseException e) {

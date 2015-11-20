@@ -98,6 +98,12 @@ public final class ParseConstants
     /********************************************************************************************/
 
 
+    /**********************CHALLENGE EVENT *****************************************************/
+    public static String CLASS_CHALLENGE_EVENTS = "ChallengeEvent";
+    public static String CHALLENGE_EVENTS_CHALLENGE_PLAYER = "ChallengePlayerObject";
+
+
+
     /*******************PARSE.COM ANALYTICS******************************************************/
     public static String KEY_ANALYTICS_MAIN_ACTIVITY = "MainActivity";
     public static String KEY_ANALYTICS_PROFILE = "Profile";
