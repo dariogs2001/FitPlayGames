@@ -3,7 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="dariogonzalez.fitplaygames.MainChallengeFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
 
     <Button
         android:layout_width="match_parent"
@@ -15,125 +17,40 @@
         android:textAllCaps="false"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="15dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
         android:id="@+id/new_challenge_btn"/>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
+        <ListView
+            android:id="@+id/show_all"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@color/secondary_text"
+            android:dividerHeight="1px"
+            android:visibility="visible"/>
+
 
         <LinearLayout
-            android:id="@+id/playing_layout"
+            android:id="@+id/progress_bar"
             android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:gravity="center">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:orientation="horizontal"
-                android:id="@+id/challenge_type_layout_playing"
-                android:background="@color/primary">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/challenge_title_playing"
-                    android:layout_gravity="center_vertical"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"
-                    android:id="@+id/challenge_type_playing"
-                    android:layout_marginLeft="10dp"/>
-
-            </LinearLayout>
-
-            <ListView
-                android:id="@+id/games_list_view_playing"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:divider="@color/secondary_text"
-                android:dividerHeight="1px"
-                android:visibility="gone"/>
-
+            <ProgressBar
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="left"
+                />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/pending_layout"
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
+    </RelativeLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:orientation="horizontal"
-                android:id="@+id/challenge_type_layout_pending"
-                android:background="@color/divider_color">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/challenge_title_pending"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="10dp"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"
-                    android:id="@+id/challenge_type_pending"/>
-
-            </LinearLayout>
-
-            <ListView
-                android:id="@+id/games_list_view_pending"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:divider="@color/secondary_text"
-                android:dividerHeight="1px"
-                android:visibility="gone"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/finished_layout"
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:orientation="horizontal"
-                android:id="@+id/challenge_type_layout_finished"
-                android:background="@color/opaque_white">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/challenge_title_finished"
-                    android:layout_gravity="center_vertical"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"
-                    android:id="@+id/challenge_type_finished"
-                    android:layout_marginLeft="10dp"/>
-
-            </LinearLayout>
-
-            <ListView
-                android:id="@+id/games_list_view_finished"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:divider="@color/secondary_text"
-                android:dividerHeight="1px"
-                android:visibility="gone"/>
-            </LinearLayout>
-
-    </LinearLayout>
 
 </LinearLayout>
+

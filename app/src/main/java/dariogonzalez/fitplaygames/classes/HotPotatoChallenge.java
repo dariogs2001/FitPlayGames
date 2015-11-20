@@ -149,7 +149,7 @@ public class HotPotatoChallenge extends ParentChallenge implements Parcelable{
     }
 
     public void refresh() {
-        ParentChallenge.updateChallenge(getChallengeObject());
+//        ParentChallenge.updateChallenge(getChallengeObject());
     }
 
     public void setTotalSteps(int totalSteps) {
