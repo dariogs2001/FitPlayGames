@@ -145,12 +145,12 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
         }
 
         if (mGamesListPending.size() > 0) {
-            mAdapterNew.addSectionHeaderItem(new GamesHeader("Pending", R.color.accent));
+            mAdapterNew.addSectionHeaderItem(new GamesHeader("Pending", R.color.accent_light));
             mAdapterNew.addItem(mGamesListPending);
         }
 
         if (mGamesListFinished.size() > 0) {
-            mAdapterNew.addSectionHeaderItem(new GamesHeader("Finished", R.color.opaque_white));
+            mAdapterNew.addSectionHeaderItem(new GamesHeader("Finished", R.color.divider_color));
             mAdapterNew.addItem(mGamesListPending);
         }
 
