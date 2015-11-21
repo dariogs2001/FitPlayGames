@@ -3,6 +3,7 @@ package dariogonzalez.fitplaygames.Adapters;
 import android.app.Activity;
 import android.graphics.Color;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.firebase.client.Query;
@@ -35,14 +36,24 @@ public class ChatListAdapter extends FirebaseListAdapter<Chat> {
     protected void populateView(View view, Chat chat) {
         // Map a Chat object to an entry in our listview
         String author = chat.getAuthor();
-        TextView authorText = (TextView) view.findViewById(R.id.author);
-        authorText.setText(author + ": ");
-        // If the message was sent by this user, color it differently
+        LinearLayout layoutMe = (LinearLayout)view.findViewById(R.id.layout_me);
+        LinearLayout layoutYou = (LinearLayout)view.findViewById(R.id.layout_you);
+
         if (author != null && author.equals(mUsername)) {
-            authorText.setTextColor(Color.RED);
+            layoutMe.setVisibility(View.VISIBLE);
+            layoutYou.setVisibility(View.GONE);
+
+            ((TextView) view.findViewById(R.id.message)).setText(chat.getMessage());
+            TextView authorText = (TextView) view.findViewById(R.id.author);
+            authorText.setText(author);
+//            authorText.setTextColor(Color.RED);
         } else {
-            authorText.setTextColor(Color.BLUE);
+            layoutMe.setVisibility(View.GONE);
+            layoutYou.setVisibility(View.VISIBLE);
+            ((TextView) view.findViewById(R.id.message_you)).setText(chat.getMessage());
+            TextView authorText = (TextView) view.findViewById(R.id.author_you);
+            authorText.setText(author);
+//            authorText.setTextColor(Color.BLUE);
         }
-        ((TextView) view.findViewById(R.id.message)).setText(chat.getMessage());
     }
 }

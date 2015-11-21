@@ -11,35 +11,35 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/listFooter"
         android:layout_alignParentTop="true"
-        android:transcriptMode="alwaysScroll" />
+        android:transcriptMode="alwaysScroll"
+        android:divider="#00000000"/>
 
     <LinearLayout
         android:id="@+id/listFooter"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
-        <ImageButton
-            android:id="@+id/chatBubble"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_chat_bubble_gray" />
-
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp">
         <EditText
             android:id="@+id/messageInput"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:inputType="textShortMessage"
             android:lines="1"
             android:hint="Send message to the group "
-            android:singleLine="true" />
+            android:singleLine="true"/>
 
         <ImageButton
             android:id="@+id/sendButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_send_blue" />
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_send_blue"
+            android:background="#00000000"
+            android:paddingLeft="10dp"/>
     </LinearLayout>
 
 
