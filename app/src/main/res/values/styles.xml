@@ -87,4 +87,18 @@
         <item name="android:background">@color/card_view_image_background</item>
     </style>
 
+    <style name="challenge_profile_header">
+        <item name="android:padding">10dp</item>
+        <item name="android:textSize">18dp</item>
+    </style>
+    <style name="challenge_profile_header2">
+        <item name="android:padding">10dp</item>
+        <item name="android:textSize">12dp</item>
+        <item name="android:textColor">@color/light_gray</item>
+    </style>
+    <style name="challenge_profile_text">
+        <item name="android:padding">10dp</item>
+        <item name="android:textSize">15dp</item>
+    </style>
+
 </resources>

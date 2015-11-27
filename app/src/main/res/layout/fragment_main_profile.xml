@@ -6,6 +6,11 @@
     tools:context="dariogonzalez.fitplaygames.MainProfileFragment"
     android:orientation="vertical">
 
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:orientation="vertical">-->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="130dp"
@@ -45,26 +50,50 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:textSize="28sp"/>
+                android:textSize="28sp"
+                android:text="User Name"/>
 
             <TextView
                 android:id="@+id/user_steps"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:textSize="20sp"/>
+                android:textSize="20sp"
+                android:text="15.000 steps"/>
 
             <TextView
                 android:id="@+id/user_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/opaque_white"
-                android:textSize="12sp"/>
+                android:textSize="12sp"
+                android:text="email@emai.com"/>
 
         </LinearLayout>
 
 
     </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:visibility="visible"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="140dp">
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:orientation="vertical">
+          <include layout="@layout/challenge_profile_info_row"/>
+          <Space
+              android:layout_width="match_parent"
+              android:layout_height="10dp" />
+          <include layout="@layout/challenge_profile_info_row"/>
+      </LinearLayout>
+    </ScrollView>
+
 
     <com.melnykov.fab.FloatingActionButton
         android:id="@+id/fab_add_friend"
@@ -77,7 +106,8 @@
         android:src="@drawable/ic_addfriend"
         fab:fab_colorNormal="@color/accent"
         fab:fab_colorPressed="@color/primary_dark"
-        fab:fab_colorRipple="@color/primary_light" />
+        fab:fab_colorRipple="@color/primary_light"
+        android:visibility="visible"/>
 
     <com.melnykov.fab.FloatingActionButton
         android:id="@+id/fab_message_friend"
@@ -93,5 +123,6 @@
         fab:fab_colorPressed="@color/primary_dark"
         fab:fab_colorRipple="@color/primary_light" />
 
+    <!--</LinearLayout>-->
 
 </FrameLayout>
