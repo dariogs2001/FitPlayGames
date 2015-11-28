@@ -112,9 +112,11 @@ public class HotPotatoPlayersAdapter extends ArrayAdapter<ChallengePlayerItem> {
             }
         }
         else if (mGameStatus == ParseConstants.CHALLENGE_STATUS_PLAYING) {
-            holder.progressLayout.setVisibility(View.VISIBLE);
+
             holder.passesTV.setText(String.valueOf(userObject.getmPasses() + " passes"));
             if (position == 0) {
+                // Only show on the top player (the player that has the potato
+                holder.progressLayout.setVisibility(View.VISIBLE);
                 row.setBackgroundColor(getContext().getResources().getColor(R.color.light_light_grey));
             }
         }

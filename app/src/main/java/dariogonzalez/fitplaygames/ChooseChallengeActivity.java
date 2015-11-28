@@ -47,14 +47,7 @@ public class ChooseChallengeActivity extends AppCompatActivity {
         stealTheCandyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final ParentChallenge parentChallenge = new ParentChallenge() {
-                    @Override
-                    public void sendPushNotification(ParseUser user) {
-                        super.sendPushNotification(user);
-                    }
 
-                };
-                parentChallenge.sendPushNotification(ParseUser.getCurrentUser());
             }
         });
     }

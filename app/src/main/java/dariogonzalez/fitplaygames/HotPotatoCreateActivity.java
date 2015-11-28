@@ -145,7 +145,6 @@ public class HotPotatoCreateActivity extends AppCompatActivity {
                             user = selectedFriends.get(i).getmFriendObject();
                             mHotPotatoChallenge.getPlayerObjects().add(user);
                         }
-//                        mHotPotatoChallenge.sendPushNotification(user);
                     }
                 }
 

@@ -89,20 +89,20 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
     private void getGameData() {
         final ParseUser userObject = ParseUser.getCurrentUser();
         if(userObject != null) {
-            ParseQuery<ParseObject> query1 = new ParseQuery(ParseConstants.CLASS_CHALLENGE_PLAYERS);
+            ParseQuery<ParseObject> query1 = new ParseQuery<>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
             query1.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_ID, userObject);
 
             try {
                 List<ParseObject> challengeplayers = query1.find();
-                for(ParseObject challengeplayer:challengeplayers) {
-                    ParseQuery<ParseObject> query2 = new ParseQuery(ParseConstants.CLASS_CHALLENGES);
+                for(ParseObject challengeplayer : challengeplayers) {
+                    ParseQuery<ParseObject> query2 = new ParseQuery<>(ParseConstants.CLASS_CHALLENGES);
                     ParseObject challenge = (ParseObject) challengeplayer.get(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID);
                     query2.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_ID, challenge.getObjectId());
                     List<ParseObject> challenges = query2.find();
 
                     for (ParseObject challenge2 : challenges) {
                         if (challenge2.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO) {
-                            addHotPotatoChallenge(challenge2, challenge2.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS));
+                            addHotPotatoChallenge(challenge2, challenge2.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS), challengeplayer);
                         }
                     }
                 }
@@ -114,9 +114,8 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
         }
     }
 
-    private void addHotPotatoChallenge(ParseObject challenge, int challengeStatus) {
+    private void addHotPotatoChallenge(ParseObject challenge, int challengeStatus, ParseObject challengePlayer) {
         HotPotatoChallenge hotPotatoChallenge = new HotPotatoChallenge(challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE));
-        //TODO: change icon to game icon once we have it
         hotPotatoChallenge.setIcon(getResources().getDrawable(R.drawable.ic_hotpotato));
         hotPotatoChallenge.setChallengeId(challenge.getObjectId());
         hotPotatoChallenge.setUserChallengeName(challenge.getString(ParseConstants.CHALLENGE_CHALLENGE_NAME));
@@ -124,6 +123,7 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
         hotPotatoChallenge.setChallengeStatusType(challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS));
         hotPotatoChallenge.setStartDate(challenge.getDate(ParseConstants.CHALLENGE_CHALLENGE_START));
         hotPotatoChallenge.setEndDate(challenge.getDate(ParseConstants.CHALLENGE_CHALLENGE_END));
+        hotPotatoChallenge.setChallengePlayer(challengePlayer);
 
         if (challengeStatus == ParseConstants.CHALLENGE_STATUS_PLAYING) {
             mGamesListPlaying.add(hotPotatoChallenge);
@@ -139,7 +139,6 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
     private void populateListViewNew() {
 
         if (mGamesListPlaying.size() > 0) {
-
             mAdapterNew.addSectionHeaderItem(new GamesHeader("Playing", R.color.primary_dark));
             mAdapterNew.addItem(mGamesListPlaying);
         }

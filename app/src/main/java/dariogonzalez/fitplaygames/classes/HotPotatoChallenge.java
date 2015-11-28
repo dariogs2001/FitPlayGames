@@ -5,6 +5,7 @@ import android.os.Parcelable;
 import android.util.Log;
 
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -104,6 +105,14 @@ public class HotPotatoChallenge extends ParentChallenge implements Parcelable{
         return date;
     }
 
+    public static void chooseStartingPlayer() {
+
+    }
+
+    public static void findLoser() {
+
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -149,7 +158,7 @@ public class HotPotatoChallenge extends ParentChallenge implements Parcelable{
     }
 
     public void refresh() {
-//        ParentChallenge.updateChallenge(getChallengeObject());
+        ParentChallenge.updateChallenge(getChallengeObject(), getChallengePlayer());
     }
 
     public void setTotalSteps(int totalSteps) {

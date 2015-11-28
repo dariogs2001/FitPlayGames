@@ -32,7 +32,7 @@ import dariogonzalez.fitplaygames.InviteFriendsActivity;
  */
 public abstract class ParentChallenge {
     private static String TAG = ParentChallenge.class.getSimpleName();
-    private ParseObject challengeObject; // The parseObject from the DB of the challenge
+    private ParseObject challengeObject, challengePlayer; // The parseObject from the DB of the challenge
     private String challengeId;
     private int challengeType; // This comes from the challenge type constants class
     private String name; // Name of the challenge
@@ -70,7 +70,7 @@ public abstract class ParentChallenge {
 
     // This method will do the sending of push notifications to the other players (playerIds)
     // This could be for inviting, starting, ending etc.
-    public void sendPushNotification(/*String challengeId, String message*/ParseUser user) {
+    public void sendPushNotification(String message, ParseUser user) {
 // Associate the device with a user
         ParseInstallation installation = ParseInstallation.getCurrentInstallation();
         installation.put("user", user);
@@ -85,7 +85,7 @@ public abstract class ParentChallenge {
 // Send push notification to query
         ParsePush push = new ParsePush();
         push.setQuery(pushQuery); // Set our Installation query
-        push.setMessage("This is my test message string to show push notifications working!");
+        push.setMessage(message);
         push.sendInBackground(new SendCallback() {
             public void done(ParseException e) {
                 if (e == null) {
@@ -126,7 +126,7 @@ public abstract class ParentChallenge {
                     challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_DATE_JOINED, new Date());
                     challengePlayer.saveInBackground();
 
-                    createChallengePlayers();
+                    createChallengePlayers(user.getString(ParseConstants.USER_USERNAME));
                 } else {
                     //TODO: show error message
 
@@ -135,7 +135,7 @@ public abstract class ParentChallenge {
         });
     }
 
-    public void createChallengePlayers() {
+    public void createChallengePlayers(final String ownerUsername) {
         // Create a new challenge player object for each player id
 
         int size = playerObjects.size();
@@ -150,37 +150,18 @@ public abstract class ParentChallenge {
                 @Override
                 public void done(ParseException e) {
                     if (e == null) {
-                        sendInvitation(challengePlayer.getObjectId());
+                        sendInvitation(challengePlayer, ownerUsername);
                     }
                 }
             });
         }
     }
 
-    // This method will change the challenge status to be "started"
-    public void startChallenge() {
-        challengeObject.put(ParseConstants.CHALLENGE_CHALLENGE_STATUS, ParseConstants.CHALLENGE_STATUS_PLAYING);
-        challengeObject.saveInBackground();
-    }
-
-    // This method will change the challenge status to be "ended" and will be called if the user cancels a challenge as well or if there are not more than one players
-    public void endChallenge() {
-        challengeObject.put(ParseConstants.CHALLENGE_CHALLENGE_STATUS, ParseConstants.CHALLENGE_STATUS_FINISHED);
-        challengeObject.saveInBackground();
-    }
-
     // This method will have the logic needed to send invitations and will be calling sendPushNotification
-    public void sendInvitation(String playerId) {
-        startChallengeMessage = "[ChallengeName] has started";
-        endChallengeMessage = "[ChallengeName] has ended";
-        inviteChallengeMessage = "[username] has invited you to play to play " + ChallengeTypeConstants.getChallengeName(getChallengeType());
-        /*if(starting challenge)
-           mainPushMessage = startChallengeMessage; */
-        /* if(inviting challenge )
-            mainPushMessage = endChallengeMessage; */
-        /* if(ending challenge)
-            mainPushMessage = inviteChallengeMessage; */
-//        sendPushNotification(/*playerId, mainPushMessage*/);
+    public void sendInvitation(ParseObject challengePlayer, String invitersUsername) {
+        inviteChallengeMessage = invitersUsername + " has invited you to play to play " + ChallengeTypeConstants.getChallengeName(getChallengeType());
+        ParseUser user = challengePlayer.getParseUser(ParseConstants.CHALLENGE_PLAYER_USER_ID);
+        sendPushNotification(inviteChallengeMessage, user);
     }
 
     public static void updateChallenges() {
@@ -213,15 +194,38 @@ public abstract class ParentChallenge {
     }
 
     public static void updateChallenge(ParseObject challenge, ParseObject challengePlayer) {
-        // Update the challengePlayer table, challenge table and challengeEvent table if necessary
+        // First, check to see what the status of the challenge is. If it hasn't started, check to see if it needs to start
+        int challengeStatus = challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS);
+        int numOfPlayers = challenge.getInt(ParseConstants.CHALLENGE_NUMBER_OF_PLAYERS);
+        Date today = new Date();
+        if (challengeStatus == ParseConstants.CHALLENGE_STATUS_PENDING && numOfPlayers > 1) {
+            Date startDate = challenge.getDate(ParseConstants.CHALLENGE_CHALLENGE_START);
+            if (today.after(startDate)) {
+                challenge.put(ParseConstants.CHALLENGE_CHALLENGE_STATUS, ParseConstants.CHALLENGE_STATUS_PLAYING);
+                challenge.saveInBackground();
+                if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO) {
+                    HotPotatoChallenge.chooseStartingPlayer();
+                }
+            }
+        }
+        // Then, check to see if it needs to end
+        else if (challengeStatus == ParseConstants.CHALLENGE_STATUS_PLAYING) {
+            Date endDate = challenge.getDate(ParseConstants.CHALLENGE_CHALLENGE_END);
+            if (today.after(endDate)) {
+                challenge.put(ParseConstants.CHALLENGE_CHALLENGE_STATUS, ParseConstants.CHALLENGE_STATUS_FINISHED);
+                challenge.saveInBackground();
+                if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO) {
+                    HotPotatoChallenge.findLoser();
+                }
+            }
+            else {
+                // If current user has an active "turn", check steps and see if they should pass it
 
-        ParseQuery<ParseObject> challengeEventQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_EVENTS);
+                // Then, update the steps for this user, see if they have finished their "turn" and update the challenge event table
+                ParseQuery<ParseObject> challengeEventQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_EVENTS);
+            }
+        }
     }
-
-
-    // This method will check the challenge status and the players status when they open up the challenge. It should be called for every challenge that the user is involved with.
-    // It will hold all the logic to know what it needs to do every time a user opens up the app.
-    protected void checkPlayerStatus() {}
 
     public int getChallengeType() {
         return challengeType;
@@ -325,6 +329,12 @@ public abstract class ParentChallenge {
 
     public void setChallengeId(String challengeId) {
         this.challengeId = challengeId;
+    }
+
+    public ParseObject getChallengePlayer() { return this.challengePlayer; }
+
+    public void setChallengePlayer(ParseObject challengePlayer) {
+        this.challengePlayer = challengePlayer;
     }
 
     public interface GetObjectIdCallback {
