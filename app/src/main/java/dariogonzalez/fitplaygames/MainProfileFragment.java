@@ -33,6 +33,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.InputStream;
+import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -225,7 +226,7 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
                         if (list.size() > 0) {
                             steps =  list.get(0).getDouble(ParseConstants.LAST_SEVEN_DAYS_STEPS);
                         }
-                        setView(user.getUsername(), user.getEmail(), (int) steps + " " + getResources().getString(R.string.steps));
+                        setView(user.getUsername(), user.getEmail(),  String.format("%,d", (int)steps) + " " + getResources().getString(R.string.steps));
                     }
                     else {
                         Log.d("TEST", e.toString());

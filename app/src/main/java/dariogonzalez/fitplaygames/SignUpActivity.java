@@ -122,7 +122,7 @@ public class SignUpActivity extends AppCompatActivity {
         mCheckBox.setTextOn(null);
         mCheckBox.setTextOff(null);
         mSignUpButton.setEnabled(false);
-        mSignUpButton.setBackgroundDrawable(getApplicationContext().getResources().getDrawable(R.drawable.sign_up_button));
+//        mSignUpButton.setBackgroundDrawable(getApplicationContext().getResources().getDrawable(R.drawable.sign_up_button));
         mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

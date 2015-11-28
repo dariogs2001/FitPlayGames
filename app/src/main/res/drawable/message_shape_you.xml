@@ -3,23 +3,23 @@
     android:shape="rectangle">
 
     <solid
-        android:color="@color/light_light_grey" >
+        android:color="@color/light_light_grey">
     </solid>
 
     <stroke
         android:width="1dp"
-        android:color="#C4CDE0" >
+        android:color="#C4CDE0">
     </stroke>
 
     <padding
         android:left="5dp"
         android:top="5dp"
         android:right="5dp"
-        android:bottom="5dp"    >
+        android:bottom="5dp">
     </padding>
 
     <corners
-        android:radius="5dp"   >
+        android:radius="5dp">
     </corners>
 
 </shape>

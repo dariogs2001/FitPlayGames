@@ -124,6 +124,7 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
         hotPotatoChallenge.setStartDate(challenge.getDate(ParseConstants.CHALLENGE_CHALLENGE_START));
         hotPotatoChallenge.setEndDate(challenge.getDate(ParseConstants.CHALLENGE_CHALLENGE_END));
         hotPotatoChallenge.setChallengePlayer(challengePlayer);
+        hotPotatoChallenge.setNumberOfPlayers(challenge.getInt(ParseConstants.CHALLENGE_NUMBER_OF_PLAYERS));
 
         if (challengeStatus == ParseConstants.CHALLENGE_STATUS_PLAYING) {
             mGamesListPlaying.add(hotPotatoChallenge);

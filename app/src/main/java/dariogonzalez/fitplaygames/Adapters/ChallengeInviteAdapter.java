@@ -56,7 +56,7 @@ public class ChallengeInviteAdapter extends ArrayAdapter<UserListItem> {
         final UserListItem currentItem = mFriendList.get(position);
 
         holder.userNameTV.setText(currentItem.getmFriendObject().getUsername());
-        holder.stepsTV.setText(String.valueOf(currentItem.getmSteps()));
+        holder.stepsTV.setText(String.format ("%,d", (int)currentItem.getmSteps()));
         Uri profilePicture = currentItem.getmImageUri();
         if (profilePicture != null)
         {

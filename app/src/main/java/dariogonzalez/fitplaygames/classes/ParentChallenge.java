@@ -49,6 +49,7 @@ public abstract class ParentChallenge {
     private String endChallengeMessage; // A push message to be sent when a challenge ends
     private String inviteChallengeMessage; // A push message to be sent when a user gets invited to a challenge
     private String mainPushMessage = ""; // This is the message that will be sent as a push notification
+    private int numberOfPlayers = 1; //Total number of players when the game is created.
 
     public void initialize() {
         playerObjects = new ArrayList<>();
@@ -339,5 +340,15 @@ public abstract class ParentChallenge {
 
     public interface GetObjectIdCallback {
         void done(String objectId);
+    }
+
+    public int getNumberOfPlayers()
+    {
+        return numberOfPlayers;
+    }
+
+    public void setNumberOfPlayers(int numOfPlayers)
+    {
+        numberOfPlayers = numOfPlayers;
     }
 }

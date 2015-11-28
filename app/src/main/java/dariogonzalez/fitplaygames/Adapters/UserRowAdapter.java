@@ -135,7 +135,7 @@ public class UserRowAdapter extends ArrayAdapter<UserListItem> {
         }
 
         holder.userNameTV.setText(currentItem.getmFriendObject().getUsername());
-        holder.stepsTV.setText(String.valueOf(currentItem.getmSteps()));
+        holder.stepsTV.setText(String.format("%,d", currentItem.getmSteps()));
         Uri profilePicture = currentItem.getmImageUri();
         if (profilePicture != null)
         {
