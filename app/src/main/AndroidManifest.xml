@@ -82,16 +82,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="dariogonzalez.fitplaygames.MainActivity" />
         </activity>
-        <!--
-        <activity
-            android:name=".LeaderBoardFragment"
-            android:label="@string/title_activity_leader_board"
-            android:screenOrientation="portrait" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="dariogonzalez.fitplaygames.MainActivity" />
-        </activity>
-        -->
         <activity
             android:name=".Friends.SearchFriendActivity"
             android:label="@string/title_activity_search_friend"
@@ -119,18 +109,21 @@
         </activity>
         <activity
             android:name=".InviteFriendsActivity"
-            android:label="@string/title_activity_invite_friends" >
+            android:label="@string/title_activity_invite_friends"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".UserProfileActivity"
-            android:label="@string/title_activity_user_profile" >
+            android:label="@string/title_activity_user_profile"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Friends.SearchFriendActivity" />
         </activity>
         <activity
             android:name=".MainChatActivity"
-            android:label="@string/title_activity_main_chat" >
+            android:label="@string/title_activity_main_chat"
+            android:screenOrientation="portrait">
         </activity>
 
         <service android:name="com.parse.PushService" />

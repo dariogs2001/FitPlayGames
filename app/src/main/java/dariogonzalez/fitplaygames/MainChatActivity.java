@@ -25,6 +25,7 @@ import dariogonzalez.fitplaygames.Adapters.ChatListAdapter;
 /**
  * Created by ChristensenKC on 10/28/2015.
  */
+
 public class MainChatActivity extends ListActivity {
 
     // TODO: change this to your own Firebase URL

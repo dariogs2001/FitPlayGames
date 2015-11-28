@@ -103,17 +103,16 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
                 fabMessageFriend.setVisibility(View.VISIBLE);
             }
 
-        if(fabMessageFriend != null) {
-            fabMessageFriend.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(getActivity(), MainChatActivity.class);
-                    startActivity(intent);
-                }
-            });
+            if (fabMessageFriend != null) {
+                fabMessageFriend.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getActivity(), MainChatActivity.class);
+                        startActivity(intent);
+                    }
+                });
+            }
         }
-        }
-
 
         return view;
     }
