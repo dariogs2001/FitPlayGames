@@ -161,7 +161,7 @@ public abstract class ParentChallenge {
 
     // This method will have the logic needed to send invitations and will be calling sendPushNotification
     public void sendInvitation(ParseObject challengePlayer, String invitersUsername) {
-        inviteChallengeMessage = invitersUsername + " has invited you to play to play " + ChallengeTypeConstants.getChallengeName(getChallengeType());
+        inviteChallengeMessage = invitersUsername + " has invited you to play " + ChallengeTypeConstants.getChallengeName(getChallengeType());
         ParseUser user = challengePlayer.getParseUser(ParseConstants.CHALLENGE_PLAYER_USER_ID);
         sendPushNotification(inviteChallengeMessage, user);
     }
