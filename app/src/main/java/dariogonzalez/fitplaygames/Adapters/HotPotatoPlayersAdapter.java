@@ -144,15 +144,23 @@ public class HotPotatoPlayersAdapter extends ArrayAdapter<ChallengePlayerItem> {
     private void sendPlayerResponse(final int status, ChallengePlayerItem user, final ChallengeInviteHolder holder) {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
         query.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_ID, user.getmUserObject());
+        query.include(ParseConstants.CLASS_CHALLENGES);
         query.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID, user.getmChallengeObject());
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> challengePlayers, ParseException e) {
                 if (e == null) {
                     challengePlayers.get(0).put(ParseConstants.CHALLENGE_PLAYER_STATUS, status);
+                    challengePlayers.get(0).saveInBackground();
+                    holder.gameResponse.setVisibility(View.GONE);
+                    if (status == ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED) {
+                        ParseObject challenge = challengePlayers.get(0).getParseObject(ParseConstants.CLASS_CHALLENGES);
+                        int numOfPlayers = challenge.getInt(ParseConstants.CHALLENGE_NUMBER_OF_PLAYERS);
+                        numOfPlayers++;
+                        challenge.put(ParseConstants.CHALLENGE_NUMBER_OF_PLAYERS, numOfPlayers);
+                        challenge.saveInBackground();
+                    }
                 }
-                challengePlayers.get(0).saveInBackground();
-                holder.gameResponse.setVisibility(View.GONE);
             }
         });
     }

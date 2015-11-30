@@ -74,6 +74,8 @@ public final class ParseConstants
     public static final String CHALLENGE_PLAYER_USER_ID = "UserObject";
     public static final String CHALLENGE_PLAYER_CHALLENGE_ID = "ChallengeObject";
     public static final String CHALLENGE_PLAYER_OWNER = "IsOwner";
+    public static final String CHALLENGE_PLAYER_IS_LOSER = "IsLoser";
+    public static final String CHALLENGE_PLAYER_STEP_PROGRESSION = "StepProgression";
     public static final String CHALLENGE_PLAYER_PASSES = "Passes";
     public static final String CHALLENGE_NUMBER_OF_PLAYERS = "NumberOfPlayers";
 
@@ -102,18 +104,36 @@ public final class ParseConstants
     /**********************CHALLENGE EVENT *****************************************************/
     public static String CLASS_CHALLENGE_EVENTS = "ChallengeEvent";
     public static String CHALLENGE_EVENTS_CHALLENGE_PLAYER = "ChallengePlayerObject";
+    public static String CHALLENGE_EVENTS_CHALLENGE = "ChallengeObject";
+    public static String CHALLENGE_EVENTS_FINAL_STATUS = "FinalStatus";
+    public static String CHALLENGE_EVENTS_START_TIME = "StartTime";
+    public static String CHALLENGE_EVENTS_END_TIME = "EndTime";
+    public static int CHALLENGE_EVENTS_FINAL_STATUS_PLAYING = 1;
+    public static int CHALLENGE_EVENTS_FINAL_STATUS_DONE = 2;
+    public static String KEY_ANALYTICS_HELP_HOT_POTATO = "HelpGameHotPotato";
+
+
+    /******************Activity Steps By Day 15 Min*********************************************/
+    public static String CLASS_ACTIVITY_STEPS_15_MIN = "ActivityStepsByDay15Min";
+    public static String ACTIVITY_STEPS_DATE = "Date";
+    public static String ACTIVITY_STEPS_STEPS = "Steps";
+    public static String ACTIVITY_STEPS_USER_ID = "userId";
+    /*******************************************************************************************/
+
+
 
 
 
     /*******************PARSE.COM ANALYTICS******************************************************/
     public static String KEY_ANALYTICS_MAIN_ACTIVITY = "MainActivity";
-    public static String KEY_ANALYTICS_PROFILE = "Profile";
 
+    public static String KEY_ANALYTICS_PROFILE = "Profile";
     public static String KEY_ANALYTICS_SELECT_GAME_HOT_POTATO = "SelectGameHotPotato";
     public static String KEY_ANALYTICS_CREATE_GAME_HOT_POTATO = "CreateGameHotPotato";
     public static String KEY_ANALYTICS_CANCEL_GAME_HOT_POTATO = "CancelGameHotPotato";
-    public static String KEY_ANALYTICS_HELP_HOT_POTATO = "HelpGameHotPotato";
 
     /********************************************************************************************/
+
+
 
 }

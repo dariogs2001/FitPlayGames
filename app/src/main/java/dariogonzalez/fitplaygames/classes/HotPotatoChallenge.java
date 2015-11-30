@@ -4,12 +4,17 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.parse.FindCallback;
+import com.parse.Parse;
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -105,11 +110,47 @@ public class HotPotatoChallenge extends ParentChallenge implements Parcelable{
         return date;
     }
 
-    public static void chooseStartingPlayer() {
-
+    public static void chooseStartingPlayer(final ParseObject challenge) {
+        ParseQuery<ParseObject> startingPlayerQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
+        startingPlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID, challenge);
+        startingPlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_OWNER, true);
+        startingPlayerQuery.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if (e == null) {
+                    ParseObject startingPlayer = list.get(0);
+                    ParseObject challengeEvent = new ParseObject(ParseConstants.CLASS_CHALLENGE_EVENTS);
+                    challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_CHALLENGE, challenge);
+                    challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER, startingPlayer);
+                    challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_START_TIME, new Date());
+                    challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, 1);
+                    challengeEvent.saveInBackground();
+                }
+            }
+        });
     }
 
-    public static void findLoser() {
+    public static void findLoser(final ParseObject challenge) {
+        ParseQuery<ParseObject> challengeEventQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_EVENTS);
+        challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_CHALLENGE, challenge);
+        challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_PLAYING);
+        challengeEventQuery.include(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER);
+        challengeEventQuery.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if (e == null) {
+                    ParseObject challengeEvent = list.get(0);
+                    challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_END_TIME, new Date());
+                    challengeEvent.saveInBackground();
+                    ParseObject challengePlayer = challengeEvent.getParseObject(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER);
+                    challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_IS_LOSER, true);
+                    challengePlayer.saveInBackground();
+                }
+            }
+        });
+    }
+
+    public static void chooseNextPlayer(final ParseObject challenge) {
 
     }
 

@@ -161,4 +161,5 @@
     <string name="leaderboard_title_section2">Global</string>
     <string name="accepted">Accepted</string>
     <string name="pending">Pending</string>
+    <string name="action_refresh">Refresh</string>
 </resources>

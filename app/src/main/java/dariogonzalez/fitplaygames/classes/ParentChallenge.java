@@ -111,6 +111,7 @@ public abstract class ParentChallenge {
         challengeObject.put(ParseConstants.CHALLENGE_DAILY_STEPS_GOAL, stepsGoal);
         challengeObject.put(ParseConstants.CHALLENGE_CHALLENGE_START, startDate);
         challengeObject.put(ParseConstants.CHALLENGE_CHALLENGE_END, endDate);
+        challengeObject.put(ParseConstants.CHALLENGE_NUMBER_OF_PLAYERS, 1);
 
 
         challengeObject.saveInBackground(new SaveCallback() {
@@ -176,7 +177,7 @@ public abstract class ParentChallenge {
                 if (e == null) {
                     for (final ParseObject challengePlayer : challengePlayers) {
                         ParseQuery<ParseObject> challengeQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGES);
-                        challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_ID, challengePlayer);
+                        challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_ID, challengePlayer.get(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID));
                         challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_STATUS, ParseConstants.CHALLENGE_STATUS_PLAYING);
                         challengeQuery.findInBackground(new FindCallback<ParseObject>() {
                             @Override
@@ -194,7 +195,7 @@ public abstract class ParentChallenge {
         });
     }
 
-    public static void updateChallenge(ParseObject challenge, ParseObject challengePlayer) {
+    public static void updateChallenge(final ParseObject challenge, final ParseObject challengePlayer) {
         // First, check to see what the status of the challenge is. If it hasn't started, check to see if it needs to start
         int challengeStatus = challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS);
         int numOfPlayers = challenge.getInt(ParseConstants.CHALLENGE_NUMBER_OF_PLAYERS);
@@ -205,7 +206,7 @@ public abstract class ParentChallenge {
                 challenge.put(ParseConstants.CHALLENGE_CHALLENGE_STATUS, ParseConstants.CHALLENGE_STATUS_PLAYING);
                 challenge.saveInBackground();
                 if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO) {
-                    HotPotatoChallenge.chooseStartingPlayer();
+                    HotPotatoChallenge.chooseStartingPlayer(challenge);
                 }
             }
         }
@@ -216,14 +217,54 @@ public abstract class ParentChallenge {
                 challenge.put(ParseConstants.CHALLENGE_CHALLENGE_STATUS, ParseConstants.CHALLENGE_STATUS_FINISHED);
                 challenge.saveInBackground();
                 if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO) {
-                    HotPotatoChallenge.findLoser();
+                    HotPotatoChallenge.findLoser(challenge);
                 }
             }
             else {
+                final int stepsGoal = challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STEPS_GOAL);
                 // If current user has an active "turn", check steps and see if they should pass it
-
-                // Then, update the steps for this user, see if they have finished their "turn" and update the challenge event table
                 ParseQuery<ParseObject> challengeEventQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_EVENTS);
+                challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER, challengePlayer);
+                challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_PLAYING);
+                challengeEventQuery.findInBackground(new FindCallback<ParseObject>() {
+                    @Override
+                    public void done(List<ParseObject> list, ParseException e) {
+                        if (e == null) {
+                            if (list.size() > 0) {
+                                final ParseObject challengeEvent = list.get(0);
+                                // Then, update the steps for this user, see if they have finished their "turn" and update the challenge event table
+                                Date startTime = challengeEvent.getDate(ParseConstants.CHALLENGE_EVENTS_START_TIME);
+                                ParseQuery<ParseObject> activityStepsQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_ACTIVITY_STEPS_15_MIN);
+                                // Where userId and where date > startTime
+                                activityStepsQuery.whereEqualTo(ParseConstants.ACTIVITY_STEPS_USER_ID, ParseUser.getCurrentUser().getObjectId());
+                                activityStepsQuery.whereGreaterThan(ParseConstants.ACTIVITY_STEPS_DATE, startTime);
+                                activityStepsQuery.findInBackground(new FindCallback<ParseObject>() {
+                                    @Override
+                                    public void done(List<ParseObject> list, ParseException e) {
+                                        if (e == null) {
+                                            int size = list.size();
+                                            int stepsAmount = 0;
+                                            for (int i = 0; i < size; i++) {
+                                                // If the added up steps are greater than the steps goal, set challenge event status to done and then get a new player
+                                                if (stepsAmount >= stepsGoal) {
+                                                    challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_DONE);
+                                                    challengeEvent.saveInBackground();
+                                                    HotPotatoChallenge.chooseNextPlayer(challenge);
+                                                    break;
+                                                }
+                                                else {
+                                                    stepsAmount += stepsAmount;
+                                                }
+                                            }
+                                            challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_STEP_PROGRESSION, stepsAmount);
+                                            challengePlayer.saveInBackground();
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    }
+                });
             }
         }
     }

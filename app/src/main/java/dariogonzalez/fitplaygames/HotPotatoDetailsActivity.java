@@ -1,12 +1,16 @@
 package dariogonzalez.fitplaygames;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
@@ -29,6 +33,7 @@ import java.util.Map;
 import dariogonzalez.fitplaygames.Adapters.HotPotatoPlayersAdapter;
 import dariogonzalez.fitplaygames.classes.ChallengePlayerItem;
 import dariogonzalez.fitplaygames.classes.HotPotatoChallenge;
+import dariogonzalez.fitplaygames.classes.ParentChallenge;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
 
 public class HotPotatoDetailsActivity extends AppCompatActivity {
@@ -62,6 +67,34 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
             setChallengeDetails();
         }
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_hot_potato_details, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == android.R.id.home) {
+            NavUtils.navigateUpFromSameTask(this);
+        }
+        else if (id == R.id.action_message) {
+
+        }
+        else if (id == R.id.action_refresh) {
+            updateChallenge();
+        }
+
+            return true;
+        }
 
     private void setChallengeDetails() {
         getChallengePlayers();
@@ -128,9 +161,34 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
                             }
                         });
                     }
-                }
-                else {
+                } else {
 
+                }
+            }
+        });
+
+    }
+
+    private void updateChallenge() {
+        ParseQuery<ParseObject> challengeQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGES);
+        challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_ID, mHotPotatoChallenge.getChallengeId());
+        challengeQuery.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if (e == null) {
+                    final ParseObject challenge = list.get(0);
+                    ParseQuery<ParseObject> challengePlayerQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
+                    challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID, challenge);
+                    challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_ID, ParseUser.getCurrentUser());
+                    challengePlayerQuery.findInBackground(new FindCallback<ParseObject>() {
+                        @Override
+                        public void done(List<ParseObject> list, ParseException e) {
+                            if (e == null) {
+                                ParseObject challengePlayer = list.get(0);
+                                ParentChallenge.updateChallenge(challenge, challengePlayer);
+                            }
+                        }
+                    });
                 }
             }
         });
