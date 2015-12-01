@@ -151,7 +151,7 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
 
         if (mGamesListFinished.size() > 0) {
             mAdapterNew.addSectionHeaderItem(new GamesHeader("Finished", R.color.divider_color));
-            mAdapterNew.addItem(mGamesListPending);
+            mAdapterNew.addItem(mGamesListFinished);
         }
 
         showAll.setAdapter(mAdapterNew);
