@@ -12,12 +12,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/layout_me">
-        <dariogonzalez.fitplaygames.utils.RoundedImageView
-            android:id="@+id/user_thumbnail_me"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/ic_account_circle"
-            android:layout_centerVertical="true"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -74,12 +68,6 @@
                 android:textSize="10dp"/>
         </LinearLayout>
 
-        <dariogonzalez.fitplaygames.utils.RoundedImageView
-            android:id="@+id/user_thumbnail_you"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/ic_account_circle"
-            android:layout_centerVertical="true"/>
 
     </LinearLayout>
 

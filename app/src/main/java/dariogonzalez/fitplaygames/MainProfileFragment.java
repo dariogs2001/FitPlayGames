@@ -35,6 +35,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -57,6 +58,7 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
     private FloatingActionButton fabAddFriend, fabMessageFriend;
     private static boolean isSelf = false;
     private boolean isFriend = false;
+    private String Friendship;
 
     private ParseUser user;
 
@@ -108,8 +110,7 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
                 fabMessageFriend.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent intent = new Intent(getActivity(), MainChatActivity.class);
-                        startActivity(intent);
+                        createFriendChat(Friendship);
                     }
                 });
             }
@@ -161,6 +162,7 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
                             }
 
                             setView(user.getUsername(), user.getEmail(), (int) steps + " " + getResources().getString(R.string.steps));
+                            getFriendObject(user);
                         }
                     }
                 }
@@ -242,6 +244,43 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
         userEmail.setText(email);
         userSteps.setText(steps);
     }
+
+    private void getFriendObject(ParseUser userFriend) {
+        final ParseUser userObject = ParseUser.getCurrentUser();
+
+        List<ParseQuery<ParseObject>> queries = new ArrayList<>();
+        ParseQuery<ParseObject> query1 = new ParseQuery(ParseConstants.CLASS_USER_FRIENDS);
+        query1.whereEqualTo(ParseConstants.USER_OBJECT, userObject);
+        query1.whereEqualTo(ParseConstants.FRIEND_OBJECT, userFriend);
+
+        ParseQuery<ParseObject> query2 = new ParseQuery(ParseConstants.CLASS_USER_FRIENDS);
+        query2.whereEqualTo(ParseConstants.FRIEND_OBJECT, userObject);
+        query2.whereEqualTo(ParseConstants.USER_OBJECT, userFriend);
+
+        queries.add(query1);
+        queries.add(query2);
+
+
+        ParseQuery<ParseObject> superQuery = ParseQuery.or(queries);
+        superQuery.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if (e == null) {
+                    if (list.size() > 0) {
+                        ParseObject userFriend = list.get(0);
+                        Friendship = userFriend.getObjectId();
+                    }
+                }
+            }
+        });
+    }
+
+    private void createFriendChat(String friendship) {
+        Intent intent = new Intent(getActivity(), MainChatActivity.class);
+        intent.putExtra(ParseConstants.OBJECT_ID, friendship);
+        startActivity(intent);
+    }
+
 
 
     protected DialogInterface.OnClickListener mDialogListener;

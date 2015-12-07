@@ -14,12 +14,16 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
+
 import com.parse.ParseAnalytics;
 import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
 
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import dariogonzalez.fitplaygames.AlarmManager.AlarmReceiver;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
@@ -53,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements TabListener {
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         Firebase.setAndroidContext(this);
+
         ParseAnalytics.trackAppOpenedInBackground(getIntent());
 //        Utils.trackData(MainActivity.class.getSimpleName(), ParseConstants.KEY_ANALYTICS_MAIN_ACTIVITY);
 

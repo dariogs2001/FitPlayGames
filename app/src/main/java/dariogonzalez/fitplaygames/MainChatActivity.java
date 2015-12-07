@@ -1,6 +1,7 @@
 package dariogonzalez.fitplaygames;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.DataSetObserver;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import com.parse.ParseUser;
 import java.util.Random;
 
 import dariogonzalez.fitplaygames.Adapters.ChatListAdapter;
+import dariogonzalez.fitplaygames.classes.ParseConstants;
 
 /**
  * Created by ChristensenKC on 10/28/2015.
@@ -45,9 +47,10 @@ public class MainChatActivity extends ListActivity {
         setupUsername();
 
         setTitle("Chatting as " + mUsername);
-
+        Intent intent = getIntent();
+        String objectId = intent.getStringExtra(ParseConstants.OBJECT_ID);
         // Setup our Firebase mFirebaseRef
-        mFirebaseRef = new Firebase(FIREBASE_URL).child("chat");
+        mFirebaseRef = new Firebase(FIREBASE_URL).child(objectId);
 
         // Setup our input methods. Enter key on the keyboard or pushing the send button
         EditText inputText = (EditText) findViewById(R.id.messageInput);
@@ -92,9 +95,9 @@ public class MainChatActivity extends ListActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 boolean connected = (Boolean) dataSnapshot.getValue();
                 if (connected) {
-                    Toast.makeText(MainChatActivity.this, "Connected to Firebase", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(MainChatActivity.this, "Connected to Firebase", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(MainChatActivity.this, "Disconnected from Firebase", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(MainChatActivity.this, "Disconnected from Firebase", Toast.LENGTH_SHORT).show();
                 }
             }
 
