@@ -1,5 +1,7 @@
 package dariogonzalez.fitplaygames;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -43,6 +45,7 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
     private HotPotatoChallenge mHotPotatoChallenge;
     private ListView playingFriendsList;
     private List<ChallengePlayerItem> users;
+    private com.melnykov.fab.FloatingActionButton mCancelAction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,7 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
         totalGameSteps = (TextView) findViewById(R.id.total_game_steps_value);
         passes = (TextView) findViewById(R.id.passes_value);
         statsLayout = (LinearLayout) findViewById(R.id.stats);
+        mCancelAction = (com.melnykov.fab.FloatingActionButton) findViewById(R.id.cancel_action);
 
         playingFriendsList = (ListView) findViewById(R.id.playing_friends_listview);
 
@@ -66,6 +70,31 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
             mHotPotatoChallenge = extras.getParcelable("game-details");
             setChallengeDetails();
         }
+
+        mCancelAction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                new AlertDialog.Builder(HotPotatoDetailsActivity.this)
+                        .setTitle("Cancel Challenge")
+                        .setMessage("Are you sure you want to Cancel this Challenge?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                mHotPotatoChallenge.setChallengeStatusType(ParseConstants.CHALLENGE_STATUS_CANCELLED);
+                                mHotPotatoChallenge.updateChallengeStatusInDatabase(mHotPotatoChallenge.getChallengeId(), mHotPotatoChallenge.getChallengeStatusType());
+
+                                Intent intent = new Intent(HotPotatoDetailsActivity.this, MainActivity.class);
+                                startActivity(intent);
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do nothing
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            }
+        });
     }
 
     @Override
@@ -110,6 +139,7 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
 
         if (mHotPotatoChallenge.getChallengeStatusType() == ParseConstants.CHALLENGE_STATUS_PENDING) {
             statsLayout.setVisibility(View.GONE);
+            mCancelAction.setVisibility(View.VISIBLE);
         }
     }
 

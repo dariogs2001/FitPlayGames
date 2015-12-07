@@ -98,6 +98,28 @@ public abstract class ParentChallenge {
         });
     }
 
+//    // This method will do the sending of push notifications to the other players (playerIds)
+//    // This could be for inviting, starting, ending etc.
+//    public void sendPushNotification(String message, ParseUser user) {
+//        ParseQuery pushQuery = ParseInstallation.getQuery();
+//        //pushQuery.whereEqualTo("challengeId", challengeId);
+//        pushQuery.whereEqualTo("userId", user.getSessionToken());
+//
+//// Send push notification to query
+//        ParsePush push = new ParsePush();
+//        push.setQuery(pushQuery); // Set our Installation query
+//        push.setMessage(message);
+//        push.sendInBackground(new SendCallback() {
+//            public void done(ParseException e) {
+//                if (e == null) {
+//                    Log.d("push", "success!");
+//                } else {
+//                    Log.d("push", "failure");
+//                }
+//            }
+//        });
+//    }
+
     public void createChallenge(final ParseUser user, String challengeName, int stepsGoal, Date startDate, Date endDate, final GetObjectIdCallback callback) {
         this.userChallengeName = challengeName;
         this.stepsGoal = stepsGoal;
@@ -148,6 +170,7 @@ public abstract class ParentChallenge {
             challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID, challengeObject);
             challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_OWNER, false);
             challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_DATE_JOINED, new Date());
+
             challengePlayer.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(ParseException e) {
@@ -403,5 +426,21 @@ public abstract class ParentChallenge {
     public void setNumberOfPlayers(int numOfPlayers)
     {
         numberOfPlayers = numOfPlayers;
+    }
+
+    public void updateChallengeStatusInDatabase(final String challengeId, final int challengeStatus)
+    {
+        ParseQuery<ParseObject> challengeQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGES);
+        challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_ID, challengeId);
+        challengeQuery.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if (e == null) {
+                    final ParseObject challenge = list.get(0);
+                    challenge.put(ParseConstants.CHALLENGE_CHALLENGE_STATUS, challengeStatus);
+                    challenge.saveInBackground();
+                }
+            }
+        });
     }
 }
