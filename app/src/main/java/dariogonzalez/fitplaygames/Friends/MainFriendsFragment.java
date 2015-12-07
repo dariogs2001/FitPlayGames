@@ -98,15 +98,15 @@ public class MainFriendsFragment extends Fragment {
                 final String userId = userObject.getObjectId();
 
                 List<ParseQuery<ParseObject>> queries = new ArrayList<>();
-                ParseQuery<ParseObject> query1 = new ParseQuery(ParseConstants.CLASS_USER_FRIENDS);
+                ParseQuery<ParseObject> query1 = new ParseQuery<>(ParseConstants.CLASS_USER_FRIENDS);
                 query1.whereEqualTo(ParseConstants.USER_FRIENDS_STATUS, ParseConstants.FRIEND_STATUS_ACCEPTED);
                 query1.whereEqualTo(ParseConstants.USER_OBJECT, userObject);
 
-                ParseQuery<ParseObject> query2 = new ParseQuery(ParseConstants.CLASS_USER_FRIENDS);
+                ParseQuery<ParseObject> query2 = new ParseQuery<>(ParseConstants.CLASS_USER_FRIENDS);
                 query2.whereEqualTo(ParseConstants.USER_FRIENDS_STATUS, ParseConstants.FRIEND_STATUS_SENT);
                 query2.whereEqualTo(ParseConstants.FRIEND_OBJECT, userObject);
 
-                ParseQuery<ParseObject> query3 = new ParseQuery(ParseConstants.CLASS_USER_FRIENDS);
+                ParseQuery<ParseObject> query3 = new ParseQuery<>(ParseConstants.CLASS_USER_FRIENDS);
                 query3.whereEqualTo(ParseConstants.USER_FRIENDS_STATUS, ParseConstants.FRIEND_STATUS_ACCEPTED);
                 query3.whereEqualTo(ParseConstants.FRIEND_OBJECT, userObject);
 

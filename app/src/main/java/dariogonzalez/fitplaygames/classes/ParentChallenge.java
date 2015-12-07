@@ -278,7 +278,12 @@ public abstract class ParentChallenge {
                                                 if (stepsAmount >= stepsGoal) {
                                                     challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_DONE);
                                                     challengeEvent.saveInBackground();
-                                                    HotPotatoChallenge.chooseNextPlayer(challenge);
+                                                    challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_IS_TURN, false);
+                                                    int playerPasses = challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_PASSES);
+                                                    playerPasses++;
+                                                    challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_PASSES, playerPasses);
+                                                    challengePlayer.saveInBackground();
+                                                    HotPotatoChallenge.chooseNextPlayer(challenge, challengePlayer);
                                                     break;
                                                 }
                                                 else {

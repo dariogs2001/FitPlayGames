@@ -165,18 +165,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_weight="1">
+            android:layout_weight=".75">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/total_game_steps"
+                android:text="@string/average_potato_time"
                 android:layout_gravity="center_horizontal"
                 android:textColor="@color/divider_color"
                 android:textSize="13sp"/>
 
             <TextView
-                android:id="@+id/total_game_steps_value"
+                android:id="@+id/average_potato_time_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/secondary_text"

@@ -40,12 +40,14 @@ import dariogonzalez.fitplaygames.classes.ParseConstants;
 
 public class HotPotatoDetailsActivity extends AppCompatActivity {
 
-    private TextView challengeName, startDate, startTime, stepsGoal, totalGameSteps, passes;
+    private TextView challengeName, startDate, startTime, stepsGoal, averagePotatoTime, passes;
     private LinearLayout statsLayout;
     private HotPotatoChallenge mHotPotatoChallenge;
     private ListView playingFriendsList;
     private List<ChallengePlayerItem> users;
     private com.melnykov.fab.FloatingActionButton mCancelAction;
+
+    private int mTotalPasses = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +58,7 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
         startDate = (TextView) findViewById(R.id.start_day);
         startTime = (TextView) findViewById(R.id.start_time);
         stepsGoal = (TextView) findViewById(R.id.steps_goal);
-        totalGameSteps = (TextView) findViewById(R.id.total_game_steps_value);
+        averagePotatoTime = (TextView) findViewById(R.id.average_potato_time_tv);
         passes = (TextView) findViewById(R.id.passes_value);
         statsLayout = (LinearLayout) findViewById(R.id.stats);
         mCancelAction = (com.melnykov.fab.FloatingActionButton) findViewById(R.id.cancel_action);
@@ -134,7 +136,7 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
         startDate.setText(date);
         startTime.setText(time);
         stepsGoal.setText(String.valueOf(mHotPotatoChallenge.getStepsGoal()));
-        totalGameSteps.setText(String.valueOf(mHotPotatoChallenge.getTotalSteps()));
+        averagePotatoTime.setText("0");
         passes.setText(String.valueOf(mHotPotatoChallenge.getTotalPasses()));
 
         if (mHotPotatoChallenge.getChallengeStatusType() == ParseConstants.CHALLENGE_STATUS_PENDING) {
@@ -177,7 +179,15 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
                                                 player.setmUserName(user.getString(ParseConstants.USER_USERNAME));
                                                 player.setmChallengeObject(challenge.get(0));
                                                 player.setmUserObject((ParseUser) user);
-                                                users.add(player);
+                                                if (challengePlayer.getBoolean(ParseConstants.CHALLENGE_PLAYER_IS_TURN)) {
+                                                    users.add(0, player);
+                                                }
+                                                else{
+                                                    users.add(users.size(), player);
+                                                }
+
+                                                mTotalPasses += challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_PASSES);
+                                                passes.setText(String.valueOf(mTotalPasses));
                                             }
                                         });
 
@@ -224,5 +234,6 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
         });
 
     }
+
 
 }

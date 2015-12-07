@@ -75,6 +75,7 @@ public final class ParseConstants
     public static final String CHALLENGE_PLAYER_CHALLENGE_ID = "ChallengeObject";
     public static final String CHALLENGE_PLAYER_OWNER = "IsOwner";
     public static final String CHALLENGE_PLAYER_IS_LOSER = "IsLoser";
+    public static final String CHALLENGE_PLAYER_IS_TURN = "IsTurn";
     public static final String CHALLENGE_PLAYER_STEP_PROGRESSION = "StepProgression";
     public static final String CHALLENGE_PLAYER_PASSES = "Passes";
     public static final String CHALLENGE_PLAYER_AVERAGE_POTATO_TIME = "AveragePotatoTime";

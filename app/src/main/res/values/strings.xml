@@ -162,4 +162,5 @@
     <string name="accepted">Accepted</string>
     <string name="pending">Pending</string>
     <string name="action_refresh">Refresh</string>
+    <string name="average_potato_time">Average Potato Time</string>
 </resources>
