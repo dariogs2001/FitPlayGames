@@ -118,7 +118,7 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
             NavUtils.navigateUpFromSameTask(this);
         }
         else if (id == R.id.action_message) {
-
+            openChatDialogue();
         }
         else if (id == R.id.action_refresh) {
             updateChallenge();
@@ -235,5 +235,11 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
 
     }
 
+    private void openChatDialogue() {
+        String mChallengeId = mHotPotatoChallenge.getChallengeId();
+        Intent intent = new Intent(HotPotatoDetailsActivity.this, MainChatActivity.class);
+        intent.putExtra(ParseConstants.OBJECT_ID, mChallengeId);
+        startActivity(intent);
+    }
 
 }
