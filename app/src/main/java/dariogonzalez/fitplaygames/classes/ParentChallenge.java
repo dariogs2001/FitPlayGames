@@ -212,6 +212,7 @@ public abstract class ParentChallenge {
         }
         // Then, check to see if it needs to end
         else if (challengeStatus == ParseConstants.CHALLENGE_STATUS_PLAYING) {
+            Log.d("TEST", "PLAYING");
             Date endDate = challenge.getDate(ParseConstants.CHALLENGE_CHALLENGE_END);
             if (today.after(endDate)) {
                 challenge.put(ParseConstants.CHALLENGE_CHALLENGE_STATUS, ParseConstants.CHALLENGE_STATUS_FINISHED);
@@ -221,6 +222,7 @@ public abstract class ParentChallenge {
                 }
             }
             else {
+                Log.d("TEST", "Before end date");
                 final int stepsGoal = challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STEPS_GOAL);
                 // If current user has an active "turn", check steps and see if they should pass it
                 ParseQuery<ParseObject> challengeEventQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_EVENTS);
@@ -230,19 +232,23 @@ public abstract class ParentChallenge {
                     @Override
                     public void done(List<ParseObject> list, ParseException e) {
                         if (e == null) {
+                            Log.d("TEST", "Challenge Event");
                             if (list.size() > 0) {
                                 final ParseObject challengeEvent = list.get(0);
+                                Log.d("TEST", "Challenge event inside");
                                 // Then, update the steps for this user, see if they have finished their "turn" and update the challenge event table
                                 Date startTime = challengeEvent.getDate(ParseConstants.CHALLENGE_EVENTS_START_TIME);
                                 ParseQuery<ParseObject> activityStepsQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_ACTIVITY_STEPS_15_MIN);
                                 // Where userId and where date > startTime
                                 activityStepsQuery.whereEqualTo(ParseConstants.ACTIVITY_STEPS_USER_ID, ParseUser.getCurrentUser().getObjectId());
+                                Log.d("TEST", "Start time: " + startTime.toString());
                                 activityStepsQuery.whereGreaterThan(ParseConstants.ACTIVITY_STEPS_DATE, startTime);
                                 activityStepsQuery.findInBackground(new FindCallback<ParseObject>() {
                                     @Override
                                     public void done(List<ParseObject> list, ParseException e) {
                                         if (e == null) {
                                             int size = list.size();
+                                            Log.d("TEST", "size: " + size);
                                             int stepsAmount = 0;
                                             for (int i = 0; i < size; i++) {
                                                 // If the added up steps are greater than the steps goal, set challenge event status to done and then get a new player
@@ -259,9 +265,15 @@ public abstract class ParentChallenge {
                                             challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_STEP_PROGRESSION, stepsAmount);
                                             challengePlayer.saveInBackground();
                                         }
+                                        else {
+                                            Log.d("TEST", e.toString());
+                                        }
                                     }
                                 });
                             }
+                        }
+                        else {
+                            Log.d("TEST", e.getMessage());
                         }
                     }
                 });

@@ -153,20 +153,11 @@ public class HotPotatoPlayersAdapter extends ArrayAdapter<ChallengePlayerItem> {
                     challengePlayers.get(0).saveInBackground();
                     holder.gameResponse.setVisibility(View.GONE);
                     if (status == ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED) {
-//                        ParseQuery<ParseObject> challengeQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGES);
-//                        challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_ID, challengePlayers.get(0).get(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID));
-//                        challengeQuery.findInBackground(new FindCallback<ParseObject>() {
-//                            @Override
-//                            public void done(List<ParseObject> list, ParseException e) {
-//                                if (e == null) {
-                                    ParseObject challenge = challengePlayers.get(0).getParseObject(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID);
-                                    int numOfPlayers = challenge.getInt(ParseConstants.CHALLENGE_NUMBER_OF_PLAYERS);
-                                    numOfPlayers++;
-                                    challenge.put(ParseConstants.CHALLENGE_NUMBER_OF_PLAYERS, numOfPlayers);
-                                    challenge.saveInBackground();
-//                                }
-//                            }
-//                        });
+                        ParseObject challenge = challengePlayers.get(0).getParseObject(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID);
+                        int numOfPlayers = challenge.getInt(ParseConstants.CHALLENGE_NUMBER_OF_PLAYERS);
+                        numOfPlayers++;
+                        challenge.put(ParseConstants.CHALLENGE_NUMBER_OF_PLAYERS, numOfPlayers);
+                        challenge.saveInBackground();
                     }
                 }
             }
