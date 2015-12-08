@@ -20,7 +20,7 @@ import java.util.Map;
 /**
  * Created by Logan on 10/21/2015.
  */
-public class HotPotatoChallenge extends ParentChallenge implements Parcelable{
+public class HotPotatoChallenge extends ParentChallenge implements Parcelable {
 
     private int totalSteps, totalPasses;
     private Map<Integer, Integer> hours = new HashMap<>();

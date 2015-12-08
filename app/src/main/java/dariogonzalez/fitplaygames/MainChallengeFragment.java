@@ -114,7 +114,6 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
                     ParseObject challenge = ((ParseObject) challengeplayer.get(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID)).fetchIfNeeded();
                     addHotPotatoChallenge(challenge, challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS), challengeplayer);
                 }
-
             }
             catch (com.parse.ParseException ex)
             {
