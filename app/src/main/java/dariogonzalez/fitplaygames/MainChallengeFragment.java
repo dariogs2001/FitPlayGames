@@ -91,21 +91,30 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
         if(userObject != null) {
             ParseQuery<ParseObject> query1 = new ParseQuery<>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
             query1.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_ID, userObject);
+            query1.orderByDescending(ParseConstants.KEY_CREATED_AT);
 
             try {
-                List<ParseObject> challengeplayers = query1.find();
-                for(ParseObject challengeplayer : challengeplayers) {
-                    ParseQuery<ParseObject> query2 = new ParseQuery<>(ParseConstants.CLASS_CHALLENGES);
-                    ParseObject challenge = (ParseObject) challengeplayer.get(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID);
-                    query2.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_ID, challenge.getObjectId());
-                    List<ParseObject> challenges = query2.find();
+//                List<ParseObject> challengeplayers = query1.find();
+//                for(ParseObject challengeplayer : challengeplayers) {
+//                    ParseQuery<ParseObject> query2 = new ParseQuery<>(ParseConstants.CLASS_CHALLENGES);
+//                    ParseObject challenge = (ParseObject) challengeplayer.get(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID);
+//                    query2.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_ID, challenge.getObjectId());
+//                    List<ParseObject> challenges = query2.find();
+//
+//                    for (ParseObject challenge2 : challenges) {
+//                        if (challenge2.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO) {
+//                            addHotPotatoChallenge(challenge2, challenge2.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS), challengeplayer);
+//                        }
+//                    }
+//                }
 
-                    for (ParseObject challenge2 : challenges) {
-                        if (challenge2.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO) {
-                            addHotPotatoChallenge(challenge2, challenge2.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS), challengeplayer);
-                        }
-                    }
+                List<ParseObject> challengeplayers = query1.find();
+                for(ParseObject challengeplayer : challengeplayers)
+                {
+                    ParseObject challenge = ((ParseObject) challengeplayer.get(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID)).fetchIfNeeded();
+                    addHotPotatoChallenge(challenge, challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS), challengeplayer);
                 }
+
             }
             catch (com.parse.ParseException ex)
             {
