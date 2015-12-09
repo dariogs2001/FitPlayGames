@@ -7,9 +7,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -41,6 +43,7 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
     private ListView showAll;
     private GamesRowAdapterNew mAdapterNew;
     private LinearLayout progressBar;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public MainChallengeFragment() {
         // Required empty public constructor
@@ -82,6 +85,37 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
         MainScreenTask task = new MainScreenTask();
         task.execute("");
 
+
+        //All the lines below are to enable the swipeRefreshLayout..
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setColorSchemeResources(R.color.primary_light, R.color.primary, R.color.primary_dark);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mGamesListPlaying.clear();
+                mGamesListPending.clear();
+                mGamesListFinished.clear();
+                mAdapterNew = new GamesRowAdapterNew(getActivity());
+
+                MainScreenTask task = new MainScreenTask();
+                task.execute("");
+            }
+        });
+
+        //Enabling to resfresh only when at the top of the list...
+        showAll.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(final AbsListView view, final int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(final AbsListView view, final int firstVisibleItem, final int visibleItemCount, final int totalItemCount) {
+                int topRowVerticalPosition = (showAll == null || showAll.getChildCount() == 0) ? 0 : showAll.getChildAt(0).getTop();
+                swipeRefreshLayout.setEnabled(topRowVerticalPosition >= 0);
+            }
+        });
 
         return view;
     }
@@ -192,7 +226,12 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
             Runnable myRunnable = new Runnable() {
                 @Override
                 public void run() {
-                    progressBar.setVisibility(View.VISIBLE);
+
+                    //Only showing the progressbar when is not refreshing...
+                    if (!swipeRefreshLayout.isRefreshing())
+                    {
+                        progressBar.setVisibility(View.VISIBLE);
+                    }
                 }
             };
             mainHandler.post(myRunnable);
@@ -213,6 +252,7 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
                     populateListViewNew();
 
                     progressBar.setVisibility(View.GONE);
+                    swipeRefreshLayout.setRefreshing(false);
                 }
             };
             mainHandler.post(myRunnable);

@@ -29,6 +29,8 @@ public class GamesRowAdapterNew extends BaseAdapter {
 
     public GamesRowAdapterNew(Context context) {
         mContext = context;
+        mGamesList =  new ArrayList<>();
+        mHeadersList = new ArrayList<>();
     }
 
     public void addItem(final ParentChallenge item) {
