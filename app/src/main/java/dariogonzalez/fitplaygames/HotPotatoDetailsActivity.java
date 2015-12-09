@@ -26,6 +26,7 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseSession;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
@@ -141,7 +142,31 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
 
         if (mHotPotatoChallenge.getChallengeStatusType() == ParseConstants.CHALLENGE_STATUS_PENDING) {
             statsLayout.setVisibility(View.GONE);
-            mCancelAction.setVisibility(View.VISIBLE);
+
+            ParseQuery<ParseObject> challengeQuery = new ParseQuery<>(ParseConstants.CLASS_CHALLENGES);
+            //For some reason the challenge object is null, so I have to get it in order to get the value I need here... :(
+            challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_ID, mHotPotatoChallenge.getChallengeId());
+            challengeQuery.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(final List<ParseObject> list, final ParseException e) {
+                    if (e == null && !list.isEmpty())
+                    {
+                        ParseQuery<ParseObject> challengeQuery = new ParseQuery<>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
+                        challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID, list.get(0));
+                        challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_ID, ParseUser.getCurrentUser());
+                        challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_OWNER, true);
+                        challengeQuery.findInBackground(new FindCallback<ParseObject>() {
+                            @Override
+                            public void done(final List<ParseObject> list, final ParseException e) {
+                                if (e == null && !list.isEmpty()) {
+                                    mCancelAction.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        });
+
+                    }
+                }
+            });
         }
     }
 
@@ -155,10 +180,15 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
             public void done(final List<ParseObject> challenge, ParseException e) {
                 if (e == null) {
                     if (challenge.size() > 0) {
+                        //For some reason this value has not been set.
+                        if (mHotPotatoChallenge.getChallengeObject() == null)
+                        {
+                            mHotPotatoChallenge.setChallengeObject(challenge.get(0));
+                        }
+
                         ParseQuery<ParseObject> query = new ParseQuery<>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
                         query.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID, challenge.get(0));
                         query.whereNotEqualTo(ParseConstants.CHALLENGE_PLAYER_STATUS, ParseConstants.CHALLENGE_PLAYER_STATUS_DECLINED);
-
                         query.findInBackground(new FindCallback<ParseObject>() {
                             @Override
                             public void done(List<ParseObject> challengePlayers, ParseException e) {
