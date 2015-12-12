@@ -118,55 +118,57 @@ public class MainFriendsFragment extends Fragment {
                 superQuery.findInBackground(new FindCallback<ParseObject>() {
                     @Override
                     public void done(List<ParseObject> list, ParseException e) {
-                        for (final ParseObject userFriend : list) {
-                            try {
-                                ParseUser friendObject;
-                                ParseUser newUserObject;
-                                if (userFriend.getString("FriendId").equals(userId)) {
-                                    friendObject = userFriend.getParseUser(ParseConstants.USER_OBJECT).fetchIfNeeded();
-                                    newUserObject = userObject;
-                                } else {
-                                    friendObject = userFriend.getParseUser(ParseConstants.FRIEND_OBJECT).fetchIfNeeded();
-                                    newUserObject = userObject;
-                                }
-                                if (friendObject != null) {
-                                    ParseFile file = friendObject.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
-                                    Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
-                                    int friendStatusId = userFriend.getInt(ParseConstants.USER_FRIENDS_STATUS);
-                                    int location = 0;
-                                    if (friendStatusId == ParseConstants.FRIEND_STATUS_SENT) {
-                                        if (mFriendList.size() == 0) {
-                                            location = mFriendList.size();
-                                        } else {
-                                            location = mFriendList.size() - 1;
-                                        }
-                                    }
-
-                                    double steps = 0;
-                                    if (friendObject.has("lastSevenDays")) {
-                                        ParseObject lastSevenDays = friendObject.getParseObject("lastSevenDays").fetchIfNeeded();
-                                        if (lastSevenDays != null) {
-                                            steps = lastSevenDays.getDouble(ParseConstants.LAST_SEVEN_DAYS_STEPS);
-                                        }
+                        if (e == null & list != null) {
+                            for (final ParseObject userFriend : list) {
+                                try {
+                                    ParseUser friendObject;
+                                    ParseUser newUserObject;
+                                    if (userFriend.getString("FriendId").equals(userId)) {
+                                        friendObject = userFriend.getParseUser(ParseConstants.USER_OBJECT).fetchIfNeeded();
+                                        newUserObject = userObject;
                                     } else {
-                                        steps = 0;
+                                        friendObject = userFriend.getParseUser(ParseConstants.FRIEND_OBJECT).fetchIfNeeded();
+                                        newUserObject = userObject;
+                                    }
+                                    if (friendObject != null) {
+                                        ParseFile file = friendObject.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
+                                        Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
+                                        int friendStatusId = userFriend.getInt(ParseConstants.USER_FRIENDS_STATUS);
+                                        int location = 0;
+                                        if (friendStatusId == ParseConstants.FRIEND_STATUS_SENT) {
+                                            if (mFriendList.size() == 0) {
+                                                location = mFriendList.size();
+                                            } else {
+                                                location = mFriendList.size() - 1;
+                                            }
+                                        }
+
+                                        double steps = 0;
+                                        if (friendObject.has("lastSevenDays")) {
+                                            ParseObject lastSevenDays = friendObject.getParseObject("lastSevenDays").fetchIfNeeded();
+                                            if (lastSevenDays != null) {
+                                                steps = lastSevenDays.getDouble(ParseConstants.LAST_SEVEN_DAYS_STEPS);
+                                            }
+                                        } else {
+                                            steps = 0;
+                                        }
+
+                                        UserListItem userListItem = new UserListItem();
+                                        userListItem.setmIconId(R.drawable.ic_user);
+                                        userListItem.setmImageUri(fileUri);
+                                        userListItem.setmUserObject(newUserObject);
+                                        userListItem.setmFriendObject(friendObject);
+                                        userListItem.setmFriendStatusId(friendStatusId);
+                                        userListItem.setmSteps((int) steps);
+                                        userListItem.setmUserFriendId(userFriend.getObjectId());
+                                        mFriendList.add(userListItem);
                                     }
 
-                                    UserListItem userListItem = new UserListItem();
-                                    userListItem.setmIconId(R.drawable.ic_user);
-                                    userListItem.setmImageUri(fileUri);
-                                    userListItem.setmUserObject(newUserObject);
-                                    userListItem.setmFriendObject(friendObject);
-                                    userListItem.setmFriendStatusId(friendStatusId);
-                                    userListItem.setmSteps((int) steps);
-                                    userListItem.setmUserFriendId(userFriend.getObjectId());
-                                    mFriendList.add(userListItem);
+                                } catch (ParseException ex) {
                                 }
-
-                            } catch (ParseException ex) {
                             }
+                            populateListView();
                         }
-                        populateListView();
                     }
                 });
             }

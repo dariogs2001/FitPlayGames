@@ -142,8 +142,15 @@ public class HotPotatoChallenge extends ParentChallenge implements Parcelable {
             public void done(List<ParseObject> list, ParseException e) {
                 if (e == null) {
                     ParseObject challengeEvent = list.get(0);
-                    challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_END_TIME, new Date());
+
+                    Date startTime = challengeEvent.getDate(ParseConstants.CHALLENGE_EVENTS_START_TIME);
+                    Date endTime = new Date();
+                    //Result is in miliseconds so I divided by 1000 to set the seconds and by 60 to set the minutes
+                    long timeDifference = endTime.getTime() - startTime.getTime() / 1000 * 60;
+                    challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_END_TIME, endTime);
+                    challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_GAME_TIME, timeDifference);
                     challengeEvent.saveInBackground();
+
                     ParseObject challengePlayer = challengeEvent.getParseObject(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER);
                     challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_IS_LOSER, true);
                     challengePlayer.saveInBackground();

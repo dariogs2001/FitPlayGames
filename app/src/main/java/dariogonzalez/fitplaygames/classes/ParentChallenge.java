@@ -276,18 +276,39 @@ public abstract class ParentChallenge {
                                             for (int i = 0; i < size; i++) {
                                                 // If the added up steps are greater than the steps goal, set challenge event status to done and then get a new player
                                                 if (stepsAmount >= stepsGoal) {
+                                                    Date startTime = challengeEvent.getDate(ParseConstants.CHALLENGE_EVENTS_START_TIME);
+                                                    Date endTime = new Date();
+                                                    //Result is in miliseconds so I divided by 1000 to set the seconds and by 60 to set the minutes
+                                                    long timeDifference = endTime.getTime() - startTime.getTime() / 1000 * 60;
+
                                                     challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_DONE);
+                                                    challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_END_TIME, endTime);
+                                                    challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_GAME_TIME, timeDifference);
+
                                                     challengeEvent.saveInBackground();
+
+                                                    //Updating ChallengePlayer table with new values
                                                     challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_IS_TURN, false);
                                                     int playerPasses = challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_PASSES);
                                                     playerPasses++;
                                                     challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_PASSES, playerPasses);
+
+                                                    long gameTime = challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_GAME_TIME);
+                                                    gameTime += timeDifference;
+                                                    long avgTime = gameTime / playerPasses;
+
+                                                    challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_GAME_TIME, gameTime);
+                                                    challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_AVERAGE_GAME_TIME, avgTime);
+
                                                     challengePlayer.saveInBackground();
+
                                                     HotPotatoChallenge.chooseNextPlayer(challenge, challengePlayer);
                                                     break;
                                                 }
                                                 else {
-                                                    stepsAmount += stepsAmount;
+                                                    ParseObject data = list.get(0);
+                                                    int steps = data.getInt(ParseConstants.ACTIVITY_STEPS_STEPS);
+                                                    stepsAmount += steps;
                                                 }
                                             }
                                             challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_STEP_PROGRESSION, stepsAmount);
