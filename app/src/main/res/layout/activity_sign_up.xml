@@ -3,65 +3,70 @@
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/login_background_color"
     tools:context="dariogonzalez.fitplaygames.SignUpActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_margin="16dp">
 
 
     <LinearLayout
-        android:background="@color/login_background_color"
+
         android:id="@+id/editTextLayout"
         android:orientation="vertical"
-        style="@style/AuthFieldContainer">
+        style="@style/AuthFieldContainer"
+        android:layout_marginBottom="10dp">
 
         <EditText
             style="@style/EditText"
             android:inputType="textEmailAddress"
             android:ems="10"
             android:id="@+id/emailField"
+            android:layout_marginBottom="10dp"
             android:hint="@string/email_hint">
             <requestFocus/>
         </EditText>
+
         <EditText
             style="@style/EditText"
             android:id="@+id/userNameField"
-            android:hint="@string/username_signup_hint">
-
-        </EditText>
+            android:hint="@string/username_signup_hint"
+            android:layout_marginBottom="10dp"/>
 
         <EditText
             style="@style/EditText"
             android:inputType="textPassword"
             android:ems="10"
+            android:layout_marginBottom="10dp"
             android:id="@+id/passwordField"
             android:hint="@string/password_hint"/>
+
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:id="@+id/spinnersImageLayout"
-        android:layout_marginTop="10dp"
-        android:layout_weight="0">
+        android:baselineAligned="false"
+        android:layout_marginBottom="10dp">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginTop="10dp"
             android:layout_weight="1"
-            style="@style/AuthFieldContainer">>
+            style="@style/AuthFieldContainer">
 
             <Spinner
                style="@style/Spinner"
-                android:id="@+id/gender"
-                android:hint="@string/gender_hint"
-                />
+               android:id="@+id/gender"
+               android:hint="@string/gender_hint"/>
+
             <Spinner
-                style="@style/Spinner"
-                android:paddingTop="15dp"
-                android:id="@+id/age_range"
-                android:hint="@string/age_range__hint" />
+               style="@style/Spinner"
+               android:paddingTop="15dp"
+               android:id="@+id/age_range"
+               android:hint="@string/age_range__hint"/>
 
         </LinearLayout>
 
@@ -91,53 +96,52 @@
 
         </LinearLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginTop="10dp">
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="70dp">
-
-        <ToggleButton
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/privacy_policy_layout"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/checkBoxOutline"
-            android:checked="false"
-            android:background="@drawable/ic_check_box_outline_blank_grey_24px"
-            android:minWidth="20dp"
-            android:maxWidth="20dp"
-            android:minHeight="20dp"
-            android:maxHeight="20dp"/>
+            android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:id="@+id/privacy_policy"
-            android:layout_marginLeft="10dp"/>
+            <ToggleButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/checkBoxOutline"
+                android:checked="false"
+                android:background="@drawable/ic_check_box_outline_blank_grey_24px"
+                android:minWidth="20dp"
+                android:maxWidth="20dp"
+                android:minHeight="20dp"
+                android:maxHeight="20dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:id="@+id/privacy_policy"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"/>
+
         </LinearLayout>
+
         <TextView
             android:id="@+id/setErrorTV"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
+
         <Button
             android:id="@+id/signUpButton"
             style="@style/AuthButton"
             android:text="@string/sign_up_button_label"
             android:textColor="@color/white"
-            android:layout_alignParentLeft="true"
-            android:background="@drawable/sign_up_button"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="10dp"
-            android:layout_alignParentBottom="true"/>
-        </RelativeLayout>
+            android:background="@drawable/sign_up_button" />
+
+    </LinearLayout>
 
 
 </LinearLayout>
