@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Locale;
 
 
+import dariogonzalez.fitplaygames.FitPlayGamesApplication;
 import dariogonzalez.fitplaygames.InviteFriendsActivity;
 
 /**
@@ -71,31 +72,8 @@ public abstract class ParentChallenge {
 
     // This method will do the sending of push notifications to the other players (playerIds)
     // This could be for inviting, starting, ending etc.
-    public void sendPushNotification(String message, ParseUser user) {
-// Associate the device with a user
-        ParseInstallation installation = ParseInstallation.getCurrentInstallation();
-        installation.put("user", user);
-        //installation.put(ParseConstants.CHALLENGE_ID,challengeId);
-        installation.saveInBackground();
-
-// Create our Installation query
-        ParseQuery pushQuery = ParseInstallation.getQuery();
-        //pushQuery.whereEqualTo("challengeId", challengeId);
-        pushQuery.whereEqualTo("user", user);
-
-// Send push notification to query
-        ParsePush push = new ParsePush();
-        push.setQuery(pushQuery); // Set our Installation query
-        push.setMessage(message);
-        push.sendInBackground(new SendCallback() {
-            public void done(ParseException e) {
-                if (e == null) {
-                    Log.d("push", "success!");
-                } else {
-                    Log.d("push", "failure");
-                }
-            }
-        });
+    public static void sendPushNotification(String message, ParseUser user) {
+        FitPlayGamesApplication.sendPushNotification(message, user);
     }
 
 //    // This method will do the sending of push notifications to the other players (playerIds)
@@ -175,6 +153,7 @@ public abstract class ParentChallenge {
                 @Override
                 public void done(ParseException e) {
                     if (e == null) {
+                        if ()
                         sendInvitation(challengePlayer, ownerUsername);
                     }
                 }
@@ -229,7 +208,7 @@ public abstract class ParentChallenge {
                 challenge.put(ParseConstants.CHALLENGE_CHALLENGE_STATUS, ParseConstants.CHALLENGE_STATUS_PLAYING);
                 challenge.saveInBackground();
                 if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO) {
-                    HotPotatoChallenge.chooseStartingPlayer(challenge);
+                        HotPotatoChallenge.chooseStartingPlayer(challenge);
                 }
             }
         }

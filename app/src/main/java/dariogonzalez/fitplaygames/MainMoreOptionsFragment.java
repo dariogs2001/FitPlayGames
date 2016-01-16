@@ -16,6 +16,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.ParseInstallation;
+import com.parse.ParsePush;
 import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
 
@@ -77,6 +79,7 @@ public class MainMoreOptionsFragment extends android.support.v4.app.Fragment {
                         break;
                     case 1:
                         ParseUser.logOut();
+                        FitPlayGamesApplication.unsubscribeFromPush();
                         showIntent(getActivity(), LoginActivity.class);
                         break;
                     case 2:

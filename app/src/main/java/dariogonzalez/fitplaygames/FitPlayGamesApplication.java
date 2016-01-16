@@ -8,9 +8,12 @@ import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParsePush;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+import com.parse.SendCallback;
 
+import dariogonzalez.fitplaygames.Helper.ParseUtils;
 import dariogonzalez.fitplaygames.classes.FlurryConstants;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
 
@@ -36,7 +39,38 @@ public class FitPlayGamesApplication extends Application {
         installation.put(ParseConstants.KEY_USER_ID, parseUser.getObjectId());
 
         installation.saveInBackground();
-        ParsePush.subscribeInBackground("FitPlayChannel");
+        ParsePush.subscribeInBackground(PushConfig.PARSE_CHANNEL);
+    }
+
+    public static void unsubscribeFromPush() {
+        ParsePush.unsubscribeInBackground(PushConfig.PARSE_CHANNEL);
+    }
+
+    public static void sendPushNotification(String message, ParseUser user) {
+        // Associate the device with a user
+        ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+        installation.put("user", user);
+        //installation.put(ParseConstants.CHALLENGE_ID,challengeId);
+        installation.saveInBackground();
+
+// Create our Installation query
+        ParseQuery pushQuery = ParseInstallation.getQuery();
+        //pushQuery.whereEqualTo("challengeId", challengeId);
+        pushQuery.whereEqualTo("user", user);
+
+// Send push notification to query
+        ParsePush push = new ParsePush();
+        push.setQuery(pushQuery); // Set our Installation query
+        push.setMessage(message);
+        push.sendInBackground(new SendCallback() {
+            public void done(ParseException e) {
+                if (e == null) {
+                    Log.d("push", "success!");
+                } else {
+                    Log.d("push", "failure");
+                }
+            }
+        });
     }
 
 }

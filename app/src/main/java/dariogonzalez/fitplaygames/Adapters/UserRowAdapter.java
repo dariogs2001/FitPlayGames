@@ -16,12 +16,14 @@ import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import dariogonzalez.fitplaygames.FitPlayGamesApplication;
 import dariogonzalez.fitplaygames.R;
 import dariogonzalez.fitplaygames.classes.UserListItem;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
@@ -109,6 +111,8 @@ public class UserRowAdapter extends ArrayAdapter<UserListItem> {
                                 tempHolder.inviteLayout.setVisibility(View.GONE);
                                 tempHolder.sentLayout.setVisibility(View.VISIBLE);
                                 tempHolder.sentLayout.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.abc_fade_in));
+                                ParseUser friendUser = currentItem.getmFriendObject();
+                                FitPlayGamesApplication.sendPushNotification(currentItem.getmUserObject().getUsername() + getContext().getString(R.string.has_invited_friend), friendUser);
                             }
                         }
                     });
@@ -158,6 +162,9 @@ public class UserRowAdapter extends ArrayAdapter<UserListItem> {
                 if (e == null) {
                     if (accept) {
                         parseObject.put(ParseConstants.USER_FRIENDS_STATUS, ParseConstants.FRIEND_STATUS_ACCEPTED);
+                        ParseUser userObject = currentItem.getmUserObject();
+                        FitPlayGamesApplication.sendPushNotification(currentItem.getmFriendObject().getUsername() + getContext().getString(R.string.accepted_friend_request), userObject);
+
                     } else {
                         parseObject.put(ParseConstants.USER_FRIENDS_STATUS, ParseConstants.FRIEND_STATUS_DECLINED);
                         mFriendList.remove(position);

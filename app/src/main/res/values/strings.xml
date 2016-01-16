@@ -163,4 +163,6 @@
     <string name="pending">Pending</string>
     <string name="action_refresh">Refresh</string>
     <string name="average_potato_time">Average Potato Time</string>
+    <string name="accepted_friend_request">has accepted your friend request!</string>
+    <string name="has_invited_friend">has invited you to be friends!</string>
 </resources>

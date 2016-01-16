@@ -30,6 +30,8 @@ import com.parse.ParseUser;
 import java.util.HashMap;
 import java.util.Map;
 
+import dariogonzalez.fitplaygames.Helper.ParseUtils;
+
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -125,6 +127,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                     if (e == null) {
                                         //Success
+                                        ParseUtils.registerParse(getApplicationContext());
                                         FitPlayGamesApplication.updateParseInstallation(parseUser);
 
                                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);

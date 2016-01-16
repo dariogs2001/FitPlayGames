@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import dariogonzalez.fitplaygames.FitPlayGamesApplication;
+
 /**
  * Created by Logan on 10/21/2015.
  */
@@ -127,6 +129,9 @@ public class HotPotatoChallenge extends ParentChallenge implements Parcelable {
                     challengeEvent.saveInBackground();
                     startingPlayer.put(ParseConstants.CHALLENGE_PLAYER_IS_TURN, true);
                     startingPlayer.saveInBackground();
+                    ParseUser startingPlayerUser = (ParseUser) startingPlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_ID);
+                    ParentChallenge.sendPushNotification("You've started off with the potato in " + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "!", startingPlayerUser);
+
                 }
             }
         });
@@ -154,12 +159,15 @@ public class HotPotatoChallenge extends ParentChallenge implements Parcelable {
                     ParseObject challengePlayer = challengeEvent.getParseObject(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER);
                     challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_IS_LOSER, true);
                     challengePlayer.saveInBackground();
+                    ParseUser loserPlayerUser = (ParseUser) challengePlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_ID);
+                    ParentChallenge.sendPushNotification("Oh no! The potato has exploded in " + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "!", loserPlayerUser);
                 }
             }
         });
     }
 
     public static void chooseNextPlayer(final ParseObject challenge, final ParseObject challengePlayer) {
+
         ParseQuery<ParseObject> nextPlayerQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
         nextPlayerQuery.whereNotEqualTo(ParseConstants.OBJECT_ID, challengePlayer.getObjectId());
         nextPlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID, challenge);
@@ -177,6 +185,8 @@ public class HotPotatoChallenge extends ParentChallenge implements Parcelable {
                     challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_START_TIME, new Date());
                     challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_PLAYING);
                     challengeEvent.saveInBackground();
+                    ParseUser nextPlayerUser = (ParseUser) nextPlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_ID);
+                    ParentChallenge.sendPushNotification("You have been passed the potato in game " + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "!", nextPlayerUser);
                 }
             }
         });
