@@ -47,12 +47,6 @@ public class FitPlayGamesApplication extends Application {
     }
 
     public static void sendPushNotification(String message, ParseUser user) {
-        // Associate the device with a user
-        ParseInstallation installation = ParseInstallation.getCurrentInstallation();
-        installation.put("user", user);
-        //installation.put(ParseConstants.CHALLENGE_ID,challengeId);
-        installation.saveInBackground();
-
 // Create our Installation query
         ParseQuery pushQuery = ParseInstallation.getQuery();
         //pushQuery.whereEqualTo("challengeId", challengeId);

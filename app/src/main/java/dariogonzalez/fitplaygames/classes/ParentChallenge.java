@@ -76,27 +76,6 @@ public abstract class ParentChallenge {
         FitPlayGamesApplication.sendPushNotification(message, user);
     }
 
-//    // This method will do the sending of push notifications to the other players (playerIds)
-//    // This could be for inviting, starting, ending etc.
-//    public void sendPushNotification(String message, ParseUser user) {
-//        ParseQuery pushQuery = ParseInstallation.getQuery();
-//        //pushQuery.whereEqualTo("challengeId", challengeId);
-//        pushQuery.whereEqualTo("userId", user.getSessionToken());
-//
-//// Send push notification to query
-//        ParsePush push = new ParsePush();
-//        push.setQuery(pushQuery); // Set our Installation query
-//        push.setMessage(message);
-//        push.sendInBackground(new SendCallback() {
-//            public void done(ParseException e) {
-//                if (e == null) {
-//                    Log.d("push", "success!");
-//                } else {
-//                    Log.d("push", "failure");
-//                }
-//            }
-//        });
-//    }
 
     public void createChallenge(final ParseUser user, String challengeName, int stepsGoal, Date startDate, Date endDate, final GetObjectIdCallback callback) {
         this.userChallengeName = challengeName;
@@ -153,7 +132,6 @@ public abstract class ParentChallenge {
                 @Override
                 public void done(ParseException e) {
                     if (e == null) {
-                        if ()
                         sendInvitation(challengePlayer, ownerUsername);
                     }
                 }
@@ -165,6 +143,7 @@ public abstract class ParentChallenge {
     public void sendInvitation(ParseObject challengePlayer, String invitersUsername) {
         inviteChallengeMessage = invitersUsername + " has invited you to play " + ChallengeTypeConstants.getChallengeName(getChallengeType());
         ParseUser user = challengePlayer.getParseUser(ParseConstants.CHALLENGE_PLAYER_USER_ID);
+        Log.d("TEST", user.getUsername());
         sendPushNotification(inviteChallengeMessage, user);
     }
 
