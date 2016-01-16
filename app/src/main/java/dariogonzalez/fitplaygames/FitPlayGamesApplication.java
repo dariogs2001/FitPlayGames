@@ -37,6 +37,7 @@ public class FitPlayGamesApplication extends Application {
     {
         ParseInstallation installation = ParseInstallation.getCurrentInstallation();
         installation.put(ParseConstants.KEY_USER_ID, parseUser.getObjectId());
+        installation.put("user", ParseUser.getCurrentUser());
 
         installation.saveInBackground();
         ParsePush.subscribeInBackground(PushConfig.PARSE_CHANNEL);
