@@ -199,7 +199,7 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
                                         user.fetchIfNeededInBackground(new GetCallback<ParseObject>() {
                                             @Override
                                             public void done(ParseObject user, ParseException e) {
-                                                ChallengePlayerItem player = new ChallengePlayerItem();
+                                                final ChallengePlayerItem player = new ChallengePlayerItem();
                                                 ParseFile file = user.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
                                                 Uri profilePicture = file != null ? Uri.parse(file.getUrl()) : null;
                                                 player.setmImageUri(profilePicture);
@@ -209,21 +209,40 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
                                                 player.setmUserName(user.getString(ParseConstants.USER_USERNAME));
                                                 player.setmChallengeObject(challenge.get(0));
                                                 player.setmUserObject((ParseUser) user);
-                                                if (challengePlayer.getBoolean(ParseConstants.CHALLENGE_PLAYER_IS_TURN)) {
-                                                    users.add(0, player);
-                                                }
-                                                else{
-                                                    users.add(users.size(), player);
-                                                }
+                                                // This is to get the step progression
+                                                ParseQuery<ParseObject> challengeEventQuery = new ParseQuery<>(ParseConstants.CLASS_CHALLENGE_EVENTS);
+                                                challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER, challengePlayer);
+                                                challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_PLAYING);
+                                                challengeEventQuery.findInBackground(new FindCallback<ParseObject>() {
+                                                    @Override
+                                                    public void done(List<ParseObject> list, ParseException e) {
+                                                        if (e == null) {
+                                                            if (list.size() > 0) {
+                                                                player.setmSteps(list.get(0).getLong(ParseConstants.CHALLENGE_EVENTS_STEP_PROGRESSION));
+                                                            }
+                                                            else {
+                                                                player.setmSteps(0);
+                                                            }
+                                                        }
+                                                        if (challengePlayer.getBoolean(ParseConstants.CHALLENGE_PLAYER_IS_TURN)) {
+                                                            users.add(0, player);
+                                                        }
+                                                        else{
+                                                            users.add(users.size(), player);
+                                                        }
+                                                        ArrayAdapter<ChallengePlayerItem> adapter = new HotPotatoPlayersAdapter(HotPotatoDetailsActivity.this, R.layout.row_hot_potato_players, users, mHotPotatoChallenge.getStepsGoal(), challenge.get(0).getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS));
+                                                        playingFriendsList.setAdapter(adapter);
+                                                    }
+                                                });
+
 
                                                 mTotalPasses += challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_PASSES);
                                                 passes.setText(String.valueOf(mTotalPasses));
+
                                             }
                                         });
 
                                     }
-                                    ArrayAdapter<ChallengePlayerItem> adapter = new HotPotatoPlayersAdapter(HotPotatoDetailsActivity.this, R.layout.row_hot_potato_players, users, mHotPotatoChallenge.getStepsGoal(), challenge.get(0).getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS));
-                                    playingFriendsList.setAdapter(adapter);
 
                                 } else {
                                     Log.d("TEST", "Error: " + e.toString());

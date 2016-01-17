@@ -4,6 +4,7 @@ import android.app.Application;
 import android.util.Log;
 
 import com.flurry.android.FlurryAgent;
+import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
@@ -12,6 +13,8 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.SendCallback;
+
+import java.util.List;
 
 import dariogonzalez.fitplaygames.Helper.ParseUtils;
 import dariogonzalez.fitplaygames.classes.FlurryConstants;

@@ -269,8 +269,8 @@ public abstract class ParentChallenge {
                                                     stepsAmount += steps;
                                                 }
                                             }
-                                            challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_STEP_PROGRESSION, stepsAmount);
-                                            challengePlayer.saveInBackground();
+                                            challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_STEP_PROGRESSION, stepsAmount);
+                                            challengeEvent.saveInBackground();
                                         }
                                         else {
                                             Log.d("TEST", e.toString());

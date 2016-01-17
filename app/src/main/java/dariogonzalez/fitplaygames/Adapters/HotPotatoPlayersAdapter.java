@@ -117,6 +117,7 @@ public class HotPotatoPlayersAdapter extends ArrayAdapter<ChallengePlayerItem> {
             if (position == 0) {
                 // Only show on the top player (the player that has the potato
                 holder.progressLayout.setVisibility(View.VISIBLE);
+                holder.stepsTV.setText(String.valueOf(userObject.getmSteps()));
                 row.setBackgroundColor(getContext().getResources().getColor(R.color.light_light_grey));
             }
         }

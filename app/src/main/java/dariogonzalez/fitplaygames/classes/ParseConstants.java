@@ -76,7 +76,6 @@ public final class ParseConstants
     public static final String CHALLENGE_PLAYER_OWNER = "IsOwner";
     public static final String CHALLENGE_PLAYER_IS_LOSER = "IsLoser";
     public static final String CHALLENGE_PLAYER_IS_TURN = "IsTurn";
-    public static final String CHALLENGE_PLAYER_STEP_PROGRESSION = "StepProgression";
     public static final String CHALLENGE_PLAYER_PASSES = "Passes";
     public static final String CHALLENGE_PLAYER_GAME_TIME = "GameTime";
     public static final String CHALLENGE_PLAYER_AVERAGE_GAME_TIME = "AverageGameTime";
@@ -112,6 +111,7 @@ public final class ParseConstants
     public static String CHALLENGE_EVENTS_START_TIME = "StartTime";
     public static String CHALLENGE_EVENTS_END_TIME = "EndTime";
     public static String CHALLENGE_EVENTS_GAME_TIME = "GameTime";
+    public static final String CHALLENGE_EVENTS_STEP_PROGRESSION = "StepProgression";
     public static int CHALLENGE_EVENTS_FINAL_STATUS_PLAYING = 1;
     public static int CHALLENGE_EVENTS_FINAL_STATUS_DONE = 2;
     public static String KEY_ANALYTICS_HELP_HOT_POTATO = "HelpGameHotPotato";
