@@ -11,7 +11,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +41,7 @@ public class MainChatActivity extends AppCompatActivity {
     private Firebase mFirebaseRef;
     private ValueEventListener mConnectedListener;
     private ChatListAdapter mChatListAdapter;
+    private LinearLayout progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +49,7 @@ public class MainChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_main);
 
-
-
+        progressBar = (LinearLayout) findViewById(R.id.progress_bar);
         // Make sure we have a mUsername
         setupUsername();
 
@@ -100,9 +102,9 @@ public class MainChatActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 boolean connected = (Boolean) dataSnapshot.getValue();
                 if (connected) {
-                    //Toast.makeText(MainChatActivity.this, "Connected to Firebase", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
                 } else {
-                    //Toast.makeText(MainChatActivity.this, "Disconnected from Firebase", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.VISIBLE);
                 }
             }
 
