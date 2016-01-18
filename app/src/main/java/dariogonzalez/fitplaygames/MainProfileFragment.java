@@ -4,20 +4,26 @@ package dariogonzalez.fitplaygames;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.Image;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +46,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import dariogonzalez.fitplaygames.Adapters.GamesRowAdapterNew;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
 import dariogonzalez.fitplaygames.dialogs.FullImageDialog;
 import dariogonzalez.fitplaygames.utils.FileHelper;
@@ -59,6 +66,8 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
     private static boolean isSelf = false;
     private boolean isFriend = false;
     private String Friendship;
+    private LinearLayout progressBar;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private ParseUser user;
 
@@ -93,6 +102,24 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
         userSteps = (TextView) view.findViewById(R.id.user_steps);
         fabAddFriend = (FloatingActionButton) view.findViewById(R.id.fab_add_friend);
         fabMessageFriend = (FloatingActionButton) view.findViewById(R.id.fab_message_friend);
+        progressBar = (LinearLayout) view.findViewById(R.id.progress_bar);
+
+        MainScreenTask task = new MainScreenTask();
+        task.execute("");
+
+        //All the lines below are to enable the swipeRefreshLayout..
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setColorSchemeResources(R.color.primary_light, R.color.primary, R.color.primary_dark);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+
+                MainScreenTask task = new MainScreenTask();
+                task.execute("");
+            }
+        });
 
         if (isSelf) {
             fabAddFriend.setVisibility(View.GONE);
@@ -418,4 +445,43 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
         }
     }
 
+    public class MainScreenTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... params) {
+
+            Handler mainHandler = new Handler(Looper.getMainLooper());
+
+            Runnable myRunnable = new Runnable() {
+                @Override
+                public void run() {
+
+                    //Only showing the progressbar when is not refreshing...
+                    if (!swipeRefreshLayout.isRefreshing())
+                    {
+                        progressBar.setVisibility(View.VISIBLE);
+                    }
+                }
+            };
+            mainHandler.post(myRunnable);
+
+            return "";
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+
+            Handler mainHandler = new Handler(Looper.getMainLooper());
+
+            Runnable myRunnable = new Runnable() {
+                @Override
+                public void run() {
+
+                    progressBar.setVisibility(View.GONE);
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+            };
+            mainHandler.post(myRunnable);
+        }
+    }
 }
