@@ -2,9 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="dariogonzalez.fitplaygames.HotPotatoCreateActivity"
+    tools:context="dariogonzalez.fitplaygames.CaptureTheCrownCreateActivity"
     android:background="@color/very_light_grey">
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,7 +27,7 @@
                 <dariogonzalez.fitplaygames.utils.RoundedImageView
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:src="@drawable/potato_47"
+                    android:src="@drawable/crown_47"
                     android:layout_margin="10dp"/>
 
                 <EditText
@@ -212,5 +211,8 @@
             android:background="@color/primary"/>
 
     </LinearLayout>
+
+
+
 
 </FrameLayout>

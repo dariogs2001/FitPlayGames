@@ -42,6 +42,7 @@ public class MainChatActivity extends AppCompatActivity {
     private ValueEventListener mConnectedListener;
     private ChatListAdapter mChatListAdapter;
     private LinearLayout progressBar;
+    private LinearLayout emptyStateLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,7 @@ public class MainChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat_main);
 
         progressBar = (LinearLayout) findViewById(R.id.progress_bar);
+        emptyStateLayout = (LinearLayout) findViewById(R.id.empty_state_chat);
         // Make sure we have a mUsername
         setupUsername();
 
@@ -87,7 +89,16 @@ public class MainChatActivity extends AppCompatActivity {
         final ListView listView = (ListView) findViewById(R.id.list);
         // Tell our list adapter that we only want 50 messages at a time
         mChatListAdapter = new ChatListAdapter(mFirebaseRef.limit(50), this, R.layout.chat_message, mUsername);
-        listView.setAdapter(mChatListAdapter);
+
+            listView.setAdapter(mChatListAdapter);
+       // if(// I don't know what I need here)
+        //{
+            //emptyStateLayout.setVisibility(View.VISIBLE);
+        //}
+        //else {
+            //emptyStateLayout.setVisibility(View.GONE);
+        //}
+
         mChatListAdapter.registerDataSetObserver(new DataSetObserver() {
             @Override
             public void onChanged() {

@@ -75,6 +75,7 @@ public final class ParseConstants
     public static final String CHALLENGE_PLAYER_CHALLENGE_ID = "ChallengeObject";
     public static final String CHALLENGE_PLAYER_OWNER = "IsOwner";
     public static final String CHALLENGE_PLAYER_IS_LOSER = "IsLoser";
+    public static final String CHALLENGE_PLAYER_IS_WINNER = "IsWinner";
     public static final String CHALLENGE_PLAYER_IS_TURN = "IsTurn";
     public static final String CHALLENGE_PLAYER_PASSES = "Passes";
     public static final String CHALLENGE_PLAYER_GAME_TIME = "GameTime";
@@ -115,6 +116,8 @@ public final class ParseConstants
     public static int CHALLENGE_EVENTS_FINAL_STATUS_PLAYING = 1;
     public static int CHALLENGE_EVENTS_FINAL_STATUS_DONE = 2;
     public static String KEY_ANALYTICS_HELP_HOT_POTATO = "HelpGameHotPotato";
+    public static String KEY_ANALYTICS_HELP_CAPTURE_CROWN = "HelpGameCaptureCrown";
+
 
 
     /******************Activity Steps By Day 15 Min*********************************************/
@@ -135,6 +138,9 @@ public final class ParseConstants
     public static String KEY_ANALYTICS_SELECT_GAME_HOT_POTATO = "SelectGameHotPotato";
     public static String KEY_ANALYTICS_CREATE_GAME_HOT_POTATO = "CreateGameHotPotato";
     public static String KEY_ANALYTICS_CANCEL_GAME_HOT_POTATO = "CancelGameHotPotato";
+    public static String KEY_ANALYTICS_SELECT_GAME_CAPTURE_CROWN = "SelectGameCaptureCrown";
+    public static String KEY_ANALYTICS_CREATE_GAME_CAPTURE_CROWN = "CreateGameCaptureCrown";
+    public static String KEY_ANALYTICS_CANCEL_GAME_CAPTURE_CROWN = "CancelGameCaptureCrown";
 
     /********************************************************************************************/
 

@@ -122,6 +122,7 @@
     <string name="title_activity_challenge__choose">Challenge_Choose</string>
     <string name="title_activity_choose_challenge">Choose Challenge</string>
     <string name="title_activity_hot_potato_challenge">Hot Potato Challenge</string>
+    <string name="title_activity_capture_crown_challenge">Capture The Crown Challenge</string>
     <string name="title_activity_main_chat">Chat</string>
     <string name="title_activity_invite_friends">Invite Friends</string>
     <string name="username">Username</string>
@@ -134,6 +135,7 @@
     <string name="accept">Accept</string>
     <string name="decline">Decline</string>
     <string name="start_adding_friends">Start adding friends!</string>
+    <string name="you_have_no_chats">You have no messages yet...</string>
     <string name="currently_no_challenges">There are currently no challenges to display!</string>
     <string name="no_results">No results have been found for this search.</string>
     <string name="sent">Sent</string>
@@ -152,6 +154,7 @@
     <string name="cancel">Cancel</string>
     <string name="create_game">Create Game</string>
     <string name="title_activity_hot_potato_details">Playing - Hot Potato</string>
+    <string name="title_activity_capture_crown_details">Playing - Capture The Crown</string>
     <string name="total_game_steps">Total Game Steps</string>
     <string name="passes">Passes</string>
     <string name="title_activity_leadboard">LeadboardActivity</string>
@@ -165,4 +168,6 @@
     <string name="average_potato_time">Average Potato Time</string>
     <string name="accepted_friend_request">has accepted your friend request!</string>
     <string name="has_invited_friend">has invited you to be friends!</string>
+    <string name="choose_challenge_hot_potato">Hot Potato</string>
+    <string name="choose_challenge_capture_crown">Capture the Crown</string>
 </resources>

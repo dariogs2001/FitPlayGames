@@ -6,12 +6,15 @@ package dariogonzalez.fitplaygames.classes;
  */
 public class ChallengeTypeConstants {
     public static final int HOT_POTATO = 0;
+    public static final int CROWN = 1;
 
 
     public static String getChallengeName(int gameType) {
         switch (gameType) {
             case HOT_POTATO:
                 return "Hot Potato";
+            case CROWN:
+                return "Capture The Crown";
             default:
                 return "";
         }

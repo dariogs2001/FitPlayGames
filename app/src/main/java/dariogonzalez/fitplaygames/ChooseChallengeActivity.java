@@ -43,11 +43,13 @@ public class ChooseChallengeActivity extends AppCompatActivity {
             }
         });
 
-        CardView stealTheCandyBtn = (CardView) findViewById(R.id.steal_the_flag);
-        stealTheCandyBtn.setOnClickListener(new View.OnClickListener() {
+        CardView captureTheCrownBtn = (CardView) findViewById(R.id.capture_the_crown);
+        captureTheCrownBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Utils.trackData(ParseConstants.KEY_ANALYTICS_SELECT_GAME_CAPTURE_CROWN, ParseConstants.KEY_ANALYTICS_SELECT_GAME_CAPTURE_CROWN);
+                Intent intent = new Intent(ChooseChallengeActivity.this, CaptureTheCrownCreateActivity.class);
+                startActivity(intent);
             }
         });
     }
