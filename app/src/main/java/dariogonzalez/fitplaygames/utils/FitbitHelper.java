@@ -149,7 +149,9 @@ public class FitbitHelper {
     public void lastSevenDaySumAndAverage(final String parseUserId)
     {
         final Calendar today = Calendar.getInstance();
-        today.clear(Calendar.HOUR); today.clear(Calendar.MINUTE); today.clear(Calendar.SECOND);
+        today.clear(Calendar.HOUR);
+        today.clear(Calendar.MINUTE);
+        today.clear(Calendar.SECOND);
         today.add(Calendar.DAY_OF_YEAR, -7);
         Date sevenDaysBeforeToday = today.getTime();
 
@@ -232,6 +234,9 @@ public class FitbitHelper {
                         final int value = Integer.parseInt(jsonObject.optString("value").toString());
                         DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
                         final Date date = df.parse(dateTime);
+                        date.setHours(0);
+                        date.setMinutes(0);
+                        date.setSeconds(0);
 
                         ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseConstants.CLASS_ACTIVITY_HISTORY);
                         query.whereEqualTo(ParseConstants.KEY_USER_ID, parseUserId);
