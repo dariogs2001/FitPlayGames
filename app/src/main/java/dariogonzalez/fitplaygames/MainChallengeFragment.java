@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dariogonzalez.fitplaygames.Adapters.GamesRowAdapterNew;
+import dariogonzalez.fitplaygames.classes.CaptureTheCrownChallenge;
 import dariogonzalez.fitplaygames.classes.ChallengeTypeConstants;
 import dariogonzalez.fitplaygames.classes.GamesHeader;
 import dariogonzalez.fitplaygames.classes.HotPotatoChallenge;
@@ -128,26 +129,30 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
             query1.orderByDescending(ParseConstants.KEY_CREATED_AT);
 
             try {
-//                List<ParseObject> challengeplayers = query1.find();
-//                for(ParseObject challengeplayer : challengeplayers) {
-//                    ParseQuery<ParseObject> query2 = new ParseQuery<>(ParseConstants.CLASS_CHALLENGES);
-//                    ParseObject challenge = (ParseObject) challengeplayer.get(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID);
-//                    query2.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_ID, challenge.getObjectId());
-//                    List<ParseObject> challenges = query2.find();
-//
-//                    for (ParseObject challenge2 : challenges) {
-//                        if (challenge2.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO) {
-//                            addHotPotatoChallenge(challenge2, challenge2.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS), challengeplayer);
-//                        }
-//                    }
-//                }
-
                 List<ParseObject> challengeplayers = query1.find();
-                for(ParseObject challengeplayer : challengeplayers)
-                {
-                    ParseObject challenge = ((ParseObject) challengeplayer.get(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID)).fetchIfNeeded();
-                    addHotPotatoChallenge(challenge, challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS), challengeplayer);
+                for(ParseObject challengeplayer : challengeplayers) {
+                    ParseQuery<ParseObject> query2 = new ParseQuery<>(ParseConstants.CLASS_CHALLENGES);
+                    ParseObject challenge = (ParseObject) challengeplayer.get(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID);
+                    query2.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_ID, challenge.getObjectId());
+                    List<ParseObject> challenges = query2.find();
+
+                    for (ParseObject challenge2 : challenges) {
+                        if (challenge2.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO) {
+                            addHotPotatoChallenge(challenge2, challenge2.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS), challengeplayer);
+                        }
+                        if(challenge2.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN) {
+                            addCaptureTheCrownChallenge(challenge2, challenge2.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS), challengeplayer);
+                        }
+                    }
                 }
+
+//                List<ParseObject> challengeplayers = query1.find();
+//                for(ParseObject challengeplayer : challengeplayers)
+//                {
+//                    ParseObject challenge = ((ParseObject) challengeplayer.get(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID)).fetchIfNeeded();
+//                    addHotPotatoChallenge(challenge, challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS), challengeplayer);
+//                    addCaptureTheCrownChallenge(challenge, challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS), challengeplayer);
+//                }
             }
             catch (com.parse.ParseException ex)
             {
@@ -176,6 +181,29 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
         }
         else if (challengeStatus == ParseConstants.CHALLENGE_STATUS_FINISHED) {
             mGamesListFinished.add(hotPotatoChallenge);
+        }
+    }
+
+    private void addCaptureTheCrownChallenge(ParseObject challenge, int challengeStatus, ParseObject challengePlayer) {
+        CaptureTheCrownChallenge captureTheCrownChallenge = new CaptureTheCrownChallenge(challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE));
+        captureTheCrownChallenge.setIcon(getResources().getDrawable(R.drawable.crown));
+        captureTheCrownChallenge.setChallengeId(challenge.getObjectId());
+        captureTheCrownChallenge.setUserChallengeName(challenge.getString(ParseConstants.CHALLENGE_CHALLENGE_NAME));
+        captureTheCrownChallenge.setStepsGoal(challenge.getInt(ParseConstants.CHALLENGE_DAILY_STEPS_GOAL));
+        captureTheCrownChallenge.setChallengeStatusType(challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS));
+        captureTheCrownChallenge.setStartDate(challenge.getDate(ParseConstants.CHALLENGE_CHALLENGE_START));
+        captureTheCrownChallenge.setEndDate(challenge.getDate(ParseConstants.CHALLENGE_CHALLENGE_END));
+        captureTheCrownChallenge.setChallengePlayer(challengePlayer);
+        captureTheCrownChallenge.setNumberOfPlayers(challenge.getInt(ParseConstants.CHALLENGE_NUMBER_OF_PLAYERS));
+
+        if (challengeStatus == ParseConstants.CHALLENGE_STATUS_PLAYING) {
+            mGamesListPlaying.add(captureTheCrownChallenge);
+        }
+        else if (challengeStatus == ParseConstants.CHALLENGE_STATUS_PENDING) {
+            mGamesListPending.add(captureTheCrownChallenge);
+        }
+        else if (challengeStatus == ParseConstants.CHALLENGE_STATUS_FINISHED) {
+            mGamesListFinished.add(captureTheCrownChallenge);
         }
     }
 
@@ -208,6 +236,13 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
                         Intent intent = new Intent(getActivity(), HotPotatoDetailsActivity.class);
                         Bundle extras = new Bundle();
                         extras.putParcelable("game-details", (HotPotatoChallenge) challenge);
+                        intent.putExtras(extras);
+                        startActivity(intent);
+                    }
+                    else if (challenge.getChallengeType() == ChallengeTypeConstants.CROWN) {
+                        Intent intent = new Intent(getActivity(), CaptureTheCrownDetailsActivity.class);
+                        Bundle extras = new Bundle();
+                        extras.putParcelable("game-details", (CaptureTheCrownChallenge) challenge);
                         intent.putExtras(extras);
                         startActivity(intent);
                     }
