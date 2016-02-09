@@ -10,6 +10,7 @@ import android.support.v4.app.NotificationCompat;
 import com.parse.ParseUser;
 
 import dariogonzalez.fitplaygames.R;
+import dariogonzalez.fitplaygames.classes.ParentChallenge;
 import dariogonzalez.fitplaygames.utils.FitbitHelper;
 
 /**
@@ -31,11 +32,31 @@ public class SchedulingService extends IntentService
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        //TODO: Add the actions here...
+        //TODO: Check we have all the data we need to update
+        // - FitBit
+        // - Games
+        // - Others?
 
+        /**** Start updating FitBit values ****/
         FitbitHelper fh = new FitbitHelper(this);
-        fh.getUserLastMonthData();
-        fh.lastSevenDaySumAndAverage(ParseUser.getCurrentUser().getObjectId());
+
+        if (fh.isFitbitUserAlive())
+        {
+            fh.getUserLastMonthData();
+
+            //TODO: see how to update average after calling getUserLastMonthData(), both are async functions, so I need to be sure
+            //getUserLastMonthData() finished before updating the next table....
+            //fh.lastSevenDaySumAndAverage(ParseUser.getCurrentUser().getObjectId());
+
+            fh.getStepsRangeDateTime();
+        }
+
+        /**** End updating FitBit values ****/
+
+        /**** Update Games ****/
+        //TODO: double check this method is working
+        ParentChallenge.updateChallenges();
+        /**** End Update Games ****/
 
         // Release the wake lock provided by the BroadcastReceiver.
         AlarmReceiver.completeWakefulIntent(intent);

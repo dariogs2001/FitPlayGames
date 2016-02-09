@@ -61,8 +61,8 @@ public class MainActivity extends AppCompatActivity implements TabListener {
         ParseAnalytics.trackAppOpenedInBackground(getIntent());
 //        Utils.trackData(MainActivity.class.getSimpleName(), ParseConstants.KEY_ANALYTICS_MAIN_ACTIVITY);
 
-//        mAlarmReceiver = new AlarmReceiver();
-//        mAlarmReceiver.setAlarm(this);
+        mAlarmReceiver = new AlarmReceiver();
+        mAlarmReceiver.setAlarm(this);
 
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser == null) {
