@@ -45,6 +45,7 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
     private GamesRowAdapterNew mAdapterNew;
     private LinearLayout progressBar;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private int mUserPermission;
 
     public MainChallengeFragment() {
         // Required empty public constructor
@@ -79,6 +80,8 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
         mGamesListPlaying.clear();
         mGamesListPending.clear();
         mGamesListFinished.clear();
+        mUserPermission = ParseUser.getCurrentUser().getInt(ParseConstants.USER_PERMISSION);
+
 
         mAdapterNew = new GamesRowAdapterNew(getActivity());
         showAll = (ListView) view.findViewById(R.id.show_all);
@@ -137,11 +140,20 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
                     List<ParseObject> challenges = query2.find();
 
                     for (ParseObject challenge2 : challenges) {
-                        if (challenge2.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO) {
-                            addHotPotatoChallenge(challenge2, challenge2.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS), challengeplayer);
+                        if (mUserPermission == ParseConstants.PERMISSION_ALL || mUserPermission == ParseConstants.PERMISSION_HOT_POTATO)
+                        {
+                            if (challenge2.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO)
+                            {
+                                addHotPotatoChallenge(challenge2, challenge2.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS), challengeplayer);
+                            }
                         }
-                        if(challenge2.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN) {
-                            addCaptureTheCrownChallenge(challenge2, challenge2.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS), challengeplayer);
+
+                        if (mUserPermission == ParseConstants.PERMISSION_ALL || mUserPermission == ParseConstants.PERMISSION_CAPTURE_THE_CROWN)
+                        {
+                            if (challenge2.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN)
+                            {
+                                addCaptureTheCrownChallenge(challenge2, challenge2.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS), challengeplayer);
+                            }
                         }
                     }
                 }

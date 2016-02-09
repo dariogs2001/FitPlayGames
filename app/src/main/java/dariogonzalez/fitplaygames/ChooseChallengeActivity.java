@@ -34,24 +34,37 @@ public class ChooseChallengeActivity extends AppCompatActivity {
         initializeData();
 
         CardView hotPotatoBtn = (CardView) findViewById(R.id.hot_potato);
-        hotPotatoBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Utils.trackData(ParseConstants.KEY_ANALYTICS_SELECT_GAME_HOT_POTATO, ParseConstants.KEY_ANALYTICS_SELECT_GAME_HOT_POTATO);
-                Intent intent = new Intent(ChooseChallengeActivity.this, HotPotatoCreateActivity.class);
-                startActivity(intent);
-            }
-        });
+        int permission = ParseUser.getCurrentUser().getInt(ParseConstants.USER_PERMISSION);
+        if (permission == ParseConstants.PERMISSION_ALL || permission == ParseConstants.PERMISSION_HOT_POTATO) {
+            hotPotatoBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Utils.trackData(ParseConstants.KEY_ANALYTICS_SELECT_GAME_HOT_POTATO, ParseConstants.KEY_ANALYTICS_SELECT_GAME_HOT_POTATO);
+                    Intent intent = new Intent(ChooseChallengeActivity.this, HotPotatoCreateActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
+        else
+        {
+            hotPotatoBtn.setVisibility(View.INVISIBLE);
+        }
 
         CardView captureTheCrownBtn = (CardView) findViewById(R.id.capture_the_crown);
-        captureTheCrownBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Utils.trackData(ParseConstants.KEY_ANALYTICS_SELECT_GAME_CAPTURE_CROWN, ParseConstants.KEY_ANALYTICS_SELECT_GAME_CAPTURE_CROWN);
-                Intent intent = new Intent(ChooseChallengeActivity.this, CaptureTheCrownCreateActivity.class);
-                startActivity(intent);
-            }
-        });
+        if (permission == ParseConstants.PERMISSION_ALL || permission == ParseConstants.PERMISSION_CAPTURE_THE_CROWN) {
+            captureTheCrownBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Utils.trackData(ParseConstants.KEY_ANALYTICS_SELECT_GAME_CAPTURE_CROWN, ParseConstants.KEY_ANALYTICS_SELECT_GAME_CAPTURE_CROWN);
+                    Intent intent = new Intent(ChooseChallengeActivity.this, CaptureTheCrownCreateActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
+        else
+        {
+            captureTheCrownBtn.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override

@@ -38,6 +38,7 @@ public final class ParseConstants
     public static final String USER_GENDER = "Gender";
     public static final String USER_AGE_RANGE = "AgeRange";
     public static final String USER_PROFILE_PICTURE = "ProfilePicture";
+    public static final String USER_PERMISSION = "Permission";
 
     public static final String ACTIVITY_HISTORY_DATE = "Date";
     public static final String ACTIVITY_HISTORY_TIME = "Time";
@@ -144,6 +145,12 @@ public final class ParseConstants
 
     /********************************************************************************************/
 
+    /***************************Parse Permission*************************************************/
+    public static int PERMISSION_ALL = 0;
+    public static int PERMISSION_HOT_POTATO = 1;
+    public static int PERMISSION_CAPTURE_THE_CROWN = 2;
+
+    /********************************************************************************************/
 
     /******************Parse Installation*******************************************************/
 
