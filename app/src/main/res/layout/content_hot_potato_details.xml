@@ -26,7 +26,7 @@
             <dariogonzalez.fitplaygames.utils.RoundedImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/ic_hotpotato"
+                android:src="@drawable/potato_124"
                 android:layout_margin="10dp"/>
 
             <TextView

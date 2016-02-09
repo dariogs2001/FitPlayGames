@@ -15,6 +15,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
+import android.provider.SyncStateContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -47,6 +48,7 @@ import java.util.List;
 import java.util.Locale;
 
 import dariogonzalez.fitplaygames.Adapters.GamesRowAdapterNew;
+import dariogonzalez.fitplaygames.classes.ChallengeTypeConstants;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
 import dariogonzalez.fitplaygames.dialogs.FullImageDialog;
 import dariogonzalez.fitplaygames.utils.FileHelper;
@@ -60,7 +62,7 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
 
     private static String TAG = MainProfileFragment.class.getSimpleName();
     private RoundedImageView profileImage;
-    private TextView userName, userEmail, userSteps;
+    private TextView userName, userEmail, userSteps, mPotatoGamesTV, mPotatoLossesTV, mPotatoAvgTimeTV, mCrownGamesTV, mCrownLossesTV, mCrownAvgTimeTV;
     private ImageButton placeholderProfileImage;
     private FloatingActionButton fabAddFriend, fabMessageFriend;
     private static boolean isSelf = false;
@@ -78,6 +80,8 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
     public static final int MEDIA_TYPE_VIDEO = 3;
 
     protected Uri mMediaUri;
+
+    private int mNumOfHotPotatoGames = 0, mNumOfHotPotatoLosses = 0, mAveragePotatoTime = 0, mNumOfCrownGames = 0, mNumOfCrownLosses = 0, mCrownTime = 0;
 
     public MainProfileFragment() {
         // Required empty public constructor
@@ -103,6 +107,12 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
         fabAddFriend = (FloatingActionButton) view.findViewById(R.id.fab_add_friend);
         fabMessageFriend = (FloatingActionButton) view.findViewById(R.id.fab_message_friend);
         progressBar = (LinearLayout) view.findViewById(R.id.progress_bar);
+        mPotatoGamesTV = (TextView) view.findViewById(R.id.hp_num_of_games);
+        mPotatoLossesTV = (TextView) view.findViewById(R.id.hp_num_of_losses);
+        mPotatoAvgTimeTV = (TextView) view.findViewById(R.id.hp_avg_time);
+        mCrownGamesTV = (TextView) view.findViewById(R.id.crown_num_of_games);
+        mCrownLossesTV = (TextView) view.findViewById(R.id.crown_num_of_losses);
+        mCrownAvgTimeTV = (TextView) view.findViewById(R.id.avg_crown_time);
 
         MainScreenTask task = new MainScreenTask();
         task.execute("");
@@ -124,6 +134,7 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
         if (isSelf) {
             fabAddFriend.setVisibility(View.GONE);
             setOwnData();
+            getAnalyticalData();
             isSelf = false;
         }
         else {
@@ -264,6 +275,71 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
             });
 
         }
+    }
+
+    private void getAnalyticalData() {
+        user = ParseUser.getCurrentUser();
+
+        // ChallengePlayer class has a Challenge object. ChallengeObject has a Challenge type. If challenge type = 1 and the game wasn't cancelled then count it.
+        ParseQuery<ParseObject> challengePlayerQuery = ParseQuery.getQuery(ParseConstants.CLASS_CHALLENGE_PLAYERS);
+        challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_ID, user);
+        challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_STATUS, ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED);
+        challengePlayerQuery.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> challengePlayers, ParseException e) {
+                if (e == null) {
+                    for (final ParseObject challengePlayer : challengePlayers) {
+                        ParseQuery<ParseObject> challengeQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGES);
+                        challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_ID, challengePlayer.getParseObject(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID).getObjectId());
+                        challengeQuery.findInBackground(new FindCallback<ParseObject>() {
+                            @Override
+                            public void done(List<ParseObject> challenges, ParseException e) {
+                                if (e == null) {
+                                    for (final ParseObject challenge: challenges) {
+                                        if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO) {
+                                            mNumOfHotPotatoGames++;
+                                            mAveragePotatoTime += challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_AVERAGE_TIME);
+                                        }
+                                        else if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN) {
+                                            mNumOfCrownGames++;
+                                            mCrownTime += challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_AVERAGE_TIME);
+                                        }
+                                        ParseQuery<ParseObject> challengeEventQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_EVENTS);
+                                        challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_CHALLENGE, challenge);
+                                        challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER, challengePlayer);
+                                        challengeEventQuery.findInBackground(new FindCallback<ParseObject>() {
+                                            @Override
+                                            public void done(List<ParseObject> challengeEvents, ParseException e) {
+                                                if (e == null) {
+                                                    for (ParseObject challengeEvent : challengeEvents) {
+                                                        // If the status is still playing then that means that they were "playing" when the game ended so they lost
+                                                        if (challengeEvent.getInt(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS) == ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_PLAYING && (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO)) {
+                                                            mNumOfHotPotatoLosses++;
+                                                        }
+                                                        else if (challengeEvent.getInt(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS) == ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_DONE && (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN)) {
+                                                            mNumOfCrownLosses++;
+                                                        }
+                                                    }
+
+                                                    mPotatoGamesTV.setText(String.valueOf(mNumOfHotPotatoGames));
+                                                    mPotatoLossesTV.setText(String.valueOf(mNumOfHotPotatoLosses));
+                                                    mPotatoAvgTimeTV.setText(mAveragePotatoTime + " Min");
+                                                    mCrownGamesTV.setText(String.valueOf(mNumOfCrownGames));
+                                                    mCrownLossesTV.setText(String.valueOf(mNumOfCrownLosses));
+                                                    mCrownAvgTimeTV.setText(mCrownTime + " Min");
+
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
+
     }
 
     private void setView(String username, String email, String steps) {

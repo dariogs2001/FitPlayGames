@@ -194,6 +194,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="dariogonzalez.fitplaygames.MainActivity" />
         </activity>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="78611f589eceaf32dfe9f6362a3f8a65e3ae38a5" />
     </application>
 
 </manifest>

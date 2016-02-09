@@ -3,6 +3,7 @@ package dariogonzalez.fitplaygames;
 import android.app.Application;
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
 import com.flurry.android.FlurryAgent;
 import com.parse.FindCallback;
 import com.parse.Parse;
@@ -14,6 +15,7 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.SendCallback;
 
+import io.fabric.sdk.android.Fabric;
 import java.util.List;
 
 import dariogonzalez.fitplaygames.Helper.ParseUtils;
@@ -29,6 +31,7 @@ public class FitPlayGamesApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
 
         Parse.enableLocalDatastore(this);
 

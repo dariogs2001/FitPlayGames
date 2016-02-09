@@ -79,7 +79,7 @@ public final class ParseConstants
     public static final String CHALLENGE_PLAYER_IS_TURN = "IsTurn";
     public static final String CHALLENGE_PLAYER_PASSES = "Passes";
     public static final String CHALLENGE_PLAYER_GAME_TIME = "GameTime";
-    public static final String CHALLENGE_PLAYER_AVERAGE_GAME_TIME = "AverageGameTime";
+    public static final String CHALLENGE_PLAYER_AVERAGE_TIME = "AvgTime";
     public static final String CHALLENGE_NUMBER_OF_PLAYERS = "NumberOfPlayers";
 
 

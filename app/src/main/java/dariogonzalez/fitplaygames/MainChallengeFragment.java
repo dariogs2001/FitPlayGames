@@ -158,7 +158,7 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
 
     private void addHotPotatoChallenge(ParseObject challenge, int challengeStatus, ParseObject challengePlayer) {
         HotPotatoChallenge hotPotatoChallenge = new HotPotatoChallenge(challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE));
-        hotPotatoChallenge.setIcon(getResources().getDrawable(R.drawable.ic_hotpotato));
+        hotPotatoChallenge.setIcon(getResources().getDrawable(R.drawable.potato_124));
         hotPotatoChallenge.setChallengeId(challenge.getObjectId());
         hotPotatoChallenge.setUserChallengeName(challenge.getString(ParseConstants.CHALLENGE_CHALLENGE_NAME));
         hotPotatoChallenge.setStepsGoal(challenge.getInt(ParseConstants.CHALLENGE_DAILY_STEPS_GOAL));
@@ -187,7 +187,7 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
         }
 
         if (mGamesListPending.size() > 0) {
-            mAdapterNew.addSectionHeaderItem(new GamesHeader("Pending", R.color.accent_light));
+            mAdapterNew.addSectionHeaderItem(new GamesHeader("Pending", R.color.primary));
             mAdapterNew.addItem(mGamesListPending);
         }
 

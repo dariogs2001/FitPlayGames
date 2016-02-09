@@ -170,4 +170,8 @@
     <string name="has_invited_friend">has invited you to be friends!</string>
     <string name="choose_challenge_hot_potato">Hot Potato</string>
     <string name="choose_challenge_capture_crown">Capture the Crown</string>
+    <string name="crown_time">Avg. crown time</string>
+    <string name="num_of_losses"># of losses</string>
+    <string name="avg_potato_time">Avg potato time</string>
+    <string name="num_of_games"># of games</string>
 </resources>

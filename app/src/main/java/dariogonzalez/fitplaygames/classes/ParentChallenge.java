@@ -158,7 +158,7 @@ public abstract class ParentChallenge {
                 if (e == null) {
                     for (final ParseObject challengePlayer : challengePlayers) {
                         ParseQuery<ParseObject> challengeQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGES);
-                        challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_ID, challengePlayer.get(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID));
+                        challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_ID, challengePlayer.getParseObject(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID).getObjectId());
                         challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_STATUS, ParseConstants.CHALLENGE_STATUS_PLAYING);
                         challengeQuery.findInBackground(new FindCallback<ParseObject>() {
                             @Override
@@ -256,7 +256,7 @@ public abstract class ParentChallenge {
                                                     long avgTime = gameTime / playerPasses;
 
                                                     challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_GAME_TIME, gameTime);
-                                                    challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_AVERAGE_GAME_TIME, avgTime);
+                                                    challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_AVERAGE_TIME, avgTime);
 
                                                     challengePlayer.saveInBackground();
 
