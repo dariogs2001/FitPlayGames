@@ -166,7 +166,12 @@ public class HotPotatoCreateActivity extends AppCompatActivity {
                 if (mChallengeId == null || mChallengeId.length() == 0) {
                     String challengeName = mChallengeName.getText().toString();
                     //Create challenge
-                    mHotPotatoChallenge.createChallenge(ParseUser.getCurrentUser(), mChallengeName.getText().toString(), Integer.parseInt(stepSpinner.getSelectedItem().toString()), new Date(), mHotPotatoChallenge.generateRandomEndDate(1000, 2), new ParentChallenge.GetObjectIdCallback() {
+                    //TODO: see generateRandomEndDate
+                    mHotPotatoChallenge.createChallenge(ParseUser.getCurrentUser(), mChallengeName.getText().toString(),
+                            Integer.parseInt(stepSpinner.getSelectedItem().toString()),
+                            new Date(),
+                            mHotPotatoChallenge.generateRandomEndDate(1000, 2),
+                            new ParentChallenge.GetObjectIdCallback() {
                         @Override
                         public void done(String objectId) {
                             Intent intent = new Intent(HotPotatoCreateActivity.this, HotPotatoDetailsActivity.class);

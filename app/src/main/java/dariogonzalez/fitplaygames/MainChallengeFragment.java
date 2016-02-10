@@ -80,7 +80,10 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
         mGamesListPlaying.clear();
         mGamesListPending.clear();
         mGamesListFinished.clear();
-        mUserPermission = ParseUser.getCurrentUser().getInt(ParseConstants.USER_PERMISSION);
+        if (ParseUser.getCurrentUser() != null)
+        {
+            mUserPermission = ParseUser.getCurrentUser().getInt(ParseConstants.USER_PERMISSION);
+        }
 
 
         mAdapterNew = new GamesRowAdapterNew(getActivity());
