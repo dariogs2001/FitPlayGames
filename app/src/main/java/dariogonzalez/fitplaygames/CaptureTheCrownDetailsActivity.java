@@ -58,7 +58,7 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
         startTime = (TextView) findViewById(R.id.start_time);
         stepsGoal = (TextView) findViewById(R.id.steps_goal);
         averageCrownTime = (TextView) findViewById(R.id.average_crown_time_tv);
-        passes = (TextView) findViewById(R.id.passes_value);
+        passes = (TextView) findViewById(R.id.held_crown_value);
         statsLayout = (LinearLayout) findViewById(R.id.stats);
         mCancelAction = (com.melnykov.fab.FloatingActionButton) findViewById(R.id.cancel_action);
         playingFriendsList = (ListView) findViewById(R.id.playing_friends_listview);

@@ -201,7 +201,7 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
 
     private void addCaptureTheCrownChallenge(ParseObject challenge, int challengeStatus, ParseObject challengePlayer) {
         CaptureTheCrownChallenge captureTheCrownChallenge = new CaptureTheCrownChallenge(challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE));
-        captureTheCrownChallenge.setIcon(getResources().getDrawable(R.drawable.crown));
+        captureTheCrownChallenge.setIcon(getResources().getDrawable(R.drawable.crown_47));
         captureTheCrownChallenge.setChallengeId(challenge.getObjectId());
         captureTheCrownChallenge.setUserChallengeName(challenge.getString(ParseConstants.CHALLENGE_CHALLENGE_NAME));
         captureTheCrownChallenge.setStepsGoal(challenge.getInt(ParseConstants.CHALLENGE_DAILY_STEPS_GOAL));
