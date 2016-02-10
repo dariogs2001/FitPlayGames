@@ -30,9 +30,11 @@ import com.parse.RequestPasswordResetCallback;
 import java.util.ArrayList;
 import java.util.List;
 
+import dariogonzalez.fitplaygames.Adapters.LeaderboardRowAdapter;
 import dariogonzalez.fitplaygames.Adapters.UserRowAdapter;
 import dariogonzalez.fitplaygames.R;
 import dariogonzalez.fitplaygames.UserProfileActivity;
+import dariogonzalez.fitplaygames.classes.LeaderboardItem;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
 import dariogonzalez.fitplaygames.classes.UserListItem;
 
@@ -40,7 +42,7 @@ import dariogonzalez.fitplaygames.classes.UserListItem;
  * Created by ChristensenKC on 10/7/2015.
  */
 public class LeaderBoardFragment extends Fragment {
-    private List<UserListItem> mLeadBoardList = new ArrayList<UserListItem>();
+    private List<LeaderboardItem> mLeadBoardList = new ArrayList<LeaderboardItem>();
     private ListView friendsResultListView;
     private View view;
     private Button friendsButtonClick;
@@ -166,14 +168,8 @@ public class LeaderBoardFragment extends Fragment {
                                         steps = 0;
                                     }
 
-                                    UserListItem userListItem = new UserListItem();
-                                    userListItem.setmIconId(R.drawable.ic_user);
-                                    userListItem.setmImageUri(fileUri);
-                                    userListItem.setmUserObject(newUserObject);
-                                    userListItem.setmFriendObject(friendObject);
-                                    userListItem.setmFriendStatusId(friendStatusId);
-                                    userListItem.setmSteps((int) steps);
-                                    userListItem.setmUserFriendId(userFriend.getObjectId());
+                                    LeaderboardItem userListItem = new LeaderboardItem(friendObject.getUsername(), 0, 0, 0, fileUri);
+                                    mLeadBoardList.add(userListItem);
                                     mLeadBoardList.add(userListItem);
                                 }
 
@@ -205,12 +201,7 @@ public class LeaderBoardFragment extends Fragment {
                             Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
 
 
-                            UserListItem userListItem = new UserListItem();
-                            userListItem.setmIconId(R.drawable.ic_user);
-                            userListItem.setmImageUri(fileUri);
-                            userListItem.setmSteps((long) (userFriend.getDouble(ParseConstants.LAST_SEVEN_DAYS_STEPS)));
-                            userListItem.setmFriendObject(user);
-                            userListItem.setmGamesPlayed(15);
+                            LeaderboardItem userListItem = new LeaderboardItem(user.getUsername(), 0, 0, 0, fileUri);
                             mLeadBoardList.add(userListItem);
                         }
                     } catch (ParseException ex) {
@@ -224,22 +215,22 @@ public class LeaderBoardFragment extends Fragment {
 
     private void populateListView() {
 
-            ArrayAdapter<UserListItem> adapter = new UserRowAdapter(view.getContext(), R.layout.leader_board_list_item, mLeadBoardList, false, true);
+            ArrayAdapter<LeaderboardItem> adapter = new LeaderboardRowAdapter(view.getContext(), R.layout.leader_board_list_item, mLeadBoardList);
             friendsResultListView.setAdapter(adapter);
             friendsResultListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Intent intent = new Intent(getActivity(), UserProfileActivity.class);
-                    Bundle extras = new Bundle();
-                    // Parse friend object Id
-                    extras.putString("userId", mLeadBoardList.get(position).getmFriendObject().getObjectId());
-                    extras.putString("username", mLeadBoardList.get(position).getmFriendObject().getUsername());
-                    boolean isFriend = false;
-                    if (mLeadBoardList.get(position).getmFriendStatusId() == ParseConstants.FRIEND_STATUS_ACCEPTED) {
-                        isFriend = true;
-                    }
-                    extras.putBoolean("isFriend", isFriend);
-                    intent.putExtras(extras);
+//                    Bundle extras = new Bundle();
+//                    // Parse friend object Id
+//                    extras.putString("userId", mLeadBoardList.get(position).getmFriendObject().getObjectId());
+//                    extras.putString("username", mLeadBoardList.get(position).getmFriendObject().getUsername());
+//                    boolean isFriend = false;
+//                    if (mLeadBoardList.get(position).getmFriendStatusId() == ParseConstants.FRIEND_STATUS_ACCEPTED) {
+//                        isFriend = true;
+//                    }
+//                    extras.putBoolean("isFriend", isFriend);
+//                    intent.putExtras(extras);
                     startActivity(intent);
                 }
             });

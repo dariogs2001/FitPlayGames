@@ -48,12 +48,6 @@ public class LeaderBoardFragmentNew extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_leader_board_new, container, false);
         friendsResultListView = (ListView) view.findViewById(R.id.leader_board_list_view);
-//
-//            clearListView();
-//            showFriendsList();
-
-//                clearListView();
-//                showGlobalList();
 
         showFriendsList();
         return view;
@@ -142,38 +136,6 @@ public class LeaderBoardFragmentNew extends Fragment {
         else {
             populateListView();
         }
-    }
-
-    public void showGlobalList() {
-        ParseQuery<ParseObject> stepsQuery = ParseQuery.getQuery(ParseConstants.CLASS_LAST_SEVEN_DAYS);
-        stepsQuery.orderByDescending(ParseConstants.LAST_SEVEN_DAYS_STEPS);
-        stepsQuery.setLimit(10);
-        stepsQuery.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> list, ParseException e) {
-                for (ParseObject userFriend : list) {
-                    try {
-                        ParseUser user = userFriend.getParseUser(ParseConstants.USER_OBJECT).fetchIfNeeded();
-                        if (user != null) {
-                            ParseFile file = user.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
-                            Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
-
-
-                            UserListItem userListItem = new UserListItem();
-                            userListItem.setmIconId(R.drawable.ic_user);
-                            userListItem.setmImageUri(fileUri);
-                            userListItem.setmSteps((long) (userFriend.getDouble(ParseConstants.LAST_SEVEN_DAYS_STEPS)));
-                            userListItem.setmFriendObject(user);
-                            userListItem.setmGamesPlayed(15);
-                            mLeadBoardList.add(userListItem);
-                        }
-                    } catch (ParseException ex) {
-                    }
-                }
-                populateListView();
-            }
-        });
-
     }
 
     private void populateListView() {

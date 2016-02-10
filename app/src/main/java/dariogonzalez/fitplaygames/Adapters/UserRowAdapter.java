@@ -36,21 +36,12 @@ public class UserRowAdapter extends ArrayAdapter<UserListItem> {
     Context mContext;
     private List<UserListItem> mFriendList = new ArrayList<>();
     private boolean isInvite;
-    private boolean isLeaderBoard = false;
 
     public UserRowAdapter(Context context, int resource, List<UserListItem> mFriendList, boolean isInvite) {
         super(context, resource, mFriendList);
         mContext = context;
         this.mFriendList = mFriendList;
         this.isInvite = isInvite;
-    }
-
-    public UserRowAdapter(Context context, int resource, List<UserListItem> mFriendList, boolean isInvite, boolean isLeaderBoard) {
-        super(context, resource, mFriendList);
-        mContext = context;
-        this.mFriendList = mFriendList;
-        this.isInvite = isInvite;
-        this.isLeaderBoard = isLeaderBoard;
     }
 
     @Override
@@ -119,7 +110,7 @@ public class UserRowAdapter extends ArrayAdapter<UserListItem> {
                 }
             });
         }
-        else if (currentItem.getmFriendStatusId() == 0 && !isLeaderBoard){
+        else if (currentItem.getmFriendStatusId() == 0){
             holder.friendRequestResponseLayout.setVisibility(View.VISIBLE);
             final UserRowHolder rowHolder = holder;
 

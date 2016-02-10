@@ -1,7 +1,6 @@
 package dariogonzalez.fitplaygames;
 
 import android.content.Intent;
-import android.os.Build;
 import android.support.v4.app.FragmentTransaction;
 
 import android.os.Bundle;
@@ -10,24 +9,14 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.TabListener;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.Toast;
 
-import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 
 import com.parse.ParseAnalytics;
 import com.parse.ParseUser;
-import com.squareup.picasso.Picasso;
 
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-
+import dariogonzalez.fitplaygames.Adapters.SectionsPagerAdapter;
 import dariogonzalez.fitplaygames.AlarmManager.AlarmReceiver;
-import dariogonzalez.fitplaygames.classes.ParseConstants;
-import dariogonzalez.fitplaygames.utils.Utils;
 
 
 public class MainActivity extends AppCompatActivity implements TabListener {

@@ -1,4 +1,4 @@
-package dariogonzalez.fitplaygames;
+package dariogonzalez.fitplaygames.Adapters;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
@@ -8,6 +8,11 @@ import android.support.v4.app.FragmentPagerAdapter;
 import java.util.Locale;
 
 import dariogonzalez.fitplaygames.Friends.MainFriendsFragment;
+import dariogonzalez.fitplaygames.MainChallengeFragment;
+import dariogonzalez.fitplaygames.MainMoreOptionsFragment;
+import dariogonzalez.fitplaygames.MainProfileFragment;
+import dariogonzalez.fitplaygames.R;
+import dariogonzalez.fitplaygames.SelectLeaderBoardFragment;
 
 
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
