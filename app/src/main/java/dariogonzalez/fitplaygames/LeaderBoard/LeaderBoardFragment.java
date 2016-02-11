@@ -1,23 +1,16 @@
 package dariogonzalez.fitplaygames.LeaderBoard;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -25,18 +18,16 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.RequestPasswordResetCallback;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import dariogonzalez.fitplaygames.Adapters.LeaderboardRowAdapter;
-import dariogonzalez.fitplaygames.Adapters.UserRowAdapter;
 import dariogonzalez.fitplaygames.R;
 import dariogonzalez.fitplaygames.UserProfileActivity;
+import dariogonzalez.fitplaygames.classes.ChallengeTypeConstants;
 import dariogonzalez.fitplaygames.classes.LeaderboardItem;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
-import dariogonzalez.fitplaygames.classes.UserListItem;
 
 /**
  * Created by ChristensenKC on 10/7/2015.
@@ -45,8 +36,7 @@ public class LeaderBoardFragment extends Fragment {
     private List<LeaderboardItem> mLeadBoardList = new ArrayList<LeaderboardItem>();
     private ListView friendsResultListView;
     private View view;
-    private Button friendsButtonClick;
-    private Button globalButtonClick;
+    public int mNumOfHotPotatoGames, mAveragePotatoTime, mNumOfCrownGames, mCrownTime, mNumOfHotPotatoLosses,mNumOfCrownLosses;
 
     public LeaderBoardFragment() {
         // Required empty public constructor
@@ -56,52 +46,8 @@ public class LeaderBoardFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_leader_board, container, false);
+        view = inflater.inflate(R.layout.fragment_leader_board_new, container, false);
         friendsResultListView = (ListView) view.findViewById(R.id.leader_board_list_view);
-        friendsButtonClick = (Button) view.findViewById(R.id.friendsFrag);
-        globalButtonClick = (Button) view.findViewById(R.id.globalFrag);
-
-        float transparent = 0.5f;
-        AlphaAnimation alphaUp = new AlphaAnimation(transparent, transparent);
-        alphaUp.setFillAfter(true);
-        friendsButtonClick.startAnimation(alphaUp);
-
-        friendsButtonClick.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            float transparent = 0.5f;
-            AlphaAnimation alphaUp = new AlphaAnimation(transparent, transparent);
-            alphaUp.setFillAfter(true);
-            friendsButtonClick.startAnimation(alphaUp);
-
-            float solid = 1;
-            AlphaAnimation alphaDown = new AlphaAnimation(solid,solid);
-            alphaDown.setFillAfter(true);
-            globalButtonClick.startAnimation(alphaDown);
-
-            clearListView();
-            showFriendsList();
-
-            }
-        });
-
-        globalButtonClick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                float transparent = 0.5f;
-                AlphaAnimation alphaUp = new AlphaAnimation(transparent, transparent);
-                alphaUp.setFillAfter(true);
-                globalButtonClick.startAnimation(alphaUp);
-
-                float solid = 1;
-                AlphaAnimation alphaDown = new AlphaAnimation(solid,solid);
-                alphaDown.setFillAfter(true);
-                friendsButtonClick.startAnimation(alphaDown);
-
-                clearListView();
-                showGlobalList();
-            }
-        });
 
         showFriendsList();
         return view;
@@ -134,43 +80,84 @@ public class LeaderBoardFragment extends Fragment {
                 superQuery.findInBackground(new FindCallback<ParseObject>() {
                     @Override
                     public void done(List<ParseObject> list, ParseException e) {
+                        Log.d("TEST", "here1");
                         for (final ParseObject userFriend : list) {
                             try {
-                                ParseUser friendObject;
-                                ParseUser newUserObject;
+                                final ParseUser friendObject;
                                 if (userFriend.getString("FriendId").equals(userId)) {
                                     friendObject = userFriend.getParseUser(ParseConstants.USER_OBJECT).fetchIfNeeded();
-                                    newUserObject = userObject;
                                 } else {
                                     friendObject = userFriend.getParseUser(ParseConstants.FRIEND_OBJECT).fetchIfNeeded();
-                                    newUserObject = userObject;
                                 }
                                 if (friendObject != null) {
-                                    ParseFile file = friendObject.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
-                                    Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
-                                    int friendStatusId = userFriend.getInt(ParseConstants.USER_FRIENDS_STATUS);
-                                    int location = 0;
-                                    if (friendStatusId == ParseConstants.FRIEND_STATUS_SENT) {
-                                        if (mLeadBoardList.size() == 0) {
-                                            location = mLeadBoardList.size();
-                                        } else {
-                                            location = mLeadBoardList.size() - 1;
-                                        }
-                                    }
+                                    ParseQuery<ParseObject> challengePlayerQuery = ParseQuery.getQuery(ParseConstants.CLASS_CHALLENGE_PLAYERS);
+                                    challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_ID, friendObject);
+                                    challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_STATUS, ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED);
+                                    challengePlayerQuery.findInBackground(new FindCallback<ParseObject>() {
+                                        @Override
+                                        public void done(List<ParseObject> challengePlayers, ParseException e) {
+                                            if (e == null) {
+                                                Log.d("TEST", "here2");
+                                                for (final ParseObject challengePlayer : challengePlayers) {
+                                                    ParseQuery<ParseObject> challengeQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGES);
+                                                    challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_ID, challengePlayer.getParseObject(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID).getObjectId());
+                                                    challengeQuery.findInBackground(new FindCallback<ParseObject>() {
+                                                        @Override
+                                                        public void done(List<ParseObject> challenges, ParseException e) {
+                                                            if (e == null) {
+                                                                Log.d("TEST", "here3");
+                                                                for (final ParseObject challenge: challenges) {
+                                                                    mNumOfHotPotatoGames = 0;
+                                                                    mAveragePotatoTime = 0;
+                                                                    mNumOfCrownGames = 0;
+                                                                    mCrownTime = 0;
+                                                                    mNumOfHotPotatoLosses = 0;
+                                                                    mNumOfCrownLosses = 0;
 
-                                    double steps = 0;
-                                    if (friendObject.has("lastSevenDays")) {
-                                        ParseObject lastSevenDays = friendObject.getParseObject("lastSevenDays").fetchIfNeeded();
-                                        if (lastSevenDays != null) {
-                                            steps = lastSevenDays.getDouble(ParseConstants.LAST_SEVEN_DAYS_STEPS);
-                                        }
-                                    } else {
-                                        steps = 0;
-                                    }
+                                                                    if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO) {
+                                                                        mNumOfHotPotatoGames++;
+                                                                        mAveragePotatoTime += challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_AVERAGE_TIME);
+                                                                    }
+                                                                    else if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN) {
+                                                                        mNumOfCrownGames++;
+                                                                        mCrownTime += challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_AVERAGE_TIME);
+                                                                    }
+                                                                    ParseQuery<ParseObject> challengeEventQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_EVENTS);
+                                                                    challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_CHALLENGE, challenge);
+                                                                    challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER, challengePlayer);
+                                                                    challengeEventQuery.findInBackground(new FindCallback<ParseObject>() {
+                                                                        @Override
+                                                                        public void done(List<ParseObject> challengeEvents, ParseException e) {
+                                                                            if (e == null) {
+                                                                                Log.d("TEST", "here4");
+                                                                                for (ParseObject challengeEvent : challengeEvents) {
+                                                                                    // If the status is still playing then that means that they were "playing" when the game ended so they lost
+                                                                                    if (challengeEvent.getInt(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS) == ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_PLAYING && (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO)) {
+                                                                                        mNumOfHotPotatoLosses++;
+                                                                                    }
+                                                                                    else if (challengeEvent.getInt(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS) == ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_DONE && (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN)) {
+                                                                                        mNumOfCrownLosses++;
+                                                                                    }
+                                                                                }
 
-                                    LeaderboardItem userListItem = new LeaderboardItem(friendObject.getUsername(), 0, 0, 0, fileUri);
-                                    mLeadBoardList.add(userListItem);
-                                    mLeadBoardList.add(userListItem);
+                                                                                Log.d("TEST", "size: " + mLeadBoardList.size());
+                                                                                ParseFile file = friendObject.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
+                                                                                final Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
+
+                                                                                LeaderboardItem leaderboardItem = new LeaderboardItem(friendObject.getUsername(), mNumOfHotPotatoGames, mNumOfHotPotatoLosses, mAveragePotatoTime, fileUri);
+                                                                                mLeadBoardList.add(leaderboardItem);
+                                                                            }
+                                                                        }
+                                                                    });
+                                                                }
+                                                                populateListView();
+                                                            }
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                        }
+                                    });
                                 }
 
                             } catch (ParseException ex) {
@@ -184,33 +171,6 @@ public class LeaderBoardFragment extends Fragment {
         else {
             populateListView();
         }
-    }
-
-    public void showGlobalList() {
-        ParseQuery<ParseObject> stepsQuery = ParseQuery.getQuery(ParseConstants.CLASS_LAST_SEVEN_DAYS);
-        stepsQuery.orderByDescending(ParseConstants.LAST_SEVEN_DAYS_STEPS);
-        stepsQuery.setLimit(10);
-        stepsQuery.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> list, ParseException e) {
-                for (ParseObject userFriend : list) {
-                    try {
-                        ParseUser user = userFriend.getParseUser(ParseConstants.USER_OBJECT).fetchIfNeeded();
-                        if (user != null) {
-                            ParseFile file = user.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
-                            Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
-
-
-                            LeaderboardItem userListItem = new LeaderboardItem(user.getUsername(), 0, 0, 0, fileUri);
-                            mLeadBoardList.add(userListItem);
-                        }
-                    } catch (ParseException ex) {
-                    }
-                }
-                populateListView();
-            }
-        });
-
     }
 
     private void populateListView() {

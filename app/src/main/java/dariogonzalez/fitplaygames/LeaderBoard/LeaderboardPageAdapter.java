@@ -29,9 +29,9 @@ public class LeaderboardPageAdapter extends FragmentPagerAdapter {
         switch (position)
         {
             case 0:
-                return new LeaderBoardFragmentNew();
+                return new LeaderBoardFragment();
             case 1:
-                return new LeaderBoardFragmentNew();
+                return new LeaderBoardFragment();
         }
         return null;
     }

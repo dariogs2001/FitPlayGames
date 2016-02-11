@@ -54,7 +54,7 @@ public class UserRowAdapterNew extends ArrayAdapter<UserListItem> {
         UserRowHolder holder = null;
 
         if (row == null){
-            row = LayoutInflater.from(mContext).inflate(R.layout.leader_board_list_item_new, parent, false);
+            row = LayoutInflater.from(mContext).inflate(R.layout.leader_board_list_item, parent, false);
 
             holder = new UserRowHolder();
             holder.userNameTV = (TextView) row.findViewById(R.id.user_name);

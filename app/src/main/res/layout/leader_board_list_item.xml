@@ -1,64 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_height="72dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
     android:orientation="horizontal">
+
     <dariogonzalez.fitplaygames.utils.RoundedImageView
-        android:layout_width="55dp"
-        android:layout_height="55dp"
         android:id="@+id/user_thumbnail"
-        android:src="@drawable/ic_user"
-        android:layout_margin="2.5dp"
-        android:layout_gravity="center_horizontal|center_vertical"
-        />
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_account_circle"
+        android:layout_centerVertical="true"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center_vertical"
-        android:paddingLeft="10dp">
+        android:paddingLeft="52dp"
+        android:paddingStart="52dp"
+        android:layout_centerVertical="true">
+
         <TextView
+            android:text="@string/username"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:textColor="@color/dark_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="User Name"
-            android:layout_gravity="center_vertical"
-            android:textSize="25dp"
-            android:textStyle="bold"
-            android:paddingTop="3dp"
             android:id="@+id/user_name"/>
+
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_gravity="center_vertical">
+            android:weightSum="4">
+
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Steps:"
-                android:layout_gravity="center_vertical"
-                android:gravity="center" />
-            <TextView
+                android:id="@+id/num_of_games"
+                android:textColor="@color/secondary_text"
+                android:textSize="15sp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="15.000"
                 android:layout_weight="1"
-                android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
-                android:id="@+id/steps_text_view"/>
+                android:paddingRight="5dp"/>
+
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Games Played:"
-                />
-            <TextView
+                android:textColor="@color/secondary_text"
+                android:textSize="15sp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="13"
                 android:layout_weight="1"
+                android:text="@string/slash"
                 android:gravity="center_vertical"
-                android:id="@+id/games_text_view"/>
+                android:paddingRight="2dp"/>
+
+            <TextView
+                android:id="@+id/num_of_losses"
+                android:textColor="@color/secondary_text"
+                android:textSize="15sp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"/>
+
+
         </LinearLayout>
+
     </LinearLayout>
 
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/friend_request_response_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" >
+
+        <TextView
+            android:id="@+id/potato_time_value"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="@string/avg_potato_time"
+            android:paddingTop="3dp"
+            android:textColor="@color/accent"
+            android:layout_weight="1" />
+
+
+        <TextView
+            android:id="@+id/avg_time"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/avg_potato_time"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:textSize="10sp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

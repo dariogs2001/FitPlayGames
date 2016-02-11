@@ -48,13 +48,14 @@ public class LeaderboardRowAdapter extends ArrayAdapter<LeaderboardItem> {
         UserRowHolder holder = null;
 
         if (row == null){
-            row = LayoutInflater.from(mContext).inflate(R.layout.row_user, parent, false);
+            row = LayoutInflater.from(mContext).inflate(R.layout.leader_board_list_item, parent, false);
 
             holder = new UserRowHolder();
             holder.username = (TextView) row.findViewById(R.id.user_name);
             holder.userGamesTV = (TextView) row.findViewById(R.id.num_of_games);
             holder.userLossesTV = (TextView) row.findViewById(R.id.num_of_losses);
             holder.userAvgTime = (TextView) row.findViewById(R.id.avg_time);
+            holder.userThumbnail = (ImageView) row.findViewById(R.id.user_thumbnail);
 
             row.setTag(holder);
         }
