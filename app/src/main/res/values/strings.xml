@@ -49,7 +49,7 @@
     <string name="error_file_too_long">The selected file is too large, select a new file!!!</string>
     <string name="gender_label">Gender:</string>
     <string name="age_range_label">Age Range:</string>
-    <string name="challenge_error_message">Please be sure you\'ve selected a challenge name and steps!!!</string>
+    <string name="challenge_error_message">Please be sure you\'ve selected a challenge name, steps and at least one friend!!!</string>
     <string name="challenge_error_title">Error</string>
     <string name="leader_board_friends">Friends</string>
     <string name="leader_board_global">Global</string>
@@ -157,6 +157,7 @@
     <string name="title_activity_capture_crown_details">Playing - Capture The Crown</string>
     <string name="total_game_steps">Total Game Steps</string>
     <string name="passes">Passes</string>
+    <string name="held_crown">Held Crown</string>
     <string name="title_activity_leadboard">LeadboardActivity</string>
     <string name="section_format">Hello World from section: %1$d</string>
 
@@ -165,8 +166,8 @@
     <string name="accepted">Accepted</string>
     <string name="pending">Pending</string>
     <string name="action_refresh">Refresh</string>
-    <string name="average_potato_time">Average Potato Time</string>
-    <string name="average_crown_time">Average Crown Time</string>
+    <string name="average_potato_time">Avg. Potato Time</string>
+    <string name="average_crown_time">Avg. Crown Time</string>
     <string name="accepted_friend_request">has accepted your friend request!</string>
     <string name="has_invited_friend">has invited you to be friends!</string>
     <string name="choose_challenge_hot_potato">Hot Potato</string>

@@ -66,7 +66,7 @@ public class HotPotatoCreateActivity extends AppCompatActivity {
         mCancelButton = (Button) findViewById(R.id.cancel_button);
 
 
-        mChallengeName.setText(mHotPotatoChallenge.getDefaultChallengeName());
+//        mChallengeName.setText(mHotPotatoChallenge.getDefaultChallengeName());
         mChallengeName.setSelection(mChallengeName.getText().length(), mChallengeName.getText().length());
 
 
@@ -101,13 +101,12 @@ public class HotPotatoCreateActivity extends AppCompatActivity {
             }
         });
 
-
         DateFormat dateFormat2 = new SimpleDateFormat("HH:mm a", Locale.getDefault());
         Calendar cal2 = Calendar.getInstance(Locale.getDefault());
         mHour = 6;
         mMinute = 0;
         cal2.set(Calendar.HOUR_OF_DAY, mHour);
-        cal2.set(Calendar.MILLISECOND, mMinute);
+        cal2.set(Calendar.MINUTE, mMinute);
         Date date2 = cal2.getTime();
         ArrayList<String> dateArray2 = new ArrayList<>();
         dateArray2.add(0, dateFormat2.format(date2));
@@ -126,7 +125,6 @@ public class HotPotatoCreateActivity extends AppCompatActivity {
             }
         });
 
-
         mCreateGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -135,24 +133,8 @@ public class HotPotatoCreateActivity extends AppCompatActivity {
 
                 List<UserListItem> selectedFriends = mSearchFriendsFragment.getSelectedFriends();
 
-                if (selectedFriends.size() > 0) {
-                    for (int i = 0; i < selectedFriends.size(); i++) {
-                        ParseUser user;
-                        if (selectedFriends.get(i).getmFriendObject().getUsername().equals(ParseUser.getCurrentUser().getUsername())) {
-                            user = selectedFriends.get(i).getmUserObject();
-                            mHotPotatoChallenge.getPlayerObjects().add(user);
-                        } else {
-                            user = selectedFriends.get(i).getmFriendObject();
-                            mHotPotatoChallenge.getPlayerObjects().add(user);
-                        }
-                    }
-                }
-
-                boolean isReady = true;
-                if (mChallengeName.getText().length() < 1 || stepSpinner.getSelectedItemPosition() == 0)
-                    isReady = false;
-
-                if (!isReady) {
+                if (mChallengeName.getText().length() < 1 || stepSpinner.getSelectedItemPosition() == 0 || selectedFriends.size() < 1)
+                {
                     AlertDialog.Builder builder = new AlertDialog.Builder(HotPotatoCreateActivity.this);
                     builder.setMessage(R.string.challenge_error_message)
                             .setTitle(R.string.challenge_error_title)
@@ -163,8 +145,32 @@ public class HotPotatoCreateActivity extends AppCompatActivity {
                     return;
                 }
 
+                for (UserListItem selectedFriend :selectedFriends)
+                {
+                    ParseUser user;
+                    if (selectedFriend.getmFriendObject().getUsername().equals(ParseUser.getCurrentUser().getUsername())) {
+                        user = selectedFriend.getmUserObject();
+                        mHotPotatoChallenge.getPlayerObjects().add(user);
+                    } else {
+                        user = selectedFriend.getmFriendObject();
+                        mHotPotatoChallenge.getPlayerObjects().add(user);
+                    }
+                }
+
+//                for (int i = 0; i < selectedFriends.size(); i++)
+//                {
+//                    ParseUser user;
+//                    if (selectedFriends.get(i).getmFriendObject().getUsername().equals(ParseUser.getCurrentUser().getUsername())) {
+//                        user = selectedFriends.get(i).getmUserObject();
+//                        mHotPotatoChallenge.getPlayerObjects().add(user);
+//                    } else {
+//                        user = selectedFriends.get(i).getmFriendObject();
+//                        mHotPotatoChallenge.getPlayerObjects().add(user);
+//                    }
+//                }
+//
+
                 if (mChallengeId == null || mChallengeId.length() == 0) {
-                    String challengeName = mChallengeName.getText().toString();
                     //Create challenge
                     //TODO: see generateRandomEndDate
                     mHotPotatoChallenge.createChallenge(ParseUser.getCurrentUser(), mChallengeName.getText().toString(),
@@ -180,8 +186,10 @@ public class HotPotatoCreateActivity extends AppCompatActivity {
                             intent.putExtras(extras);
                             startActivity(intent);
                         }
-                    });
-                } else {
+                    }, selectedFriends.size() + 1);
+                }
+                else
+                {
                     Intent intent = new Intent(HotPotatoCreateActivity.this, InviteFriendsActivity.class);
                     intent.putExtra(ParseConstants.CHALLENGE_CHALLENGE_ID, mChallengeId);
                     startActivity(intent);
@@ -197,12 +205,10 @@ public class HotPotatoCreateActivity extends AppCompatActivity {
                 NavUtils.navigateUpFromSameTask(HotPotatoCreateActivity.this);
             }
         });
-
-
     }
 
-
-    public void showDateDialog() {
+    public void showDateDialog()
+    {
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, datePickerListener, mYear, mMonth, mDay);
         datePickerDialog.show();
     }
@@ -249,7 +255,7 @@ public class HotPotatoCreateActivity extends AppCompatActivity {
 //                amOrPm = Calendar.PM;
 //            }
             cal2.set(Calendar.HOUR_OF_DAY, hour);
-            cal2.set(Calendar.MILLISECOND, minute);
+            cal2.set(Calendar.MINUTE, minute);
 //            cal2.set(Calendar.AM_PM, amOrPm);
             Date date2 = cal2.getTime();
             ArrayList<String> dateArray2 = new ArrayList<>();
