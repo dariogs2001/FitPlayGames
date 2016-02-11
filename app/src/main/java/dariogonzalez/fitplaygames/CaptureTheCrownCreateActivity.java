@@ -106,7 +106,7 @@ public class CaptureTheCrownCreateActivity extends AppCompatActivity {
         mHour = 6;
         mMinute = 0;
         cal2.set(Calendar.HOUR_OF_DAY, mHour);
-        cal2.set(Calendar.MILLISECOND, mMinute);
+        cal2.set(Calendar.MINUTE, mMinute);
         Date date2 = cal2.getTime();
         ArrayList<String> dateArray2 = new ArrayList<>();
         dateArray2.add(0, dateFormat2.format(date2));
@@ -174,7 +174,7 @@ public class CaptureTheCrownCreateActivity extends AppCompatActivity {
                             intent.putExtras(extras);
                             startActivity(intent);
                         }
-                    });
+                    }, selectedFriends.size() + 1);
                 } else {
                     Intent intent = new Intent(CaptureTheCrownCreateActivity.this, InviteFriendsActivity.class);
                     intent.putExtra(ParseConstants.CHALLENGE_CHALLENGE_ID, mChallengeId);
@@ -243,7 +243,7 @@ public class CaptureTheCrownCreateActivity extends AppCompatActivity {
 //                amOrPm = Calendar.PM;
 //            }
             cal2.set(Calendar.HOUR_OF_DAY, hour);
-            cal2.set(Calendar.MILLISECOND, minute);
+            cal2.set(Calendar.MINUTE, minute);
 //            cal2.set(Calendar.AM_PM, amOrPm);
             Date date2 = cal2.getTime();
             ArrayList<String> dateArray2 = new ArrayList<>();

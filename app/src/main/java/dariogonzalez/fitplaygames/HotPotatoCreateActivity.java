@@ -171,7 +171,6 @@ public class HotPotatoCreateActivity extends AppCompatActivity {
 //
 
                 if (mChallengeId == null || mChallengeId.length() == 0) {
-                    String challengeName = mChallengeName.getText().toString();
                     //Create challenge
                     //TODO: see generateRandomEndDate
                     mHotPotatoChallenge.createChallenge(ParseUser.getCurrentUser(), mChallengeName.getText().toString(),
@@ -187,7 +186,7 @@ public class HotPotatoCreateActivity extends AppCompatActivity {
                             intent.putExtras(extras);
                             startActivity(intent);
                         }
-                    });
+                    }, selectedFriends.size() + 1);
                 }
                 else
                 {

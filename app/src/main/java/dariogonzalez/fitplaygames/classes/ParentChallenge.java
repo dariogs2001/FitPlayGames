@@ -77,7 +77,7 @@ public abstract class ParentChallenge {
     }
 
 
-    public void createChallenge(final ParseUser user, String challengeName, int stepsGoal, Date startDate, Date endDate, final GetObjectIdCallback callback) {
+    public void createChallenge(final ParseUser user, String challengeName, int stepsGoal, Date startDate, Date endDate, final GetObjectIdCallback callback, int numberOfPlayers) {
         this.userChallengeName = challengeName;
         this.stepsGoal = stepsGoal;
         this.startDate = startDate;
@@ -90,7 +90,7 @@ public abstract class ParentChallenge {
         challengeObject.put(ParseConstants.CHALLENGE_DAILY_STEPS_GOAL, stepsGoal);
         challengeObject.put(ParseConstants.CHALLENGE_CHALLENGE_START, startDate);
         challengeObject.put(ParseConstants.CHALLENGE_CHALLENGE_END, endDate);
-        challengeObject.put(ParseConstants.CHALLENGE_NUMBER_OF_PLAYERS, 1);
+        challengeObject.put(ParseConstants.CHALLENGE_NUMBER_OF_PLAYERS, numberOfPlayers);
 
 
         challengeObject.saveInBackground(new SaveCallback() {
