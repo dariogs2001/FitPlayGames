@@ -1,4 +1,4 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,7 +8,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
 
@@ -38,7 +38,8 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="15dp"
                     android:textColor="@color/secondary_text"
-                    android:textSize="22sp"/>
+                    android:textSize="22sp"
+                    android:hint="Name your game!!!"/>
 
             </LinearLayout>
 
@@ -186,7 +187,7 @@
         android:layout_width="match_parent"
         android:layout_height="75dp"
         android:orientation="horizontal"
-        android:layout_gravity="bottom"
+        android:layout_alignParentBottom="true"
         android:padding="16dp">
 
         <Button
@@ -213,4 +214,4 @@
 
     </LinearLayout>
 
-</FrameLayout>
+</RelativeLayout>
