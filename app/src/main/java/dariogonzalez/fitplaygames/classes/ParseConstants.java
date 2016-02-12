@@ -39,6 +39,7 @@ public final class ParseConstants
     public static final String USER_AGE_RANGE = "AgeRange";
     public static final String USER_PROFILE_PICTURE = "ProfilePicture";
     public static final String USER_PERMISSION = "Permission";
+    public static final String USER_LAST_SEVEN_DAYS = "lastSevenDays";
 
     public static final String ACTIVITY_HISTORY_DATE = "Date";
     public static final String ACTIVITY_HISTORY_TIME = "Time";

@@ -155,8 +155,8 @@ public class FitbitHelper {
         today.add(Calendar.DAY_OF_YEAR, -7);
         Date sevenDaysBeforeToday = today.getTime();
 
-        //For the user returning the 7 last days of activity
-        ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseConstants.CLASS_ACTIVITY_HISTORY);
+        //For the user returning the7 last days of activity
+        ParseQuery<ParseObject> query  = ParseQuery.getQuery(ParseConstants.CLASS_ACTIVITY_HISTORY);
         query.whereEqualTo(ParseConstants.KEY_USER_ID, parseUserId);
         query.whereGreaterThanOrEqualTo(ParseConstants.ACTIVITY_HISTORY_DATE, sevenDaysBeforeToday);
         query.findInBackground(new FindCallback<ParseObject>() {
@@ -226,6 +226,9 @@ public class FitbitHelper {
                 JSONObject jsonRootObject = new JSONObject(s);
                 //Get the instance of JSONArray that contains JSONObjects
                 JSONArray jsonArray = jsonRootObject.optJSONArray("activities-steps");
+
+                if (ParseUser.getCurrentUser() == null) return;
+
                 final String parseUserId = ParseUser.getCurrentUser().getObjectId();
                 for(int i = 0; i < jsonArray.length(); i++){
                     try {
@@ -286,6 +289,8 @@ public class FitbitHelper {
             Log.d(TAG, "Result = " + s);
 
             try {
+                if (ParseUser.getCurrentUser() == null) return;
+
                 final String parseUserId = ParseUser.getCurrentUser().getObjectId();
                 //Save daa in Database
                 JSONObject jsonRootObjectToday = new JSONObject(s);
