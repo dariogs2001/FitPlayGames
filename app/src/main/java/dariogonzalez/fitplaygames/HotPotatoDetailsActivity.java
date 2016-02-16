@@ -124,7 +124,6 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
         else if (id == R.id.action_refresh) {
             updateChallenge();
         }
-
             return true;
         }
 
@@ -163,7 +162,6 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
                                 }
                             }
                         });
-
                     }
                 }
             });
@@ -185,6 +183,8 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
                         {
                             mHotPotatoChallenge.setChallengeObject(challenge.get(0));
                         }
+
+//                        mHotPotatoChallenge.refresh();
 
                         ParseQuery<ParseObject> query = new ParseQuery<>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
                         query.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID, challenge.get(0));
@@ -219,18 +219,20 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
                                                         if (e == null) {
                                                             if (list.size() > 0) {
                                                                 player.setmSteps(list.get(0).getLong(ParseConstants.CHALLENGE_EVENTS_STEP_PROGRESSION));
-                                                            }
-                                                            else {
+                                                            } else {
                                                                 player.setmSteps(0);
                                                             }
                                                         }
                                                         if (challengePlayer.getBoolean(ParseConstants.CHALLENGE_PLAYER_IS_TURN)) {
                                                             users.add(0, player);
-                                                        }
-                                                        else{
+                                                        } else {
                                                             users.add(users.size(), player);
                                                         }
-                                                        ArrayAdapter<ChallengePlayerItem> adapter = new HotPotatoPlayersAdapter(HotPotatoDetailsActivity.this, R.layout.row_hot_potato_players, users, mHotPotatoChallenge.getStepsGoal(), challenge.get(0).getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS));
+                                                        ArrayAdapter<ChallengePlayerItem> adapter = new HotPotatoPlayersAdapter(HotPotatoDetailsActivity.this,
+                                                                                                                                R.layout.row_hot_potato_players,
+                                                                                                                                users,
+                                                                                                                                mHotPotatoChallenge.getStepsGoal(),
+                                                                                                                                challenge.get(0).getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS));
                                                         playingFriendsList.setAdapter(adapter);
                                                     }
                                                 });
@@ -250,12 +252,9 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
                             }
                         });
                     }
-                } else {
-
-                }
+                } else {}
             }
         });
-
     }
 
     private void updateChallenge() {

@@ -134,7 +134,7 @@ public class SearchFriendsFragment extends Fragment {
                             try {
                                 ParseUser friendObject;
                                 ParseUser newUserObject;
-                                if (userFriend.getString("FriendId").equals(userId)) {
+                                if (userFriend.getString(ParseConstants.USER_FRIENDS_FRIEND_ID).equals(userId)) {
                                     friendObject = userFriend.getParseUser(ParseConstants.USER_OBJECT).fetchIfNeeded();
                                     newUserObject = userObject;
                                 } else {
@@ -145,6 +145,8 @@ public class SearchFriendsFragment extends Fragment {
                                     ParseFile file = friendObject.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
                                     Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
                                     int friendStatusId = userFriend.getInt(ParseConstants.USER_FRIENDS_STATUS);
+
+                                    //TODO: WHAT IS THIS LOCATION FOR???
                                     int location = 0;
                                     if (friendStatusId == ParseConstants.FRIEND_STATUS_SENT) {
                                         if (mFriendList.size() == 0) {
@@ -155,10 +157,16 @@ public class SearchFriendsFragment extends Fragment {
                                     }
 
                                     double steps = 0;
-                                    if (friendObject.has("lastSevenDays")) {
-                                        ParseObject lastSevenDays = friendObject.getParseObject("lastSevenDays").fetchIfNeeded();
-                                        if (lastSevenDays != null) {
-                                            steps = lastSevenDays.getDouble(ParseConstants.LAST_SEVEN_DAYS_STEPS);
+                                    if (friendObject.has(ParseConstants.USER_LAST_SEVEN_DAYS)) {
+                                        try {
+                                            ParseObject lastSevenDays = friendObject.getParseObject(ParseConstants.USER_LAST_SEVEN_DAYS).fetchIfNeeded();
+                                            if (lastSevenDays != null) {
+                                                steps = lastSevenDays.getDouble(ParseConstants.LAST_SEVEN_DAYS_STEPS);
+                                            }
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            steps = 0;
                                         }
                                     } else {
                                         steps = 0;
@@ -208,5 +216,4 @@ public class SearchFriendsFragment extends Fragment {
 
         return selectedItems;
     }
-
 }
