@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="visible"
-            android:src="@drawable/potato_124"
+            android:src="@drawable/leaderboard_potato"
             style="@style/CardViewImage"/>
 
         <TextView
@@ -45,7 +45,7 @@
             android:id="@+id/thumb_image_flag"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/crown_124"
+            android:src="@drawable/leaderboard_crown"
             style="@style/CardViewImage"/>
 
         <TextView
