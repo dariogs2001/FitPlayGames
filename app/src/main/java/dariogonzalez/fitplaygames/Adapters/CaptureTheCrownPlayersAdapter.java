@@ -62,7 +62,7 @@ public class CaptureTheCrownPlayersAdapter extends ArrayAdapter<ChallengePlayerI
 
             holder = new ChallengeInviteHolder();
             holder.userNameTV = (TextView) row.findViewById(R.id.user_name);
-            holder.passesTV = (TextView) row.findViewById(R.id.tv_passes);
+            holder.capturesTV = (TextView) row.findViewById(R.id.tv_captures);
             holder.stepsTV = (TextView) row.findViewById(R.id.steps_tv);
             holder.userThumbnail = (ImageView) row.findViewById(R.id.user_thumbnail);
             holder.progressBar = (ProgressBar) row.findViewById(R.id.progressBar);
@@ -94,10 +94,10 @@ public class CaptureTheCrownPlayersAdapter extends ArrayAdapter<ChallengePlayerI
 
         if (mGameStatus == ParseConstants.CHALLENGE_STATUS_PENDING) {
             if (userObject.getmStatus() == ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED) {
-                holder.passesTV.setText(getContext().getResources().getString(R.string.accepted));
+                holder.capturesTV.setText(getContext().getResources().getString(R.string.accepted));
             }
             else if (userObject.getmStatus() == ParseConstants.CHALLENGE_PLAYER_STATUS_PENDING) {
-                holder.passesTV.setText(getContext().getResources().getString(R.string.pending));
+                holder.capturesTV.setText(getContext().getResources().getString(R.string.pending));
             }
 
             String objectId = ParseUser.getCurrentUser().getObjectId();
@@ -114,7 +114,7 @@ public class CaptureTheCrownPlayersAdapter extends ArrayAdapter<ChallengePlayerI
         }
         else if (mGameStatus == ParseConstants.CHALLENGE_STATUS_PLAYING) {
 
-            holder.passesTV.setText(String.valueOf(userObject.getmPasses() + " passes"));
+            holder.capturesTV.setText(String.valueOf(userObject.getmPasses() + " captures"));
             if (position == 0) {
                 // Only show on the top player (the player that has the potato
                 holder.progressLayout.setVisibility(View.VISIBLE);
@@ -167,7 +167,7 @@ public class CaptureTheCrownPlayersAdapter extends ArrayAdapter<ChallengePlayerI
     }
 
     static class ChallengeInviteHolder {
-        TextView userNameTV, passesTV, stepsTV;
+        TextView userNameTV, capturesTV, stepsTV;
         ImageView userThumbnail;
         ProgressBar progressBar;
         LinearLayout gameResponse, progressLayout;

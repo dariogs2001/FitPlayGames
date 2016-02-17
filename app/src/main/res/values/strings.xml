@@ -157,7 +157,7 @@
     <string name="title_activity_capture_crown_details">Capture The Crown</string>
     <string name="total_game_steps">Total Game Steps</string>
     <string name="passes">Passes</string>
-    <string name="held_crown">Held Crown</string>
+    <string name="held_crown">Crown Captures</string>
     <string name="title_activity_leadboard">LeadboardActivity</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="challenge_name_hint">Name This Game!</string>
