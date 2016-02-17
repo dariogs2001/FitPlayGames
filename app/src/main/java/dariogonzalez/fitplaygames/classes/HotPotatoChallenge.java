@@ -130,7 +130,7 @@ public class HotPotatoChallenge extends ParentChallenge implements Parcelable {
                     startingPlayer.put(ParseConstants.CHALLENGE_PLAYER_IS_TURN, true);
                     startingPlayer.saveInBackground();
                     ParseUser startingPlayerUser = (ParseUser) startingPlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_ID);
-                    ParentChallenge.sendPushNotification("You've started off with the potato in " + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "!", startingPlayerUser);
+                    ParentChallenge.sendPushNotification("You've started off with the potato in '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", startingPlayerUser);
 
                 }
             }
@@ -160,7 +160,7 @@ public class HotPotatoChallenge extends ParentChallenge implements Parcelable {
                     challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_IS_LOSER, true);
                     challengePlayer.saveInBackground();
                     ParseUser loserPlayerUser = (ParseUser) challengePlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_ID);
-                    ParentChallenge.sendPushNotification("Oh no! The potato has exploded in " + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "!", loserPlayerUser);
+                    ParentChallenge.sendPushNotification("Oh no! The potato has exploded in '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", loserPlayerUser);
                 }
             }
         });
@@ -186,7 +186,7 @@ public class HotPotatoChallenge extends ParentChallenge implements Parcelable {
                     challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_PLAYING);
                     challengeEvent.saveInBackground();
                     ParseUser nextPlayerUser = (ParseUser) nextPlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_ID);
-                    ParentChallenge.sendPushNotification("You have been passed the potato in game " + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "!", nextPlayerUser);
+                    ParentChallenge.sendPushNotification("You have been passed the potato in game '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", nextPlayerUser);
                 }
             }
         });

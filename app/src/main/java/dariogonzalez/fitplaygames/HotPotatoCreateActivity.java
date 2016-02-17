@@ -173,7 +173,8 @@ public class HotPotatoCreateActivity extends AppCompatActivity {
                 if (mChallengeId == null || mChallengeId.length() == 0) {
                     //Create challenge
                     //TODO: see generateRandomEndDate
-                    mHotPotatoChallenge.createChallenge(ParseUser.getCurrentUser(), mChallengeName.getText().toString(),
+                    mHotPotatoChallenge.createChallenge(ParseUser.getCurrentUser(),
+                            mChallengeName.getText().toString(),
                             Integer.parseInt(stepSpinner.getSelectedItem().toString()),
                             new Date(),
                             mHotPotatoChallenge.generateRandomEndDate(1000, 2),

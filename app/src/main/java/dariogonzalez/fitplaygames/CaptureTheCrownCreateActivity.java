@@ -65,7 +65,7 @@ public class CaptureTheCrownCreateActivity extends AppCompatActivity {
         mCancelButton = (Button) findViewById(R.id.cancel_button);
 
 
-        mChallengeName.setText(mCaptureTheCrownChallenge.getDefaultChallengeName());
+        //mChallengeName.setText(mCaptureTheCrownChallenge.getDefaultChallengeName());
         mChallengeName.setSelection(mChallengeName.getText().length(), mChallengeName.getText().length());
 
 

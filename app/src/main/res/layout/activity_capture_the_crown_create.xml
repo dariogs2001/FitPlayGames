@@ -37,7 +37,8 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="15dp"
                     android:textColor="@color/secondary_text"
-                    android:textSize="22sp"/>
+                    android:textSize="22sp"
+                    android:hint="@string/challenge_name_hint"/>
 
             </LinearLayout>
 
