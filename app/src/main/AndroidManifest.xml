@@ -173,19 +173,19 @@
         <activity
             android:name=".HotPotatoDetailsActivity"
             android:label="@string/title_activity_hot_potato_details"
-            android:parentActivityName=".HotPotatoCreateActivity"
+            android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait" >
             <meta-data
-                android:name="android.support._ACTIVITY"
+                android:name="android.support.PARENT_ACTIVITY"
                 android:value="dariogonzalez.fitplaygames.MainActivity" />
         </activity>
         <activity
             android:name=".CaptureTheCrownDetailsActivity"
             android:label="@string/title_activity_capture_crown_details"
-            android:parentActivityName=".CaptureTheCrownCreateActivity"
+            android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait" >
             <meta-data
-                android:name="android.support._ACTIVITY"
+                android:name="android.support.PARENT_ACTIVITY"
                 android:value="dariogonzalez.fitplaygames.MainActivity" />
         </activity>
         <activity
