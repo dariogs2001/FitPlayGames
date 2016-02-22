@@ -22,12 +22,14 @@ import android.widget.TimePicker;
 import com.parse.ParseUser;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import dariogonzalez.fitplaygames.Friends.SearchFriendsFragment;
 import dariogonzalez.fitplaygames.classes.ChallengeTypeConstants;
@@ -157,27 +159,24 @@ public class HotPotatoCreateActivity extends AppCompatActivity {
                     }
                 }
 
-//                for (int i = 0; i < selectedFriends.size(); i++)
-//                {
-//                    ParseUser user;
-//                    if (selectedFriends.get(i).getmFriendObject().getUsername().equals(ParseUser.getCurrentUser().getUsername())) {
-//                        user = selectedFriends.get(i).getmUserObject();
-//                        mHotPotatoChallenge.getPlayerObjects().add(user);
-//                    } else {
-//                        user = selectedFriends.get(i).getmFriendObject();
-//                        mHotPotatoChallenge.getPlayerObjects().add(user);
-//                    }
-//                }
-//
-
                 if (mChallengeId == null || mChallengeId.length() == 0) {
                     //Create challenge
                     //TODO: see generateRandomEndDate
+                    String startDateInfo = String.format("%s/%d %s", startDaySpinner.getSelectedItem().toString(), mYear, startTimeSpinner.getSelectedItem().toString());
+                    DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm a");
+                    dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    Date startDate = new Date(startDateInfo);
+//                    try {
+//                         startDate = dateFormat.parse(startDateInfo);
+//                    } catch (ParseException e) {
+//                        e.printStackTrace();
+//                    }
+
                     mHotPotatoChallenge.createChallenge(ParseUser.getCurrentUser(),
                             mChallengeName.getText().toString(),
                             Integer.parseInt(stepSpinner.getSelectedItem().toString()),
-                            new Date(),
-                            mHotPotatoChallenge.generateRandomEndDate(1000, 2),
+                            startDate != null ? startDate : new Date(),
+                            mHotPotatoChallenge.generateRandomEndDate(Integer.parseInt(stepSpinner.getSelectedItem().toString()), selectedFriends.size() + 1, startDate != null ? startDate : new Date()),
                             new ParentChallenge.GetObjectIdCallback() {
                         @Override
                         public void done(String objectId) {
@@ -250,14 +249,9 @@ public class HotPotatoCreateActivity extends AppCompatActivity {
 
             DateFormat dateFormat2 = new SimpleDateFormat("HH:mm a", Locale.getDefault());
             Calendar cal2 = Calendar.getInstance(Locale.getDefault());
-//            int amOrPm = Calendar.AM;
-//            if (hour > 12) {
-//                hour = hour - 12;
-//                amOrPm = Calendar.PM;
-//            }
+
             cal2.set(Calendar.HOUR_OF_DAY, hour);
             cal2.set(Calendar.MINUTE, minute);
-//            cal2.set(Calendar.AM_PM, amOrPm);
             Date date2 = cal2.getTime();
             ArrayList<String> dateArray2 = new ArrayList<>();
             dateArray2.add(0, dateFormat2.format(date2));
@@ -266,26 +260,4 @@ public class HotPotatoCreateActivity extends AppCompatActivity {
             startTimeSpinner.setAdapter(adapter3);
         }
     };
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_hot_potato_challenge, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }

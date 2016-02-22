@@ -94,7 +94,7 @@ public class HotPotatoChallenge extends ParentChallenge implements Parcelable {
         this.setChallengeStatusType(source.readInt());
     }
 
-    public Date generateRandomEndDate(int stepsGoal, int numOfPlayers) {
+    public Date generateRandomEndDate(int stepsGoal, int numOfPlayers, Date startDate) {
 
         int hourAmt = hours.get(stepsGoal);
         int passesAmt = passes.get(numOfPlayers).get(stepsGoal);
@@ -104,7 +104,7 @@ public class HotPotatoChallenge extends ParentChallenge implements Parcelable {
         long timeToAddInMilli = hoursInMilli * passesAmt;
 
         // TODO: should not be currentTime but the starttime of game
-        long today = System.currentTimeMillis();
+        long today = startDate.getTime();
 
         // Randomness
 

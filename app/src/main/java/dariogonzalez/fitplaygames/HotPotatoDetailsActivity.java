@@ -223,11 +223,13 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
                                                                 player.setmSteps(0);
                                                             }
                                                         }
+
                                                         if (challengePlayer.getBoolean(ParseConstants.CHALLENGE_PLAYER_IS_TURN)) {
                                                             users.add(0, player);
                                                         } else {
                                                             users.add(users.size(), player);
                                                         }
+
                                                         ArrayAdapter<ChallengePlayerItem> adapter = new HotPotatoPlayersAdapter(HotPotatoDetailsActivity.this,
                                                                                                                                 R.layout.row_hot_potato_players,
                                                                                                                                 users,
@@ -237,13 +239,10 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
                                                     }
                                                 });
 
-
                                                 mTotalPasses += challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_PASSES);
                                                 passes.setText(String.valueOf(mTotalPasses));
-
                                             }
                                         });
-
                                     }
 
                                 } else {
