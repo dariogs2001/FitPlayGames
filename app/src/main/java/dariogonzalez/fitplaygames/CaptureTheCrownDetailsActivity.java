@@ -261,7 +261,7 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
         challengeQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
-                if (e == null) {
+                if (e == null && !list.isEmpty()) {
                     final ParseObject challenge = list.get(0);
                     ParseQuery<ParseObject> challengePlayerQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
                     challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID, challenge);
@@ -278,7 +278,6 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     private void openChatDialogue() {

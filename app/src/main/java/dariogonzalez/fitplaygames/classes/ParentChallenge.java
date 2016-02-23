@@ -181,7 +181,8 @@ public abstract class ParentChallenge {
         int challengeStatus = challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS);
         int numOfPlayers = challenge.getInt(ParseConstants.CHALLENGE_NUMBER_OF_PLAYERS);
         Date today = new Date();
-        if (challengeStatus == ParseConstants.CHALLENGE_STATUS_PENDING && numOfPlayers > 1) {
+        //TODO: change this back to numOfPlayers > 1
+        if (challengeStatus == ParseConstants.CHALLENGE_STATUS_PENDING && numOfPlayers > 0) {
             Date startDate = challenge.getDate(ParseConstants.CHALLENGE_CHALLENGE_START);
             if (today.after(startDate)) {
                 challenge.put(ParseConstants.CHALLENGE_CHALLENGE_STATUS, ParseConstants.CHALLENGE_STATUS_PLAYING);
@@ -419,7 +420,7 @@ public abstract class ParentChallenge {
         challengeQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
-                if (e == null) {
+                if (e == null  && !list.isEmpty()) {
                     final ParseObject challenge = list.get(0);
                     challenge.put(ParseConstants.CHALLENGE_CHALLENGE_STATUS, challengeStatus);
                     challenge.saveInBackground();

@@ -183,7 +183,6 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
                         {
                             mHotPotatoChallenge.setChallengeObject(challenge.get(0));
                         }
-
 //                        mHotPotatoChallenge.refresh();
 
                         ParseQuery<ParseObject> query = new ParseQuery<>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
@@ -262,15 +261,17 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
         challengeQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
-                if (e == null) {
+                if (e == null && !list.isEmpty()) {
                     final ParseObject challenge = list.get(0);
                     ParseQuery<ParseObject> challengePlayerQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
                     challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID, challenge);
                     challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_ID, ParseUser.getCurrentUser());
                     challengePlayerQuery.findInBackground(new FindCallback<ParseObject>() {
                         @Override
-                        public void done(List<ParseObject> list, ParseException e) {
-                            if (e == null) {
+                        public void done(List<ParseObject> list, ParseException e)
+                        {
+                            if (e == null && !list.isEmpty())
+                            {
                                 ParseObject challengePlayer = list.get(0);
                                 ParentChallenge.updateChallenge(challenge, challengePlayer);
                             }
@@ -279,7 +280,6 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     private void openChatDialogue() {
@@ -288,5 +288,4 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
         intent.putExtra(ParseConstants.OBJECT_ID, mChallengeId);
         startActivity(intent);
     }
-
 }

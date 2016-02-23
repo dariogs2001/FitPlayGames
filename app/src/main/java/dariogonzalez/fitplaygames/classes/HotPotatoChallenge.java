@@ -119,7 +119,7 @@ public class HotPotatoChallenge extends ParentChallenge implements Parcelable {
         startingPlayerQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
-                if (e == null) {
+                if (e == null && !list.isEmpty()) {
                     ParseObject startingPlayer = list.get(0);
                     ParseObject challengeEvent = new ParseObject(ParseConstants.CLASS_CHALLENGE_EVENTS);
                     challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_CHALLENGE, challenge);
@@ -145,7 +145,7 @@ public class HotPotatoChallenge extends ParentChallenge implements Parcelable {
         challengeEventQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
-                if (e == null) {
+                if (e == null  && !list.isEmpty()) {
                     ParseObject challengeEvent = list.get(0);
 
                     Date startTime = challengeEvent.getDate(ParseConstants.CHALLENGE_EVENTS_START_TIME);
@@ -175,7 +175,7 @@ public class HotPotatoChallenge extends ParentChallenge implements Parcelable {
         nextPlayerQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
-                if (e == null) {
+                if (e == null && !list.isEmpty()) {
                     ParseObject nextPlayer = list.get(0);
                     nextPlayer.put(ParseConstants.CHALLENGE_PLAYER_IS_TURN, true);
                     nextPlayer.saveInBackground();
