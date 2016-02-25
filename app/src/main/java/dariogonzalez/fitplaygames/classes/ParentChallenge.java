@@ -1,23 +1,17 @@
 package dariogonzalez.fitplaygames.classes;
 
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
-import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 
-import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import com.parse.SaveCallback;
-import com.parse.SendCallback;
 
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,7 +20,6 @@ import java.util.Locale;
 
 
 import dariogonzalez.fitplaygames.FitPlayGamesApplication;
-import dariogonzalez.fitplaygames.InviteFriendsActivity;
 
 /**
  * Created by Dario on 8/15/2015.
@@ -102,7 +95,7 @@ public abstract class ParentChallenge {
                     ParseObject challengePlayer = new ParseObject(ParseConstants.CLASS_CHALLENGE_PLAYERS);
                     challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_STATUS, ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED);
                     challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_USER_ID, user);
-                    challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID, challengeObject);
+                    challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT, challengeObject);
                     challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_OWNER, true);
                     challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_DATE_JOINED, new Date());
                     challengePlayer.saveInBackground();
@@ -124,7 +117,7 @@ public abstract class ParentChallenge {
             final ParseObject challengePlayer = new ParseObject(ParseConstants.CLASS_CHALLENGE_PLAYERS);
             challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_STATUS, ParseConstants.CHALLENGE_PLAYER_STATUS_PENDING);
             challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_USER_ID, playerObjects.get(i));
-            challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID, challengeObject);
+            challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT, challengeObject);
             challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_OWNER, false);
             challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_DATE_JOINED, new Date());
 
@@ -147,29 +140,46 @@ public abstract class ParentChallenge {
         sendPushNotification(inviteChallengeMessage, user);
     }
 
+    /**
+     * Update challenges
+     *
+     */
     public static void updateChallenges() {
-        ParseUser user = ParseUser.getCurrentUser();
         // Grab all of the users challenges
         ParseQuery<ParseObject> challengePlayerQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
         challengePlayerQuery.whereNotEqualTo(ParseConstants.CHALLENGE_PLAYER_STATUS, ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED);
+//NOT SURE ABOUT THIS LINE
+//        challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_ID, ParseUser.getCurrentUser().getSessionToken());
         challengePlayerQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> challengePlayers, ParseException e) {
                 if (e == null) {
                     for (final ParseObject challengePlayer : challengePlayers) {
-                        ParseQuery<ParseObject> challengeQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGES);
-                        challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_ID, challengePlayer.getParseObject(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID).getObjectId());
-                        challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_STATUS, ParseConstants.CHALLENGE_STATUS_PLAYING);
-                        challengeQuery.findInBackground(new FindCallback<ParseObject>() {
-                            @Override
-                            public void done(List<ParseObject> challenges, ParseException e) {
-                                if (e == null) {
-                                    for (ParseObject challenge : challenges) {
-                                        updateChallenge(challenge, challengePlayer);
-                                    }
-                                }
+                        //TODO: Double check this... Change the commented code below for this line...
+                        try {
+                            ParseObject challenge = challengePlayer.getParseObject(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT).fetchIfNeeded();
+                            if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS) == ParseConstants.CHALLENGE_STATUS_PLAYING)
+                            {
+                                updateChallenge(challenge, challengePlayer);
                             }
-                        });
+                        } catch (Exception ex)
+                        {
+
+                        }
+
+//                        ParseQuery<ParseObject> challengeQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGES);
+//                        challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_ID, challengePlayer.getParseObject(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT).getObjectId());
+//                        challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_STATUS, ParseConstants.CHALLENGE_STATUS_PLAYING);
+//                        challengeQuery.findInBackground(new FindCallback<ParseObject>() {
+//                            @Override
+//                            public void done(List<ParseObject> challenges, ParseException e) {
+//                                if (e == null) {
+//                                    for (ParseObject challenge : challenges) {
+//                                        updateChallenge(challenge, challengePlayer);
+//                                    }
+//                                }
+//                            }
+//                        });
                     }
                 }
             }
@@ -181,15 +191,20 @@ public abstract class ParentChallenge {
         int challengeStatus = challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS);
         int numOfPlayers = challenge.getInt(ParseConstants.CHALLENGE_NUMBER_OF_PLAYERS);
         Date today = new Date();
+
         //TODO: change this back to numOfPlayers > 1
         if (challengeStatus == ParseConstants.CHALLENGE_STATUS_PENDING && numOfPlayers > 0) {
             Date startDate = challenge.getDate(ParseConstants.CHALLENGE_CHALLENGE_START);
             if (today.after(startDate)) {
                 challenge.put(ParseConstants.CHALLENGE_CHALLENGE_STATUS, ParseConstants.CHALLENGE_STATUS_PLAYING);
                 challenge.saveInBackground();
-                if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO) {
-                        HotPotatoChallenge.chooseStartingPlayer(challenge);
-                }
+
+//                if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO) {
+//                        HotPotatoChallenge.chooseStartingPlayer(challenge);
+//                }
+
+                //Not need to implement this method in each class, both class work the same...
+                chooseStartingPlayer(challenge);
             }
         }
         // Then, check to see if it needs to end
@@ -201,6 +216,9 @@ public abstract class ParentChallenge {
                 challenge.saveInBackground();
                 if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO) {
                     HotPotatoChallenge.findLoser(challenge);
+                }
+                else if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN) {
+                    CaptureTheCrownChallenge.findWinner(challenge);
                 }
             }
             else {
@@ -224,7 +242,7 @@ public abstract class ParentChallenge {
                                 // Where userId and where date > startTime
                                 activityStepsQuery.whereEqualTo(ParseConstants.ACTIVITY_STEPS_USER_ID, ParseUser.getCurrentUser().getObjectId());
                                 Log.d("TEST", "Start time: " + startTime.toString());
-                                activityStepsQuery.whereGreaterThan(ParseConstants.ACTIVITY_STEPS_DATE, startTime);
+//                                activityStepsQuery.whereGreaterThan(ParseConstants.ACTIVITY_STEPS_DATE, startTime);
                                 activityStepsQuery.findInBackground(new FindCallback<ParseObject>() {
                                     @Override
                                     public void done(List<ParseObject> list, ParseException e) {
@@ -233,6 +251,12 @@ public abstract class ParentChallenge {
                                             Log.d("TEST", "size: " + size);
                                             int stepsAmount = 0;
                                             for (int i = 0; i < size; i++) {
+
+                                                //Adding first to be sure we get the last updated value,
+                                                ParseObject data = list.get(i);
+                                                int steps = data.getInt(ParseConstants.ACTIVITY_STEPS_STEPS);
+                                                stepsAmount += steps;
+
                                                 // If the added up steps are greater than the steps goal, set challenge event status to done and then get a new player
                                                 if (stepsAmount >= stepsGoal) {
                                                     Date startTime = challengeEvent.getDate(ParseConstants.CHALLENGE_EVENTS_START_TIME);
@@ -264,11 +288,11 @@ public abstract class ParentChallenge {
                                                     HotPotatoChallenge.chooseNextPlayer(challenge, challengePlayer);
                                                     break;
                                                 }
-                                                else {
-                                                    ParseObject data = list.get(0);
-                                                    int steps = data.getInt(ParseConstants.ACTIVITY_STEPS_STEPS);
-                                                    stepsAmount += steps;
-                                                }
+//                                                else {
+//                                                    ParseObject data = list.get(i);
+//                                                    int steps = data.getInt(ParseConstants.ACTIVITY_STEPS_STEPS);
+//                                                    stepsAmount += steps;
+//                                                }
                                             }
                                             challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_STEP_PROGRESSION, stepsAmount);
                                             challengeEvent.saveInBackground();
@@ -424,6 +448,32 @@ public abstract class ParentChallenge {
                     final ParseObject challenge = list.get(0);
                     challenge.put(ParseConstants.CHALLENGE_CHALLENGE_STATUS, challengeStatus);
                     challenge.saveInBackground();
+                }
+            }
+        });
+    }
+
+    //Moving methods to this class
+    public static void chooseStartingPlayer(final ParseObject challenge) {
+        ParseQuery<ParseObject> startingPlayerQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
+        startingPlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT, challenge);
+        startingPlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_OWNER, true);
+        startingPlayerQuery.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if (e == null && !list.isEmpty()) {
+                    ParseObject startingPlayer = list.get(0);
+                    ParseObject challengeEvent = new ParseObject(ParseConstants.CLASS_CHALLENGE_EVENTS);
+                    challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_CHALLENGE, challenge);
+                    challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER, startingPlayer);
+                    challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_START_TIME, new Date());
+                    challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_PLAYING);
+                    challengeEvent.saveInBackground();
+                    startingPlayer.put(ParseConstants.CHALLENGE_PLAYER_IS_TURN, true);
+                    startingPlayer.saveInBackground();
+                    ParseUser startingPlayerUser = (ParseUser) startingPlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_ID);
+                    ParentChallenge.sendPushNotification("You've started off with the potato in '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", startingPlayerUser);
+
                 }
             }
         });

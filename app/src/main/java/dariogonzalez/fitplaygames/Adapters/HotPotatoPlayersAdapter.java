@@ -1,16 +1,11 @@
 package dariogonzalez.fitplaygames.Adapters;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.media.Image;
 import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,9 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
-import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -32,7 +25,6 @@ import java.util.List;
 import dariogonzalez.fitplaygames.R;
 import dariogonzalez.fitplaygames.classes.ChallengePlayerItem;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
-import dariogonzalez.fitplaygames.classes.UserListItem;
 
 /**
  * Created by Logan on 11/2/2015.
@@ -145,7 +137,7 @@ public class HotPotatoPlayersAdapter extends ArrayAdapter<ChallengePlayerItem> {
     private void sendPlayerResponse(final int status, ChallengePlayerItem user, final ChallengeInviteHolder holder) {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
         query.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_ID, user.getmUserObject());
-        query.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID, user.getmChallengeObject());
+        query.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT, user.getmChallengeObject());
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> challengePlayers, ParseException e) {
@@ -154,7 +146,7 @@ public class HotPotatoPlayersAdapter extends ArrayAdapter<ChallengePlayerItem> {
                     challengePlayers.get(0).saveInBackground();
                     holder.gameResponse.setVisibility(View.GONE);
                     if (status == ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED) {
-                        ParseObject challenge = challengePlayers.get(0).getParseObject(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID);
+                        ParseObject challenge = challengePlayers.get(0).getParseObject(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT);
                         int numOfPlayers = challenge.getInt(ParseConstants.CHALLENGE_NUMBER_OF_PLAYERS);
                         numOfPlayers++;
                         challenge.put(ParseConstants.CHALLENGE_NUMBER_OF_PLAYERS, numOfPlayers);

@@ -136,22 +136,11 @@ public class MainFriendsFragment extends Fragment {
                                         Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
                                         int friendStatusId = userFriend.getInt(ParseConstants.USER_FRIENDS_STATUS);
 
-                                        //TODO: WHAT IS "location" FOR???
-                                        int location = 0;
-                                        if (friendStatusId == ParseConstants.FRIEND_STATUS_SENT) {
-                                            if (mFriendList.size() == 0) {
-                                                location = mFriendList.size();
-                                            } else {
-                                                location = mFriendList.size() - 1;
-                                            }
-                                        }
-
                                         double steps = 0;
                                         if (friendObject.has(ParseConstants.USER_LAST_SEVEN_DAYS))
                                         {
-                                            //TODO: SEE WHY THIS IS FAILING
                                             try {
-                                                ParseObject lastSevenDays = friendObject.getParseObject(ParseConstants.USER_LAST_SEVEN_DAYS);//.fetchIfNeeded();
+                                                ParseObject lastSevenDays = friendObject.getParseObject(ParseConstants.USER_LAST_SEVEN_DAYS).fetchIfNeeded();
                                                 if (lastSevenDays != null) {
                                                     steps = lastSevenDays.getDouble(ParseConstants.LAST_SEVEN_DAYS_STEPS);
                                                 }
@@ -223,5 +212,4 @@ public class MainFriendsFragment extends Fragment {
             emptyStateLayout.setVisibility(View.VISIBLE);
         }
     }
-
 }

@@ -2,7 +2,6 @@ package dariogonzalez.fitplaygames;
 
 
 import android.content.Intent;
-import android.media.tv.TvContract;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,7 +15,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -138,7 +136,7 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
                 List<ParseObject> challengeplayers = query1.find();
                 for(ParseObject challengeplayer : challengeplayers) {
                     ParseQuery<ParseObject> query2 = new ParseQuery<>(ParseConstants.CLASS_CHALLENGES);
-                    ParseObject challenge = (ParseObject) challengeplayer.get(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID);
+                    ParseObject challenge = (ParseObject) challengeplayer.get(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT);
                     query2.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_ID, challenge.getObjectId());
                     List<ParseObject> challenges = query2.find();
 
@@ -164,7 +162,7 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
 //                List<ParseObject> challengeplayers = query1.find();
 //                for(ParseObject challengeplayer : challengeplayers)
 //                {
-//                    ParseObject challenge = ((ParseObject) challengeplayer.get(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_ID)).fetchIfNeeded();
+//                    ParseObject challenge = ((ParseObject) challengeplayer.get(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT)).fetchIfNeeded();
 //                    addHotPotatoChallenge(challenge, challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS), challengeplayer);
 //                    addCaptureTheCrownChallenge(challenge, challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS), challengeplayer);
 //                }
