@@ -39,7 +39,7 @@ import dariogonzalez.fitplaygames.classes.ParseConstants;
  */
 public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
 
-    private TextView challengeName, startDate, startTime, stepsGoal, averageCrownTime, passes;
+    private TextView challengeName, startDate, startTime, stepsGoal, averageCrownTime, captures;
     private LinearLayout statsLayout;
     private CaptureTheCrownChallenge mCaptureTheCrownChallenge;
     private ListView playingFriendsList;
@@ -58,7 +58,7 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
         startTime = (TextView) findViewById(R.id.start_time);
         stepsGoal = (TextView) findViewById(R.id.steps_goal);
         averageCrownTime = (TextView) findViewById(R.id.average_crown_time_tv);
-        passes = (TextView) findViewById(R.id.held_crown_value);
+        captures = (TextView) findViewById(R.id.held_crown_value);
         statsLayout = (LinearLayout) findViewById(R.id.stats);
         mCancelAction = (com.melnykov.fab.FloatingActionButton) findViewById(R.id.cancel_action);
         playingFriendsList = (ListView) findViewById(R.id.playing_friends_listview);
@@ -135,7 +135,7 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
         startTime.setText(time);
         stepsGoal.setText(String.valueOf(mCaptureTheCrownChallenge.getStepsGoal()));
         averageCrownTime.setText("0");
-        passes.setText(String.valueOf(mCaptureTheCrownChallenge.getTotalPasses()));
+        captures.setText(String.valueOf(mCaptureTheCrownChallenge.getTotalPasses()));
 
         if (mCaptureTheCrownChallenge.getChallengeStatusType() == ParseConstants.CHALLENGE_STATUS_PENDING) {
             statsLayout.setVisibility(View.GONE);
@@ -234,7 +234,7 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
 
 
                                                 mTotalPasses += challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_PASSES);
-                                                passes.setText(String.valueOf(mTotalPasses));
+                                                captures.setText(String.valueOf(mTotalPasses));
 
                                             }
                                         });

@@ -179,8 +179,9 @@
                 android:id="@+id/average_crown_time_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/secondary_text"
                 android:layout_gravity="center_horizontal"
+                android:textStyle="bold"
+                android:textColor="@color/accent"
                 android:textSize="18sp"/>
 
 
@@ -205,8 +206,9 @@
                 android:id="@+id/held_crown_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/secondary_text"
                 android:layout_gravity="center_horizontal"
+                android:textStyle="bold"
+                android:textColor="@color/accent"
                 android:textSize="18sp"/>
         </LinearLayout>
 

@@ -179,7 +179,8 @@
                 android:id="@+id/average_potato_time_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/secondary_text"
+                android:textStyle="bold"
+                android:textColor="@color/accent"
                 android:layout_gravity="center_horizontal"
                 android:textSize="18sp"/>
 
@@ -205,7 +206,8 @@
                 android:id="@+id/passes_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/secondary_text"
+                android:textStyle="bold"
+                android:textColor="@color/accent"
                 android:layout_gravity="center_horizontal"
                 android:textSize="18sp"/>
         </LinearLayout>
