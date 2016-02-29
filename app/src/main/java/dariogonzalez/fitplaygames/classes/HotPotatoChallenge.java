@@ -162,32 +162,6 @@ public class HotPotatoChallenge extends ParentChallenge implements Parcelable {
         });
     }
 
-    public static void chooseNextPlayer(final ParseObject challenge, final ParseObject challengePlayer) {
-
-        ParseQuery<ParseObject> nextPlayerQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
-        nextPlayerQuery.whereNotEqualTo(ParseConstants.OBJECT_ID, challengePlayer.getObjectId());
-        nextPlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT, challenge);
-        nextPlayerQuery.whereLessThanOrEqualTo(ParseConstants.CHALLENGE_PLAYER_PASSES, challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_PASSES));
-        nextPlayerQuery.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> list, ParseException e) {
-                if (e == null && !list.isEmpty()) {
-                    ParseObject nextPlayer = list.get(0);
-                    nextPlayer.put(ParseConstants.CHALLENGE_PLAYER_IS_TURN, true);
-                    nextPlayer.saveInBackground();
-                    ParseObject challengeEvent = new ParseObject(ParseConstants.CLASS_CHALLENGE_EVENTS);
-                    challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_CHALLENGE, challenge);
-                    challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER, nextPlayer);
-                    challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_START_TIME, new Date());
-                    challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_PLAYING);
-                    challengeEvent.saveInBackground();
-                    ParseUser nextPlayerUser = (ParseUser) nextPlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_ID);
-                    ParentChallenge.sendPushNotification("You have been passed the potato in game '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", nextPlayerUser);
-                }
-            }
-        });
-    }
-
     @Override
     public int describeContents() {
         return 0;
