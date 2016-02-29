@@ -78,6 +78,20 @@
         <item name="android:paddingRight">30dp</item>
         <item name="android:background">@color/very_light_grey</item>
     </style>
+    <style name="CardViewImageHotPotato">
+        <item name="android:paddingBottom">65dp</item>
+        <item name="android:paddingTop">30dp</item>
+        <item name="android:paddingLeft">30dp</item>
+        <item name="android:paddingRight">30dp</item>
+        <item name="android:background">@color/hot_potato_card_color</item>
+    </style>
+    <style name="CardViewImageCrown">
+        <item name="android:paddingBottom">65dp</item>
+        <item name="android:paddingTop">30dp</item>
+        <item name="android:paddingLeft">30dp</item>
+        <item name="android:paddingRight">30dp</item>
+        <item name="android:background">@color/capture_the_crown_card_color</item>
+    </style>
 
     <style name="challenge_profile_header">
         <item name="android:padding">10dp</item>

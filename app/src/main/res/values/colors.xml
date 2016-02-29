@@ -7,6 +7,8 @@
     <color name="pressed_purple_button">#ba9dda</color>
     <color name="focused_purple_button">#d6c3ed</color>
     <color name="login_background_color">#F8F6F3</color>
+    <color name="capture_the_crown_card_color">#2EB9DC</color>
+    <color name="hot_potato_card_color">#006DB7</color>
 
     <!-- Material Design Colors -->
     <color name="primary">#2196F3</color>

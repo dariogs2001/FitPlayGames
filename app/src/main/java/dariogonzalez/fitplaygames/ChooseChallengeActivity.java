@@ -1,6 +1,7 @@
 package dariogonzalez.fitplaygames;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -34,6 +35,7 @@ public class ChooseChallengeActivity extends AppCompatActivity {
         initializeData();
 
         CardView hotPotatoBtn = (CardView) findViewById(R.id.hot_potato);
+        hotPotatoBtn.setCardBackgroundColor(Color.BLACK);
         int permission = ParseUser.getCurrentUser().getInt(ParseConstants.USER_PERMISSION);
         if (permission == ParseConstants.PERMISSION_ALL || permission == ParseConstants.PERMISSION_HOT_POTATO) {
             hotPotatoBtn.setOnClickListener(new View.OnClickListener() {
