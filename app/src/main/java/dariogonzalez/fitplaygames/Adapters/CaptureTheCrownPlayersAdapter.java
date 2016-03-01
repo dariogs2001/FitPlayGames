@@ -2,6 +2,7 @@ package dariogonzalez.fitplaygames.Adapters;
 
 
 import android.content.Context;
+import android.media.Image;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,9 +59,11 @@ public class CaptureTheCrownPlayersAdapter extends ArrayAdapter<ChallengePlayerI
             holder.stepsTV = (TextView) row.findViewById(R.id.steps_tv);
             holder.userThumbnail = (ImageView) row.findViewById(R.id.user_thumbnail);
             holder.progressBar = (ProgressBar) row.findViewById(R.id.progressBar);
+            holder.crownImage = (ImageView) row.findViewById(R.id.crownImage);
             holder.gameResponse = (LinearLayout) row.findViewById(R.id.game_response);
             holder.acceptBtn = (ImageButton) row.findViewById(R.id.btn_accept);
             holder.declineBtn = (ImageButton) row.findViewById(R.id.btn_decline);
+            holder.crownLayout = (LinearLayout) row.findViewById(R.id.crownLayout);
             holder.progressLayout = (LinearLayout) row.findViewById(R.id.progressLayout);
 
             holder.progressBar.setMax(mStepsGoal);
@@ -108,7 +111,12 @@ public class CaptureTheCrownPlayersAdapter extends ArrayAdapter<ChallengePlayerI
 
             holder.capturesTV.setText(String.valueOf(userObject.getmPasses() + " captures"));
             if (position == 0) {
-                // Only show on the top player (the player that has the potato
+                // Only show on the top player (the player that has the crown
+                holder.crownLayout.setVisibility(View.VISIBLE);
+                holder.progressLayout.setVisibility(View.INVISIBLE);
+                row.setBackgroundColor(getContext().getResources().getColor(R.color.light_light_grey));
+            }
+            else {
                 holder.progressLayout.setVisibility(View.VISIBLE);
                 holder.stepsTV.setText(String.valueOf(userObject.getmSteps()));
                 row.setBackgroundColor(getContext().getResources().getColor(R.color.light_light_grey));
@@ -129,8 +137,6 @@ public class CaptureTheCrownPlayersAdapter extends ArrayAdapter<ChallengePlayerI
                 sendPlayerResponse(ParseConstants.CHALLENGE_PLAYER_STATUS_DECLINED, userObject, rowHolder);
             }
         });
-
-
 
         return row;
     }
@@ -162,9 +168,9 @@ public class CaptureTheCrownPlayersAdapter extends ArrayAdapter<ChallengePlayerI
 
     static class ChallengeInviteHolder {
         TextView userNameTV, capturesTV, stepsTV;
-        ImageView userThumbnail;
+        ImageView userThumbnail, crownImage;
         ProgressBar progressBar;
-        LinearLayout gameResponse, progressLayout;
+        LinearLayout gameResponse, crownLayout, progressLayout;
         ImageButton acceptBtn, declineBtn;
     }
 }

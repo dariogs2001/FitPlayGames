@@ -1,6 +1,7 @@
 package dariogonzalez.fitplaygames;
 
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -24,6 +25,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +44,7 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
     private ListView playingFriendsList;
     private List<ChallengePlayerItem> users;
     private com.melnykov.fab.FloatingActionButton mCancelAction;
+    private Uri profilePicture;
 
     private int mTotalPasses = 0;
 
@@ -195,8 +198,15 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
                                             public void done(ParseObject user, ParseException e) {
                                                 final ChallengePlayerItem player = new ChallengePlayerItem();
                                                 ParseFile file = user.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
-                                                Uri profilePicture = file != null ? Uri.parse(file.getUrl()) : null;
-                                                player.setmImageUri(profilePicture);
+                                                if (challengePlayer.getBoolean(ParseConstants.CHALLENGE_PLAYER_IS_TURN)) {
+                                                    profilePicture = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE +
+                                                            "://" + getResources().getResourcePackageName(R.drawable.potato_47)
+                                                            + '/' + getResources().getResourceTypeName(R.drawable.potato_47) + '/' + getResources().getResourceEntryName(R.drawable.potato_47) );
+                                                    player.setmImageUri(profilePicture);
+                                                }
+                                                else {
+                                                profilePicture = file != null ? Uri.parse(file.getUrl()) : null;
+                                                player.setmImageUri(profilePicture);}
                                                 player.setmIsOwner(challengePlayer.getBoolean(ParseConstants.CHALLENGE_PLAYER_OWNER));
                                                 player.setmPasses(challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_PASSES));
                                                 player.setmStatus(challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_STATUS));
