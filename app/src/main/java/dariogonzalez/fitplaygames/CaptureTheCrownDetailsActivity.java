@@ -46,7 +46,7 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
     private List<ChallengePlayerItem> users;
     private com.melnykov.fab.FloatingActionButton mCancelAction;
 
-    private int mTotalPasses = 0;
+    private int mTotalCaptures = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +58,7 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
         startTime = (TextView) findViewById(R.id.start_time);
         stepsGoal = (TextView) findViewById(R.id.steps_goal);
         averageCrownTime = (TextView) findViewById(R.id.average_crown_time_tv);
-        captures = (TextView) findViewById(R.id.held_crown_value);
+        captures = (TextView) findViewById(R.id.captures_value);
         statsLayout = (LinearLayout) findViewById(R.id.stats);
         mCancelAction = (com.melnykov.fab.FloatingActionButton) findViewById(R.id.cancel_action);
         playingFriendsList = (ListView) findViewById(R.id.playing_friends_listview);
@@ -135,7 +135,7 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
         startTime.setText(time);
         stepsGoal.setText(String.valueOf(mCaptureTheCrownChallenge.getStepsGoal()));
         averageCrownTime.setText("0");
-        captures.setText(String.valueOf(mCaptureTheCrownChallenge.getTotalPasses()));
+        captures.setText(String.valueOf(mCaptureTheCrownChallenge.getTotalCaptures()));
 
         if (mCaptureTheCrownChallenge.getChallengeStatusType() == ParseConstants.CHALLENGE_STATUS_PENDING) {
             statsLayout.setVisibility(View.GONE);
@@ -233,8 +233,8 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
                                                 });
 
 
-                                                mTotalPasses += challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_PASSES);
-                                                captures.setText(String.valueOf(mTotalPasses));
+                                                mTotalCaptures += challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_PASSES);
+                                                captures.setText(String.valueOf(mTotalCaptures));
 
                                             }
                                         });

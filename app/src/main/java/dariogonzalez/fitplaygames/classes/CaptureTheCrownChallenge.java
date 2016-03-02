@@ -20,9 +20,9 @@ import java.util.List;
  */
 public class CaptureTheCrownChallenge extends ParentChallenge implements Parcelable {
 
-    private int totalSteps, totalPasses;
+    private int totalSteps, totalCaptures;
     private Map<Integer, Integer> hours = new HashMap<>();
-    private Map<Integer, HashMap<Integer, Integer>> passes = new HashMap<>();
+    private Map<Integer, HashMap<Integer, Integer>> captures = new HashMap<>();
 
     private static final long HOUR_IN_MILLI = 3600000;
 
@@ -32,7 +32,7 @@ public class CaptureTheCrownChallenge extends ParentChallenge implements Parcela
         initialize();
 
         totalSteps = 0;
-        totalPasses = 0;
+        totalCaptures = 0;
     }
 
     public void createEndDateMapping() {
@@ -44,15 +44,15 @@ public class CaptureTheCrownChallenge extends ParentChallenge implements Parcela
         hours.put(4000, 8);
         hours.put(5000, 12);
 
-        // Initialize passes map
-        // This is a relationship of people to # of passes for the game
+        // Initialize captures map
+        // This is a relationship of people to # of captures for the game
         HashMap<Integer, Integer> twoPeople = new HashMap<>();
         twoPeople.put(1000, 24);
         twoPeople.put(2000, 12);
         twoPeople.put(3000, 8);
         twoPeople.put(4000, 6);
         twoPeople.put(5000, 4);
-        passes.put(2, twoPeople);
+        captures.put(2, twoPeople);
 
         HashMap<Integer, Integer> threePeople = new HashMap<>();
         threePeople.put(1000, 12);
@@ -60,7 +60,7 @@ public class CaptureTheCrownChallenge extends ParentChallenge implements Parcela
         threePeople.put(3000, 7);
         threePeople.put(4000, 6);
         threePeople.put(5000, 6);
-        passes.put(3, threePeople);
+        captures.put(3, threePeople);
 
         HashMap<Integer, Integer> fourPeople = new HashMap<>();
         fourPeople.put(1000, 12);
@@ -68,7 +68,7 @@ public class CaptureTheCrownChallenge extends ParentChallenge implements Parcela
         fourPeople.put(3000, 8);
         fourPeople.put(4000, 4);
         fourPeople.put(5000, 4);
-        passes.put(4, fourPeople);
+        captures.put(4, fourPeople);
 
         HashMap<Integer, Integer> fivePeople = new HashMap<>();
         fivePeople.put(1000, 15);
@@ -76,7 +76,7 @@ public class CaptureTheCrownChallenge extends ParentChallenge implements Parcela
         fivePeople.put(3000, 10);
         fivePeople.put(4000, 5);
         fivePeople.put(5000, 5);
-        passes.put(5, fivePeople);
+        captures.put(5, fivePeople);
     }
 
     protected CaptureTheCrownChallenge(Parcel source) {
@@ -84,7 +84,7 @@ public class CaptureTheCrownChallenge extends ParentChallenge implements Parcela
         this.setStartDate(new Date(source.readLong()));
         this.setEndDate(new Date(source.readLong()));
         this.setStepsGoal(source.readInt());
-        this.setTotalPasses(source.readInt());
+        this.setTotalCaptures(source.readInt());
         this.setTotalSteps(source.readInt());
         this.setChallengeId(source.readString());
         this.setChallengeStatusType(source.readInt());
@@ -93,11 +93,11 @@ public class CaptureTheCrownChallenge extends ParentChallenge implements Parcela
     public Date generateRandomEndDate(int stepsGoal, int numOfPlayers) {
 
         int hourAmt = hours.get(stepsGoal);
-        int passesAmt = passes.get(numOfPlayers).get(stepsGoal);
+        int capturesAmt = captures.get(numOfPlayers).get(stepsGoal);
 
         long hoursInMilli = hourAmt * HOUR_IN_MILLI;
 
-        long timeToAddInMilli = hoursInMilli * passesAmt;
+        long timeToAddInMilli = hoursInMilli * capturesAmt;
 
         // TODO: should not be currentTime but the starttime of game
         long today = System.currentTimeMillis();
@@ -173,7 +173,7 @@ public class CaptureTheCrownChallenge extends ParentChallenge implements Parcela
         parcel.writeLong(this.getStartDate().getTime());
         parcel.writeLong(this.getEndDate().getTime());
         parcel.writeInt(this.getStepsGoal());
-        parcel.writeInt(this.getTotalPasses());
+        parcel.writeInt(this.getTotalCaptures());
         parcel.writeInt(this.getTotalSteps());
         parcel.writeString(this.getChallengeId());
         parcel.writeInt(this.getChallengeStatusType());
@@ -218,11 +218,11 @@ public class CaptureTheCrownChallenge extends ParentChallenge implements Parcela
         return this.totalSteps;
     }
 
-    public void setTotalPasses(int totalPasses) {
-        this.totalPasses = totalPasses;
+    public void setTotalCaptures(int totalCaptures) {
+        this.totalCaptures = totalCaptures;
     }
 
-    public int getTotalPasses() {
-        return this.totalPasses;
+    public int getTotalCaptures() {
+        return this.totalCaptures;
     }
 }

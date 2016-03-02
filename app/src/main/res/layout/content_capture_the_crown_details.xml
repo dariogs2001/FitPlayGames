@@ -203,7 +203,7 @@
 
 
             <TextView
-                android:id="@+id/held_crown_value"
+                android:id="@+id/captures_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
