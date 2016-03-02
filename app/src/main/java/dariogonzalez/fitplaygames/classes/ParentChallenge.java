@@ -184,6 +184,7 @@ public abstract class ParentChallenge {
     }
 
     public static void updateChallenge(final ParseObject challenge, final ParseObject challengePlayer) {
+        Log.d("TEST", "You got into ParentChallenge.updateChallenge successfully");
         // First, check to see what the status of the challenge is. If it hasn't started, check to see if it needs to start
         int challengeStatus = challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS);
         int numOfPlayers = challenge.getInt(ParseConstants.CHALLENGE_NUMBER_OF_PLAYERS);
@@ -191,6 +192,7 @@ public abstract class ParentChallenge {
 
         //TODO: change this back to numOfPlayers > 1
         if (challengeStatus == ParseConstants.CHALLENGE_STATUS_PENDING && numOfPlayers > 0) {
+            Log.d("TEST", "PENDING");
             Date startDate = challenge.getDate(ParseConstants.CHALLENGE_CHALLENGE_START);
             if (today.after(startDate)) {
                 challenge.put(ParseConstants.CHALLENGE_CHALLENGE_STATUS, ParseConstants.CHALLENGE_STATUS_PLAYING);
@@ -239,7 +241,7 @@ public abstract class ParentChallenge {
                                 // Where userId and where date > startTime
                                 activityStepsQuery.whereEqualTo(ParseConstants.ACTIVITY_STEPS_USER_ID, ParseUser.getCurrentUser().getObjectId());
                                 Log.d("TEST", "Start time: " + startTime.toString());
-//                                activityStepsQuery.whereGreaterThan(ParseConstants.ACTIVITY_STEPS_DATE, startTime);
+                                activityStepsQuery.whereGreaterThan(ParseConstants.ACTIVITY_STEPS_DATE, startTime);
                                 activityStepsQuery.findInBackground(new FindCallback<ParseObject>() {
                                     @Override
                                     public void done(List<ParseObject> list, ParseException e) {
