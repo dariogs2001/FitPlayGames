@@ -372,8 +372,9 @@ public class FitbitHelper {
                         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                         df.setTimeZone(TimeZone.getTimeZone("UTC"));
                         final Date time = df.parse(dateTimeToday + " " + dateTime);
-                        tweakDate(time,12);
-                        Log.d("Time: ", time.toString());
+                        Log.d("Time1: ", time.toString());
+                        tweakDate(time,12); // 12 here because it's 5 hours off in the past and we need it to be 7 hours in the future to make UTC time
+                        Log.d("Time2: ", time.toString());
                         ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseConstants.CLASS_ACTIVITY_STEPS_BY_DAY_15M);
                         query.whereEqualTo(ParseConstants.KEY_USER_ID, parseUserId);
                         query.whereEqualTo(ParseConstants.ACTIVITY_HISTORY_DATE, time);
