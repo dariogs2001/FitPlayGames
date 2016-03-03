@@ -179,7 +179,7 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
         hotPotatoChallenge.setIcon(getResources().getDrawable(R.drawable.potato_124));
         hotPotatoChallenge.setChallengeId(challenge.getObjectId());
         hotPotatoChallenge.setUserChallengeName(challenge.getString(ParseConstants.CHALLENGE_CHALLENGE_NAME));
-        hotPotatoChallenge.setStepsGoal(challenge.getInt(ParseConstants.CHALLENGE_DAILY_STEPS_GOAL));
+        hotPotatoChallenge.setStepsGoal(challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STEPS_GOAL));
         hotPotatoChallenge.setChallengeStatusType(challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS));
         hotPotatoChallenge.setStartDate(challenge.getDate(ParseConstants.CHALLENGE_CHALLENGE_START));
         hotPotatoChallenge.setEndDate(challenge.getDate(ParseConstants.CHALLENGE_CHALLENGE_END));
@@ -202,7 +202,7 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
         captureTheCrownChallenge.setIcon(getResources().getDrawable(R.drawable.crown_47));
         captureTheCrownChallenge.setChallengeId(challenge.getObjectId());
         captureTheCrownChallenge.setUserChallengeName(challenge.getString(ParseConstants.CHALLENGE_CHALLENGE_NAME));
-        captureTheCrownChallenge.setStepsGoal(challenge.getInt(ParseConstants.CHALLENGE_DAILY_STEPS_GOAL));
+        captureTheCrownChallenge.setStepsGoal(challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STEPS_GOAL));
         captureTheCrownChallenge.setChallengeStatusType(challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS));
         captureTheCrownChallenge.setStartDate(challenge.getDate(ParseConstants.CHALLENGE_CHALLENGE_START));
         captureTheCrownChallenge.setEndDate(challenge.getDate(ParseConstants.CHALLENGE_CHALLENGE_END));

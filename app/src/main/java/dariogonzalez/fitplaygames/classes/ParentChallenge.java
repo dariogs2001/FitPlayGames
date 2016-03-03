@@ -57,7 +57,7 @@ public abstract class ParentChallenge {
     // This method will return a default challenge name based on the name of the challenge and possibly the date or something
     public String getDefaultChallengeName() {
         SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
-        Date date = Utils.getUTCdatetimeAsDate();
+        Date date = new Date();
         String dateStr = sdf.format(date);
 
         String challengeName = ChallengeTypeConstants.getChallengeName(challengeType);
@@ -81,7 +81,7 @@ public abstract class ParentChallenge {
         challengeObject.put(ParseConstants.CHALLENGE_CHALLENGE_NAME, challengeName);
         challengeObject.put(ParseConstants.CHALLENGE_CHALLENGE_TYPE, challengeType);
         challengeObject.put(ParseConstants.CHALLENGE_CHALLENGE_STATUS, ParseConstants.CHALLENGE_STATUS_PENDING);
-        challengeObject.put(ParseConstants.CHALLENGE_DAILY_STEPS_GOAL, stepsGoal);
+        challengeObject.put(ParseConstants.CHALLENGE_CHALLENGE_STEPS_GOAL, stepsGoal);
         challengeObject.put(ParseConstants.CHALLENGE_CHALLENGE_START, startDate);
         challengeObject.put(ParseConstants.CHALLENGE_CHALLENGE_END, endDate);
         challengeObject.put(ParseConstants.CHALLENGE_NUMBER_OF_PLAYERS, numberOfPlayers);
@@ -98,7 +98,7 @@ public abstract class ParentChallenge {
                     challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_USER_ID, user);
                     challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT, challengeObject);
                     challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_OWNER, true);
-                    challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_DATE_JOINED, Utils.getUTCdatetimeAsDate());
+                    challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_DATE_JOINED, new Date());
                     challengePlayer.saveInBackground();
 
                     createChallengePlayers(user.getString(ParseConstants.USER_USERNAME));
@@ -188,7 +188,7 @@ public abstract class ParentChallenge {
         // First, check to see what the status of the challenge is. If it hasn't started, check to see if it needs to start
         int challengeStatus = challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS);
         int numOfPlayers = challenge.getInt(ParseConstants.CHALLENGE_NUMBER_OF_PLAYERS);
-        Date today = Utils.getUTCdatetimeAsDate();
+        Date today = new Date();
         Log.d("TODAY", today.toString());
 
         if (challengeStatus == ParseConstants.CHALLENGE_STATUS_PENDING && numOfPlayers > 1) {
@@ -259,7 +259,7 @@ public abstract class ParentChallenge {
                                                 // If the added up steps are greater than the steps goal, set challenge event status to done and then get a new player
                                                 if (stepsAmount >= stepsGoal) {
                                                     Date startTime = challengeEvent.getDate(ParseConstants.CHALLENGE_EVENTS_START_TIME);
-                                                    Date endTime = Utils.getUTCdatetimeAsDate();
+                                                    Date endTime = new Date();
                                                     //Result is in miliseconds so I divided by 1000 to set the seconds and by 60 to set the minutes
                                                     long timeDifference = endTime.getTime() - startTime.getTime() / 1000 * 60;
 
@@ -267,7 +267,7 @@ public abstract class ParentChallenge {
                                                     challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_DONE);
                                                     challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_END_TIME, endTime);
                                                     challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_GAME_TIME, timeDifference);
-
+                                                    challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_STEP_PROGRESSION, stepsAmount);
                                                     challengeEvent.saveInBackground();
 
                                                     //Updating ChallengePlayer table with new values
@@ -314,12 +314,14 @@ public abstract class ParentChallenge {
      * @param challenge
      * @param challengePlayer
      */
-    public static void chooseNextPlayer(final ParseObject challenge, final ParseObject challengePlayer) {
+    public static void chooseNextPlayer(final ParseObject challenge, final ParseObject challengePlayer){
 
         ParseQuery<ParseObject> nextPlayerQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
         nextPlayerQuery.whereNotEqualTo(ParseConstants.OBJECT_ID, challengePlayer.getObjectId());
         nextPlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT, challenge);
-        nextPlayerQuery.whereLessThanOrEqualTo(ParseConstants.CHALLENGE_PLAYER_PASSES, challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_PASSES));
+        //TODO: Check the next line, for some reason because of the next line we are not getting any results back...
+        //nextPlayerQuery.whereLessThanOrEqualTo(ParseConstants.CHALLENGE_PLAYER_PASSES, challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_PASSES));
+
         nextPlayerQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
@@ -330,7 +332,7 @@ public abstract class ParentChallenge {
                     ParseObject challengeEvent = new ParseObject(ParseConstants.CLASS_CHALLENGE_EVENTS);
                     challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_CHALLENGE, challenge);
                     challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER, nextPlayer);
-                    challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_START_TIME, Utils.getUTCdatetimeAsDate());
+                    challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_START_TIME, new Date());
                     challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_PLAYING);
                     challengeEvent.saveInBackground();
 
@@ -495,14 +497,13 @@ public abstract class ParentChallenge {
                     ParseObject challengeEvent = new ParseObject(ParseConstants.CLASS_CHALLENGE_EVENTS);
                     challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_CHALLENGE, challenge);
                     challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER, startingPlayer);
-                    challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_START_TIME, Utils.getUTCdatetimeAsDate());
+                    challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_START_TIME, new Date());
                     challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_PLAYING);
                     challengeEvent.saveInBackground();
                     startingPlayer.put(ParseConstants.CHALLENGE_PLAYER_IS_TURN, true);
                     startingPlayer.saveInBackground();
                     ParseUser startingPlayerUser = (ParseUser) startingPlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_ID);
                     ParentChallenge.sendPushNotification("You've started off with the potato in '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", startingPlayerUser);
-
                 }
             }
         });

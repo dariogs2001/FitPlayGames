@@ -370,14 +370,14 @@ public class FitbitHelper {
                         Log.d("dateTime: ", dateTime);
                         final int value = Integer.parseInt(jsonObject.optString("value").toString());
                         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                        df.setTimeZone(TimeZone.getTimeZone("UTC"));
-                        final Date time = df.parse(dateTimeToday + " " + dateTime);
-                        Log.d("Time1: ", time.toString());
-                        tweakDate(time,12); // 12 here because it's 5 hours off in the past and we need it to be 7 hours in the future to make UTC time
+//                        df.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+//                        Log.d("Time1: ", df.parse(dateTimeToday + " " + dateTime).toString());
+                        final Date time = df.parse(dateTimeToday + " " + dateTime);//tweakDate(df.parse(dateTimeToday + " " + dateTime), 12);// 12 here because it's 5 hours off in the past and we need it to be 7 hours in the future to make UTC time
                         Log.d("Time2: ", time.toString());
                         ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseConstants.CLASS_ACTIVITY_STEPS_BY_DAY_15M);
                         query.whereEqualTo(ParseConstants.KEY_USER_ID, parseUserId);
-                        query.whereEqualTo(ParseConstants.ACTIVITY_HISTORY_DATE, time);
+                        query.whereEqualTo(ParseConstants.ACTIVITY_STEPS_DATE, time);
 //                        query.whereEqualTo(ParseConstants.ACTIVITY_HISTORY_TIME, time);
 
                         //Check if the value already exists. If exists update it with the new value count, if it does not exist, create it.
@@ -385,17 +385,15 @@ public class FitbitHelper {
                             @Override
                             public void done(ParseObject parseObject, com.parse.ParseException e) {
                                 if (e == null) {
-                                    if (parseObject.getInt(ParseConstants.ACTIVITY_HISTORY_STEPS) != value) {
-                                        parseObject.put(ParseConstants.ACTIVITY_HISTORY_STEPS, value);
+                                    if (parseObject.getInt(ParseConstants.ACTIVITY_STEPS_STEPS) != value) {
+                                        parseObject.put(ParseConstants.ACTIVITY_STEPS_STEPS, value);
                                         parseObject.saveInBackground();
                                     }
                                 } else {
                                     ParseObject activityHistory = new ParseObject(ParseConstants.CLASS_ACTIVITY_STEPS_BY_DAY_15M);
                                     activityHistory.put(ParseConstants.KEY_USER_ID, parseUserId);
-
-                                    activityHistory.put(ParseConstants.ACTIVITY_HISTORY_DATE, time);
-//                                    activityHistory.put(ParseConstants.ACTIVITY_HISTORY_TIME, time);
-                                    activityHistory.put(ParseConstants.ACTIVITY_HISTORY_STEPS, value);
+                                    activityHistory.put(ParseConstants.ACTIVITY_STEPS_DATE, time);
+                                    activityHistory.put(ParseConstants.ACTIVITY_STEPS_STEPS, value);
                                     activityHistory.saveInBackground();
                                 }
                             }
