@@ -52,7 +52,7 @@ public class Utils {
     }
 
 
-    static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    static final String DATE_FORMAT = "yyyy-MM-dd HH:mm";
 
     public static Date getUTCdatetimeAsDate()
     {

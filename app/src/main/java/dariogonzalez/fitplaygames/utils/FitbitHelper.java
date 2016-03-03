@@ -92,6 +92,32 @@ public class FitbitHelper {
     }
 
     /**
+     * Method used to changed MST Time manually to UST Time to save in Database
+     */
+
+//    private void changeTime(String dateTime) {
+//        final long millisToAdd = -7_200_000; //seven hours
+//
+//        DateFormat format = new SimpleDateFormat("HH:mm:ss");
+//        try {
+//            Date d = format.parse(dateTime);
+//            d.setTime(d.getTime() + millisToAdd);
+//            Log.d("changeTime: ", d.toString());
+//        } catch (java.text.ParseException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
+//    }
+
+    public static Date getSleepingTimes(Date time, int hoursAdded) {
+
+        Calendar cal = Calendar.getInstance(); // creates calendar
+        cal.setTime(time); // sets calendar time/date
+        cal.add(Calendar.HOUR_OF_DAY, hoursAdded); // adds seven hours
+        return cal.getTime(); // returns new date object, seven hours in the future
+    }
+
+    /**
      * Use this method only for testing purposes...
      * @param url
      */
@@ -340,11 +366,13 @@ public class FitbitHelper {
                     try {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         String dateTime = jsonObject.optString("time").toString();
+                        Log.d("dateTime: ", dateTime);
                         final int value = Integer.parseInt(jsonObject.optString("value").toString());
                         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                         df.setTimeZone(TimeZone.getTimeZone("UTC"));
                         final Date time = df.parse(dateTimeToday + " " + dateTime);
-
+                        //getSleepingTimes(time, 7);
+                        Log.d("Time: ", time.toString());
                         ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseConstants.CLASS_ACTIVITY_STEPS_BY_DAY_15M);
                         query.whereEqualTo(ParseConstants.KEY_USER_ID, parseUserId);
                         query.whereEqualTo(ParseConstants.ACTIVITY_HISTORY_DATE, time);

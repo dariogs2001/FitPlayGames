@@ -189,9 +189,9 @@ public abstract class ParentChallenge {
         int challengeStatus = challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS);
         int numOfPlayers = challenge.getInt(ParseConstants.CHALLENGE_NUMBER_OF_PLAYERS);
         Date today = Utils.getUTCdatetimeAsDate();
+        Log.d("TODAY", today.toString());
 
-        //TODO: change this back to numOfPlayers > 1
-        if (challengeStatus == ParseConstants.CHALLENGE_STATUS_PENDING && numOfPlayers > 0) {
+        if (challengeStatus == ParseConstants.CHALLENGE_STATUS_PENDING && numOfPlayers > 1) {
             Log.d("TEST", "PENDING");
             Date startDate = challenge.getDate(ParseConstants.CHALLENGE_CHALLENGE_START);
             if (today.after(startDate)) {
