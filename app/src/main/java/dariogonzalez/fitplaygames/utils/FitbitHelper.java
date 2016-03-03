@@ -104,17 +104,18 @@ public class FitbitHelper {
 //            d.setTime(d.getTime() + millisToAdd);
 //            Log.d("changeTime: ", d.toString());
 //        } catch (java.text.ParseException e) {
-//            // TODO Auto-generated catch block
 //            e.printStackTrace();
 //        }
 //    }
 
-    public static Date getSleepingTimes(Date time, int hoursAdded) {
+    public static Date tweakDate(Date time, int hoursAdded) {
 
         Calendar cal = Calendar.getInstance(); // creates calendar
         cal.setTime(time); // sets calendar time/date
-        cal.add(Calendar.HOUR_OF_DAY, hoursAdded); // adds seven hours
-        return cal.getTime(); // returns new date object, seven hours in the future
+        cal.add(Calendar.HOUR_OF_DAY, hoursAdded); // adds hours
+        Log.d("SevenHoursAdded: ", cal.getTime().toString());
+        return cal.getTime(); // returns new date object, hours in the future
+
     }
 
     /**
@@ -371,7 +372,7 @@ public class FitbitHelper {
                         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                         df.setTimeZone(TimeZone.getTimeZone("UTC"));
                         final Date time = df.parse(dateTimeToday + " " + dateTime);
-                        //getSleepingTimes(time, 7);
+                        tweakDate(time,12);
                         Log.d("Time: ", time.toString());
                         ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseConstants.CLASS_ACTIVITY_STEPS_BY_DAY_15M);
                         query.whereEqualTo(ParseConstants.KEY_USER_ID, parseUserId);
