@@ -239,10 +239,10 @@ public abstract class ParentChallenge {
                                 // Then, update the steps for this user, see if they have finished their "turn" and update the challenge event table
                                 Date startTime = challengeEvent.getDate(ParseConstants.CHALLENGE_EVENTS_START_TIME);
                                 ParseQuery<ParseObject> activityStepsQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_ACTIVITY_STEPS_15_MIN);
-                                // Where userId and where date > startTime
+                                // Where userId and where date >= startTime
                                 activityStepsQuery.whereEqualTo(ParseConstants.ACTIVITY_STEPS_USER_ID, ParseUser.getCurrentUser().getObjectId());
                                 Log.d("TEST", "Start time: " + startTime.toString());
-                                activityStepsQuery.whereGreaterThan(ParseConstants.ACTIVITY_STEPS_DATE, startTime);
+                                activityStepsQuery.whereGreaterThanOrEqualTo(ParseConstants.ACTIVITY_STEPS_DATE, startTime);
                                 activityStepsQuery.findInBackground(new FindCallback<ParseObject>() {
                                     @Override
                                     public void done(List<ParseObject> list, ParseException e) {

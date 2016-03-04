@@ -259,7 +259,7 @@ public class FitbitHelper {
                 //Get the instance of JSONArray that contains JSONObjects
                 JSONArray jsonArray = jsonRootObject.optJSONArray("activities-steps");
 
-                if (ParseUser.getCurrentUser() == null) return;
+                if (ParseUser.getCurrentUser() == null || jsonArray == null) return;
 
                 final String parseUserId = ParseUser.getCurrentUser().getObjectId();
                 for(int i = 0; i < jsonArray.length(); i++){

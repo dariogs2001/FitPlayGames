@@ -119,6 +119,7 @@ public class CaptureTheCrownPlayersAdapter extends ArrayAdapter<ChallengePlayerI
             else {
                 holder.progressLayout.setVisibility(View.VISIBLE);
                 holder.stepsTV.setText(String.valueOf(userObject.getmSteps()));
+                holder.progressBar.setProgress((int)userObject.getmSteps());
                 row.setBackgroundColor(getContext().getResources().getColor(R.color.white));
             }
         }
