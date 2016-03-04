@@ -86,7 +86,6 @@ public abstract class ParentChallenge {
         challengeObject.put(ParseConstants.CHALLENGE_CHALLENGE_END, endDate);
         challengeObject.put(ParseConstants.CHALLENGE_NUMBER_OF_PLAYERS, numberOfPlayers);
 
-
         challengeObject.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -99,6 +98,7 @@ public abstract class ParentChallenge {
                     challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT, challengeObject);
                     challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_OWNER, true);
                     challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_DATE_JOINED, new Date());
+                    challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_PASSES, 0);
                     challengePlayer.saveInBackground();
 
                     createChallengePlayers(user.getString(ParseConstants.USER_USERNAME));
@@ -119,6 +119,7 @@ public abstract class ParentChallenge {
             challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT, challengeObject);
             challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_OWNER, false);
             challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_DATE_JOINED, new Date());
+            challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_PASSES, 0);
 
             challengePlayer.saveInBackground(new SaveCallback() {
                 @Override
@@ -319,8 +320,10 @@ public abstract class ParentChallenge {
         ParseQuery<ParseObject> nextPlayerQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
         nextPlayerQuery.whereNotEqualTo(ParseConstants.OBJECT_ID, challengePlayer.getObjectId());
         nextPlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT, challenge);
-        //TODO: Check the next line, for some reason because of the next line we are not getting any results back...
-        //nextPlayerQuery.whereLessThanOrEqualTo(ParseConstants.CHALLENGE_PLAYER_PASSES, challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_PASSES));
+
+        final int passes = challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_PASSES);
+        nextPlayerQuery.whereLessThanOrEqualTo(ParseConstants.CHALLENGE_PLAYER_PASSES, passes);
+        nextPlayerQuery.orderByAscending(ParseConstants.CHALLENGE_PLAYER_PASSES);
 
         nextPlayerQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override

@@ -315,7 +315,9 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
 
                                                     mPotatoGamesTV.setText(String.valueOf(mNumOfHotPotatoGames));
                                                     mPotatoLossesTV.setText(String.valueOf(mNumOfHotPotatoLosses));
-                                                    mPotatoAvgTimeTV.setText(mAveragePotatoTime + " Min");
+                                                    //TODO: mAveragePotatoTime is in millisecond so I have to convert it to minutes - this still seems to be off... double check this conversion
+                                                    final double avgPotatoTime = mAveragePotatoTime / (1000 * 60);
+                                                    mPotatoAvgTimeTV.setText(avgPotatoTime + " Min");
                                                     mCrownGamesTV.setText(String.valueOf(mNumOfCrownGames));
                                                     mCrownLossesTV.setText(String.valueOf(mNumOfCrownLosses));
                                                     mCrownAvgTimeTV.setText(mCrownTime + " Min");
