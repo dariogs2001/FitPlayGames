@@ -24,8 +24,12 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import dariogonzalez.fitplaygames.Adapters.CaptureTheCrownPlayersAdapter;
@@ -39,8 +43,8 @@ import dariogonzalez.fitplaygames.classes.ParseConstants;
  */
 public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
 
-    private TextView challengeName, startDate, startTime, stepsGoal, averageCrownTime, captures;
-    private LinearLayout statsLayout;
+    private TextView challengeName, startDate, startTime, stepsGoal, averageCrownTime, captures, endDayDate;
+    private LinearLayout statsLayout, creationDetails, endDateLayout;
     private CaptureTheCrownChallenge mCaptureTheCrownChallenge;
     private ListView playingFriendsList;
     private List<ChallengePlayerItem> users;
@@ -63,6 +67,9 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
         statsLayout = (LinearLayout) findViewById(R.id.stats);
         mCancelAction = (com.melnykov.fab.FloatingActionButton) findViewById(R.id.cancel_action);
         playingFriendsList = (ListView) findViewById(R.id.playing_friends_listview);
+        creationDetails = (LinearLayout) findViewById(R.id.creation_details);
+        endDateLayout = (LinearLayout) findViewById(R.id.end_day_layout);
+        endDayDate = (TextView) findViewById(R.id.end_day_date);
 
         users = new ArrayList<>();
 
@@ -166,6 +173,14 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
                 }
             });
         }
+
+        if (mCaptureTheCrownChallenge.getChallengeStatusType() == ParseConstants.CHALLENGE_STATUS_FINISHED) {
+            creationDetails.setVisibility(View.GONE);
+            endDateLayout.setVisibility(View.VISIBLE);
+            Date endDate = mCaptureTheCrownChallenge.getEndDate();
+            DateFormat dateFormat = new SimpleDateFormat("MM/dd", Locale.getDefault());
+            endDayDate.setText(dateFormat.format(endDate));
+        }
     }
 
     private void getChallengePlayers() {
@@ -204,6 +219,7 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
                                                 player.setmIsOwner(challengePlayer.getBoolean(ParseConstants.CHALLENGE_PLAYER_OWNER));
                                                 mAverageCrownTime += challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_AVERAGE_TIME);
                                                 player.setmPasses(challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_PASSES));
+                                                player.setmPlayerAverageHoldingTime(challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_AVERAGE_TIME));
                                                 player.setmStatus(challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_STATUS));
                                                 player.setmUserName(user.getString(ParseConstants.USER_USERNAME));
                                                 player.setmChallengeObject(challenge.get(0));
@@ -245,8 +261,8 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
                                     mAverageCrownTime = mAverageCrownTime / challengePlayers.size();
                                     int hours = mAverageCrownTime / 60;
                                     int minutes = mAverageCrownTime % 60;
-                                    String potatoTimeStr = ((hours > 0) ? hours + " Hr. " : "") + minutes + " Min";
-                                    averageCrownTime.setText(String.valueOf(potatoTimeStr));
+                                    String crownTimeStr = ((hours > 0) ? hours + " Hr. " : "") + minutes + " Min";
+                                    averageCrownTime.setText(String.valueOf(crownTimeStr));
 
                                 } else {
                                     Log.d("TEST", "Error: " + e.toString());
