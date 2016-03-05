@@ -262,7 +262,7 @@ public abstract class ParentChallenge {
                                                     Date startTime = challengeEvent.getDate(ParseConstants.CHALLENGE_EVENTS_START_TIME);
                                                     Date endTime = new Date();
                                                     //Result is in miliseconds so I divided by 1000 to set the seconds and by 60 to set the minutes
-                                                    long timeDifference = endTime.getTime() - startTime.getTime() / 1000 * 60;
+                                                    long timeDifference = (endTime.getTime() - startTime.getTime()) / (1000 * 60);
 
                                                     //Changing status to DONE, and preparing everything to set next player and create new challengeEvent
                                                     challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_DONE);
