@@ -46,6 +46,7 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
     private com.melnykov.fab.FloatingActionButton mCancelAction;
     private Uri profilePicture;
 
+    private int mAveragePotatoTime = 0;
     private int mTotalPasses = 0;
 
     @Override
@@ -134,7 +135,6 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
         startDate.setText(date);
         startTime.setText(time);
         stepsGoal.setText(String.valueOf(mHotPotatoChallenge.getStepsGoal()));
-        averagePotatoTime.setText("0");
         passes.setText(String.valueOf(mHotPotatoChallenge.getTotalPasses()));
 
         if (mHotPotatoChallenge.getChallengeStatusType() == ParseConstants.CHALLENGE_STATUS_PENDING) {
@@ -144,7 +144,6 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
             //For some reason the challenge object is null, so I have to get it in order to get the value I need here... :(
             challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_ID, mHotPotatoChallenge.getChallengeId());
             challengeQuery.findInBackground(new FindCallback<ParseObject>() {
-                @Override
                 public void done(final List<ParseObject> list, final ParseException e) {
                     if (e == null && !list.isEmpty())
                     {
@@ -193,6 +192,7 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
                                     for (final ParseObject challengePlayer : challengePlayers) {
                                         ParseQuery<ParseObject> userQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_USER);
                                         ParseUser user = (ParseUser) challengePlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_ID);
+                                        mAveragePotatoTime += challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_AVERAGE_TIME);
                                         user.fetchIfNeededInBackground(new GetCallback<ParseObject>() {
                                             @Override
                                             public void done(ParseObject user, ParseException e) {
@@ -248,7 +248,8 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
                                             }
                                         });
                                     }
-
+                                    mAveragePotatoTime = mAveragePotatoTime / challengePlayers.size();
+                                    averagePotatoTime.setText(String.valueOf(mAveragePotatoTime));
                                 } else {
                                     Log.d("TEST", "Error: " + e.toString());
                                 }
