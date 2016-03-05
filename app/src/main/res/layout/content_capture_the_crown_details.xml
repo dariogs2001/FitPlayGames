@@ -21,7 +21,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:elevation="3dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".1">
 
             <dariogonzalez.fitplaygames.utils.RoundedImageView
                 android:layout_width="50dp"
@@ -44,7 +50,38 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:layout_weight=".25"
+            android:id="@+id/end_day_layout"
+            android:padding="12dp"
+            android:visibility="gone">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/end_day"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/divider_color"
+                android:textSize="13sp"/>
+
+            <TextView
+                android:id="@+id/end_day_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@color/secondary_text"
+                android:layout_gravity="center_horizontal"
+                android:textSize="18sp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/creation_details">
 
             <LinearLayout
                 android:layout_width="wrap_content"

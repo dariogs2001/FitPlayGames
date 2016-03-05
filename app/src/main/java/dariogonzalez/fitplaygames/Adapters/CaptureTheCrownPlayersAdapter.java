@@ -65,6 +65,8 @@ public class CaptureTheCrownPlayersAdapter extends ArrayAdapter<ChallengePlayerI
             holder.declineBtn = (ImageButton) row.findViewById(R.id.btn_decline);
             holder.crownLayout = (LinearLayout) row.findViewById(R.id.crownLayout);
             holder.progressLayout = (LinearLayout) row.findViewById(R.id.progressLayout);
+            holder.finishedLayout = (LinearLayout) row.findViewById(R.id.finishedLayout);
+            holder.crownTimeValue = (TextView) row.findViewById(R.id.potato_time_value);
 
             holder.progressBar.setMax(mStepsGoal);
 
@@ -123,6 +125,17 @@ public class CaptureTheCrownPlayersAdapter extends ArrayAdapter<ChallengePlayerI
                 row.setBackgroundColor(getContext().getResources().getColor(R.color.white));
             }
         }
+        else if (mGameStatus == ParseConstants.CHALLENGE_STATUS_FINISHED) {
+
+            holder.capturesTV.setText(String.valueOf(userObject.getmPasses() + " passes"));
+            holder.finishedLayout.setVisibility(View.VISIBLE);
+            holder.stepsTV.setText(String.valueOf(userObject.getmSteps()));
+            int hours = userObject.getmPlayerAverageHoldingTime() / 60;
+            int minutes = userObject.getmPlayerAverageHoldingTime() % 60;
+            String crownTimeStr = ((hours > 0) ? hours + " Hr. " : "") + minutes + " Min";
+            holder.crownTimeValue.setText(crownTimeStr);
+            row.setBackgroundColor(getContext().getResources().getColor(R.color.light_light_grey));
+            }
 
         final ChallengeInviteHolder rowHolder = holder;
         holder.acceptBtn.setOnClickListener(new View.OnClickListener() {
@@ -168,10 +181,10 @@ public class CaptureTheCrownPlayersAdapter extends ArrayAdapter<ChallengePlayerI
     }
 
     static class ChallengeInviteHolder {
-        TextView userNameTV, capturesTV, stepsTV;
+        TextView userNameTV, capturesTV, stepsTV, crownTimeValue;
         ImageView userThumbnail, crownImage;
         ProgressBar progressBar;
-        LinearLayout gameResponse, crownLayout, progressLayout;
+        LinearLayout gameResponse, crownLayout, progressLayout, finishedLayout;
         ImageButton acceptBtn, declineBtn;
     }
 }
