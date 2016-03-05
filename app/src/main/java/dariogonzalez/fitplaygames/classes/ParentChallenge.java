@@ -258,7 +258,7 @@ public abstract class ParentChallenge {
                                                 stepsAmount += steps;
 
                                                 // If the added up steps are greater than the steps goal, set challenge event status to done and then get a new player
-                                                if (stepsAmount >= stepsGoal) {
+                                                if (stepsAmount <= stepsGoal) {
                                                     Date startTime = challengeEvent.getDate(ParseConstants.CHALLENGE_EVENTS_START_TIME);
                                                     Date endTime = new Date();
                                                     //Result is in miliseconds so I divided by 1000 to set the seconds and by 60 to set the minutes
@@ -341,7 +341,14 @@ public abstract class ParentChallenge {
 
                     //Sending push notification...
                     ParseUser nextPlayerUser = (ParseUser) nextPlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_ID);
-                    ParentChallenge.sendPushNotification("You have been passed the potato in game '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", nextPlayerUser);
+                    String object = "";
+                    if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO) {
+                        object = "potato";
+                    }
+                    else if ( challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN) {
+                        object = "crown";
+                    }
+                    ParentChallenge.sendPushNotification("You have been passed the " + object + " in game '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", nextPlayerUser);
                 }
             }
         });
@@ -506,7 +513,14 @@ public abstract class ParentChallenge {
                     startingPlayer.put(ParseConstants.CHALLENGE_PLAYER_IS_TURN, true);
                     startingPlayer.saveInBackground();
                     ParseUser startingPlayerUser = (ParseUser) startingPlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_ID);
-                    ParentChallenge.sendPushNotification("You've started off with the potato in '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", startingPlayerUser);
+                    String object = "";
+                    if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO) {
+                        object = "potato";
+                    }
+                    else if ( challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN) {
+                        object = "crown";
+                    }
+                    ParentChallenge.sendPushNotification("You've started off with the " + object + " in '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", startingPlayerUser);
                 }
             }
         });
