@@ -126,7 +126,8 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
         if (isSelf) {
             fabAddFriend.setVisibility(View.GONE);
             setOwnData();
-            getAnalyticalData();
+            user = ParseUser.getCurrentUser();
+            getAnalyticalData(user);
             isSelf = false;
         }
         else {
@@ -269,12 +270,11 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
         }
     }
 
-    private void getAnalyticalData() {
-        user = ParseUser.getCurrentUser();
+    public void getAnalyticalData(ParseUser parseUser) {
 
         // ChallengePlayer class has a Challenge object. ChallengeObject has a Challenge type. If challenge type = 1 and the game wasn't cancelled then count it.
         ParseQuery<ParseObject> challengePlayerQuery = ParseQuery.getQuery(ParseConstants.CLASS_CHALLENGE_PLAYERS);
-        challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_ID, user);
+        challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_ID, parseUser);
         challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_STATUS, ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED);
         challengePlayerQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override

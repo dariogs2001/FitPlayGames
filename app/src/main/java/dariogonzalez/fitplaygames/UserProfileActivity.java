@@ -11,6 +11,15 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+
+import java.util.List;
+
+import dariogonzalez.fitplaygames.classes.ParseConstants;
+
 public class UserProfileActivity extends AppCompatActivity {
 
     private String userId;
@@ -32,7 +41,7 @@ public class UserProfileActivity extends AppCompatActivity {
             // This is just used so that it will know how to handle the back button
             cameFromSearch = extras.getBoolean("cameFromSearch");
             android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-            MainProfileFragment fragment = (MainProfileFragment) fragmentManager.findFragmentById(R.id.profile_fragment);
+            final MainProfileFragment fragment = (MainProfileFragment) fragmentManager.findFragmentById(R.id.profile_fragment);
             if (actionBar != null) {
                 actionBar.setTitle(extras.getString("username"));
             }
@@ -40,6 +49,20 @@ public class UserProfileActivity extends AppCompatActivity {
             fragment.setUserData(userId);
             boolean isFriend = extras.getBoolean("isFriend", false);
             fragment.setIsFriend(isFriend);
+            ParseQuery<ParseUser> userQuery = ParseUser.getQuery();
+            userQuery.whereEqualTo(ParseConstants.OBJECT_ID, userId);
+            userQuery.findInBackground(new FindCallback<ParseUser>() {
+                @Override
+                public void done(List<ParseUser> list, ParseException e) {
+                    if (e == null) {
+                        if (list.size() > 0) {
+                            ParseUser user = list.get(0);
+                            fragment.getAnalyticalData(user);
+                        }
+                    }
+                }
+            });
+
         }
 
     }
