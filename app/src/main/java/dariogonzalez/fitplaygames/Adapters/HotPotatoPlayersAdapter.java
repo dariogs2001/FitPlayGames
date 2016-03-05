@@ -123,7 +123,11 @@ public class HotPotatoPlayersAdapter extends ArrayAdapter<ChallengePlayerItem> {
             holder.passesTV.setText(String.valueOf(userObject.getmPasses() + " passes"));
             holder.finishedLayout.setVisibility(View.VISIBLE);
             holder.stepsTV.setText(String.valueOf(userObject.getmSteps()));
-            holder.potatoTimeValue.setText(String.valueOf(userObject.getmPlayerAverageHoldingTime()));
+
+            int hours = userObject.getmPlayerAverageHoldingTime() / 60;
+            int minutes = userObject.getmPlayerAverageHoldingTime() % 60;
+            String potatoTimeStr = ((hours > 0) ? hours + " Hr. " : "") + minutes + " Min";
+            holder.potatoTimeValue.setText(potatoTimeStr);
             row.setBackgroundColor(getContext().getResources().getColor(R.color.light_light_grey));
         }
 

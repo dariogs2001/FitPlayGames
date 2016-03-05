@@ -46,6 +46,7 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
     private List<ChallengePlayerItem> users;
     private com.melnykov.fab.FloatingActionButton mCancelAction;
 
+    private int mAverageCrownTime = 0;
     private int mTotalCaptures = 0;
 
     @Override
@@ -201,6 +202,7 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
                                                 Uri profilePicture = file != null ? Uri.parse(file.getUrl()) : null;
                                                 player.setmImageUri(profilePicture);
                                                 player.setmIsOwner(challengePlayer.getBoolean(ParseConstants.CHALLENGE_PLAYER_OWNER));
+                                                mAverageCrownTime += challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_AVERAGE_TIME);
                                                 player.setmPasses(challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_PASSES));
                                                 player.setmStatus(challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_STATUS));
                                                 player.setmUserName(user.getString(ParseConstants.USER_USERNAME));
@@ -240,6 +242,11 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
                                         });
 
                                     }
+                                    mAverageCrownTime = mAverageCrownTime / challengePlayers.size();
+                                    int hours = mAverageCrownTime / 60;
+                                    int minutes = mAverageCrownTime % 60;
+                                    String potatoTimeStr = ((hours > 0) ? hours + " Hr. " : "") + minutes + " Min";
+                                    averageCrownTime.setText(String.valueOf(potatoTimeStr));
 
                                 } else {
                                     Log.d("TEST", "Error: " + e.toString());

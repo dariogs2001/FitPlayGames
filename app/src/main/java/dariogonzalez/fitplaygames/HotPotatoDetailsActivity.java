@@ -270,7 +270,10 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
                                         });
                                     }
                                     mAveragePotatoTime = mAveragePotatoTime / challengePlayers.size();
-                                    averagePotatoTime.setText(String.valueOf(mAveragePotatoTime));
+                                    int hours = mAveragePotatoTime / 60;
+                                    int minutes = mAveragePotatoTime % 60;
+                                    String potatoTimeStr = ((hours > 0) ? hours + " Hr. " : "") + minutes + " Min";
+                                    averagePotatoTime.setText(String.valueOf(potatoTimeStr));
                                 } else {
                                     Log.d("TEST", "Error: " + e.toString());
                                 }

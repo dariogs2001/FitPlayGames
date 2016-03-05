@@ -258,7 +258,7 @@ public abstract class ParentChallenge {
                                                 stepsAmount += steps;
 
                                                 // If the added up steps are greater than the steps goal, set challenge event status to done and then get a new player
-                                                if (stepsAmount <= stepsGoal) {
+                                                if (stepsAmount >= stepsGoal) {
                                                     Date startTime = challengeEvent.getDate(ParseConstants.CHALLENGE_EVENTS_START_TIME);
                                                     Date endTime = new Date();
                                                     //Result is in miliseconds so I divided by 1000 to set the seconds and by 60 to set the minutes
