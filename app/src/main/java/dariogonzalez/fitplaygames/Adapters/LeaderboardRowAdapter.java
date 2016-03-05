@@ -66,9 +66,8 @@ public class LeaderboardRowAdapter extends ArrayAdapter<LeaderboardItem> {
         final LeaderboardItem currentItem = mUserList.get(position);
 
         holder.username.setText(currentItem.getmUsername());
-        holder.userGamesTV.setText(currentItem.getmNumOfGames());
-        holder.userLossesTV.setText(currentItem.getmNumOfGamesLost());
-        holder.userAvgTime.setText(currentItem.getmAvgTime());
+        holder.userGamesTV.setText(currentItem.getmNumOfGames() + " Games");
+        holder.userAvgTime.setText(currentItem.getmAvgTime() + " Min");
 
         Uri profilePicture = currentItem.getmImageUri();
         if (profilePicture != null)

@@ -10,13 +10,12 @@ import dariogonzalez.fitplaygames.R;
 public class LeaderboardItem {
 
     private String mUsername;
-    private int mNumOfGames, mNumOfGamesLost, mAvgTime;
+    private int mNumOfGames,  mAvgTime;
     private Uri mImageUri;
 
-    public LeaderboardItem(String username, int numOfGames, int numOfGamesLost, int avgTime, Uri imageUri) {
+    public LeaderboardItem(String username, int numOfGames, int avgTime, Uri imageUri) {
         this.mUsername = username;
         this.mNumOfGames = numOfGames;
-        this.mNumOfGamesLost = numOfGamesLost;
         this.mAvgTime = avgTime;
         this.mImageUri = imageUri;
     }
@@ -29,16 +28,12 @@ public class LeaderboardItem {
         return mUsername;
     }
 
-    public String getmNumOfGames() {
-        return mNumOfGames + " Games";
+    public int getmNumOfGames() {
+        return mNumOfGames;
     }
 
-    public String getmNumOfGamesLost() {
-        return mNumOfGamesLost + " Lost";
-    }
-
-    public String getmAvgTime() {
-        return mAvgTime + " Min";
+    public int getmAvgTime() {
+        return mAvgTime;
     }
 
     public Uri getmImageUri() {

@@ -19,7 +19,9 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.sql.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import dariogonzalez.fitplaygames.Adapters.LeaderboardRowAdapter;
@@ -36,7 +38,6 @@ public class LeaderBoardFragment extends Fragment {
     private List<LeaderboardItem> mLeadBoardList = new ArrayList<LeaderboardItem>();
     private ListView friendsResultListView;
     private View view;
-    public int mNumOfHotPotatoGames, mAveragePotatoTime, mNumOfCrownGames, mCrownTime, mNumOfHotPotatoLosses,mNumOfCrownLosses;
 
     public LeaderBoardFragment() {
         // Required empty public constructor
@@ -97,64 +98,39 @@ public class LeaderBoardFragment extends Fragment {
                                         @Override
                                         public void done(List<ParseObject> challengePlayers, ParseException e) {
                                             if (e == null) {
-                                                Log.d("TEST", "here2");
-                                                for (final ParseObject challengePlayer : challengePlayers) {
-                                                    ParseQuery<ParseObject> challengeQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGES);
-                                                    challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_ID, challengePlayer.getParseObject(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT).getObjectId());
-                                                    challengeQuery.findInBackground(new FindCallback<ParseObject>() {
-                                                        @Override
-                                                        public void done(List<ParseObject> challenges, ParseException e) {
-                                                            if (e == null) {
-                                                                Log.d("TEST", "here3");
-                                                                for (final ParseObject challenge: challenges) {
-                                                                    mNumOfHotPotatoGames = 0;
-                                                                    mAveragePotatoTime = 0;
-                                                                    mNumOfCrownGames = 0;
-                                                                    mCrownTime = 0;
-                                                                    mNumOfHotPotatoLosses = 0;
-                                                                    mNumOfCrownLosses = 0;
 
-                                                                    if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO) {
-                                                                        mNumOfHotPotatoGames++;
-                                                                        mAveragePotatoTime += challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_AVERAGE_TIME);
-                                                                    }
-                                                                    else if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN) {
-                                                                        mNumOfCrownGames++;
-                                                                        mCrownTime += challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_AVERAGE_TIME);
-                                                                    }
-                                                                    ParseQuery<ParseObject> challengeEventQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_EVENTS);
-                                                                    challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_CHALLENGE, challenge);
-                                                                    challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER, challengePlayer);
-                                                                    challengeEventQuery.findInBackground(new FindCallback<ParseObject>() {
-                                                                        @Override
-                                                                        public void done(List<ParseObject> challengeEvents, ParseException e) {
-                                                                            if (e == null) {
-                                                                                Log.d("TEST", "here4");
-                                                                                for (ParseObject challengeEvent : challengeEvents) {
-                                                                                    // If the status is still playing then that means that they were "playing" when the game ended so they lost
-                                                                                    if (challengeEvent.getInt(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS) == ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_PLAYING && (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO)) {
-                                                                                        mNumOfHotPotatoLosses++;
-                                                                                    }
-                                                                                    else if (challengeEvent.getInt(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS) == ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_DONE && (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN)) {
-                                                                                        mNumOfCrownLosses++;
-                                                                                    }
-                                                                                }
-
-                                                                                Log.d("TEST", "size: " + mLeadBoardList.size());
-                                                                                ParseFile file = friendObject.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
-                                                                                final Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
-
-                                                                                LeaderboardItem leaderboardItem = new LeaderboardItem(friendObject.getUsername(), mNumOfHotPotatoGames, mNumOfHotPotatoLosses, mAveragePotatoTime, fileUri);
-                                                                                mLeadBoardList.add(leaderboardItem);
-                                                                            }
-                                                                        }
-                                                                    });
-                                                                }
-                                                                populateListView();
-                                                            }
-                                                        }
-                                                    });
+                                                int avgTime = 0;
+                                                int numGames = challengePlayers.size();
+                                                ParseFile file = friendObject.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
+                                                Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
+                                                for (ParseObject challengePlayer : challengePlayers) {
+                                                    avgTime += challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_AVERAGE_TIME);
                                                 }
+                                                if (numGames != 0) {
+                                                    avgTime = avgTime / numGames;
+                                                }
+                                                LeaderboardItem leaderboardItem = new LeaderboardItem(friendObject.getUsername(), numGames, avgTime, fileUri);
+                                                if (mLeadBoardList.size() == 0) {
+                                                    mLeadBoardList.add(leaderboardItem);
+                                                }
+                                                else if (mLeadBoardList.size() >= 10) {
+                                                    return;
+                                                }
+                                                else {
+                                                    int size = mLeadBoardList.size();
+                                                    for (int i = 0; i < size; i++) {
+                                                        int highScore = mLeadBoardList.get(i).getmAvgTime();
+                                                        int numOfGames = mLeadBoardList.get(i).getmNumOfGames();
+                                                        if (leaderboardItem.getmAvgTime() > highScore || (leaderboardItem.getmAvgTime() == highScore && leaderboardItem.getmNumOfGames() > numOfGames)) {
+                                                            mLeadBoardList.add(i, leaderboardItem);
+                                                        }
+                                                    }
+                                                }
+
+
+                                                populateListView();
+
+//                                                }
                                             }
                                         }
                                     });
@@ -163,7 +139,6 @@ public class LeaderBoardFragment extends Fragment {
                             } catch (ParseException ex) {
                             }
                         }
-                        populateListView();
                     }
                 });
             }
