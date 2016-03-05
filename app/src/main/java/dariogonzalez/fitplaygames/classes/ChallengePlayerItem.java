@@ -9,7 +9,10 @@ import com.parse.ParseUser;
  * Created by Logan on 11/17/2015.
  */
 public class ChallengePlayerItem {
-    private int mIconId, mPasses, mStatus;
+    private int mIconId;
+    private int mPasses;
+    private int mStatus;
+    private int mPlayerAverageHoldingTime;
     private Uri mImageUri;
     private long mSteps;
     private boolean mIsOwner;
@@ -87,5 +90,13 @@ public class ChallengePlayerItem {
 
     public void setmChallengeObject(ParseObject mChallengeObject) {
         this.mChallengeObject = mChallengeObject;
+    }
+
+    public int getmPlayerAverageHoldingTime() {
+        return mPlayerAverageHoldingTime;
+    }
+
+    public void setmPlayerAverageHoldingTime(int mPlayerAverageHoldingTime) {
+        this.mPlayerAverageHoldingTime = mPlayerAverageHoldingTime;
     }
 }

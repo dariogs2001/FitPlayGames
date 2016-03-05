@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -25,9 +26,15 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import dariogonzalez.fitplaygames.Adapters.HotPotatoPlayersAdapter;
@@ -38,13 +45,14 @@ import dariogonzalez.fitplaygames.classes.ParseConstants;
 
 public class HotPotatoDetailsActivity extends AppCompatActivity {
 
-    private TextView challengeName, startDate, startTime, stepsGoal, averagePotatoTime, passes;
-    private LinearLayout statsLayout;
+    private TextView challengeName, startDate, startTime, stepsGoal, averagePotatoTime, passes, endDayDate;
+    private LinearLayout statsLayout, creationDetails, endDateLayout;
     private HotPotatoChallenge mHotPotatoChallenge;
     private ListView playingFriendsList;
     private List<ChallengePlayerItem> users;
     private com.melnykov.fab.FloatingActionButton mCancelAction;
     private Uri profilePicture;
+    private Boolean isFinsihed = false;
 
     private int mAveragePotatoTime = 0;
     private int mTotalPasses = 0;
@@ -61,6 +69,10 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
         averagePotatoTime = (TextView) findViewById(R.id.average_potato_time_tv);
         passes = (TextView) findViewById(R.id.passes_value);
         statsLayout = (LinearLayout) findViewById(R.id.stats);
+        creationDetails = (LinearLayout) findViewById(R.id.creation_details);
+        endDateLayout = (LinearLayout) findViewById(R.id.end_day_layout);
+        endDayDate = (TextView) findViewById(R.id.end_day_date);
+
         mCancelAction = (com.melnykov.fab.FloatingActionButton) findViewById(R.id.cancel_action);
 
         playingFriendsList = (ListView) findViewById(R.id.playing_friends_listview);
@@ -163,6 +175,14 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
                 }
             });
         }
+
+        if (mHotPotatoChallenge.getChallengeStatusType() == ParseConstants.CHALLENGE_STATUS_FINISHED) {
+            creationDetails.setVisibility(View.GONE);
+            endDateLayout.setVisibility(View.VISIBLE);
+            Date endDate = mHotPotatoChallenge.getEndDate();
+            DateFormat dateFormat = new SimpleDateFormat("MM/dd", Locale.getDefault());
+            endDayDate.setText(dateFormat.format(endDate));
+        }
     }
 
     private void getChallengePlayers() {
@@ -209,6 +229,7 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
                                                 player.setmImageUri(profilePicture);}
                                                 player.setmIsOwner(challengePlayer.getBoolean(ParseConstants.CHALLENGE_PLAYER_OWNER));
                                                 player.setmPasses(challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_PASSES));
+                                                player.setmPlayerAverageHoldingTime(challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_AVERAGE_TIME));
                                                 player.setmStatus(challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_STATUS));
                                                 player.setmUserName(user.getString(ParseConstants.USER_USERNAME));
                                                 player.setmChallengeObject(challenge.get(0));

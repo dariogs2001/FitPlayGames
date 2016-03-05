@@ -19,6 +19,8 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,6 +63,8 @@ public class HotPotatoPlayersAdapter extends ArrayAdapter<ChallengePlayerItem> {
             holder.acceptBtn = (ImageButton) row.findViewById(R.id.btn_accept);
             holder.declineBtn = (ImageButton) row.findViewById(R.id.btn_decline);
             holder.progressLayout = (LinearLayout) row.findViewById(R.id.progressLayout);
+            holder.finishedLayout = (LinearLayout) row.findViewById(R.id.finishedLayout);
+            holder.potatoTimeValue = (TextView) row.findViewById(R.id.potato_time_value);
 
             holder.progressBar.setMax(mStepsGoal);
 
@@ -114,6 +118,14 @@ public class HotPotatoPlayersAdapter extends ArrayAdapter<ChallengePlayerItem> {
                 row.setBackgroundColor(getContext().getResources().getColor(R.color.light_light_grey));
             }
         }
+        else if (mGameStatus == ParseConstants.CHALLENGE_STATUS_FINISHED) {
+
+            holder.passesTV.setText(String.valueOf(userObject.getmPasses() + " passes"));
+            holder.finishedLayout.setVisibility(View.VISIBLE);
+            holder.stepsTV.setText(String.valueOf(userObject.getmSteps()));
+            holder.potatoTimeValue.setText(String.valueOf(userObject.getmPlayerAverageHoldingTime()));
+            row.setBackgroundColor(getContext().getResources().getColor(R.color.light_light_grey));
+        }
 
         final ChallengeInviteHolder rowHolder = holder;
         holder.acceptBtn.setOnClickListener(new View.OnClickListener() {
@@ -161,10 +173,10 @@ public class HotPotatoPlayersAdapter extends ArrayAdapter<ChallengePlayerItem> {
     }
 
     static class ChallengeInviteHolder {
-        TextView userNameTV, passesTV, stepsTV;
+        TextView userNameTV, passesTV, stepsTV, potatoTimeValue;
         ImageView userThumbnail;
         ProgressBar progressBar;
-        LinearLayout gameResponse, progressLayout;
+        LinearLayout gameResponse, progressLayout, finishedLayout;
         ImageButton acceptBtn, declineBtn;
     }
 }

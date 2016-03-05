@@ -178,4 +178,5 @@
     <string name="avg_potato_time">Avg potato time</string>
     <string name="num_of_games"># of games</string>
     <string name="slash">/</string>
+    <string name="end_day">End Day</string>
 </resources>
