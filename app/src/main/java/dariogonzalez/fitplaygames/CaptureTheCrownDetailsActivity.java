@@ -50,6 +50,7 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
     private List<ChallengePlayerItem> users;
     private com.melnykov.fab.FloatingActionButton mCancelAction;
 
+    private int mState = 0;
     private int mAverageCrownTime = 0;
     private int mTotalCaptures = 0;
 
@@ -109,6 +110,11 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_capture_the_crown_details, menu);
+        if (mState == 1)
+        {
+            for (int i = 0; i < menu.size(); i++)
+                menu.getItem(i).setVisible(false);
+        }
         return true;
     }
 
@@ -180,6 +186,8 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
             Date endDate = mCaptureTheCrownChallenge.getEndDate();
             DateFormat dateFormat = new SimpleDateFormat("MM/dd", Locale.getDefault());
             endDayDate.setText(dateFormat.format(endDate));
+            mState = 1; // setting state
+            invalidateOptionsMenu(); // now onCreateOptionsMenu(...) is called again
         }
     }
 

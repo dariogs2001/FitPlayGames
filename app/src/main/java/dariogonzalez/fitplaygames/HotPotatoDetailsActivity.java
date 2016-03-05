@@ -54,6 +54,7 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
     private Uri profilePicture;
     private Boolean isFinsihed = false;
 
+    private int mState = 0;
     private int mAveragePotatoTime = 0;
     private int mTotalPasses = 0;
 
@@ -115,6 +116,11 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_hot_potato_details, menu);
+        if (mState == 1)
+        {
+            for (int i = 0; i < menu.size(); i++)
+                menu.getItem(i).setVisible(false);
+        }
         return true;
     }
 
@@ -182,6 +188,8 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
             Date endDate = mHotPotatoChallenge.getEndDate();
             DateFormat dateFormat = new SimpleDateFormat("MM/dd", Locale.getDefault());
             endDayDate.setText(dateFormat.format(endDate));
+            mState = 1; // setting state
+            invalidateOptionsMenu(); // now onCreateOptionsMenu(...) is called again
         }
     }
 
