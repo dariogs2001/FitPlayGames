@@ -107,19 +107,28 @@ public class LeaderBoardFragment extends Fragment {
                                                     avgTime = avgTime / numGames;
                                                 }
                                                 LeaderboardItem leaderboardItem = new LeaderboardItem(friendObject.getUsername(), numGames, avgTime, fileUri);
-                                                if (mLeadBoardList.size() == 0) {
-                                                    mLeadBoardList.add(leaderboardItem);
-                                                }
-                                                else if (mLeadBoardList.size() >= 10) {
-                                                    return;
-                                                }
-                                                else {
-                                                    int size = mLeadBoardList.size();
-                                                    for (int i = 0; i < size; i++) {
-                                                        int highScore = mLeadBoardList.get(i).getmAvgTime();
-                                                        int numOfGames = mLeadBoardList.get(i).getmNumOfGames();
-                                                        if (leaderboardItem.getmAvgTime() > highScore || (leaderboardItem.getmAvgTime() == highScore && leaderboardItem.getmNumOfGames() > numOfGames)) {
-                                                            mLeadBoardList.add(i, leaderboardItem);
+                                                if (leaderboardItem.getmNumOfGames() != 0) {
+                                                    if (mLeadBoardList.size() == 0) {
+                                                        mLeadBoardList.add(leaderboardItem);
+                                                    }
+                                                    else if (mLeadBoardList.size() >= 10) {
+                                                        return;
+                                                    }
+                                                    else {
+                                                        int size = mLeadBoardList.size();
+                                                        for (int i = 0; i < size; i++) {
+                                                            // High score is actually the lowest avg time
+                                                            int highScore = mLeadBoardList.get(i).getmAvgTime();
+                                                            int numOfGames = mLeadBoardList.get(i).getmNumOfGames();
+                                                            if (leaderboardItem.getmAvgTime() < highScore || (leaderboardItem.getmAvgTime() == highScore && leaderboardItem.getmNumOfGames() > numOfGames)) {
+                                                                Log.d("TEST", "username: " + leaderboardItem.getmUsername());
+                                                                mLeadBoardList.add(i, leaderboardItem);
+                                                                break;
+                                                            }
+                                                            else if (i == (size - 1)) {
+                                                                mLeadBoardList.add(leaderboardItem);
+                                                                break;
+                                                            }
                                                         }
                                                     }
                                                 }
@@ -163,7 +172,7 @@ public class LeaderBoardFragment extends Fragment {
 //                    }
 //                    extras.putBoolean("isFriend", isFriend);
 //                    intent.putExtras(extras);
-                    startActivity(intent);
+//                    startActivity(intent);
                 }
             });
     }

@@ -67,7 +67,11 @@ public class LeaderboardRowAdapter extends ArrayAdapter<LeaderboardItem> {
 
         holder.username.setText(currentItem.getmUsername());
         holder.userGamesTV.setText(currentItem.getmNumOfGames() + " Games");
-        holder.userAvgTime.setText(currentItem.getmAvgTime() + " Min");
+
+        int hours = currentItem.getmAvgTime() / 60;
+        int minutes = currentItem.getmAvgTime() % 60;
+        String potatoTimeStr = ((hours > 0) ? hours + " Hr. " : "") + minutes + " Min";
+        holder.userAvgTime.setText(potatoTimeStr);
 
         Uri profilePicture = currentItem.getmImageUri();
         if (profilePicture != null)

@@ -155,8 +155,7 @@ public abstract class ParentChallenge {
                         try {
                             ParseObject challenge = challengePlayer.getParseObject(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT).fetchIfNeeded();
                             if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS) == ParseConstants.CHALLENGE_STATUS_PLAYING ||
-                                challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS) == ParseConstants.CHALLENGE_STATUS_PENDING)
-                            {
+                                    challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS) == ParseConstants.CHALLENGE_STATUS_PENDING) {
                                 updateChallenge(challenge, challengePlayer);
                             }
                         } catch (Exception ex) {
@@ -281,6 +280,12 @@ public abstract class ParentChallenge {
                                                     challengePlayer.saveInBackground();
 
                                                     chooseNextPlayer(challenge, challengePlayer);
+                                                    if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO) {
+                                                        sendPushNotification("Congrats! You just passed the potato in '"+challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME)+"'!", ParseUser.getCurrentUser());
+                                                    }
+                                                    else if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN) {
+                                                        sendPushNotification("You have lost the crown in '"+challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME)+"'!", ParseUser.getCurrentUser());
+                                                    }
                                                     break;
                                                 }
                                             }
