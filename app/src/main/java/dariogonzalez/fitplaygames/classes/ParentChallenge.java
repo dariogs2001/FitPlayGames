@@ -140,21 +140,23 @@ public abstract class ParentChallenge {
      *
      */
     public static void updateChallenges() {
-        // Grab all of the users challenges
+        // Grab all the ChallengePlayers objects for the current user where the status is accepted
         ParseQuery<ParseObject> challengePlayerQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
 //        challengePlayerQuery.whereNotEqualTo(ParseConstants.CHALLENGE_PLAYER_STATUS, ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED);
         challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_STATUS, ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED);
         challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT, ParseUser.getCurrentUser());
-        challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_IS_TURN, true);
+        //challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_IS_TURN, true);
         challengePlayerQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> challengePlayers, ParseException e) {
                 if (e == null) {
+                    //Loop through all the the Objects, get the challenge and update only the ones PLAYING OR PENDING
                     for (final ParseObject challengePlayer : challengePlayers) {
-                        //TODO: Double check this... Change the commented code below for following lines...
                         try {
                             ParseObject challenge = challengePlayer.getParseObject(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT).fetchIfNeeded();
-                            if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS) == ParseConstants.CHALLENGE_STATUS_PLAYING) {
+                            if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS) == ParseConstants.CHALLENGE_STATUS_PLAYING ||
+                                challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS) == ParseConstants.CHALLENGE_STATUS_PENDING)
+                            {
                                 updateChallenge(challenge, challengePlayer);
                             }
                         } catch (Exception ex) {

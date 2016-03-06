@@ -328,7 +328,11 @@ public class FitbitHelper {
                 JSONObject jsonRootObjectToday = new JSONObject(s);
                 //Get the instance of JSONArray that contains JSONObjects
                 JSONArray jsonArrayToday = jsonRootObjectToday.optJSONArray("activities-steps");
+                if (jsonArrayToday == null) return;
+
                 JSONObject jsonObjectToday = jsonArrayToday.getJSONObject(0);
+                if (jsonObjectToday == null) return;
+
                 String dateTimeToday = jsonObjectToday.optString("dateTime").toString();
                 final int valueToday = Integer.parseInt(jsonObjectToday.optString("value").toString());
                 DateFormat dfToday = new SimpleDateFormat("yyyy-MM-dd");
