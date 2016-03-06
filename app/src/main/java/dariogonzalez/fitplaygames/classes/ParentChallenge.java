@@ -17,11 +17,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.TimeZone;
 
 
 import dariogonzalez.fitplaygames.FitPlayGamesApplication;
-import dariogonzalez.fitplaygames.utils.Utils;
 
 /**
  * Created by Dario on 8/15/2015.
@@ -94,7 +92,7 @@ public abstract class ParentChallenge {
                     callback.done(challengeObject.getObjectId());
                     ParseObject challengePlayer = new ParseObject(ParseConstants.CLASS_CHALLENGE_PLAYERS);
                     challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_STATUS, ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED);
-                    challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_USER_ID, user);
+                    challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT, user);
                     challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT, challengeObject);
                     challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_OWNER, true);
                     challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_DATE_JOINED, new Date());
@@ -102,9 +100,6 @@ public abstract class ParentChallenge {
                     challengePlayer.saveInBackground();
 
                     createChallengePlayers(user.getString(ParseConstants.USER_USERNAME));
-                } else {
-                    //TODO: show error message
-
                 }
             }
         });
@@ -115,7 +110,7 @@ public abstract class ParentChallenge {
         for (ParseUser player : playerObjects) {
             final ParseObject challengePlayer = new ParseObject(ParseConstants.CLASS_CHALLENGE_PLAYERS);
             challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_STATUS, ParseConstants.CHALLENGE_PLAYER_STATUS_PENDING);
-            challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_USER_ID, player);
+            challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT, player);
             challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT, challengeObject);
             challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_OWNER, false);
             challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_DATE_JOINED, new Date());
@@ -135,7 +130,7 @@ public abstract class ParentChallenge {
     // This method will have the logic needed to send invitations and will be calling sendPushNotification
     public void sendInvitation(ParseObject challengePlayer, String invitersUsername) {
         inviteChallengeMessage = invitersUsername + " has invited you to play " + ChallengeTypeConstants.getChallengeName(getChallengeType());
-        ParseUser user = challengePlayer.getParseUser(ParseConstants.CHALLENGE_PLAYER_USER_ID);
+        ParseUser user = challengePlayer.getParseUser(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT);
         Log.d("TEST", user.getUsername());
         sendPushNotification(inviteChallengeMessage, user);
     }
@@ -147,9 +142,10 @@ public abstract class ParentChallenge {
     public static void updateChallenges() {
         // Grab all of the users challenges
         ParseQuery<ParseObject> challengePlayerQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
-        challengePlayerQuery.whereNotEqualTo(ParseConstants.CHALLENGE_PLAYER_STATUS, ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED);
-//TODO: NOT SURE ABOUT THIS LINE
-//        challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_ID, ParseUser.getCurrentUser().getSessionToken());
+//        challengePlayerQuery.whereNotEqualTo(ParseConstants.CHALLENGE_PLAYER_STATUS, ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED);
+        challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_STATUS, ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED);
+        challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT, ParseUser.getCurrentUser());
+        challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_IS_TURN, true);
         challengePlayerQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> challengePlayers, ParseException e) {
@@ -198,10 +194,6 @@ public abstract class ParentChallenge {
             if (today.after(startDate)) {
                 challenge.put(ParseConstants.CHALLENGE_CHALLENGE_STATUS, ParseConstants.CHALLENGE_STATUS_PLAYING);
                 challenge.saveInBackground();
-
-//                if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO) {
-//                        HotPotatoChallenge.chooseStartingPlayer(challenge);
-//                }
 
                 //Not need to implement this method in each class, both class work the same...
                 chooseStartingPlayer(challenge);
@@ -312,8 +304,8 @@ public abstract class ParentChallenge {
     /**
      * Method used to choose next player in the HotPotato and Capture the crown games.
      * At this point I already have set the previous status for the previous player, and I am ready to set everything for the new player.
-     * @param challenge
-     * @param challengePlayer
+     * @param challenge - object from Parse.com
+     * @param challengePlayer - object from Parse.com
      */
     public static void chooseNextPlayer(final ParseObject challenge, final ParseObject challengePlayer){
 
@@ -340,7 +332,7 @@ public abstract class ParentChallenge {
                     challengeEvent.saveInBackground();
 
                     //Sending push notification...
-                    ParseUser nextPlayerUser = (ParseUser) nextPlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_ID);
+                    ParseUser nextPlayerUser = (ParseUser) nextPlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT);
                     String object = "";
                     if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO) {
                         object = "potato";
@@ -512,7 +504,7 @@ public abstract class ParentChallenge {
                     challengeEvent.saveInBackground();
                     startingPlayer.put(ParseConstants.CHALLENGE_PLAYER_IS_TURN, true);
                     startingPlayer.saveInBackground();
-                    ParseUser startingPlayerUser = (ParseUser) startingPlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_ID);
+                    ParseUser startingPlayerUser = (ParseUser) startingPlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT);
                     String object = "";
                     if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO) {
                         object = "potato";

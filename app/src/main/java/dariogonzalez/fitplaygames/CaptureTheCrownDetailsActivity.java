@@ -164,7 +164,7 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
                     {
                         ParseQuery<ParseObject> challengeQuery = new ParseQuery<>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
                         challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT, list.get(0));
-                        challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_ID, ParseUser.getCurrentUser());
+                        challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT, ParseUser.getCurrentUser());
                         challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_OWNER, true);
                         challengeQuery.findInBackground(new FindCallback<ParseObject>() {
                             @Override
@@ -216,7 +216,7 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
                                 if (e == null) {
                                     for (final ParseObject challengePlayer : challengePlayers) {
                                         ParseQuery<ParseObject> userQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_USER);
-                                        ParseUser user = (ParseUser) challengePlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_ID);
+                                        ParseUser user = (ParseUser) challengePlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT);
                                         user.fetchIfNeededInBackground(new GetCallback<ParseObject>() {
                                             @Override
                                             public void done(ParseObject user, ParseException e) {
@@ -296,7 +296,7 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
                     final ParseObject challenge = list.get(0);
                     ParseQuery<ParseObject> challengePlayerQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
                     challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT, challenge);
-                    challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_ID, ParseUser.getCurrentUser());
+                    challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT, ParseUser.getCurrentUser());
                     challengePlayerQuery.findInBackground(new FindCallback<ParseObject>() {
                         @Override
                         public void done(List<ParseObject> list, ParseException e) {

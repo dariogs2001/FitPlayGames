@@ -9,8 +9,11 @@ import android.support.v4.app.NotificationCompat;
 
 import com.parse.ParseUser;
 
+import java.util.Date;
+
 import dariogonzalez.fitplaygames.R;
 import dariogonzalez.fitplaygames.classes.ParentChallenge;
+import dariogonzalez.fitplaygames.classes.ParseConstants;
 import dariogonzalez.fitplaygames.utils.FitbitHelper;
 
 /**
@@ -44,19 +47,24 @@ public class SchedulingService extends IntentService
         {
             fh.getUserLastMonthData();
 
-            //TODO: see how to update average after calling getUserLastMonthData(), both are async functions, so I need to be sure
-            //getUserLastMonthData() finished before updating the next table....
-            //fh.lastSevenDaySumAndAverage(ParseUser.getCurrentUser().getObjectId());
-
             fh.getStepsRangeDateTime();
+
+            if (ParseUser.getCurrentUser() != null) {
+                fh.lastSevenDaySumAndAverage(ParseUser.getCurrentUser().getObjectId());
+            }
+        }
+        else
+        {
+//            sendNotification("Alarm Manager has been called at !!!" + new Date());
         }
 
         /**** End updating FitBit values ****/
 
         /**** Update Games ****/
-        //TODO: double check this method is working
         ParentChallenge.updateChallenges();
         /**** End Update Games ****/
+
+//        sendNotification("Alarm Manager has been called at " + new Date());
 
         // Release the wake lock provided by the BroadcastReceiver.
         AlarmReceiver.completeWakefulIntent(intent);
@@ -73,8 +81,8 @@ public class SchedulingService extends IntentService
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
-        .setSmallIcon(R.drawable.ic_launcher)
-        .setContentTitle("I am not using this")
+        .setSmallIcon(R.drawable.ic_notify_small)
+        //.setContentTitle("I am not using this")
         .setStyle(new NotificationCompat.BigTextStyle()
                 .bigText(msg))
         .setContentText(msg);

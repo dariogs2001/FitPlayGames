@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dariogonzalez.fitplaygames.classes.MoreOptionsListItem;
+import dariogonzalez.fitplaygames.classes.ParentChallenge;
 import dariogonzalez.fitplaygames.utils.FitbitHelper;
 
 
@@ -62,6 +63,7 @@ public class MainMoreOptionsFragment extends android.support.v4.app.Fragment {
         mOptions.add(new MoreOptionsListItem("getUserLastMonthData", R.drawable.ic_launcher));
         mOptions.add(new MoreOptionsListItem("lastSevenDaySumAndAverage", R.drawable.ic_launcher));
         mOptions.add(new MoreOptionsListItem("getStepsRangeDateTime", R.drawable.ic_launcher));
+        mOptions.add(new MoreOptionsListItem("Update Games Test", R.drawable.ic_launcher));
     }
 
     private void populateListView() {
@@ -130,6 +132,10 @@ public class MainMoreOptionsFragment extends android.support.v4.app.Fragment {
                             return;
                         }
                         fh.getStepsRangeDateTime();
+                        break;
+
+                    case 6:
+                        ParentChallenge.updateChallenges();
                         break;
                     default:
                         break;

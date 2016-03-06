@@ -129,7 +129,7 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
         final ParseUser userObject = ParseUser.getCurrentUser();
         if(userObject != null) {
             ParseQuery<ParseObject> query1 = new ParseQuery<>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
-            query1.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_ID, userObject);
+            query1.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT, userObject);
             query1.orderByDescending(ParseConstants.KEY_CREATED_AT);
 
             try {

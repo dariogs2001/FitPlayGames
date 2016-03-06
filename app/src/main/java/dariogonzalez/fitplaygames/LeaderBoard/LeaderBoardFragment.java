@@ -19,15 +19,12 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import dariogonzalez.fitplaygames.Adapters.LeaderboardRowAdapter;
 import dariogonzalez.fitplaygames.R;
 import dariogonzalez.fitplaygames.UserProfileActivity;
-import dariogonzalez.fitplaygames.classes.ChallengeTypeConstants;
 import dariogonzalez.fitplaygames.classes.LeaderboardItem;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
 
@@ -92,7 +89,7 @@ public class LeaderBoardFragment extends Fragment {
                                 }
                                 if (friendObject != null) {
                                     ParseQuery<ParseObject> challengePlayerQuery = ParseQuery.getQuery(ParseConstants.CLASS_CHALLENGE_PLAYERS);
-                                    challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_ID, friendObject);
+                                    challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT, friendObject);
                                     challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_STATUS, ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED);
                                     challengePlayerQuery.findInBackground(new FindCallback<ParseObject>() {
                                         @Override

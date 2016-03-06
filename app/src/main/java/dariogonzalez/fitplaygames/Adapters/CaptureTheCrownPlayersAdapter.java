@@ -2,7 +2,6 @@ package dariogonzalez.fitplaygames.Adapters;
 
 
 import android.content.Context;
-import android.media.Image;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -157,7 +156,7 @@ public class CaptureTheCrownPlayersAdapter extends ArrayAdapter<ChallengePlayerI
 
     private void sendPlayerResponse(final int status, ChallengePlayerItem user, final ChallengeInviteHolder holder) {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
-        query.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_ID, user.getmUserObject());
+        query.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT, user.getmUserObject());
         query.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT, user.getmChallengeObject());
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override

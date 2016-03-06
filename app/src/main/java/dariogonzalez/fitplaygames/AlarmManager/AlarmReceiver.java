@@ -21,6 +21,7 @@ public class AlarmReceiver extends WakefulBroadcastReceiver
     private AlarmManager alarmMgr;
     // The pending intent that is triggered when the alarm fires.
     private PendingIntent alarmIntent;
+    public static final long INTERVAL_SIXEEN_MINUTES = 16 * 60 * 1000;
   
     @Override
     public void onReceive(Context context, Intent intent)
@@ -40,13 +41,9 @@ public class AlarmReceiver extends WakefulBroadcastReceiver
         alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
 
         alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                AlarmManager.INTERVAL_FIFTEEN_MINUTES,
-                AlarmManager.INTERVAL_FIFTEEN_MINUTES,
+                INTERVAL_SIXEEN_MINUTES,
+                INTERVAL_SIXEEN_MINUTES,
                 alarmIntent);
-//        alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-//                SystemClock.elapsedRealtime() + 5*1000, //In 5 seconds
-//                5 * 1000,
-//                alarmIntent);
     }
 
     /**

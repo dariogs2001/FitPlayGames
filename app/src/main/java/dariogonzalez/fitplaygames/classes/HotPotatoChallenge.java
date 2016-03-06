@@ -17,6 +17,7 @@ import java.util.Map;
 
 /**
  * Created by Logan on 10/21/2015.
+ * Hot Potato Challenge class
  */
 public class HotPotatoChallenge extends ParentChallenge implements Parcelable {
 
@@ -98,40 +99,12 @@ public class HotPotatoChallenge extends ParentChallenge implements Parcelable {
         long hoursInMilli = hourAmt * HOUR_IN_MILLI;
 
         long timeToAddInMilli = hoursInMilli * passesAmt;
-
-        // TODO: should not be currentTime but the starttime of game
         long today = startDate.getTime();
 
         // Randomness
-
         Date date = new Date(timeToAddInMilli + today);
         return date;
     }
-
-//    public static void chooseStartingPlayer(final ParseObject challenge) {
-//        ParseQuery<ParseObject> startingPlayerQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
-//        startingPlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT, challenge);
-//        startingPlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_OWNER, true);
-//        startingPlayerQuery.findInBackground(new FindCallback<ParseObject>() {
-//            @Override
-//            public void done(List<ParseObject> list, ParseException e) {
-//                if (e == null && !list.isEmpty()) {
-//                    ParseObject startingPlayer = list.get(0);
-//                    ParseObject challengeEvent = new ParseObject(ParseConstants.CLASS_CHALLENGE_EVENTS);
-//                    challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_CHALLENGE, challenge);
-//                    challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER, startingPlayer);
-//                    challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_START_TIME, new Date());
-//                    challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_PLAYING);
-//                    challengeEvent.saveInBackground();
-//                    startingPlayer.put(ParseConstants.CHALLENGE_PLAYER_IS_TURN, true);
-//                    startingPlayer.saveInBackground();
-//                    ParseUser startingPlayerUser = (ParseUser) startingPlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_ID);
-//                    ParentChallenge.sendPushNotification("You've started off with the potato in '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", startingPlayerUser);
-//
-//                }
-//            }
-//        });
-//    }
 
     public static void findLoser(final ParseObject challenge) {
         ParseQuery<ParseObject> challengeEventQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_EVENTS);
@@ -155,7 +128,7 @@ public class HotPotatoChallenge extends ParentChallenge implements Parcelable {
                     ParseObject challengePlayer = challengeEvent.getParseObject(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER);
                     challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_IS_LOSER, true);
                     challengePlayer.saveInBackground();
-                    ParseUser loserPlayerUser = (ParseUser) challengePlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_ID);
+                    ParseUser loserPlayerUser = (ParseUser) challengePlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT);
                     ParentChallenge.sendPushNotification("Oh no! The potato has exploded in '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", loserPlayerUser);
                 }
             }

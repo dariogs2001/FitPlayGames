@@ -19,8 +19,6 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -153,7 +151,7 @@ public class HotPotatoPlayersAdapter extends ArrayAdapter<ChallengePlayerItem> {
 
     private void sendPlayerResponse(final int status, ChallengePlayerItem user, final ChallengeInviteHolder holder) {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
-        query.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_ID, user.getmUserObject());
+        query.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT, user.getmUserObject());
         query.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT, user.getmChallengeObject());
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override

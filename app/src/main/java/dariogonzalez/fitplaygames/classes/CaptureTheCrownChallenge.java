@@ -108,31 +108,6 @@ public class CaptureTheCrownChallenge extends ParentChallenge implements Parcela
         return date;
     }
 
-//    public static void chooseStartingPlayer(final ParseObject challenge) {
-//        ParseQuery<ParseObject> startingPlayerQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
-//        startingPlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT, challenge);
-//        startingPlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_OWNER, true);
-//        startingPlayerQuery.findInBackground(new FindCallback<ParseObject>() {
-//            @Override
-//            public void done(List<ParseObject> list, ParseException e) {
-//                if (e == null && !list.isEmpty()) {
-//                    ParseObject startingPlayer = list.get(0);
-//                    ParseObject challengeEvent = new ParseObject(ParseConstants.CLASS_CHALLENGE_EVENTS);
-//                    challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_CHALLENGE, challenge);
-//                    challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER, startingPlayer);
-//                    challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_START_TIME, new Date());
-//                    challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_PLAYING);
-//                    challengeEvent.saveInBackground();
-//                    startingPlayer.put(ParseConstants.CHALLENGE_PLAYER_IS_TURN, true);
-//                    startingPlayer.saveInBackground();
-//                    ParseUser startingPlayerUser = (ParseUser) startingPlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_ID);
-//                    ParentChallenge.sendPushNotification("You've started off with the crown in " + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "!", startingPlayerUser);
-//
-//                }
-//            }
-//        });
-//    }
-
     public static void findWinner(final ParseObject challenge) {
         ParseQuery<ParseObject> challengeEventQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_EVENTS);
         challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_CHALLENGE, challenge);
@@ -155,7 +130,7 @@ public class CaptureTheCrownChallenge extends ParentChallenge implements Parcela
                     ParseObject challengePlayer = challengeEvent.getParseObject(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER);
                     challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_IS_WINNER, true);
                     challengePlayer.saveInBackground();
-                    ParseUser winnerPlayerUser = (ParseUser) challengePlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_ID);
+                    ParseUser winnerPlayerUser = (ParseUser) challengePlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT);
                     ParentChallenge.sendPushNotification("We have a royal winner in " + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "!", winnerPlayerUser);
                 }
             }

@@ -2,6 +2,7 @@ package dariogonzalez.fitplaygames.classes;
 
 /**
  * Created by dgonzalez on 4/9/2015.
+ * Constants used to work with Parse.com tables and rows
  */
 public final class ParseConstants
 {
@@ -72,7 +73,7 @@ public final class ParseConstants
 
     public static final String CHALLENGE_PLAYER_STATUS = "ChallengePlayerStatus";
     public static final String CHALLENGE_PLAYER_DATE_JOINED = "DateJoined";
-    public static final String CHALLENGE_PLAYER_USER_ID = "UserObject";
+    public static final String CHALLENGE_PLAYER_USER_OBJECT = "UserObject";
     public static final String CHALLENGE_PLAYER_CHALLENGE_OBJECT = "ChallengeObject";
     public static final String CHALLENGE_PLAYER_OWNER = "IsOwner";
     public static final String CHALLENGE_PLAYER_IS_LOSER = "IsLoser";
