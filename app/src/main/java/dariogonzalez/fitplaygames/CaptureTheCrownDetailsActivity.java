@@ -269,7 +269,7 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
                                     mAverageCrownTime = mAverageCrownTime / challengePlayers.size();
                                     int hours = mAverageCrownTime / 60;
                                     int minutes = mAverageCrownTime % 60;
-                                    String crownTimeStr = ((hours > 0) ? hours + " Hr. " : "") + minutes + " Min";
+                                    String crownTimeStr = ((hours > 0) ? hours + " Hr " : "") + minutes + " Min";
                                     averageCrownTime.setText(String.valueOf(crownTimeStr));
 
                                 } else {

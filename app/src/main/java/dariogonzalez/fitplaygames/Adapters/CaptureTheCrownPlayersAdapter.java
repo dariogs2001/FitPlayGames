@@ -131,7 +131,7 @@ public class CaptureTheCrownPlayersAdapter extends ArrayAdapter<ChallengePlayerI
             holder.stepsTV.setText(String.valueOf(userObject.getmSteps()));
             int hours = userObject.getmPlayerAverageHoldingTime() / 60;
             int minutes = userObject.getmPlayerAverageHoldingTime() % 60;
-            String crownTimeStr = ((hours > 0) ? hours + " Hr. " : "") + minutes + " Min";
+            String crownTimeStr = ((hours > 0) ? hours + " Hr " : "") + minutes + " Min";
             holder.crownTimeValue.setText(crownTimeStr);
             row.setBackgroundColor(getContext().getResources().getColor(R.color.light_light_grey));
             }

@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.parse.FindCallback;
 import com.parse.GetCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
@@ -159,8 +160,7 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
             challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_ID, mHotPotatoChallenge.getChallengeId());
             challengeQuery.findInBackground(new FindCallback<ParseObject>() {
                 public void done(final List<ParseObject> list, final ParseException e) {
-                    if (e == null && !list.isEmpty())
-                    {
+                    if (e == null && !list.isEmpty()) {
                         ParseQuery<ParseObject> challengeQuery = new ParseQuery<>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
                         challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT, list.get(0));
                         challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT, ParseUser.getCurrentUser());
@@ -228,6 +228,14 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
                                                             + '/' + getResources().getResourceTypeName(R.drawable.potato_47) + '/' + getResources().getResourceEntryName(R.drawable.potato_47) );
                                                     player.setmImageUri(profilePicture);
                                                 }
+                                                if (mHotPotatoChallenge.getChallengeStatusType() == ParseConstants.CHALLENGE_STATUS_FINISHED) {
+                                                    if (challengePlayer.getBoolean(ParseConstants.CHALLENGE_PLAYER_IS_LOSER)) {
+                                                        profilePicture = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE +
+                                                                "://" + getResources().getResourcePackageName(R.drawable.firepotato)
+                                                                + '/' + getResources().getResourceTypeName(R.drawable.firepotato) + '/' + getResources().getResourceEntryName(R.drawable.firepotato));
+                                                        player.setmImageUri(profilePicture);
+                                                    }
+                                                }
                                                 else {
                                                 profilePicture = file != null ? Uri.parse(file.getUrl()) : null;
                                                 player.setmImageUri(profilePicture);}
@@ -276,7 +284,7 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
                                     mAveragePotatoTime = mAveragePotatoTime / challengePlayers.size();
                                     int hours = mAveragePotatoTime / 60;
                                     int minutes = mAveragePotatoTime % 60;
-                                    String potatoTimeStr = ((hours > 0) ? hours + " Hr. " : "") + minutes + " Min";
+                                    String potatoTimeStr = ((hours > 0) ? hours + " Hr " : "") + minutes + " Min";
                                     averagePotatoTime.setText(String.valueOf(potatoTimeStr));
                                 } else {
                                     Log.d("TEST", "Error: " + e.toString());

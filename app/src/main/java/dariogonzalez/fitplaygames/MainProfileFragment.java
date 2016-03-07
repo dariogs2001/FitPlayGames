@@ -322,7 +322,7 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
                                                     }
                                                     int hours = mAveragePotatoTime / 60;
                                                     int minutes = mAveragePotatoTime % 60;
-                                                    String potatoTimeStr = ((hours > 0) ? hours + " Hr. " : "") + minutes + " Min";
+                                                    String potatoTimeStr = ((hours > 0) ? hours + " Hr " : "") + minutes + " Min";
                                                     mPotatoAvgTimeTV.setText(potatoTimeStr);
 
                                                     mCrownGamesTV.setText(String.valueOf(mNumOfCrownGames));
@@ -332,7 +332,7 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
                                                     }
                                                     int hoursC = mCrownTime / 60;
                                                     int minutesC = mCrownTime % 60;
-                                                    String crownTimeStr = ((hoursC > 0) ? hoursC + " Hr. " : "") + minutesC + " Min";
+                                                    String crownTimeStr = ((hoursC > 0) ? hoursC + " Hr " : "") + minutesC + " Min";
                                                     mCrownAvgTimeTV.setText(crownTimeStr);
 
                                                 }

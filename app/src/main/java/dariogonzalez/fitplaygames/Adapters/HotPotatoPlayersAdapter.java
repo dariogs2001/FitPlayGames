@@ -63,6 +63,7 @@ public class HotPotatoPlayersAdapter extends ArrayAdapter<ChallengePlayerItem> {
             holder.progressLayout = (LinearLayout) row.findViewById(R.id.progressLayout);
             holder.finishedLayout = (LinearLayout) row.findViewById(R.id.finishedLayout);
             holder.potatoTimeValue = (TextView) row.findViewById(R.id.potato_time_value);
+            holder.avgTime = (TextView) row.findViewById(R.id.avg_time);
 
             holder.progressBar.setMax(mStepsGoal);
 
@@ -124,9 +125,18 @@ public class HotPotatoPlayersAdapter extends ArrayAdapter<ChallengePlayerItem> {
 
             int hours = userObject.getmPlayerAverageHoldingTime() / 60;
             int minutes = userObject.getmPlayerAverageHoldingTime() % 60;
-            String potatoTimeStr = ((hours > 0) ? hours + " Hr. " : "") + minutes + " Min";
+            String potatoTimeStr = ((hours > 0) ? hours + " Hr " : "") + minutes + " Min";
             holder.potatoTimeValue.setText(potatoTimeStr);
-            row.setBackgroundColor(getContext().getResources().getColor(R.color.light_light_grey));
+            if(position == 0) {
+                row.setBackgroundColor(getContext().getResources().getColor(R.color.loser_winner_color));
+                holder.passesTV.setTextColor(getContext().getResources().getColor(R.color.white));
+                holder.userNameTV.setTextColor(getContext().getResources().getColor(R.color.white));
+                holder.potatoTimeValue.setTextColor(getContext().getResources().getColor(R.color.white));
+                holder.avgTime.setTextColor(getContext().getResources().getColor(R.color.white));
+            }
+            else {
+                row.setBackgroundColor(getContext().getResources().getColor(R.color.white));
+            }
         }
 
         final ChallengeInviteHolder rowHolder = holder;
@@ -175,7 +185,7 @@ public class HotPotatoPlayersAdapter extends ArrayAdapter<ChallengePlayerItem> {
     }
 
     static class ChallengeInviteHolder {
-        TextView userNameTV, passesTV, stepsTV, potatoTimeValue;
+        TextView userNameTV, passesTV, stepsTV, potatoTimeValue, avgTime;
         ImageView userThumbnail;
         ProgressBar progressBar;
         LinearLayout gameResponse, progressLayout, finishedLayout;
