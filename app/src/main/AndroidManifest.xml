@@ -172,6 +172,7 @@
 
         <activity
             android:name=".HotPotatoDetailsActivity"
+            android:theme="@style/HotPotatoTheme"
             android:label="@string/title_activity_hot_potato_details"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait" >
@@ -181,6 +182,7 @@
         </activity>
         <activity
             android:name=".CaptureTheCrownDetailsActivity"
+            android:theme="@style/CaptureTheCrownTheme"
             android:label="@string/title_activity_capture_crown_details"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait" >

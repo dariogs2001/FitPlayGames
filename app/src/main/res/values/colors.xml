@@ -7,13 +7,14 @@
     <color name="pressed_purple_button">#ba9dda</color>
     <color name="focused_purple_button">#d6c3ed</color>
     <color name="login_background_color">#F8F6F3</color>
-    <color name="capture_the_crown_card_color">#2EB9DC</color>
-    <color name="hot_potato_card_color">#006DB7</color>
+    <color name="capture_the_crown_color">#009BBE</color>
+    <color name="capture_the_crown_dark">#005792</color>
+    <color name="hot_potato_color">#006DB7</color>
+    <color name="hot_potato_darK">#005792</color>
 
     <!-- Material Design Colors -->
     <color name="primary">#2196F3</color>
     <color name="primary_dark">#1976D2</color>
-    <color name="loser_winner_color">#009BBE</color>
     <color name="primary_light">#BBDEFB</color>
     <color name="accent">#FF5722</color>
     <color name="accent_light">#FF8A65</color>

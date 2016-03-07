@@ -65,7 +65,8 @@ public class CaptureTheCrownPlayersAdapter extends ArrayAdapter<ChallengePlayerI
             holder.crownLayout = (LinearLayout) row.findViewById(R.id.crownLayout);
             holder.progressLayout = (LinearLayout) row.findViewById(R.id.progressLayout);
             holder.finishedLayout = (LinearLayout) row.findViewById(R.id.finishedLayout);
-            holder.crownTimeValue = (TextView) row.findViewById(R.id.potato_time_value);
+            holder.crownTimeValue = (TextView) row.findViewById(R.id.crown_time_value);
+            holder.avgTime = (TextView) row.findViewById(R.id.avg_time);
 
             holder.progressBar.setMax(mStepsGoal);
 
@@ -133,7 +134,16 @@ public class CaptureTheCrownPlayersAdapter extends ArrayAdapter<ChallengePlayerI
             int minutes = userObject.getmPlayerAverageHoldingTime() % 60;
             String crownTimeStr = ((hours > 0) ? hours + " Hr " : "") + minutes + " Min";
             holder.crownTimeValue.setText(crownTimeStr);
-            row.setBackgroundColor(getContext().getResources().getColor(R.color.light_light_grey));
+            if(position == 0) {
+                row.setBackgroundColor(getContext().getResources().getColor(R.color.capture_the_crown_color));
+                holder.capturesTV.setTextColor(getContext().getResources().getColor(R.color.white));
+                holder.userNameTV.setTextColor(getContext().getResources().getColor(R.color.white));
+                holder.crownTimeValue.setTextColor(getContext().getResources().getColor(R.color.white));
+                holder.avgTime.setTextColor(getContext().getResources().getColor(R.color.white));
+                }
+            else {
+                row.setBackgroundColor(getContext().getResources().getColor(R.color.white));
+                 }
             }
 
         final ChallengeInviteHolder rowHolder = holder;
@@ -180,7 +190,7 @@ public class CaptureTheCrownPlayersAdapter extends ArrayAdapter<ChallengePlayerI
     }
 
     static class ChallengeInviteHolder {
-        TextView userNameTV, capturesTV, stepsTV, crownTimeValue;
+        TextView userNameTV, capturesTV, stepsTV, crownTimeValue, avgTime;
         ImageView userThumbnail, crownImage;
         ProgressBar progressBar;
         LinearLayout gameResponse, crownLayout, progressLayout, finishedLayout;

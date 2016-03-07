@@ -1,16 +1,24 @@
 package dariogonzalez.fitplaygames;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -49,6 +57,7 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
     private ListView playingFriendsList;
     private List<ChallengePlayerItem> users;
     private com.melnykov.fab.FloatingActionButton mCancelAction;
+    private Uri profilePicture;
 
     private int mState = 0;
     private int mAverageCrownTime = 0;
@@ -222,8 +231,18 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
                                             public void done(ParseObject user, ParseException e) {
                                                 final ChallengePlayerItem player = new ChallengePlayerItem();
                                                 ParseFile file = user.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
-                                                Uri profilePicture = file != null ? Uri.parse(file.getUrl()) : null;
-                                                player.setmImageUri(profilePicture);
+                                                if (mCaptureTheCrownChallenge.getChallengeStatusType() == ParseConstants.CHALLENGE_STATUS_FINISHED) {
+                                                    if (challengePlayer.getBoolean(ParseConstants.CHALLENGE_PLAYER_IS_WINNER)) {
+                                                        profilePicture = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE +
+                                                                "://" + getResources().getResourcePackageName(R.drawable.crown_47)
+                                                                + '/' + getResources().getResourceTypeName(R.drawable.crown_47) + '/' + getResources().getResourceEntryName(R.drawable.crown_47));
+                                                        player.setmImageUri(profilePicture);
+                                                        }
+                                                    }
+                                                else {
+                                                    profilePicture = file != null ? Uri.parse(file.getUrl()) : null;
+                                                    player.setmImageUri(profilePicture);
+                                                }
                                                 player.setmIsOwner(challengePlayer.getBoolean(ParseConstants.CHALLENGE_PLAYER_OWNER));
                                                 mAverageCrownTime += challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_AVERAGE_TIME);
                                                 player.setmPasses(challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_PASSES));

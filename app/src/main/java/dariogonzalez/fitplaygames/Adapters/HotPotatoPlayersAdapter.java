@@ -128,7 +128,7 @@ public class HotPotatoPlayersAdapter extends ArrayAdapter<ChallengePlayerItem> {
             String potatoTimeStr = ((hours > 0) ? hours + " Hr " : "") + minutes + " Min";
             holder.potatoTimeValue.setText(potatoTimeStr);
             if(position == 0) {
-                row.setBackgroundColor(getContext().getResources().getColor(R.color.loser_winner_color));
+                row.setBackgroundColor(getContext().getResources().getColor(R.color.hot_potato_color));
                 holder.passesTV.setTextColor(getContext().getResources().getColor(R.color.white));
                 holder.userNameTV.setTextColor(getContext().getResources().getColor(R.color.white));
                 holder.potatoTimeValue.setTextColor(getContext().getResources().getColor(R.color.white));

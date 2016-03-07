@@ -83,10 +83,10 @@
     android:visibility="gone">
 
     <TextView
-    android:id="@+id/potato_time_value"
+    android:id="@+id/crown_time_value"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
+    android:gravity="end"
     android:textSize="20sp"
     android:textStyle="bold"
     android:paddingTop="3dp"
@@ -99,7 +99,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:text="@string/average_crown_time"
-    android:layout_gravity="center_vertical"
+    android:layout_gravity="end"
     android:gravity="center"
     android:layout_weight="1"
     android:textSize="15sp"
