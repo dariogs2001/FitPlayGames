@@ -130,23 +130,7 @@ public class CaptureTheCrownCreateActivity extends AppCompatActivity {
         mCreateGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Utils.trackData(ParseConstants.KEY_ANALYTICS_CREATE_GAME_HOT_POTATO, ParseConstants.KEY_ANALYTICS_CREATE_GAME_HOT_POTATO);
-
-                List<UserListItem> selectedFriends = mSearchFriendsFragment.getSelectedFriends();
-
-                if (selectedFriends.size() > 0) {
-                    for (int i = 0; i < selectedFriends.size(); i++) {
-                        ParseUser user;
-                        if (selectedFriends.get(i).getmFriendObject().getUsername().equals(ParseUser.getCurrentUser().getUsername())) {
-                            user = selectedFriends.get(i).getmUserObject();
-                            mCaptureTheCrownChallenge.getPlayerObjects().add(user);
-                        } else {
-                            user = selectedFriends.get(i).getmFriendObject();
-                            mCaptureTheCrownChallenge.getPlayerObjects().add(user);
-                        }
-                    }
-                }
 
                 boolean isReady = true;
                 if (mChallengeName.getText().length() < 1 || stepSpinner.getSelectedItemPosition() == 0)
@@ -163,6 +147,21 @@ public class CaptureTheCrownCreateActivity extends AppCompatActivity {
                     return;
                 }
 
+                List<UserListItem> selectedFriends = mSearchFriendsFragment.getSelectedFriends();
+
+                for (UserListItem selectedFriend :selectedFriends)
+                {
+                    ParseUser user;
+                        if (selectedFriend.getmFriendObject().getUsername().equals(ParseUser.getCurrentUser().getUsername()))
+                        {
+                            user = selectedFriend.getmUserObject();
+                            mCaptureTheCrownChallenge.getPlayerObjects().add(user);
+                        } else {
+                            user = selectedFriend.getmFriendObject();
+                            mCaptureTheCrownChallenge.getPlayerObjects().add(user);
+                        }
+                }
+
                 if (mChallengeId == null || mChallengeId.length() == 0) {
                     String challengeName = mChallengeName.getText().toString();
                     //Create challenge
@@ -171,11 +170,6 @@ public class CaptureTheCrownCreateActivity extends AppCompatActivity {
                     DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm a");
                     dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
                     Date startDate = new Date(startDateInfo);
-                    //                    try {
-                    //                         startDate = dateFormat.parse(startDateInfo);
-                    //                    } catch (ParseException e) {
-                    //                        e.printStackTrace();
-                    //                    }
 
                     mCaptureTheCrownChallenge.createChallenge(ParseUser.getCurrentUser(),
                             mChallengeName.getText().toString(),

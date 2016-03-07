@@ -150,7 +150,8 @@ public class HotPotatoCreateActivity extends AppCompatActivity {
                 for (UserListItem selectedFriend :selectedFriends)
                 {
                     ParseUser user;
-                    if (selectedFriend.getmFriendObject().getUsername().equals(ParseUser.getCurrentUser().getUsername())) {
+                    if (selectedFriend.getmFriendObject().getUsername().equals(ParseUser.getCurrentUser().getUsername()))
+                    {
                         user = selectedFriend.getmUserObject();
                         mHotPotatoChallenge.getPlayerObjects().add(user);
                     } else {
@@ -166,11 +167,6 @@ public class HotPotatoCreateActivity extends AppCompatActivity {
                     DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm a");
                     dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
                     Date startDate = new Date(startDateInfo);
-//                    try {
-//                         startDate = dateFormat.parse(startDateInfo);
-//                    } catch (ParseException e) {
-//                        e.printStackTrace();
-//                    }
 
                     mHotPotatoChallenge.createChallenge(ParseUser.getCurrentUser(),
                             mChallengeName.getText().toString(),
