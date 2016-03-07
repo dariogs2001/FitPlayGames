@@ -28,6 +28,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import dariogonzalez.fitplaygames.Friends.SearchFriendsFragment;
 import dariogonzalez.fitplaygames.classes.CaptureTheCrownChallenge;
@@ -165,17 +166,34 @@ public class CaptureTheCrownCreateActivity extends AppCompatActivity {
                 if (mChallengeId == null || mChallengeId.length() == 0) {
                     String challengeName = mChallengeName.getText().toString();
                     //Create challenge
-                    mCaptureTheCrownChallenge.createChallenge(ParseUser.getCurrentUser(), mChallengeName.getText().toString(), Integer.parseInt(stepSpinner.getSelectedItem().toString()), new Date(), mCaptureTheCrownChallenge.generateRandomEndDate(1000, 2), new ParentChallenge.GetObjectIdCallback() {
-                        @Override
-                        public void done(String objectId) {
-                            Intent intent = new Intent(CaptureTheCrownCreateActivity.this, CaptureTheCrownDetailsActivity.class);
-                            Bundle extras = new Bundle();
-                            extras.putParcelable("game-details", mCaptureTheCrownChallenge);
-                            intent.putExtras(extras);
-                            startActivity(intent);
-                        }
-                    }, selectedFriends.size() + 1);
-                } else {
+                    //TODO: see generateRandomEndDate
+                    String startDateInfo = String.format("%s/%d %s", startDaySpinner.getSelectedItem().toString(), mYear, startTimeSpinner.getSelectedItem().toString());
+                    DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm a");
+                    dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    Date startDate = new Date(startDateInfo);
+                    //                    try {
+                    //                         startDate = dateFormat.parse(startDateInfo);
+                    //                    } catch (ParseException e) {
+                    //                        e.printStackTrace();
+                    //                    }
+
+                    mCaptureTheCrownChallenge.createChallenge(ParseUser.getCurrentUser(),
+                            mChallengeName.getText().toString(),
+                            Integer.parseInt(stepSpinner.getSelectedItem().toString()),
+                            startDate != null ? startDate : new Date(),
+                            mCaptureTheCrownChallenge.generateRandomEndDate(Integer.parseInt(stepSpinner.getSelectedItem().toString()), selectedFriends.size() + 1, startDate != null ? startDate : new Date()),
+                            new ParentChallenge.GetObjectIdCallback() {
+                                @Override
+                                public void done(String objectId) {
+                                    Intent intent = new Intent(CaptureTheCrownCreateActivity.this, CaptureTheCrownDetailsActivity.class);
+                                    Bundle extras = new Bundle();
+                                    extras.putParcelable("game-details", mCaptureTheCrownChallenge);
+                                    intent.putExtras(extras);
+                                    startActivity(intent);
+                                }
+                            }, selectedFriends.size() + 1);
+                }
+                else {
                     Intent intent = new Intent(CaptureTheCrownCreateActivity.this, InviteFriendsActivity.class);
                     intent.putExtra(ParseConstants.CHALLENGE_CHALLENGE_ID, mChallengeId);
                     startActivity(intent);

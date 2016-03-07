@@ -90,20 +90,17 @@ public class CaptureTheCrownChallenge extends ParentChallenge implements Parcela
         this.setChallengeStatusType(source.readInt());
     }
 
-    public Date generateRandomEndDate(int stepsGoal, int numOfPlayers) {
+    public Date generateRandomEndDate(int stepsGoal, int numOfPlayers, Date startDate) {
 
         int hourAmt = hours.get(stepsGoal);
-        int capturesAmt = captures.get(numOfPlayers).get(stepsGoal);
+        int passesAmt = captures.get(numOfPlayers).get(stepsGoal);
 
         long hoursInMilli = hourAmt * HOUR_IN_MILLI;
 
-        long timeToAddInMilli = hoursInMilli * capturesAmt;
-
-        // TODO: should not be currentTime but the starttime of game
-        long today = System.currentTimeMillis();
+        long timeToAddInMilli = hoursInMilli * passesAmt;
+        long today = startDate.getTime();
 
         // Randomness
-
         Date date = new Date(timeToAddInMilli + today);
         return date;
     }
