@@ -175,6 +175,7 @@
     <string name="choose_challenge_capture_crown">Capture the Crown</string>
     <string name="crown_time">Avg. crown time</string>
     <string name="num_of_losses"># of losses</string>
+    <string name="num_of_wins"># of wins</string>
     <string name="num_of_games"># of games</string>
     <string name="slash">/</string>
     <string name="end_day">End Day</string>
