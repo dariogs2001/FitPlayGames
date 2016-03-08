@@ -213,7 +213,7 @@
             android:layout_weight="1"
             android:text="@string/create_game"
             android:textColor="@color/white"
-            android:background="@color/primary"/>
+            android:background="@color/hot_potato_color"/>
 
     </LinearLayout>
 
