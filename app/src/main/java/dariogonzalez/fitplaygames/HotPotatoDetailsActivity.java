@@ -225,7 +225,7 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
                                                 if (challengePlayer.getBoolean(ParseConstants.CHALLENGE_PLAYER_IS_TURN)) {
                                                     profilePicture = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE +
                                                             "://" + getResources().getResourcePackageName(R.drawable.potato_47)
-                                                            + '/' + getResources().getResourceTypeName(R.drawable.potato_47) + '/' + getResources().getResourceEntryName(R.drawable.potato_47) );
+                                                            + '/' + getResources().getResourceTypeName(R.drawable.potato_47) + '/' + getResources().getResourceEntryName(R.drawable.potato_47));
                                                     player.setmImageUri(profilePicture);
                                                 }
                                                 else if (mHotPotatoChallenge.getChallengeStatusType() == ParseConstants.CHALLENGE_STATUS_FINISHED) {

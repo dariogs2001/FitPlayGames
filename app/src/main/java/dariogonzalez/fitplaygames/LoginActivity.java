@@ -84,10 +84,6 @@ public class LoginActivity extends AppCompatActivity {
         mUserName = (EditText) findViewById(R.id.userNameField);
         mPassword = (EditText) findViewById(R.id.passwordField);
         mLoginButton = (Button) findViewById(R.id.loginButton);
-
-
-
-
     }
 
     public void onClick(View view) {

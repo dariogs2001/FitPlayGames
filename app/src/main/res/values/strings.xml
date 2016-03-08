@@ -159,6 +159,7 @@
     <string name="passes">Passes</string>
     <string name="held_crown">Captures</string>
     <string name="title_activity_leadboard">LeadboardActivity</string>
+    <string name="title_hot_potato_leaderboard">Hot Potato Leaderboard</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="challenge_name_hint">Name this game...</string>
 
