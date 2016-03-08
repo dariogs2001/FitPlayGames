@@ -26,6 +26,7 @@ import dariogonzalez.fitplaygames.Adapters.LeaderboardRowAdapter;
 import dariogonzalez.fitplaygames.R;
 import dariogonzalez.fitplaygames.UserProfileActivity;
 import dariogonzalez.fitplaygames.classes.LeaderboardItem;
+import dariogonzalez.fitplaygames.classes.ParentChallenge;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
 
 /**
@@ -79,6 +80,9 @@ public class LeaderBoardFragment extends Fragment {
                     @Override
                     public void done(List<ParseObject> list, ParseException e) {
                         Log.d("TEST", "here1");
+                        List<ParseUser> usersList = new ArrayList<ParseUser>();
+                        usersList.add(userObject);
+
                         for (final ParseObject userFriend : list) {
                             try {
                                 final ParseUser friendObject;
@@ -87,63 +91,63 @@ public class LeaderBoardFragment extends Fragment {
                                 } else {
                                     friendObject = userFriend.getParseUser(ParseConstants.FRIEND_OBJECT).fetchIfNeeded();
                                 }
+
                                 if (friendObject != null) {
-                                    ParseQuery<ParseObject> challengePlayerQuery = ParseQuery.getQuery(ParseConstants.CLASS_CHALLENGE_PLAYERS);
-                                    challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT, friendObject);
-                                    challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_STATUS, ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED);
-                                    challengePlayerQuery.findInBackground(new FindCallback<ParseObject>() {
-                                        @Override
-                                        public void done(List<ParseObject> challengePlayers, ParseException e) {
-                                            if (e == null) {
-
-                                                int avgTime = 0;
-                                                int numGames = challengePlayers.size();
-                                                ParseFile file = friendObject.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
-                                                Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
-                                                for (ParseObject challengePlayer : challengePlayers) {
-                                                    avgTime += challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_AVERAGE_TIME);
-                                                }
-                                                if (numGames != 0) {
-                                                    avgTime = avgTime / numGames;
-                                                }
-                                                LeaderboardItem leaderboardItem = new LeaderboardItem(friendObject.getUsername(), numGames, avgTime, fileUri);
-                                                if (leaderboardItem.getmNumOfGames() != 0) {
-                                                    if (mLeadBoardList.size() == 0) {
-                                                        mLeadBoardList.add(leaderboardItem);
-                                                    }
-                                                    else if (mLeadBoardList.size() >= 10) {
-                                                        return;
-                                                    }
-                                                    else {
-                                                        int size = mLeadBoardList.size();
-                                                        for (int i = 0; i < size; i++) {
-                                                            // High score is actually the lowest avg time
-                                                            int highScore = mLeadBoardList.get(i).getmAvgTime();
-                                                            int numOfGames = mLeadBoardList.get(i).getmNumOfGames();
-                                                            if (leaderboardItem.getmAvgTime() < highScore || (leaderboardItem.getmAvgTime() == highScore && leaderboardItem.getmNumOfGames() > numOfGames)) {
-                                                                Log.d("TEST", "username: " + leaderboardItem.getmUsername());
-                                                                mLeadBoardList.add(i, leaderboardItem);
-                                                                break;
-                                                            }
-                                                            else if (i == (size - 1)) {
-                                                                mLeadBoardList.add(leaderboardItem);
-                                                                break;
-                                                            }
-                                                        }
-                                                    }
-                                                }
-
-
-                                                populateListView();
-
-//                                                }
-                                            }
-                                        }
-                                    });
+                                    usersList.add(friendObject);
                                 }
 
-                            } catch (ParseException ex) {
+                            } catch (Exception ex) {
+
                             }
+                        }
+
+                        for (final ParseUser friendObject :  usersList) {
+                            ParseQuery<ParseObject> challengePlayerQuery = ParseQuery.getQuery(ParseConstants.CLASS_CHALLENGE_PLAYERS);
+                            challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT, friendObject);
+                            challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_STATUS, ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED);
+                            challengePlayerQuery.findInBackground(new FindCallback<ParseObject>() {
+                                @Override
+                                public void done(List<ParseObject> challengePlayers, ParseException e) {
+                                    if (e == null) {
+
+                                        int avgTime = 0;
+                                        int numGames = challengePlayers.size();
+                                        ParseFile file = friendObject.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
+                                        Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
+                                        for (ParseObject challengePlayer : challengePlayers) {
+                                            avgTime += challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_AVERAGE_TIME);
+                                        }
+                                        if (numGames != 0) {
+                                            avgTime = avgTime / numGames;
+                                        }
+                                        LeaderboardItem leaderboardItem = new LeaderboardItem(friendObject.getUsername(), numGames, avgTime, fileUri);
+                                        if (leaderboardItem.getmNumOfGames() != 0) {
+                                            if (mLeadBoardList.size() == 0) {
+                                                mLeadBoardList.add(leaderboardItem);
+                                            } else if (mLeadBoardList.size() >= 10) {
+                                                return;
+                                            } else {
+                                                int size = mLeadBoardList.size();
+                                                for (int i = 0; i < size; i++) {
+                                                    // High score is actually the lowest avg time
+                                                    int highScore = mLeadBoardList.get(i).getmAvgTime();
+                                                    int numOfGames = mLeadBoardList.get(i).getmNumOfGames();
+                                                    if (leaderboardItem.getmAvgTime() < highScore || (leaderboardItem.getmAvgTime() == highScore && leaderboardItem.getmNumOfGames() > numOfGames)) {
+                                                        Log.d("TEST", "username: " + leaderboardItem.getmUsername());
+                                                        mLeadBoardList.add(i, leaderboardItem);
+                                                        break;
+                                                    } else if (i == (size - 1)) {
+                                                        mLeadBoardList.add(leaderboardItem);
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        populateListView();
+                                    }
+                                }
+                            });
                         }
                     }
                 });
@@ -158,10 +162,10 @@ public class LeaderBoardFragment extends Fragment {
 
             ArrayAdapter<LeaderboardItem> adapter = new LeaderboardRowAdapter(view.getContext(), R.layout.leader_board_list_item, mLeadBoardList);
             friendsResultListView.setAdapter(adapter);
-            friendsResultListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Intent intent = new Intent(getActivity(), UserProfileActivity.class);
+//            friendsResultListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                @Override
+//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                    Intent intent = new Intent(getActivity(), UserProfileActivity.class);
 //                    Bundle extras = new Bundle();
 //                    // Parse friend object Id
 //                    extras.putString("userId", mLeadBoardList.get(position).getmFriendObject().getObjectId());
@@ -173,8 +177,8 @@ public class LeaderBoardFragment extends Fragment {
 //                    extras.putBoolean("isFriend", isFriend);
 //                    intent.putExtras(extras);
 //                    startActivity(intent);
-                }
-            });
+//                }
+//            });
     }
 
     public void clearListView() {

@@ -113,7 +113,7 @@ public class HotPotatoPlayersAdapter extends ArrayAdapter<ChallengePlayerItem> {
                 // Only show on the top player (the player that has the potato
                 holder.progressLayout.setVisibility(View.VISIBLE);
                 holder.stepsTV.setText(String.valueOf(userObject.getmSteps()));
-                holder.progressBar.setProgress((int)userObject.getmSteps());
+                holder.progressBar.setProgress((int) userObject.getmSteps());
                 row.setBackgroundColor(getContext().getResources().getColor(R.color.light_light_grey));
             }
         }
@@ -133,6 +133,8 @@ public class HotPotatoPlayersAdapter extends ArrayAdapter<ChallengePlayerItem> {
                 holder.userNameTV.setTextColor(getContext().getResources().getColor(R.color.white));
                 holder.potatoTimeValue.setTextColor(getContext().getResources().getColor(R.color.white));
                 holder.avgTime.setTextColor(getContext().getResources().getColor(R.color.white));
+                holder.userThumbnail.setImageResource(R.drawable.firepotato);
+
             }
             else {
                 row.setBackgroundColor(getContext().getResources().getColor(R.color.white));
