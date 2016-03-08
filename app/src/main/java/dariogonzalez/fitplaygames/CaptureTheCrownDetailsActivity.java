@@ -167,10 +167,8 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
             //For some reason the challenge object is null, so I have to get it in order to get the value I need here... :(
             challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_ID, mCaptureTheCrownChallenge.getChallengeId());
             challengeQuery.findInBackground(new FindCallback<ParseObject>() {
-                @Override
                 public void done(final List<ParseObject> list, final ParseException e) {
-                    if (e == null && !list.isEmpty())
-                    {
+                    if (e == null && !list.isEmpty()) {
                         ParseQuery<ParseObject> challengeQuery = new ParseQuery<>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
                         challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT, list.get(0));
                         challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT, ParseUser.getCurrentUser());
@@ -226,6 +224,7 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
                                     for (final ParseObject challengePlayer : challengePlayers) {
                                         ParseQuery<ParseObject> userQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_USER);
                                         ParseUser user = (ParseUser) challengePlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT);
+                                        mAverageCrownTime += challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_AVERAGE_TIME);
                                         user.fetchIfNeededInBackground(new GetCallback<ParseObject>() {
                                             @Override
                                             public void done(ParseObject user, ParseException e) {
@@ -244,7 +243,6 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
                                                     player.setmImageUri(profilePicture);
                                                 }
                                                 player.setmIsOwner(challengePlayer.getBoolean(ParseConstants.CHALLENGE_PLAYER_OWNER));
-                                                mAverageCrownTime += challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_AVERAGE_TIME);
                                                 player.setmPasses(challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_PASSES));
                                                 player.setmPlayerAverageHoldingTime(challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_AVERAGE_TIME));
                                                 player.setmStatus(challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_STATUS));
@@ -261,9 +259,11 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
                                                         if (e == null) {
                                                             if (list.size() > 0) {
                                                                 player.setmSteps(list.get(0).getLong(ParseConstants.CHALLENGE_EVENTS_STEP_PROGRESSION));
+                                                                Log.d("good list", "Got here");
                                                             }
                                                             else {
                                                                 player.setmSteps(0);
+                                                                Log.d("bad list", "Got here");
                                                             }
                                                         }
                                                         if (challengePlayer.getBoolean(ParseConstants.CHALLENGE_PLAYER_IS_TURN)) {
@@ -319,7 +319,7 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
                     challengePlayerQuery.findInBackground(new FindCallback<ParseObject>() {
                         @Override
                         public void done(List<ParseObject> list, ParseException e) {
-                            if (e == null) {
+                            if (e == null && !list.isEmpty()) {
                                 ParseObject challengePlayer = list.get(0);
                                 ParentChallenge.updateChallenge(challenge, challengePlayer);
                             }

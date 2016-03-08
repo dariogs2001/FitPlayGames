@@ -3,6 +3,7 @@ package dariogonzalez.fitplaygames.Adapters;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -120,8 +121,10 @@ public class CaptureTheCrownPlayersAdapter extends ArrayAdapter<ChallengePlayerI
             }
             else {
                 holder.progressLayout.setVisibility(View.VISIBLE);
+                holder.crownLayout.setVisibility(View.INVISIBLE);
                 holder.stepsTV.setText(String.valueOf(userObject.getmSteps()));
                 holder.progressBar.setProgress((int)userObject.getmSteps());
+                Log.d("Progress Bar: ", String.valueOf((int)userObject.getmSteps()));
                 row.setBackgroundColor(getContext().getResources().getColor(R.color.white));
             }
         }
