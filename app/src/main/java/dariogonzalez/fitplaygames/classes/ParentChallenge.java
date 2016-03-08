@@ -280,12 +280,13 @@ public abstract class ParentChallenge {
 
                                                     challengePlayer.saveInBackground();
 
-                                                    chooseNextPlayerHotPotato(challenge, challengePlayer);
                                                     if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO) {
+                                                        chooseNextPlayerHotPotato(challenge, challengePlayer);
                                                         sendPushNotification("Congrats! You just passed the potato in '"+challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME)+"'!", ParseUser.getCurrentUser());
                                                     }
                                                     else if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN) {
                                                         sendPushNotification("You have lost the crown in '"+challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME)+"'!", ParseUser.getCurrentUser());
+                                                        chooseNextPlayerCaptureTheCrown(challenge, challengePlayer);
                                                     }
                                                     break;
                                                 }
@@ -359,6 +360,7 @@ public abstract class ParentChallenge {
      * @param challenge - object from Parse.com
      * @param challengePlayer - object from Parse.com
      */
+    // TODO: Make it so that first player to reach stepgoal gets the crown and CHALLENGE_PLAYER_IS_TURN is set to true.
     public static void chooseNextPlayerCaptureTheCrown(final ParseObject challenge, final ParseObject challengePlayer) {
 
         ParseQuery<ParseObject> nextPlayerQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
