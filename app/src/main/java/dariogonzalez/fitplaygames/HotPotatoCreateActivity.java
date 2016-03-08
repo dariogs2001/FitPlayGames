@@ -103,7 +103,7 @@ public class HotPotatoCreateActivity extends AppCompatActivity {
             }
         });
 
-        DateFormat dateFormat2 = new SimpleDateFormat("HH:mm a", Locale.getDefault());
+        DateFormat dateFormat2 = new SimpleDateFormat("hh:mm a", Locale.getDefault());
         Calendar cal2 = Calendar.getInstance(Locale.getDefault());
         mHour = 6;
         mMinute = 0;
@@ -164,7 +164,7 @@ public class HotPotatoCreateActivity extends AppCompatActivity {
                     //Create challenge
                     //TODO: see generateRandomEndDate
                     String startDateInfo = String.format("%s/%d %s", startDaySpinner.getSelectedItem().toString(), mYear, startTimeSpinner.getSelectedItem().toString());
-                    DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm a");
+                    DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
                     dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
                     Date startDate = new Date(startDateInfo);
 
@@ -243,7 +243,7 @@ public class HotPotatoCreateActivity extends AppCompatActivity {
             mHour = hour;
             mMinute = minute;
 
-            DateFormat dateFormat2 = new SimpleDateFormat("HH:mm a", Locale.getDefault());
+            DateFormat dateFormat2 = new SimpleDateFormat("hh:mm a", Locale.getDefault());
             Calendar cal2 = Calendar.getInstance(Locale.getDefault());
 
             cal2.set(Calendar.HOUR_OF_DAY, hour);

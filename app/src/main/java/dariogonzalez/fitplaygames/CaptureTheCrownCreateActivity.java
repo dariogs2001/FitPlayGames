@@ -101,8 +101,7 @@ public class CaptureTheCrownCreateActivity extends AppCompatActivity {
             }
         });
 
-
-        DateFormat dateFormat2 = new SimpleDateFormat("HH:mm a", Locale.getDefault());
+        DateFormat dateFormat2 = new SimpleDateFormat("hh:mm a", Locale.getDefault());
         Calendar cal2 = Calendar.getInstance(Locale.getDefault());
         mHour = 6;
         mMinute = 0;
@@ -126,7 +125,6 @@ public class CaptureTheCrownCreateActivity extends AppCompatActivity {
             }
         });
 
-
         mCreateGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -149,17 +147,15 @@ public class CaptureTheCrownCreateActivity extends AppCompatActivity {
 
                 List<UserListItem> selectedFriends = mSearchFriendsFragment.getSelectedFriends();
 
-                for (UserListItem selectedFriend :selectedFriends)
-                {
+                for (UserListItem selectedFriend : selectedFriends) {
                     ParseUser user;
-                        if (selectedFriend.getmFriendObject().getUsername().equals(ParseUser.getCurrentUser().getUsername()))
-                        {
-                            user = selectedFriend.getmUserObject();
-                            mCaptureTheCrownChallenge.getPlayerObjects().add(user);
-                        } else {
-                            user = selectedFriend.getmFriendObject();
-                            mCaptureTheCrownChallenge.getPlayerObjects().add(user);
-                        }
+                    if (selectedFriend.getmFriendObject().getUsername().equals(ParseUser.getCurrentUser().getUsername())) {
+                        user = selectedFriend.getmUserObject();
+                        mCaptureTheCrownChallenge.getPlayerObjects().add(user);
+                    } else {
+                        user = selectedFriend.getmFriendObject();
+                        mCaptureTheCrownChallenge.getPlayerObjects().add(user);
+                    }
                 }
 
                 if (mChallengeId == null || mChallengeId.length() == 0) {
@@ -167,7 +163,7 @@ public class CaptureTheCrownCreateActivity extends AppCompatActivity {
                     //Create challenge
                     //TODO: see generateRandomEndDate
                     String startDateInfo = String.format("%s/%d %s", startDaySpinner.getSelectedItem().toString(), mYear, startTimeSpinner.getSelectedItem().toString());
-                    DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm a");
+                    DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
                     dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
                     Date startDate = new Date(startDateInfo);
 
@@ -186,8 +182,7 @@ public class CaptureTheCrownCreateActivity extends AppCompatActivity {
                                     startActivity(intent);
                                 }
                             }, selectedFriends.size() + 1);
-                }
-                else {
+                } else {
                     Intent intent = new Intent(CaptureTheCrownCreateActivity.this, InviteFriendsActivity.class);
                     intent.putExtra(ParseConstants.CHALLENGE_CHALLENGE_ID, mChallengeId);
                     startActivity(intent);
@@ -247,16 +242,12 @@ public class CaptureTheCrownCreateActivity extends AppCompatActivity {
             mHour = hour;
             mMinute = minute;
 
-            DateFormat dateFormat2 = new SimpleDateFormat("HH:mm a", Locale.getDefault());
+            DateFormat dateFormat2 = new SimpleDateFormat("hh:mm a", Locale.getDefault());
             Calendar cal2 = Calendar.getInstance(Locale.getDefault());
-//            int amOrPm = Calendar.AM;
-//            if (hour > 12) {
-//                hour = hour - 12;
-//                amOrPm = Calendar.PM;
-//            }
+
             cal2.set(Calendar.HOUR_OF_DAY, hour);
             cal2.set(Calendar.MINUTE, minute);
-//            cal2.set(Calendar.AM_PM, amOrPm);
+
             Date date2 = cal2.getTime();
             ArrayList<String> dateArray2 = new ArrayList<>();
             dateArray2.add(0, dateFormat2.format(date2));
