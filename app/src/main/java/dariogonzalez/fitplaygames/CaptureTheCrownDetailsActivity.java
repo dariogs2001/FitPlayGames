@@ -237,10 +237,10 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
                                                                 + '/' + getResources().getResourceTypeName(R.drawable.crown_47) + '/' + getResources().getResourceEntryName(R.drawable.crown_47));
                                                         player.setmImageUri(profilePicture);
                                                         }
+                                                    else {
+                                                        profilePicture = file != null ? Uri.parse(file.getUrl()) : null;
+                                                        player.setmImageUri(profilePicture);
                                                     }
-                                                else {
-                                                    profilePicture = file != null ? Uri.parse(file.getUrl()) : null;
-                                                    player.setmImageUri(profilePicture);
                                                 }
                                                 player.setmIsOwner(challengePlayer.getBoolean(ParseConstants.CHALLENGE_PLAYER_OWNER));
                                                 player.setmPasses(challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_PASSES));
