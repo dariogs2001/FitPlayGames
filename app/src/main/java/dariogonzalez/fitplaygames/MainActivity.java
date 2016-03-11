@@ -30,8 +30,6 @@ public class MainActivity extends AppCompatActivity implements TabListener {
      */
     ViewPager mViewPager;
 
-    private AlarmReceiver mAlarmReceiver;
-
     private void navigateToLogin() {
         Intent intent = new Intent(this, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -50,11 +48,9 @@ public class MainActivity extends AppCompatActivity implements TabListener {
         ParseAnalytics.trackAppOpenedInBackground(getIntent());
 //        Utils.trackData(MainActivity.class.getSimpleName(), ParseConstants.KEY_ANALYTICS_MAIN_ACTIVITY);
 
-        mAlarmReceiver = new AlarmReceiver();
-        mAlarmReceiver.setAlarm(this);
-
         ParseUser currentUser = ParseUser.getCurrentUser();
-        if (currentUser == null) {
+        if (currentUser == null)
+        {
             navigateToLogin();
         }
         else

@@ -39,6 +39,7 @@ public class HotPotatoChallenge extends ParentChallenge implements Parcelable {
     public void createEndDateMapping() {
         // Initialize hours map
         // This is a relationship of stepGoal to hours
+        hours.put(100, 2);
         hours.put(1000, 2);
         hours.put(2000, 4);
         hours.put(3000, 6);
@@ -48,6 +49,7 @@ public class HotPotatoChallenge extends ParentChallenge implements Parcelable {
         // Initialize passes map
         // This is a relationship of people to # of passes for the game
         HashMap<Integer, Integer> twoPeople = new HashMap<>();
+        twoPeople.put(100, 24);
         twoPeople.put(1000, 24);
         twoPeople.put(2000, 12);
         twoPeople.put(3000, 8);
@@ -56,6 +58,7 @@ public class HotPotatoChallenge extends ParentChallenge implements Parcelable {
         passes.put(2, twoPeople);
 
         HashMap<Integer, Integer> threePeople = new HashMap<>();
+        threePeople.put(100, 12);
         threePeople.put(1000, 12);
         threePeople.put(2000, 9);
         threePeople.put(3000, 7);
@@ -64,6 +67,7 @@ public class HotPotatoChallenge extends ParentChallenge implements Parcelable {
         passes.put(3, threePeople);
 
         HashMap<Integer, Integer> fourPeople = new HashMap<>();
+        fourPeople.put(100, 12);
         fourPeople.put(1000, 12);
         fourPeople.put(2000, 8);
         fourPeople.put(3000, 8);
@@ -72,6 +76,7 @@ public class HotPotatoChallenge extends ParentChallenge implements Parcelable {
         passes.put(4, fourPeople);
 
         HashMap<Integer, Integer> fivePeople = new HashMap<>();
+        fivePeople.put(100, 15);
         fivePeople.put(1000, 15);
         fivePeople.put(2000, 10);
         fivePeople.put(3000, 10);

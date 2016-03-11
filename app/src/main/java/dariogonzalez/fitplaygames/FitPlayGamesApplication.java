@@ -15,6 +15,7 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.SendCallback;
 
+import dariogonzalez.fitplaygames.AlarmManager.AlarmReceiver;
 import io.fabric.sdk.android.Fabric;
 import java.util.List;
 
@@ -27,6 +28,7 @@ import dariogonzalez.fitplaygames.classes.ParseConstants;
  */
 public class FitPlayGamesApplication extends Application {
     private static String TAG = FitPlayGamesApplication.class.getSimpleName();
+    private AlarmReceiver mAlarmReceiver;
 
     @Override
     public void onCreate() {
@@ -37,6 +39,10 @@ public class FitPlayGamesApplication extends Application {
 
         Parse.initialize(this, "Udu33BkI2Sz0W7I4q15eWouVdqGVONLurmEkD8O8", "14mV2PxkubXaQnGJr7muaOFA3umrRbLGOrNLci1c");
         FlurryAgent.init(this, FlurryConstants.FitPlayFlurryKey);
+
+        mAlarmReceiver = new AlarmReceiver();
+        mAlarmReceiver.setAlarm(this);
+
     }
 
     public static void updateParseInstallation(ParseUser parseUser)
