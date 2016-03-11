@@ -1,16 +1,13 @@
 package dariogonzalez.fitplaygames.utils;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.parse.FindCallback;
 import com.parse.GetCallback;
-import com.parse.Parse;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 import org.json.JSONArray;
@@ -29,9 +26,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.TimeZone;
 
-import dariogonzalez.fitplaygames.R;
 import dariogonzalez.fitplaygames.classes.FitbitAccountInfo;
 import dariogonzalez.fitplaygames.classes.FitbitApi;
 import dariogonzalez.fitplaygames.classes.NamesIds;
@@ -92,33 +87,6 @@ public class FitbitHelper {
     }
 
     /**
-     * Method used to changed MST Time manually to UST Time to save in Database
-     */
-
-//    private void changeTime(String dateTime) {
-//        final long millisToAdd = -7_200_000; //seven hours
-//
-//        DateFormat format = new SimpleDateFormat("HH:mm:ss");
-//        try {
-//            Date d = format.parse(dateTime);
-//            d.setTime(d.getTime() + millisToAdd);
-//            Log.d("changeTime: ", d.toString());
-//        } catch (java.text.ParseException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-    public static Date tweakDate(Date time, int hoursAdded) {
-
-        Calendar cal = Calendar.getInstance(); // creates calendar
-        cal.setTime(time); // sets calendar time/date
-        cal.add(Calendar.HOUR_OF_DAY, hoursAdded); // adds hours
-        Log.d("SevenHoursAdded: ", cal.getTime().toString());
-        return cal.getTime(); // returns new date object, hours in the future
-
-    }
-
-    /**
      * Use this method only for testing purposes...
      * @param url
      */
@@ -148,8 +116,14 @@ public class FitbitHelper {
 
     public void getUserLastMonthData()
     {
-        FitbitLastMonthTask task = new FitbitLastMonthTask();
+        FitbitUserStepsDataTask task = new FitbitUserStepsDataTask();
         task.execute("https://api.fitbit.com/1/user/-/activities/steps/date/today/1m.json");
+    }
+
+    public void getUserLastWeekData()
+    {
+        FitbitUserStepsDataTask task = new FitbitUserStepsDataTask();
+        task.execute("https://api.fitbit.com/1/user/-/activities/steps/date/today/7d.json");
     }
 
     public void getStepsRangeDateTime()
@@ -212,28 +186,27 @@ public class FitbitHelper {
                     queryLast.getFirstInBackground(new GetCallback<ParseObject>() {
                         @Override
                         public void done(ParseObject parseObject, com.parse.ParseException e) {
-                            if (e == null)
-                            {
-                                parseObject.put(ParseConstants.LAST_SEVEN_DAYS_STEPS, totalStepsFinal);
-                                parseObject.put(ParseConstants.LAST_SEVEN_DAYS_AVG, avgStepsFinal);
-                                parseObject.saveInBackground();
+                        if (e == null)
+                        {
+                            parseObject.put(ParseConstants.LAST_SEVEN_DAYS_STEPS, totalStepsFinal);
+                            parseObject.put(ParseConstants.LAST_SEVEN_DAYS_AVG, avgStepsFinal);
+                            parseObject.saveInBackground();
 
-                                ParseUser.getCurrentUser().put(ParseConstants.USER_LAST_SEVEN_DAYS, parseObject);
-                                ParseUser.getCurrentUser().saveInBackground();
-                            }
-                            else
-                            {
-                                ParseObject lastSevenDays = new ParseObject(ParseConstants.CLASS_LAST_SEVEN_DAYS);
-                                lastSevenDays.put(ParseConstants.KEY_USER_ID, parseUserId);
-                                lastSevenDays.put(ParseConstants.LAST_SEVEN_DAYS_STEPS, totalStepsFinal);
-                                lastSevenDays.put(ParseConstants.LAST_SEVEN_DAYS_AVG, avgStepsFinal);
-                                lastSevenDays.put(ParseConstants.USER_OBJECT, ParseUser.getCurrentUser());
+                            ParseUser.getCurrentUser().put(ParseConstants.USER_LAST_SEVEN_DAYS, parseObject);
+                            ParseUser.getCurrentUser().saveInBackground();
+                        }
+                        else {
+                            ParseObject lastSevenDays = new ParseObject(ParseConstants.CLASS_LAST_SEVEN_DAYS);
+                            lastSevenDays.put(ParseConstants.KEY_USER_ID, parseUserId);
+                            lastSevenDays.put(ParseConstants.LAST_SEVEN_DAYS_STEPS, totalStepsFinal);
+                            lastSevenDays.put(ParseConstants.LAST_SEVEN_DAYS_AVG, avgStepsFinal);
+                            lastSevenDays.put(ParseConstants.USER_OBJECT, ParseUser.getCurrentUser());
 
-                                lastSevenDays.saveInBackground();
+                            lastSevenDays.saveInBackground();
 
-                                ParseUser.getCurrentUser().put(ParseConstants.USER_LAST_SEVEN_DAYS, lastSevenDays);
-                                ParseUser.getCurrentUser().saveInBackground();
-                            }
+                            ParseUser.getCurrentUser().put(ParseConstants.USER_LAST_SEVEN_DAYS, lastSevenDays);
+                            ParseUser.getCurrentUser().saveInBackground();
+                        }
                         }
                     });
                 }
@@ -241,7 +214,7 @@ public class FitbitHelper {
         });
     }
 
-    public class FitbitLastMonthTask extends AsyncTask<String, Void, String> {
+    public class FitbitUserStepsDataTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
 

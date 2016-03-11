@@ -104,6 +104,7 @@ public class MainMoreOptionsFragment extends android.support.v4.app.Fragment {
                             return;
                         }
                         fh.getUserLastMonthData();
+                        fh.getUserLastWeekData();
                         break;
 
                     case 4:

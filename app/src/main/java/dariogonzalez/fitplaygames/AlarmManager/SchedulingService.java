@@ -45,7 +45,7 @@ public class SchedulingService extends IntentService
 
         if (fh.isFitbitUserAlive())
         {
-            fh.getUserLastMonthData();
+            fh.getUserLastWeekData();
 
             fh.getStepsRangeDateTime();
 

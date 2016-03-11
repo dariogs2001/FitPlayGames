@@ -290,8 +290,8 @@ public abstract class ParentChallenge {
                                                         @Override
                                                         public void done(ParseException e) {
                                                             if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO) {
-                                                                chooseNextPlayerHotPotato(challenge, challengePlayer);
                                                                 sendPushNotification("Congrats! You just passed the potato in '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", ParseUser.getCurrentUser());
+                                                                chooseNextPlayerHotPotato(challenge, challengePlayer);
                                                             }
                                                             else if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN) {
                                                                 sendPushNotification("You have lost the crown in '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", ParseUser.getCurrentUser());
