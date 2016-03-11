@@ -230,6 +230,10 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
                                             public void done(ParseObject user, ParseException e) {
                                                 final ChallengePlayerItem player = new ChallengePlayerItem();
                                                 ParseFile file = user.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
+                                                if (mCaptureTheCrownChallenge.getChallengeStatusType() == ParseConstants.CHALLENGE_STATUS_PLAYING) {
+                                                    profilePicture = file != null ? Uri.parse(file.getUrl()) : null;
+                                                    player.setmImageUri(profilePicture);
+                                                }
                                                 if (mCaptureTheCrownChallenge.getChallengeStatusType() == ParseConstants.CHALLENGE_STATUS_FINISHED) {
                                                     if (challengePlayer.getBoolean(ParseConstants.CHALLENGE_PLAYER_IS_WINNER)) {
                                                         profilePicture = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE +
