@@ -142,6 +142,7 @@ public class CaptureTheCrownPlayersAdapter extends ArrayAdapter<ChallengePlayerI
                 holder.userNameTV.setTextColor(getContext().getResources().getColor(R.color.white));
                 holder.crownTimeValue.setTextColor(getContext().getResources().getColor(R.color.white));
                 holder.avgTime.setTextColor(getContext().getResources().getColor(R.color.white));
+                holder.userThumbnail.setImageResource(R.drawable.crown_47);
                 }
             else {
                 row.setBackgroundColor(getContext().getResources().getColor(R.color.white));
