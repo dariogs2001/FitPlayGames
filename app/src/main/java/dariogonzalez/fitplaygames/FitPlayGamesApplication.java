@@ -33,16 +33,16 @@ public class FitPlayGamesApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
         Fabric.with(this, new Crashlytics());
 
         Parse.enableLocalDatastore(this);
-
         Parse.initialize(this, "Udu33BkI2Sz0W7I4q15eWouVdqGVONLurmEkD8O8", "14mV2PxkubXaQnGJr7muaOFA3umrRbLGOrNLci1c");
+
         FlurryAgent.init(this, FlurryConstants.FitPlayFlurryKey);
 
         mAlarmReceiver = new AlarmReceiver();
         mAlarmReceiver.setAlarm(this);
-
     }
 
     public static void updateParseInstallation(ParseUser parseUser)

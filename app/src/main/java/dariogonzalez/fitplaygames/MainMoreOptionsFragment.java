@@ -103,7 +103,7 @@ public class MainMoreOptionsFragment extends android.support.v4.app.Fragment {
                             toast.show();
                             return;
                         }
-                        fh.getUserLastMonthData();
+//                        fh.getUserLastMonthData();
                         fh.getUserLastWeekData();
                         break;
 
