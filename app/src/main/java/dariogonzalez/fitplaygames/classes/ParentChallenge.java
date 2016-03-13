@@ -217,7 +217,7 @@ public abstract class ParentChallenge {
             }
             else {
                 if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO) {
-                    Log.d("TEST", "Before end date");
+                    Log.d("TEST", "HP Before end date");
                     final int stepsGoal = challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STEPS_GOAL);
                     // If current user has an active "turn", check steps and see if they should pass it
                     ParseQuery<ParseObject> challengeEventQuery = new ParseQuery(ParseConstants.CLASS_CHALLENGE_EVENTS);
@@ -319,6 +319,7 @@ public abstract class ParentChallenge {
                 }
                 if(challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN) {
                     //TODO: Add in all of the functionality of what ctc has to do when updated
+                    final int stepsGoal = challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STEPS_GOAL);
                 }
             }
 
@@ -594,7 +595,7 @@ public abstract class ParentChallenge {
                             crownSeekerChallengeEvent.put(ParseConstants.CHALLENGE_EVENTS_CHALLENGE, challenge);
                             crownSeekerChallengeEvent.put(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER, crownSeekerPlayer);
                             crownSeekerChallengeEvent.put(ParseConstants.CHALLENGE_EVENTS_START_TIME, new Date());
-                            crownSeekerChallengeEvent.put(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_PLAYING);
+                            crownSeekerChallengeEvent.put(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_DONE);
                             crownSeekerChallengeEvent.saveInBackground();
                             crownSeekerPlayer.put(ParseConstants.CHALLENGE_PLAYER_IS_TURN, false);
                             crownSeekerPlayer.saveInBackground();
