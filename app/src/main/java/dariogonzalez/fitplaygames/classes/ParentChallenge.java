@@ -216,112 +216,114 @@ public abstract class ParentChallenge {
                 }
             }
             else {
-                Log.d("TEST", "Before end date");
-                final int stepsGoal = challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STEPS_GOAL);
-                // If current user has an active "turn", check steps and see if they should pass it
-                ParseQuery<ParseObject> challengeEventQuery = new ParseQuery(ParseConstants.CLASS_CHALLENGE_EVENTS);
-                challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER, challengePlayer);
-                challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_PLAYING);
-                challengeEventQuery.findInBackground(new FindCallback<ParseObject>() {
-                    @Override
-                    public void done(List<ParseObject> list, ParseException e) {
-                        if (e == null) {
-                            Log.d("TEST", "Challenge Event");
-                            if (list.size() > 0) {
-                                final ParseObject challengeEvent = list.get(0);
-                                Log.d("TEST", "Challenge event inside");
-                                // Then, update the steps for this user, see if they have finished their "turn" and update the challenge event table
-                                Date startTime = challengeEvent.getDate(ParseConstants.CHALLENGE_EVENTS_START_TIME);
-                                ParseQuery<ParseObject> activityStepsQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_ACTIVITY_STEPS_15_MIN);
-                                // Where userId and where date >= startTime
-                                activityStepsQuery.whereEqualTo(ParseConstants.ACTIVITY_STEPS_USER_ID, ParseUser.getCurrentUser().getObjectId());
-                                Log.d("TEST", "Start time: " + startTime.toString());
-                                activityStepsQuery.whereGreaterThanOrEqualTo(ParseConstants.ACTIVITY_STEPS_DATE, startTime);
-                                activityStepsQuery.findInBackground(new FindCallback<ParseObject>() {
-                                    @Override
-                                    public void done(List<ParseObject> list, ParseException e) {
-                                        if (e == null) {
-                                            int size = list.size();
-                                            Log.d("TEST", "size: " + size);
-                                            int stepsAmount = 0;
+                if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO) {
+                    Log.d("TEST", "Before end date");
+                    final int stepsGoal = challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STEPS_GOAL);
+                    // If current user has an active "turn", check steps and see if they should pass it
+                    ParseQuery<ParseObject> challengeEventQuery = new ParseQuery(ParseConstants.CLASS_CHALLENGE_EVENTS);
+                    challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER, challengePlayer);
+                    challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_PLAYING);
+                    challengeEventQuery.findInBackground(new FindCallback<ParseObject>() {
+                        @Override
+                        public void done(List<ParseObject> list, ParseException e) {
+                            if (e == null) {
+                                Log.d("TEST", "Challenge Event");
+                                if (list.size() > 0) {
+                                    final ParseObject challengeEvent = list.get(0);
+                                    Log.d("TEST", "Challenge event inside");
+                                    // Then, update the steps for this user, see if they have finished their "turn" and update the challenge event table
+                                    Date startTime = challengeEvent.getDate(ParseConstants.CHALLENGE_EVENTS_START_TIME);
+                                    ParseQuery<ParseObject> activityStepsQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_ACTIVITY_STEPS_15_MIN);
+                                    // Where userId and where date >= startTime
+                                    activityStepsQuery.whereEqualTo(ParseConstants.ACTIVITY_STEPS_USER_ID, ParseUser.getCurrentUser().getObjectId());
+                                    Log.d("TEST", "Start time: " + startTime.toString());
+                                    activityStepsQuery.whereGreaterThanOrEqualTo(ParseConstants.ACTIVITY_STEPS_DATE, startTime);
+                                    activityStepsQuery.findInBackground(new FindCallback<ParseObject>() {
+                                        @Override
+                                        public void done(List<ParseObject> list, ParseException e) {
+                                            if (e == null) {
+                                                int size = list.size();
+                                                Log.d("TEST", "size: " + size);
+                                                int stepsAmount = 0;
 
-                                            //Added this boolean to avoid calling multiple times the save function, an async method
-                                            boolean isFinished = false;
-                                            for (int i = 0; i < size; i++) {
+                                                //Added this boolean to avoid calling multiple times the save function, an async method
+                                                boolean isFinished = false;
+                                                for (int i = 0; i < size; i++) {
 
-                                                if (isFinished) break;
+                                                    if (isFinished) break;
 
-                                                //Adding first to be sure we get the last updated value,
-                                                ParseObject data = list.get(i);
-                                                int steps = data.getInt(ParseConstants.ACTIVITY_STEPS_STEPS);
-                                                stepsAmount += steps;
+                                                    //Adding first to be sure we get the last updated value,
+                                                    ParseObject data = list.get(i);
+                                                    int steps = data.getInt(ParseConstants.ACTIVITY_STEPS_STEPS);
+                                                    stepsAmount += steps;
 
-                                                // If the added up steps are greater than the steps goal, set challenge event status to done and then get a new player
-                                                if (stepsAmount >= stepsGoal) {
+                                                    // If the added up steps are greater than the steps goal, set challenge event status to done and then get a new player
+                                                    if (stepsAmount >= stepsGoal) {
 
-                                                    isFinished = true;
+                                                        isFinished = true;
 
-                                                    Date startTime = challengeEvent.getDate(ParseConstants.CHALLENGE_EVENTS_START_TIME);
-                                                    Date endTime = new Date();
-                                                    //Result is in miliseconds so I divided by 1000 to set the seconds and by 60 to set the minutes
-                                                    long timeDifference = (endTime.getTime() - startTime.getTime()) / (1000 * 60);
+                                                        Date startTime = challengeEvent.getDate(ParseConstants.CHALLENGE_EVENTS_START_TIME);
+                                                        Date endTime = new Date();
+                                                        //Result is in miliseconds so I divided by 1000 to set the seconds and by 60 to set the minutes
+                                                        long timeDifference = (endTime.getTime() - startTime.getTime()) / (1000 * 60);
 
-                                                    //Changing status to DONE, and preparing everything to set next player and create new challengeEvent
-                                                    challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_DONE);
-                                                    challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_END_TIME, endTime);
-                                                    challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_GAME_TIME, timeDifference);
-                                                    challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_STEP_PROGRESSION, stepsAmount);
-                                                    challengeEvent.saveInBackground();
+                                                        //Changing status to DONE, and preparing everything to set next player and create new challengeEvent
+                                                        challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_DONE);
+                                                        challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_END_TIME, endTime);
+                                                        challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_GAME_TIME, timeDifference);
+                                                        challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_STEP_PROGRESSION, stepsAmount);
+                                                        challengeEvent.saveInBackground();
 
-                                                    //Updating ChallengePlayer table with new values
-                                                    challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_IS_TURN, false);
-                                                    int playerPasses = challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_PASSES);
-                                                    playerPasses = playerPasses + 1;
-                                                    challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_PASSES, playerPasses);
+                                                        //Updating ChallengePlayer table with new values
+                                                        challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_IS_TURN, false);
+                                                        int playerPasses = challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_PASSES);
+                                                        playerPasses = playerPasses + 1;
+                                                        challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_PASSES, playerPasses);
 
-                                                    long gameTime = challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_GAME_TIME);
-                                                    gameTime += timeDifference;
-                                                    long avgTime = gameTime / playerPasses;
+                                                        long gameTime = challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_GAME_TIME);
+                                                        gameTime += timeDifference;
+                                                        long avgTime = gameTime / playerPasses;
 
-                                                    challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_GAME_TIME, gameTime);
-                                                    challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_AVERAGE_TIME, avgTime);
+                                                        challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_GAME_TIME, gameTime);
+                                                        challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_AVERAGE_TIME, avgTime);
 
-                                                    challengePlayer.saveInBackground(new SaveCallback() {
-                                                        @Override
-                                                        public void done(ParseException e) {
-                                                            if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO) {
-                                                                sendPushNotification("Congrats! You just passed the potato in '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", ParseUser.getCurrentUser());
-                                                                chooseNextPlayerHotPotato(challenge, challengePlayer);
+                                                        challengePlayer.saveInBackground(new SaveCallback() {
+                                                            @Override
+                                                            public void done(ParseException e) {
+                                                                if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO) {
+                                                                    sendPushNotification("Congrats! You just passed the potato in '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", ParseUser.getCurrentUser());
+                                                                    chooseNextPlayerHotPotato(challenge, challengePlayer);
+                                                                } else if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN) {
+                                                                    sendPushNotification("You have lost the crown in '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", ParseUser.getCurrentUser());
+                                                                    chooseNextPlayerCaptureTheCrown(challenge, challengePlayer);
+                                                                }
                                                             }
-                                                            else if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN) {
-                                                                sendPushNotification("You have lost the crown in '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", ParseUser.getCurrentUser());
-                                                                chooseNextPlayerCaptureTheCrown(challenge, challengePlayer);
-                                                            }
-                                                        }
-                                                    });
+                                                        });
 
-                                                    break;
+                                                        break;
+                                                    }
                                                 }
+                                                challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_STEP_PROGRESSION, stepsAmount);
+                                                challengeEvent.saveInBackground();
+                                            } else {
+                                                Log.d("TEST", e.toString());
                                             }
-                                            challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_STEP_PROGRESSION, stepsAmount);
-                                            challengeEvent.saveInBackground();
                                         }
-                                        else {
-                                            Log.d("TEST", e.toString());
-                                        }
-                                    }
-                                });
+                                    });
+                                }
+                            } else {
+                                Log.d("TEST", e.getMessage());
                             }
                         }
-                        else {
-                            Log.d("TEST", e.getMessage());
-                        }
-                    }
-                });
+                    });
+                }
+                if(challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN) {
+                    //TODO: Add in all of the functionality of what ctc has to do when updated
+                }
+            }
+
             }
         }
-    }
-
     /**
      * Method used to choose next player in the HotPotato game.
      * At this point I already have set the previous status for the previous player, and I am ready to set everything for the new player.
@@ -558,9 +560,10 @@ public abstract class ParentChallenge {
 
     //Moving methods to this class
     public static void chooseStartingPlayer(final ParseObject challenge) {
+        Log.d("chooseStartingPlayer", "true");
         ParseQuery<ParseObject> startingPlayerQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
         startingPlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT, challenge);
-        startingPlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_OWNER, true);
+        //startingPlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_OWNER, true);
         startingPlayerQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
@@ -570,15 +573,7 @@ public abstract class ParentChallenge {
                     challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_CHALLENGE, challenge);
                     challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER, startingPlayer);
                     challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_START_TIME, new Date());
-                    if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO) {
-                        challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_PLAYING);
-                    }
-                    else if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN){
-                        challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_DONE);
-                        for (int i = 1; i < list.size(); i++ ) {
-                            challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_PLAYING);
-                        }
-                    }
+                    challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_PLAYING);
                     challengeEvent.saveInBackground();
                     startingPlayer.put(ParseConstants.CHALLENGE_PLAYER_IS_TURN, true);
                     startingPlayer.saveInBackground();
@@ -591,6 +586,20 @@ public abstract class ParentChallenge {
                         object = "crown";
                     }
                     ParentChallenge.sendPushNotification("You've started off with the " + object + " in '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", startingPlayerUser);
+                    // If Playing Capture the Crown
+                    if(challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN) {
+                        for(int i = 1; i < list.size(); i++) {
+                            ParseObject crownSeekerPlayer = list.get(i);
+                            ParseObject crownSeekerChallengeEvent = new ParseObject(ParseConstants.CLASS_CHALLENGE_EVENTS);
+                            crownSeekerChallengeEvent.put(ParseConstants.CHALLENGE_EVENTS_CHALLENGE, challenge);
+                            crownSeekerChallengeEvent.put(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER, crownSeekerPlayer);
+                            crownSeekerChallengeEvent.put(ParseConstants.CHALLENGE_EVENTS_START_TIME, new Date());
+                            crownSeekerChallengeEvent.put(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_PLAYING);
+                            crownSeekerChallengeEvent.saveInBackground();
+                            crownSeekerPlayer.put(ParseConstants.CHALLENGE_PLAYER_IS_TURN, false);
+                            crownSeekerPlayer.saveInBackground();
+                        }
+                    }
                 }
             }
         });

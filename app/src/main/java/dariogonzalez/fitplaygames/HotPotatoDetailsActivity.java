@@ -222,15 +222,21 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
                                             public void done(ParseObject user, ParseException e) {
                                                 final ChallengePlayerItem player = new ChallengePlayerItem();
                                                 ParseFile file = user.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
+                                                if(mHotPotatoChallenge.getChallengeStatusType() == ParseConstants.CHALLENGE_STATUS_PENDING) {
+                                                    profilePicture = file != null ? Uri.parse(file.getUrl()) : null;
+                                                    player.setmImageUri(profilePicture);
+                                                }
+                                                if(mHotPotatoChallenge.getChallengeStatusType() == ParseConstants.CHALLENGE_STATUS_PLAYING) {
                                                 if (challengePlayer.getBoolean(ParseConstants.CHALLENGE_PLAYER_IS_TURN)) {
                                                     profilePicture = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE +
                                                             "://" + getResources().getResourcePackageName(R.drawable.potato_47)
                                                             + '/' + getResources().getResourceTypeName(R.drawable.potato_47) + '/' + getResources().getResourceEntryName(R.drawable.potato_47));
                                                     player.setmImageUri(profilePicture);
-                                                }
-                                                else {
+                                                } else {
                                                     profilePicture = file != null ? Uri.parse(file.getUrl()) : null;
-                                                    player.setmImageUri(profilePicture);}
+                                                    player.setmImageUri(profilePicture);
+                                                }
+                                            }
                                                 if (mHotPotatoChallenge.getChallengeStatusType() == ParseConstants.CHALLENGE_STATUS_FINISHED) {
                                                     if (challengePlayer.getBoolean(ParseConstants.CHALLENGE_PLAYER_IS_LOSER)) {
                                                         profilePicture = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE +
@@ -238,10 +244,11 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
                                                                 + '/' + getResources().getResourceTypeName(R.drawable.firepotato) + '/' + getResources().getResourceEntryName(R.drawable.firepotato));
                                                         player.setmImageUri(profilePicture);
                                                     }
+                                                    else {
+                                                        profilePicture = file != null ? Uri.parse(file.getUrl()) : null;
+                                                        player.setmImageUri(profilePicture);}
                                                 }
-                                                else {
-                                                profilePicture = file != null ? Uri.parse(file.getUrl()) : null;
-                                                player.setmImageUri(profilePicture);}
+
                                                 player.setmIsOwner(challengePlayer.getBoolean(ParseConstants.CHALLENGE_PLAYER_OWNER));
                                                 player.setmPasses(challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_PASSES));
                                                 player.setmPlayerAverageHoldingTime(challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_AVERAGE_TIME));

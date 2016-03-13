@@ -452,12 +452,12 @@ public class FitbitHelper {
                                 try {
                                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                                     String dateTime = jsonObject.optString("time").toString();
-                                    Log.d("dateTime: ", dateTime);
+                                   // Log.d("dateTime: ", dateTime);
                                     final int value = Integer.parseInt(jsonObject.optString("value").toString());
                                     DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
                                     final Date time = df.parse(dateTimeToday + " " + dateTime);
-                                    Log.d("Time2: ", time.toString());
+                                    //Log.d("Time2: ", time.toString());
 
                                     ParseObject objectToUpdate = null;
                                     boolean objectFound = false;

@@ -143,6 +143,7 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
         }
         else if (id == R.id.action_refresh) {
             updateChallenge();
+            Log.d("Updated Challenge: ", "true");
         }
 
         return true;
@@ -230,6 +231,9 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
                                             public void done(ParseObject user, ParseException e) {
                                                 final ChallengePlayerItem player = new ChallengePlayerItem();
                                                 ParseFile file = user.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
+                                                if(mCaptureTheCrownChallenge.getChallengeStatusType() == ParseConstants.CHALLENGE_STATUS_PENDING) {
+                                                    profilePicture = file != null ? Uri.parse(file.getUrl()) : null;
+                                                    player.setmImageUri(profilePicture);}
                                                 if (mCaptureTheCrownChallenge.getChallengeStatusType() == ParseConstants.CHALLENGE_STATUS_PLAYING) {
                                                     profilePicture = file != null ? Uri.parse(file.getUrl()) : null;
                                                     player.setmImageUri(profilePicture);
@@ -270,12 +274,12 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
                                                                 Log.d("bad list", "Got here");
                                                             }
                                                         }
-                                                        if (challengePlayer.getBoolean(ParseConstants.CHALLENGE_PLAYER_IS_TURN)) {
-                                                            users.add(0, player);
-                                                        }
-                                                        else{
+//                                                        if (challengePlayer.getBoolean(ParseConstants.CHALLENGE_PLAYER_IS_TURN)) {
+//                                                            users.add(0, player);
+//                                                        }
+//                                                        else{
                                                             users.add(users.size(), player);
-                                                        }
+//                                                        }
                                                         ArrayAdapter<ChallengePlayerItem> adapter = new CaptureTheCrownPlayersAdapter(CaptureTheCrownDetailsActivity.this, R.layout.row_capture_the_crown_players, users, mCaptureTheCrownChallenge.getStepsGoal(), challenge.get(0).getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS));
                                                         playingFriendsList.setAdapter(adapter);
                                                     }
