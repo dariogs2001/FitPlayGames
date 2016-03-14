@@ -40,7 +40,7 @@ public class AlarmReceiver extends WakefulBroadcastReceiver
         Intent intent = new Intent(context, AlarmReceiver.class);
         alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
 
-        alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+        alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,
                 INTERVAL_SIXEEN_MINUTES,
                 INTERVAL_SIXEEN_MINUTES,
                 alarmIntent);
