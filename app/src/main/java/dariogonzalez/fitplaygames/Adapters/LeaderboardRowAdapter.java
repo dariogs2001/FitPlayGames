@@ -25,6 +25,7 @@ import java.util.List;
 
 import dariogonzalez.fitplaygames.FitPlayGamesApplication;
 import dariogonzalez.fitplaygames.R;
+import dariogonzalez.fitplaygames.classes.ChallengeTypeConstants;
 import dariogonzalez.fitplaygames.classes.LeaderboardItem;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
 
@@ -66,7 +67,9 @@ public class LeaderboardRowAdapter extends ArrayAdapter<LeaderboardItem> {
         final LeaderboardItem currentItem = mUserList.get(position);
 
         holder.username.setText(currentItem.getmUsername());
-        holder.userGamesTV.setText(currentItem.getmNumOfGames() + " Games");
+        String gamesStats = currentItem.getmNumOfGames() + " Games";
+        gamesStats += currentItem.getChallengeType() == ChallengeTypeConstants.HOT_POTATO ? " - Losses: " +  currentItem.getFinalResult() : " - Wins: " + currentItem.getFinalResult();
+        holder.userGamesTV.setText(gamesStats);
 
         int hours = currentItem.getmAvgTime() / 60;
         int minutes = currentItem.getmAvgTime() % 60;

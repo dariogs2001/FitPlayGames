@@ -162,20 +162,6 @@ public abstract class ParentChallenge {
                         } catch (Exception ex) {
 
                         }
-
-//                        ParseQuery<ParseObject> challengeQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGES);
-//                        challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_ID, challengePlayer.getParseObject(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT).getObjectId());
-//                        challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_STATUS, ParseConstants.CHALLENGE_STATUS_PLAYING);
-//                        challengeQuery.findInBackground(new FindCallback<ParseObject>() {
-//                            @Override
-//                            public void done(List<ParseObject> challenges, ParseException e) {
-//                                if (e == null) {
-//                                    for (ParseObject challenge : challenges) {
-//                                        updateChallenge(challenge, challengePlayer);
-//                                    }
-//                                }
-//                            }
-//                        });
                     }
                 }
             }

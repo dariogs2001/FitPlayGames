@@ -114,15 +114,14 @@ public final class ParseConstants
     public static String CHALLENGE_EVENTS_START_TIME = "StartTime";
     public static String CHALLENGE_EVENTS_END_TIME = "EndTime";
     public static String CHALLENGE_EVENTS_GAME_TIME = "GameTime";
-    public static final String CHALLENGE_EVENTS_STEP_PROGRESSION = "StepProgression";
+    public static String CHALLENGE_EVENTS_STEP_PROGRESSION = "StepProgression";
 
     public static int CHALLENGE_EVENTS_FINAL_STATUS_PLAYING = 1;
     public static int CHALLENGE_EVENTS_FINAL_STATUS_DONE = 2;
 
     public static String KEY_ANALYTICS_HELP_HOT_POTATO = "HelpGameHotPotato";
     public static String KEY_ANALYTICS_HELP_CAPTURE_CROWN = "HelpGameCaptureCrown";
-
-
+    /********************************************************************************************/
 
     /******************Activity Steps By Day 15 Min*********************************************/
     public static String CLASS_ACTIVITY_STEPS_15_MIN = "ActivityStepsByDay15Min";
@@ -130,10 +129,6 @@ public final class ParseConstants
     public static String ACTIVITY_STEPS_STEPS = "Steps";
     public static String ACTIVITY_STEPS_USER_ID = "userId";
     /*******************************************************************************************/
-
-
-
-
 
     /*******************PARSE.COM ANALYTICS******************************************************/
     public static String KEY_ANALYTICS_MAIN_ACTIVITY = "MainActivity";
@@ -152,11 +147,5 @@ public final class ParseConstants
     public static int PERMISSION_ALL = 0;
     public static int PERMISSION_HOT_POTATO = 1;
     public static int PERMISSION_CAPTURE_THE_CROWN = 2;
-
     /********************************************************************************************/
-
-    /******************Parse Installation*******************************************************/
-
-
-
 }

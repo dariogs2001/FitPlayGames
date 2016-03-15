@@ -12,12 +12,16 @@ public class LeaderboardItem {
     private String mUsername;
     private int mNumOfGames,  mAvgTime;
     private Uri mImageUri;
+    private int finalResult;
+    private int challengeType;
 
-    public LeaderboardItem(String username, int numOfGames, int avgTime, Uri imageUri) {
+    public LeaderboardItem(String username, int numOfGames, int avgTime, Uri imageUri, int finalResult, int challengeType) {
         this.mUsername = username;
         this.mNumOfGames = numOfGames;
         this.mAvgTime = avgTime;
         this.mImageUri = imageUri;
+        this.finalResult = finalResult;
+        this.challengeType = challengeType;
     }
 
     public int getmIconId() {
@@ -38,6 +42,14 @@ public class LeaderboardItem {
 
     public Uri getmImageUri() {
         return mImageUri;
+    }
+
+    public int getFinalResult() {
+        return finalResult;
+    }
+
+    public int getChallengeType() {
+        return challengeType;
     }
 
     public void setmImageUri(Uri mImageUri) {

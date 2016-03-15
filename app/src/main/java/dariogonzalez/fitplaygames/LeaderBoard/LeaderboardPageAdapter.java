@@ -30,15 +30,16 @@ public class LeaderboardPageAdapter extends FragmentPagerAdapter {
         {
             case 0:
                 return new LeaderBoardFragment();
-            case 1:
-                return new LeaderBoardFragment();
+//            case 1:
+//                return new LeaderBoardFragment();
         }
         return null;
     }
 
     @Override
     public int getCount() {
-        return 2;
+//        return 2;
+        return 1;
     }
 
     @Override
@@ -47,26 +48,9 @@ public class LeaderboardPageAdapter extends FragmentPagerAdapter {
         switch (position) {
             case 0:
                 return mContext.getString(R.string.leaderboard_title_section1).toUpperCase(l);
-            case 1:
-                return mContext.getString(R.string.leaderboard_title_section2).toUpperCase(l);
+//            case 1:
+//                return mContext.getString(R.string.leaderboard_title_section2).toUpperCase(l);
         }
         return null;
     }
-//
-//    public int getIcon(int position) {
-//        switch (position) {
-//            case 0:
-//                return R.drawable.ic_home_white;
-//            case 1:
-//                return R.drawable.ic_person_white;
-//            case 2:
-//                return R.drawable.ic_people_white;
-//            case 3:
-//                return R.drawable.ic_trophy;
-//            case 4:
-//                return R.drawable.ic_settings_white;
-//        }
-//        return R.drawable.ic_action_go_to_today;
-//    }
-
 }
