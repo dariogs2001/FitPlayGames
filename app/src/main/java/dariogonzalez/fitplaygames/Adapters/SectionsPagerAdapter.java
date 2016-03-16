@@ -12,7 +12,7 @@ import dariogonzalez.fitplaygames.MainChallengeFragment;
 import dariogonzalez.fitplaygames.MainMoreOptionsFragment;
 import dariogonzalez.fitplaygames.MainProfileFragment;
 import dariogonzalez.fitplaygames.R;
-import dariogonzalez.fitplaygames.SelectLeaderBoardFragment;
+import dariogonzalez.fitplaygames.LeaderBoard.SelectLeaderBoardFragment;
 
 
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
