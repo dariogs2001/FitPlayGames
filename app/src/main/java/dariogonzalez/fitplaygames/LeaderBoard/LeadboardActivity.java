@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import dariogonzalez.fitplaygames.R;
+import dariogonzalez.fitplaygames.classes.ChallengeTypeConstants;
 
 public class LeadboardActivity extends AppCompatActivity {
 
@@ -22,6 +23,9 @@ public class LeadboardActivity extends AppCompatActivity {
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     private LeaderboardPageAdapter mSectionsPagerAdapter;
+    private int challengeType = ChallengeTypeConstants.HOT_POTATO;
+
+
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -33,11 +37,18 @@ public class LeadboardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leader_board_new);
 
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null)
+        {
+            challengeType = bundle.getInt("challengeType");
+        }
+
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new LeaderboardPageAdapter(this, getSupportFragmentManager());
+        mSectionsPagerAdapter.ChallengeType = challengeType;
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);

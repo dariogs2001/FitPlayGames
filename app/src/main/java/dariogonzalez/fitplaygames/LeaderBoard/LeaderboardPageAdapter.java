@@ -14,6 +14,7 @@ import dariogonzalez.fitplaygames.R;
  */
 public class LeaderboardPageAdapter extends FragmentPagerAdapter {
     protected Context mContext;
+    public int ChallengeType;
 
     public LeaderboardPageAdapter(Context context, FragmentManager fm) {
         super(fm);
@@ -29,7 +30,9 @@ public class LeaderboardPageAdapter extends FragmentPagerAdapter {
         switch (position)
         {
             case 0:
-                return new LeaderBoardFragment();
+                LeaderBoardFragment frm = new LeaderBoardFragment();
+                frm.ChallengeType = ChallengeType;
+                return frm;
 //            case 1:
 //                return new LeaderBoardFragment();
         }

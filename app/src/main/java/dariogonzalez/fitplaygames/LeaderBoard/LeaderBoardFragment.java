@@ -33,6 +33,7 @@ public class LeaderBoardFragment extends Fragment {
     private List<LeaderboardItem> mLeadBoardList = new ArrayList<LeaderboardItem>();
     private ListView friendsResultListView;
     private View view;
+    public int ChallengeType = ChallengeTypeConstants.HOT_POTATO;
 
     public LeaderBoardFragment() {
         // Required empty public constructor
@@ -45,7 +46,7 @@ public class LeaderBoardFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_leader_board_new, container, false);
         friendsResultListView = (ListView) view.findViewById(R.id.leader_board_list_view);
 
-        showFriendsList(ChallengeTypeConstants.HOT_POTATO);
+        showFriendsList(ChallengeType);
         return view;
     }
 

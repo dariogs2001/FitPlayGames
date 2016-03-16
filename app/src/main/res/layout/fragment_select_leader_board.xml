@@ -38,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="190dp"
         style="@style/CardView_Main"
-        android:id="@+id/steal_the_flag_leader_board"
+        android:id="@+id/capture_the_crown_leader_board"
         android:layout_weight="1">
 
         <ImageView

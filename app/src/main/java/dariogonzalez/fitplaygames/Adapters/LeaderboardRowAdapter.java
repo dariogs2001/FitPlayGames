@@ -57,6 +57,7 @@ public class LeaderboardRowAdapter extends ArrayAdapter<LeaderboardItem> {
             holder.userLossesTV = (TextView) row.findViewById(R.id.num_of_losses);
             holder.userAvgTime = (TextView) row.findViewById(R.id.avg_time);
             holder.userThumbnail = (ImageView) row.findViewById(R.id.user_thumbnail);
+            holder.timeString = (TextView) row.findViewById(R.id.potato_time_value);
 
             row.setTag(holder);
         }
@@ -70,6 +71,7 @@ public class LeaderboardRowAdapter extends ArrayAdapter<LeaderboardItem> {
         String gamesStats = currentItem.getmNumOfGames() + " Games";
         gamesStats += currentItem.getChallengeType() == ChallengeTypeConstants.HOT_POTATO ? " - Losses: " +  currentItem.getFinalResult() : " - Wins: " + currentItem.getFinalResult();
         holder.userGamesTV.setText(gamesStats);
+        holder.timeString.setText( currentItem.getChallengeType() == ChallengeTypeConstants.HOT_POTATO ? R.string.average_potato_time : R.string.average_crown_time);
 
         int hours = currentItem.getmAvgTime() / 60;
         int minutes = currentItem.getmAvgTime() % 60;
@@ -90,7 +92,7 @@ public class LeaderboardRowAdapter extends ArrayAdapter<LeaderboardItem> {
     }
 
     static class UserRowHolder {
-        TextView username, userGamesTV, userLossesTV, userAvgTime;
+        TextView username, userGamesTV, userLossesTV, userAvgTime, timeString;
         ImageView userThumbnail;
     }
 }
