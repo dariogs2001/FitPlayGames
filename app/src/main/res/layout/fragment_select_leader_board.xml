@@ -22,7 +22,7 @@
             android:layout_height="match_parent"
             android:visibility="visible"
             android:src="@drawable/leaderboard_potato"
-            style="@style/CardViewImage"/>
+            style="@style/CardViewImageHotPotato"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -31,7 +31,7 @@
             android:padding="10dp"
             android:text="@string/choose_challenge_hot_potato"
             style="@style/CardView_TextView"
-            android:textSize="12dp"/>
+            android:textSize="14dp"/>
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
@@ -46,7 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/leaderboard_crown"
-            style="@style/CardViewImage"/>
+            style="@style/CardViewImageCrown"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -55,6 +55,6 @@
             android:padding="10dp"
             android:text="@string/choose_challenge_capture_crown"
             style="@style/CardView_TextView"
-            android:textSize="12dp"/>
+            android:textSize="14dp"/>
     </android.support.v7.widget.CardView>
 </LinearLayout>

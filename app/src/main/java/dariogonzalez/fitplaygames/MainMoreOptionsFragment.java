@@ -22,8 +22,11 @@ import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import dariogonzalez.fitplaygames.classes.ChallengeTypeConstants;
+import dariogonzalez.fitplaygames.classes.HotPotatoChallenge;
 import dariogonzalez.fitplaygames.classes.MoreOptionsListItem;
 import dariogonzalez.fitplaygames.classes.ParentChallenge;
 import dariogonzalez.fitplaygames.utils.FitbitHelper;
@@ -137,6 +140,8 @@ public class MainMoreOptionsFragment extends android.support.v4.app.Fragment {
 
                     case 6:
                         ParentChallenge.updateChallenges();
+//                        HotPotatoChallenge challenge = new HotPotatoChallenge(ChallengeTypeConstants.HOT_POTATO);
+//                        Date ddd = challenge.generateRandomEndDate(1000, 2, new Date());
                         break;
                     default:
                         break;

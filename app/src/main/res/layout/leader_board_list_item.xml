@@ -70,26 +70,26 @@
         android:layout_alignParentEnd="true" >
 
         <TextView
-            android:id="@+id/potato_time_value"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:text="@string/average_potato_time"
-            android:paddingTop="3dp"
-            android:textColor="@color/accent"
-            android:layout_weight="1" />
-
-
-        <TextView
             android:id="@+id/avg_time"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
-            android:gravity="center"
+            android:gravity="end"
             android:layout_weight="1"
-            android:textSize="14sp" />
+            android:textSize="18sp"
+            android:textColor="@color/accent"/>
+
+        <TextView
+            android:id="@+id/potato_time_value"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="13sp"
+            android:text="@string/average_potato_time"
+            android:paddingTop="3dp"
+            android:layout_weight="1" />
+
+
 
     </LinearLayout>
 
