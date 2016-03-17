@@ -36,9 +36,6 @@ public class FitbitAuthenticationActivity extends ActionBarActivity {
     private Token accessToken;
     private FloatingActionButton fab;
 
-//    private String apiKey = "a2f813cf8c7420eff5629382ae6a25a4";
-//    private String apiSecret = "0129ef7d53df74e1bb428fdaec8df9c1";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -118,6 +118,7 @@ public final class ParseConstants
 
     public static int CHALLENGE_EVENTS_FINAL_STATUS_PLAYING = 1;
     public static int CHALLENGE_EVENTS_FINAL_STATUS_DONE = 2;
+    public static int CHALLENGE_EVENTS_FINAL_STATUS_CROWN = 3;
 
     public static String KEY_ANALYTICS_HELP_HOT_POTATO = "HelpGameHotPotato";
     public static String KEY_ANALYTICS_HELP_CAPTURE_CROWN = "HelpGameCaptureCrown";
