@@ -78,7 +78,7 @@
             android:layout_weight="1"
             android:inputType="textShortMessage"
             android:lines="1"
-            android:hint="Send message to the group "
+            android:hint="Send a message..."
             android:singleLine="true"/>
 
         <ImageButton
