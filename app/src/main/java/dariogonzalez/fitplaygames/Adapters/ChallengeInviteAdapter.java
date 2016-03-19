@@ -37,6 +37,7 @@ public class ChallengeInviteAdapter extends ArrayAdapter<UserListItem> {
     public View getView(final int position, View convertView, ViewGroup parent) {
         View row = convertView;
         ChallengeInviteHolder holder = null;
+        final UserListItem currentItem = mFriendList.get(position);
 
         if (row == null){
             row = LayoutInflater.from(mContext).inflate(R.layout.row_challenge_invite, parent, false);
@@ -49,34 +50,30 @@ public class ChallengeInviteAdapter extends ArrayAdapter<UserListItem> {
 
             row.setTag(holder);
         }
-        else {
+        else
+        {
             holder = (ChallengeInviteHolder) row.getTag();
+            holder.selectedCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                    currentItem.setChecked(checked);
+                }
+            });
         }
 
-        final UserListItem currentItem = mFriendList.get(position);
 
         holder.userNameTV.setText(currentItem.getmFriendObject().getUsername());
-        holder.stepsTV.setText(String.format ("%,d", (int)currentItem.getmSteps()));
+        holder.stepsTV.setText(String.format("%,d", (int) currentItem.getmSteps()));
         Uri profilePicture = currentItem.getmImageUri();
         if (profilePicture != null)
         {
             Picasso.with(mContext).load(profilePicture.toString()).into(holder.userThumbnail);
         }
-        else
-        {
+        else {
             holder.userThumbnail.setImageResource(currentItem.getmIconId());
         }
 
-        if (currentItem.getChecked()) {
-            holder.selectedCheckbox.setChecked(true);
-        }
-
-        holder.selectedCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                currentItem.setChecked(checked);
-            }
-        });
+        holder.selectedCheckbox.setChecked(currentItem.getChecked());
 
         return row;
     }

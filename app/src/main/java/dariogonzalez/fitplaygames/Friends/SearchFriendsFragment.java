@@ -86,19 +86,18 @@ public class SearchFriendsFragment extends Fragment {
         mQueriedFriendList.clear();
         if(mFriendList.size() > 0)
         {
-            for(int i = 0; i < mFriendList.size(); i++)
+            for(UserListItem user : mFriendList)
             {
                 Locale locale = Locale.getDefault();
                 // Prefix is whatever the user has entered into the edittext. It will check lower/upper case names and check conf number
-                if(mFriendList.get(i).getmFriendObject().get(ParseConstants.USER_USERNAME).toString().contains(queryText) || mFriendList.get(i).getmFriendObject().get(ParseConstants.USER_USERNAME).toString().toLowerCase().contains(queryText))
+                if(user.getmFriendObject().get(ParseConstants.USER_USERNAME).toString().toLowerCase().contains(queryText.toLowerCase()))
                 {
-                    mQueriedFriendList.add(mFriendList.get(i));
+                    mQueriedFriendList.add(user);
                 }
             }
             populateListView(mQueriedFriendList);
         }
     }
-
 
     private void getFriendData() {
         if (mFriendList!= null && mFriendList.size() == 0) {
@@ -134,33 +133,29 @@ public class SearchFriendsFragment extends Fragment {
                             try {
                                 ParseUser friendObject;
                                 ParseUser newUserObject;
-                                if (userFriend.getString(ParseConstants.USER_FRIENDS_FRIEND_ID).equals(userId)) {
+                                if (userFriend.getString(ParseConstants.USER_FRIENDS_FRIEND_ID).equals(userId))
+                                {
                                     friendObject = userFriend.getParseUser(ParseConstants.USER_OBJECT).fetchIfNeeded();
                                     newUserObject = userObject;
-                                } else {
+                                }
+                                else
+                                {
                                     friendObject = userFriend.getParseUser(ParseConstants.FRIEND_OBJECT).fetchIfNeeded();
                                     newUserObject = userObject;
                                 }
-                                if (friendObject != null) {
+
+                                if (friendObject != null)
+                                {
                                     ParseFile file = friendObject.getParseFile(ParseConstants.USER_PROFILE_PICTURE);
                                     Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
                                     int friendStatusId = userFriend.getInt(ParseConstants.USER_FRIENDS_STATUS);
-
-                                    //TODO: WHAT IS THIS LOCATION FOR???
-                                    int location = 0;
-                                    if (friendStatusId == ParseConstants.FRIEND_STATUS_SENT) {
-                                        if (mFriendList.size() == 0) {
-                                            location = mFriendList.size();
-                                        } else {
-                                            location = mFriendList.size() - 1;
-                                        }
-                                    }
 
                                     double steps = 0;
                                     if (friendObject.has(ParseConstants.USER_LAST_SEVEN_DAYS)) {
                                         try {
                                             ParseObject lastSevenDays = friendObject.getParseObject(ParseConstants.USER_LAST_SEVEN_DAYS).fetchIfNeeded();
-                                            if (lastSevenDays != null) {
+                                            if (lastSevenDays != null)
+                                            {
                                                 steps = lastSevenDays.getDouble(ParseConstants.LAST_SEVEN_DAYS_STEPS);
                                             }
                                         }
@@ -204,12 +199,14 @@ public class SearchFriendsFragment extends Fragment {
         friendsResultListView.setAdapter(adapter);
     }
 
-    public List<UserListItem> getSelectedFriends() {
+    public List<UserListItem> getSelectedFriends()
+    {
         List<UserListItem> selectedItems = new ArrayList<>();
 
-        for (int i = 0; i < mFriendList.size(); i++) {
-            UserListItem user = adapter.getItem(i);
-            if (user.getChecked()) {
+        for (UserListItem user : mFriendList)
+        {
+            if (user.getChecked())
+            {
                 selectedItems.add(user);
             }
         }
