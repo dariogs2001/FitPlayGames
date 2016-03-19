@@ -128,7 +128,7 @@ public class CaptureTheCrownCreateActivity extends AppCompatActivity {
         mCreateGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Utils.trackData(ParseConstants.KEY_ANALYTICS_CREATE_GAME_HOT_POTATO, ParseConstants.KEY_ANALYTICS_CREATE_GAME_HOT_POTATO);
+                Utils.trackData(ParseConstants.KEY_ANALYTICS_CREATE_GAME_CAPTURE_CROWN, ParseConstants.KEY_ANALYTICS_CREATE_GAME_CAPTURE_CROWN);
 
                 boolean isReady = true;
                 if (mChallengeName.getText().length() < 1 || stepSpinner.getSelectedItemPosition() == 0)
@@ -193,15 +193,12 @@ public class CaptureTheCrownCreateActivity extends AppCompatActivity {
         mCancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Utils.trackData(ParseConstants.KEY_ANALYTICS_CANCEL_GAME_HOT_POTATO, ParseConstants.KEY_ANALYTICS_CANCEL_GAME_HOT_POTATO);
+                Utils.trackData(ParseConstants.KEY_ANALYTICS_CANCEL_GAME_CAPTURE_CROWN, ParseConstants.KEY_ANALYTICS_CANCEL_GAME_CAPTURE_CROWN);
 
                 NavUtils.navigateUpFromSameTask(CaptureTheCrownCreateActivity.this);
             }
         });
-
-
     }
-
 
     public void showDateDialog() {
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, datePickerListener, mYear, mMonth, mDay);

@@ -141,6 +141,21 @@ public final class ParseConstants
     public static String KEY_ANALYTICS_SELECT_GAME_CAPTURE_CROWN = "SelectGameCaptureCrown";
     public static String KEY_ANALYTICS_CREATE_GAME_CAPTURE_CROWN = "CreateGameCaptureCrown";
     public static String KEY_ANALYTICS_CANCEL_GAME_CAPTURE_CROWN = "CancelGameCaptureCrown";
+    public static String KEY_ANALYTICS_SEARCH_FRIEND = "SearchFriend";
+    public static String KEY_ANALYTICS_CHAT = "Chat";
+
+    public static String KEY_ANALYTICS_MAIN_OTHER_FITBIT = "MainOtherFitbit";
+    public static String KEY_ANALYTICS_MAIN_OTHER_LOGOUT = "MainOtherLogout";
+    public static String KEY_ANALYTICS_MAIN_OTHER_PRIVACY = "MainOtherPrivacy";
+
+    public static String KEY_ANALYTICS_HP_CHALLENGE_PENDING = "HPChallengePending";
+    public static String KEY_ANALYTICS_HP_CHALLENGE_PLAYING = "HPChallengePlaying";
+    public static String KEY_ANALYTICS_HP_CHALLENGE_FINISHED = "HPChallengeFinished";
+
+    public static String KEY_ANALYTICS_CTC_CHALLENGE_PENDING = "CtCChallengePending";
+    public static String KEY_ANALYTICS_CTC_CHALLENGE_PLAYING = "CtCChallengePlaying";
+    public static String KEY_ANALYTICS_CTC_CHALLENGE_FINISHED = "CtCChallengeFinished";
+
 
     /********************************************************************************************/
 

@@ -45,6 +45,7 @@ import dariogonzalez.fitplaygames.classes.ParseConstants;
 import dariogonzalez.fitplaygames.dialogs.FullImageDialog;
 import dariogonzalez.fitplaygames.utils.FileHelper;
 import dariogonzalez.fitplaygames.utils.RoundedImageView;
+import dariogonzalez.fitplaygames.utils.Utils;
 
 
 /**
@@ -147,6 +148,7 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
             }
         }
 
+        Utils.trackData(ParseConstants.KEY_ANALYTICS_PROFILE, ParseConstants.KEY_ANALYTICS_PROFILE);
         return view;
     }
 

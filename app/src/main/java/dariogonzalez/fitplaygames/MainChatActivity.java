@@ -27,6 +27,7 @@ import java.util.Random;
 
 import dariogonzalez.fitplaygames.Adapters.ChatListAdapter;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
+import dariogonzalez.fitplaygames.utils.Utils;
 
 /**
  * Created by ChristensenKC on 10/28/2015.
@@ -49,6 +50,8 @@ public class MainChatActivity extends AppCompatActivity {
         //getActionBar().setDisplayHomeAsUpEnabled(true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_main);
+
+        Utils.trackData(ParseConstants.KEY_ANALYTICS_CHAT, ParseConstants.KEY_ANALYTICS_CHAT);
 
         progressBar = (LinearLayout) findViewById(R.id.progress_bar);
         emptyStateLayout = (LinearLayout) findViewById(R.id.empty_state_chat);

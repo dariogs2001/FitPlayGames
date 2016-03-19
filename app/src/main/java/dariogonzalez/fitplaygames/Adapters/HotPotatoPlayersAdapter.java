@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -156,8 +157,6 @@ public class HotPotatoPlayersAdapter extends ArrayAdapter<ChallengePlayerItem> {
             }
         });
 
-
-
         return row;
     }
 
@@ -165,18 +164,17 @@ public class HotPotatoPlayersAdapter extends ArrayAdapter<ChallengePlayerItem> {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
         query.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT, user.getmUserObject());
         query.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT, user.getmChallengeObject());
-        query.findInBackground(new FindCallback<ParseObject>() {
+        query.getFirstInBackground(new GetCallback<ParseObject>() {
             @Override
-            public void done(List<ParseObject> challengePlayers, ParseException e) {
-                if (e == null) {
-                    challengePlayers.get(0).put(ParseConstants.CHALLENGE_PLAYER_STATUS, status);
-                    challengePlayers.get(0).saveInBackground();
+            public void done(ParseObject parseObject, ParseException e) {
+                if (e == null && parseObject != null) {
+                    parseObject.put(ParseConstants.CHALLENGE_PLAYER_STATUS, status);
+                    parseObject.saveInBackground();
                     holder.gameResponse.setVisibility(View.GONE);
 
                     if (status == ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED) {
                         holder.passesTV.setText(getContext().getResources().getString(R.string.accepted));
-                    }
-                    else if (status == ParseConstants.CHALLENGE_PLAYER_STATUS_DECLINED) {
+                    } else if (status == ParseConstants.CHALLENGE_PLAYER_STATUS_DECLINED) {
                         holder.passesTV.setText(getContext().getResources().getString(R.string.declined));
                     }
 

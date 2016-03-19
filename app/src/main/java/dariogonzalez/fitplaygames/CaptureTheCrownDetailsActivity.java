@@ -182,7 +182,6 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
                                 }
                             }
                         });
-
                     }
                 }
             });

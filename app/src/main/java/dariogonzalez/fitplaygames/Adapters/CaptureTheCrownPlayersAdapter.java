@@ -15,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -171,12 +172,12 @@ public class CaptureTheCrownPlayersAdapter extends ArrayAdapter<ChallengePlayerI
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
         query.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT, user.getmUserObject());
         query.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT, user.getmChallengeObject());
-        query.findInBackground(new FindCallback<ParseObject>() {
+        query.getFirstInBackground(new GetCallback<ParseObject>() {
             @Override
-            public void done(List<ParseObject> challengePlayers, ParseException e) {
-                if (e == null) {
-                    challengePlayers.get(0).put(ParseConstants.CHALLENGE_PLAYER_STATUS, status);
-                    challengePlayers.get(0).saveInBackground();
+            public void done(ParseObject parseObject, ParseException e) {
+                if (e == null && parseObject != null) {
+                    parseObject.put(ParseConstants.CHALLENGE_PLAYER_STATUS, status);
+                    parseObject.saveInBackground();
                     holder.gameResponse.setVisibility(View.GONE);
                     //TODO: see this one... We are already setting the number of players when we create the game, with this line we are incrementing the value
                     //every time a player accept the challenge...SO FOR NOW WE ONLY SET THE TOTAL NUMBER OF PLAYER INVITED TO PLAY THE GAME...

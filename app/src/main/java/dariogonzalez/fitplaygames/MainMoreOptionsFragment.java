@@ -29,7 +29,9 @@ import dariogonzalez.fitplaygames.classes.ChallengeTypeConstants;
 import dariogonzalez.fitplaygames.classes.HotPotatoChallenge;
 import dariogonzalez.fitplaygames.classes.MoreOptionsListItem;
 import dariogonzalez.fitplaygames.classes.ParentChallenge;
+import dariogonzalez.fitplaygames.classes.ParseConstants;
 import dariogonzalez.fitplaygames.utils.FitbitHelper;
+import dariogonzalez.fitplaygames.utils.Utils;
 
 
 /**
@@ -43,7 +45,6 @@ public class MainMoreOptionsFragment extends android.support.v4.app.Fragment {
     public MainMoreOptionsFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -85,14 +86,17 @@ public class MainMoreOptionsFragment extends android.support.v4.app.Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 0:
+                        Utils.trackData(ParseConstants.KEY_ANALYTICS_MAIN_OTHER_FITBIT, ParseConstants.KEY_ANALYTICS_MAIN_OTHER_FITBIT);
                         showIntent(getActivity(), FitbitAuthenticationActivity.class);
                         break;
                     case 1:
+                        Utils.trackData(ParseConstants.KEY_ANALYTICS_MAIN_OTHER_LOGOUT, ParseConstants.KEY_ANALYTICS_MAIN_OTHER_LOGOUT);
                         ParseUser.logOut();
                         FitPlayGamesApplication.unsubscribeFromPush();
                         showIntent(getActivity(), LoginActivity.class);
                         break;
                     case 2:
+                        Utils.trackData(ParseConstants.KEY_ANALYTICS_MAIN_OTHER_PRIVACY, ParseConstants.KEY_ANALYTICS_MAIN_OTHER_PRIVACY);
                         showIntent(getActivity(), PrivacyPolicyActivity.class);
                         break;
                     case 3:

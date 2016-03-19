@@ -27,6 +27,7 @@ import dariogonzalez.fitplaygames.R;
 import dariogonzalez.fitplaygames.UserProfileActivity;
 import dariogonzalez.fitplaygames.classes.UserListItem;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
+import dariogonzalez.fitplaygames.utils.Utils;
 
 public class SearchFriendActivity extends AppCompatActivity {
     private List<UserListItem> mSearchFriendList = new ArrayList<UserListItem>();
@@ -40,6 +41,7 @@ public class SearchFriendActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_friend);
 
+        Utils.trackData(ParseConstants.KEY_ANALYTICS_SEARCH_FRIEND, ParseConstants.KEY_ANALYTICS_SEARCH_FRIEND);
 
         setProgressBarIndeterminateVisibility(true);
 
