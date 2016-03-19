@@ -173,6 +173,13 @@ public class HotPotatoPlayersAdapter extends ArrayAdapter<ChallengePlayerItem> {
                     challengePlayers.get(0).saveInBackground();
                     holder.gameResponse.setVisibility(View.GONE);
 
+                    if (status == ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED) {
+                        holder.passesTV.setText(getContext().getResources().getString(R.string.accepted));
+                    }
+                    else if (status == ParseConstants.CHALLENGE_PLAYER_STATUS_DECLINED) {
+                        holder.passesTV.setText(getContext().getResources().getString(R.string.declined));
+                    }
+
                     //TODO: see this one... We are already setting the number of players when we create the game, with this line we are incrementing the value
 //                    if (status == ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED) {
 //                        ParseObject challenge = challengePlayers.get(0).getParseObject(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT);

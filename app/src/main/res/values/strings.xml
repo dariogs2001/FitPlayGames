@@ -181,4 +181,5 @@
     <string name="num_of_games"># of games</string>
     <string name="slash">/</string>
     <string name="end_day">End Day</string>
+    <string name="declined">Declined</string>
 </resources>

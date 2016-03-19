@@ -1,5 +1,6 @@
 package dariogonzalez.fitplaygames.LeaderBoard;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 
@@ -10,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import dariogonzalez.fitplaygames.MainActivity;
 import dariogonzalez.fitplaygames.R;
 import dariogonzalez.fitplaygames.classes.ChallengeTypeConstants;
 
@@ -58,5 +60,24 @@ public class LeadboardActivity extends AppCompatActivity {
 //
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == android.R.id.home) {
+            // Finish is usually bad practice but it makes sense here to correctly go back to the search friends page and persist the search data and list
+            finish();
+
+            return true;
+        }
+
+
+        return super.onOptionsItemSelected(item);
     }
 }

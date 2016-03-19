@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.parse.FindCallback;
@@ -34,6 +35,7 @@ import dariogonzalez.fitplaygames.classes.ParseConstants;
 public class LeaderBoardFragment extends Fragment {
     private List<LeaderboardItem> mLeadBoardList = new ArrayList<LeaderboardItem>();
     private ListView friendsResultListView;
+    private LinearLayout progressBar;
     private View view;
     public int ChallengeType = ChallengeTypeConstants.HOT_POTATO;
 
@@ -56,6 +58,9 @@ public class LeaderBoardFragment extends Fragment {
         // Inflate the layout for this fragment
         //view = localInflater.inflate(R.layout.fragment_leader_board_new, container, false);
         friendsResultListView = (ListView) view.findViewById(R.id.leader_board_list_view);
+        progressBar = (LinearLayout) view.findViewById(R.id.progress_bar);
+
+        progressBar.setVisibility(View.VISIBLE);
 
         showFriendsList(ChallengeType);
         return view;
@@ -186,9 +191,11 @@ public class LeaderBoardFragment extends Fragment {
     }
 
     private void populateListView() {
+        ArrayAdapter<LeaderboardItem> adapter = new LeaderboardRowAdapter(view.getContext(), R.layout.leader_board_list_item, mLeadBoardList);
+        friendsResultListView.setAdapter(adapter);
+        progressBar.setVisibility(View.GONE);
+        friendsResultListView.setVisibility(View.VISIBLE);
 
-            ArrayAdapter<LeaderboardItem> adapter = new LeaderboardRowAdapter(view.getContext(), R.layout.leader_board_list_item, mLeadBoardList);
-            friendsResultListView.setAdapter(adapter);
 //            friendsResultListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //                @Override
 //                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
