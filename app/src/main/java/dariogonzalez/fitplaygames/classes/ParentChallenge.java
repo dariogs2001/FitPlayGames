@@ -233,7 +233,8 @@ public abstract class ParentChallenge {
 
                                             //Added this boolean to avoid calling multiple times the save function, an async method
                                             boolean isFinished = false;
-                                            for (ParseObject data : list) {
+                                            for (ParseObject data : list)
+                                            {
 
                                                 if (isFinished) break;
 
@@ -249,34 +250,42 @@ public abstract class ParentChallenge {
                                                     Date startTime = challengeEvent.getDate(ParseConstants.CHALLENGE_EVENTS_START_TIME);
                                                     Date endTime = new Date();
                                                     //Result is in miliseconds so I divided by 1000 to set the seconds and by 60 to set the minutes
-                                                    long timeDifference = (endTime.getTime() - startTime.getTime()) / (1000 * 60);
+                                                    final long timeDifference = (endTime.getTime() - startTime.getTime()) / (1000 * 60);
 
                                                     //Changing status to DONE, and preparing everything to set next player and create new challengeEvent
                                                     challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_DONE);
                                                     challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_END_TIME, endTime);
                                                     challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_GAME_TIME, timeDifference);
                                                     challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_STEP_PROGRESSION, stepsAmount);
-                                                    challengeEvent.saveEventually();
-
-                                                    //Updating ChallengePlayer table with new values
-                                                    challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_IS_TURN, false);
-                                                    int playerPasses = challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_PASSES);
-                                                    playerPasses = playerPasses + 1;
-                                                    challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_PASSES, playerPasses);
-
-                                                    long gameTime = challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_GAME_TIME);
-                                                    gameTime += timeDifference;
-                                                    long avgTime = gameTime / playerPasses;
-
-                                                    challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_GAME_TIME, gameTime);
-                                                    challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_AVERAGE_TIME, avgTime);
-
-                                                    challengePlayer.saveEventually(new SaveCallback() {
+                                                    challengeEvent.saveInBackground(new SaveCallback() {
                                                         @Override
                                                         public void done(ParseException e) {
+
                                                             if (e == null) {
-                                                                sendPushNotification("Congrats! You just passed the potato in '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", ParseUser.getCurrentUser());
-                                                                chooseNextPlayerHotPotato(challenge, challengePlayer);
+                                                                //Updating ChallengePlayer table with new values
+                                                                challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_IS_TURN, false);
+
+                                                                challengePlayer.increment(ParseConstants.CHALLENGE_PLAYER_PASSES);
+                                                                int playerPasses = challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_PASSES);
+//                                                    playerPasses = playerPasses + 1;
+//                                                    challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_PASSES, playerPasses);
+
+                                                                long gameTime = challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_GAME_TIME);
+                                                                gameTime += timeDifference;
+                                                                long avgTime = gameTime / playerPasses;
+
+                                                                challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_GAME_TIME, gameTime);
+                                                                challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_AVERAGE_TIME, avgTime);
+
+                                                                challengePlayer.saveEventually(new SaveCallback() {
+                                                                    @Override
+                                                                    public void done(ParseException e) {
+                                                                        if (e == null) {
+                                                                            sendPushNotification("Congrats! You just passed the potato in '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", ParseUser.getCurrentUser());
+                                                                            chooseNextPlayerHotPotato(challenge, challengePlayer);
+                                                                        }
+                                                                    }
+                                                                });
                                                             }
                                                         }
                                                     });
@@ -286,7 +295,9 @@ public abstract class ParentChallenge {
                                             }
                                             challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_STEP_PROGRESSION, stepsAmount);
                                             challengeEvent.saveInBackground();
-                                        } else {
+                                        }
+                                        else
+                                        {
                                             Log.d("TEST", e.toString());
                                         }
                                     }
