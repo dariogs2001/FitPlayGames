@@ -309,6 +309,7 @@ public abstract class ParentChallenge {
                     //TODO: Add in all of the functionality of what ctc has to do when updated
                     final int stepsGoal = challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STEPS_GOAL);
                     Log.d("Crown: ", "You're in the CROWN if statement");
+                    // Query all players in a specific challenge if their status is playing (i.e. they are trying to capture the crown)
                     ParseQuery<ParseObject> challengeEventQuery = new ParseQuery(ParseConstants.CLASS_CHALLENGE_EVENTS);
                     challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER, challengePlayer);
                     challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_PLAYING);
@@ -379,7 +380,7 @@ public abstract class ParentChallenge {
                                                             }
                                                         }
                                                     });
-                                                    // This query is supposed to find the player with the crown, change status to DONE, and update that players stats
+                                                    // This query is supposed to find the player with the crown (aka not playing), change status to DONE, and update that players stats
                                                     ParseQuery<ParseObject> challengeEventQuery = new ParseQuery(ParseConstants.CLASS_CHALLENGE_EVENTS);
                                                     challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER, challengePlayer);
                                                     challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_CROWN);
@@ -480,8 +481,9 @@ public abstract class ParentChallenge {
      * @param challenge - object from Parse.com
      * @param challengePlayer - object from Parse.com
      */
-    // TODO: Make it so that first player to reach stepgoal gets the crown and CHALLENGE_PLAYER_IS_TURN is set to true.
+
     public static void handOverCrown(final ParseObject challenge, final ParseObject challengePlayer) {
+        // Query that returns all players in specific challenge
         ParseQuery<ParseObject> moveTurnQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
         moveTurnQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT, challenge);
         moveTurnQuery.findInBackground(new FindCallback<ParseObject>() {
@@ -490,16 +492,19 @@ public abstract class ParentChallenge {
                 Log.d("earnedCrown Player: ", challengePlayer.toString());
                 if (e == null && !list.isEmpty()) {
                     Log.d("Got into: ", "THE QUERY");
+                    // Loop through all players returned from the query
                     for (int i = 0; i < list.size(); i++) {
                         final ParseObject crownPlayer = list.get(i);
                         ParseObject challengeEvent = new ParseObject(ParseConstants.CLASS_CHALLENGE_EVENTS);
                         challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_CHALLENGE, challenge);
                         challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER, crownPlayer);
                         challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_START_TIME, new Date());
+                        // If current user earned the crown, change event status to having the crown
                         if(crownPlayer == challengePlayer) {
                             challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_CROWN);
                             challengeEvent.saveInBackground();
                         }
+                        // All other players should be created with a playing status and turn set to false.  Turn = true is reserved for the crown holder.
                         else {
                             challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_PLAYING);
                             crownPlayer.put(ParseConstants.CHALLENGE_PLAYER_IS_TURN, false);
@@ -508,7 +513,7 @@ public abstract class ParentChallenge {
                             challengeEvent.saveInBackground(new SaveCallback() {
                                 @Override
                                 public void done(ParseException e) {
-                                    //Sending push notification...
+                                    //Sending push notification only to players that don't have the crown.
                                     ParseUser crownSeekerPlayerUser = (ParseUser) crownPlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT);
                                     ParentChallenge.sendPushNotification("Another player captured the crown! Try to get it back in '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", crownSeekerPlayerUser);
                                 }
@@ -695,6 +700,7 @@ public abstract class ParentChallenge {
                     ParentChallenge.sendPushNotification("You've started off with the " + object + " in '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", startingPlayerUser);
                     // If Playing Capture the Crown
                     if(challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN) {
+                        // Query through everyone in the list that is not the starting player and add them to the database as playing with a turn set to false.
                         for(int i = 1; i < list.size(); i++) {
                             ParseObject crownSeekerPlayer = list.get(i);
                             ParseObject crownSeekerChallengeEvent = new ParseObject(ParseConstants.CLASS_CHALLENGE_EVENTS);
