@@ -48,19 +48,22 @@ public class ChallengeInviteAdapter extends ArrayAdapter<UserListItem> {
             holder.userThumbnail = (ImageView) row.findViewById(R.id.user_thumbnail);
             holder.selectedCheckbox = (CheckBox) row.findViewById(R.id.selected_checkbox);
 
+            holder.selectedCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+//                    currentItem.setChecked(checked);
+                    int getPosition = (Integer) compoundButton.getTag();  // Here we get the position that we have set for the checkbox using setTag.
+                    mFriendList.get(getPosition).setChecked(compoundButton.isChecked()); // Set the value of checkbox to maintain its state.
+                }
+            });
+
             row.setTag(holder);
         }
         else
         {
             holder = (ChallengeInviteHolder) row.getTag();
-            holder.selectedCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                    currentItem.setChecked(checked);
-                }
-            });
         }
-
+        holder.selectedCheckbox.setTag(position);
 
         holder.userNameTV.setText(currentItem.getmFriendObject().getUsername());
         holder.stepsTV.setText(String.format("%,d", (int) currentItem.getmSteps()));
@@ -74,6 +77,8 @@ public class ChallengeInviteAdapter extends ArrayAdapter<UserListItem> {
         }
 
         holder.selectedCheckbox.setChecked(currentItem.getChecked());
+
+        holder.selectedCheckbox.setChecked(mFriendList.get(position).getChecked());
 
         return row;
     }
