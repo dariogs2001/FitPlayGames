@@ -273,12 +273,12 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
                                                                 Log.d("bad list", "Got here");
                                                             }
                                                         }
-//                                                        if (challengePlayer.getBoolean(ParseConstants.CHALLENGE_PLAYER_IS_TURN)) {
-//                                                            users.add(0, player);
-//                                                        }
-//                                                        else{
+                                                        if (challengePlayer.getBoolean(ParseConstants.CHALLENGE_PLAYER_IS_TURN)) {
+                                                            users.add(0, player);
+                                                        }
+                                                        else{
                                                             users.add(users.size(), player);
-//                                                        }
+                                                        }
                                                         ArrayAdapter<ChallengePlayerItem> adapter = new CaptureTheCrownPlayersAdapter(CaptureTheCrownDetailsActivity.this, R.layout.row_capture_the_crown_players, users, mCaptureTheCrownChallenge.getStepsGoal(), challenge.get(0).getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS));
                                                         playingFriendsList.setAdapter(adapter);
                                                     }
