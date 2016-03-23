@@ -499,6 +499,7 @@ public abstract class ParentChallenge {
                         // If current user earned the crown, change event status to having the crown
                         if(crownPlayer == challengePlayer) {
                             challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_CROWN);
+                            crownPlayer.put(ParseConstants.CHALLENGE_PLAYER_IS_TURN, true);
                             challengeEvent.saveInBackground();
                         }
                         // All other players should be created with a playing status and turn set to false.  Turn = true is reserved for the crown holder.
