@@ -341,6 +341,7 @@ public abstract class ParentChallenge {
                                                     if (isFinished) break;
 
                                                     //Adding first to be sure we get the last updated value,
+                                                    Log.d(TAG, "Last updated value");
                                                     int steps = data.getInt(ParseConstants.ACTIVITY_STEPS_STEPS);
                                                     stepsAmount += steps;
 
@@ -419,6 +420,8 @@ public abstract class ParentChallenge {
                                                         break;
                                                     } // END IF STATEMENT FOR IF STEPSAMOUNT >= STEPSGOAL
                                                 }
+                                                challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_STEP_PROGRESSION, stepsAmount);
+                                                challengeEvent.saveInBackground();
                                             } else {
                                                 Log.d("TEST", e.getMessage());
                                             }
