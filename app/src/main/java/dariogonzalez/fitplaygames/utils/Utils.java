@@ -25,11 +25,16 @@ public class Utils {
 
     public static void trackData(String nameLog, String valueLog)
     {
-        Map<String, String> dimensions = new HashMap<String, String>();
-        dimensions.put(nameLog, valueLog);
-        dimensions.put("ParseUserId", ParseUser.getCurrentUser().getObjectId());
-        FlurryAgent.logEvent(nameLog, dimensions);
-        ParseAnalytics.trackEventInBackground(nameLog, dimensions);
+        //Using try/catch in case ParseUser.getCurrentUser().getObjectId() == null, when the user is still not logged in
+        try {
+            Map<String, String> dimensions = new HashMap<String, String>();
+            dimensions.put(nameLog, valueLog);
+            dimensions.put("ParseUserId", ParseUser.getCurrentUser().getObjectId());
+            FlurryAgent.logEvent(nameLog, dimensions);
+            ParseAnalytics.trackEventInBackground(nameLog, dimensions);
+        }
+        catch (Exception ex)
+        {}
     }
 
     public static boolean isParseUserLoggedIn()
