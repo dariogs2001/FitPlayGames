@@ -47,7 +47,8 @@ public class CaptureTheCrownPlayersAdapter extends ArrayAdapter<ChallengePlayerI
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent)
+    {
         View row = convertView;
         ChallengeInviteHolder holder = null;
 
@@ -74,7 +75,8 @@ public class CaptureTheCrownPlayersAdapter extends ArrayAdapter<ChallengePlayerI
 
             row.setTag(holder);
         }
-        else {
+        else
+        {
             holder = (ChallengeInviteHolder) row.getTag();
         }
 
@@ -137,18 +139,17 @@ public class CaptureTheCrownPlayersAdapter extends ArrayAdapter<ChallengePlayerI
             int minutes = userObject.getmPlayerAverageHoldingTime() % 60;
             String crownTimeStr = ((hours > 0) ? hours + " Hr " : "") + minutes + " Min";
             holder.crownTimeValue.setText(crownTimeStr);
-            if(position == 0) {
+            if (position == 0) {
                 row.setBackgroundColor(getContext().getResources().getColor(R.color.capture_the_crown_color));
                 holder.capturesTV.setTextColor(getContext().getResources().getColor(R.color.white));
                 holder.userNameTV.setTextColor(getContext().getResources().getColor(R.color.white));
                 holder.crownTimeValue.setTextColor(getContext().getResources().getColor(R.color.white));
                 holder.avgTime.setTextColor(getContext().getResources().getColor(R.color.white));
                 holder.userThumbnail.setImageResource(R.drawable.crown_47);
-                }
-            else {
+            } else {
                 row.setBackgroundColor(getContext().getResources().getColor(R.color.white));
-                 }
             }
+        }
 
         final ChallengeInviteHolder rowHolder = holder;
         holder.acceptBtn.setOnClickListener(new View.OnClickListener() {

@@ -108,8 +108,8 @@ public final class ParseConstants
 
     /**********************CHALLENGE EVENT *****************************************************/
     public static String CLASS_CHALLENGE_EVENTS = "ChallengeEvent";
-    public static String CHALLENGE_EVENTS_CHALLENGE_PLAYER = "ChallengePlayerObject";
-    public static String CHALLENGE_EVENTS_CHALLENGE = "ChallengeObject";
+    public static String CHALLENGE_EVENTS_CHALLENGE_PLAYER_OBJECT = "ChallengePlayerObject";
+    public static String CHALLENGE_EVENTS_CHALLENGE_OBJECT = "ChallengeObject";
     public static String CHALLENGE_EVENTS_FINAL_STATUS = "FinalStatus";
     public static String CHALLENGE_EVENTS_START_TIME = "StartTime";
     public static String CHALLENGE_EVENTS_END_TIME = "EndTime";

@@ -1,24 +1,17 @@
 package dariogonzalez.fitplaygames;
 
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -258,7 +251,7 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
                                                 player.setmUserObject((ParseUser) user);
                                                 // This is to get the step progression
                                                 ParseQuery<ParseObject> challengeEventQuery = new ParseQuery<>(ParseConstants.CLASS_CHALLENGE_EVENTS);
-                                                challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER, challengePlayer);
+                                                challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER_OBJECT, challengePlayer);
                                                 challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_PLAYING);
                                                 challengeEventQuery.findInBackground(new FindCallback<ParseObject>() {
                                                     @Override
