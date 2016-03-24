@@ -186,13 +186,13 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
         hotPotatoChallenge.setChallengePlayer(challengePlayer);
         hotPotatoChallenge.setNumberOfPlayers(challenge.getInt(ParseConstants.CHALLENGE_NUMBER_OF_PLAYERS));
 
-        if (challengeStatus == ParseConstants.CHALLENGE_STATUS_PLAYING) {
+        if (challengeStatus == ParseConstants.CHALLENGE_STATUS_PLAYING && hotPotatoChallenge.getChallengePlayer().getInt(ParseConstants.CHALLENGE_PLAYER_STATUS) == ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED) {
             mGamesListPlaying.add(hotPotatoChallenge);
         }
         else if (challengeStatus == ParseConstants.CHALLENGE_STATUS_PENDING) {
             mGamesListPending.add(hotPotatoChallenge);
         }
-        else if (challengeStatus == ParseConstants.CHALLENGE_STATUS_FINISHED) {
+        else if (challengeStatus == ParseConstants.CHALLENGE_STATUS_FINISHED && hotPotatoChallenge.getChallengePlayer().getInt(ParseConstants.CHALLENGE_PLAYER_STATUS) == ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED) {
             mGamesListFinished.add(hotPotatoChallenge);
         }
     }
@@ -209,13 +209,13 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
         captureTheCrownChallenge.setChallengePlayer(challengePlayer);
         captureTheCrownChallenge.setNumberOfPlayers(challenge.getInt(ParseConstants.CHALLENGE_NUMBER_OF_PLAYERS));
 
-        if (challengeStatus == ParseConstants.CHALLENGE_STATUS_PLAYING) {
+        if (challengeStatus == ParseConstants.CHALLENGE_STATUS_PLAYING && captureTheCrownChallenge.getChallengePlayer().getInt(ParseConstants.CHALLENGE_PLAYER_STATUS) == ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED) {
             mGamesListPlaying.add(captureTheCrownChallenge);
         }
         else if (challengeStatus == ParseConstants.CHALLENGE_STATUS_PENDING) {
             mGamesListPending.add(captureTheCrownChallenge);
         }
-        else if (challengeStatus == ParseConstants.CHALLENGE_STATUS_FINISHED) {
+        else if (challengeStatus == ParseConstants.CHALLENGE_STATUS_FINISHED && captureTheCrownChallenge.getChallengePlayer().getInt(ParseConstants.CHALLENGE_PLAYER_STATUS) == ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED) {
             mGamesListFinished.add(captureTheCrownChallenge);
         }
     }
