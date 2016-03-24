@@ -206,6 +206,7 @@ public abstract class ParentChallenge {
                     // If current user has an active "turn", check steps and see if they should pass it
                     ParseQuery<ParseObject> challengeEventQuery = new ParseQuery(ParseConstants.CLASS_CHALLENGE_EVENTS);
                     challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER_OBJECT, challengePlayer);
+                    challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_OBJECT, challenge);
                     challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_PLAYING);
                     challengeEventQuery.getFirstInBackground(new GetCallback<ParseObject>() {
                         @Override
@@ -304,12 +305,12 @@ public abstract class ParentChallenge {
                     });
                 }
                 if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN) {
-                    //TODO: Add in all of the functionality of what ctc has to do when updated
                     final int stepsGoal = challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STEPS_GOAL);
                     Log.d("Crown: ", "You're in the CROWN if statement");
-                    // Query all players in a specific challenge if their status is playing (i.e. they are trying to capture the crown)
+                    // Query the player in a specific challenge if their status is playing (i.e. they are trying to capture the crown)
                     ParseQuery<ParseObject> challengeEventQuery = new ParseQuery(ParseConstants.CLASS_CHALLENGE_EVENTS);
                     challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER_OBJECT, challengePlayer);
+                    challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_OBJECT, challenge);
                     challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_PLAYING);
                     challengeEventQuery.getFirstInBackground(new GetCallback<ParseObject>() {
                         @Override
@@ -374,10 +375,10 @@ public abstract class ParentChallenge {
                                                                     challengePlayer.saveEventually(new SaveCallback() {
                                                                         @Override
                                                                         public void done(ParseException e) {
-                                                                            sendPushNotification("You have captured the crown in '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", ParseUser.getCurrentUser());
                                                                             updateCtCChallengeEventsToDone(challenge);
                                                                             handOverCrown(challenge, challengePlayer);
-                                                                        }
+                                                                            sendPushNotification("You have captured the crown in '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", ParseUser.getCurrentUser());
+                                                                         }
                                                                     });
                                                                 }
                                                             }
@@ -427,7 +428,6 @@ public abstract class ParentChallenge {
                                             }
                                         }
                                     });
-
                                 }
                             }
                         }
