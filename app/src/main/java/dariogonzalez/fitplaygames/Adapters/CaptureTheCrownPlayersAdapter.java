@@ -180,15 +180,16 @@ public class CaptureTheCrownPlayersAdapter extends ArrayAdapter<ChallengePlayerI
                     parseObject.put(ParseConstants.CHALLENGE_PLAYER_STATUS, status);
                     parseObject.saveInBackground();
                     holder.gameResponse.setVisibility(View.GONE);
-                    //TODO: see this one... We are already setting the number of players when we create the game, with this line we are incrementing the value
-                    //every time a player accept the challenge...SO FOR NOW WE ONLY SET THE TOTAL NUMBER OF PLAYER INVITED TO PLAY THE GAME...
-//                    if (status == ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED) {
-//                        ParseObject challenge = challengePlayers.get(0).getParseObject(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT);
-//                        int numOfPlayers = challenge.getInt(ParseConstants.CHALLENGE_NUMBER_OF_PLAYERS);
-//                        numOfPlayers++;
-//                        challenge.put(ParseConstants.CHALLENGE_NUMBER_OF_PLAYERS, numOfPlayers);
-//                        challenge.saveInBackground();
-//                    }
+
+                    try {
+
+                        if (status == ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED) {
+                            ParseObject challenge = parseObject.getParseObject(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT).fetchIfNeeded();
+                            challenge.increment(ParseConstants.CHALLENGE_NUMBER_OF_PLAYERS);
+                            challenge.saveInBackground();
+                        }
+                    }
+                    catch (Exception ex) {}
                 }
             }
         });

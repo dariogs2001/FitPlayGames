@@ -45,6 +45,7 @@ public abstract class ParentChallenge {
     private String inviteChallengeMessage; // A push message to be sent when a user gets invited to a challenge
     private String mainPushMessage = ""; // This is the message that will be sent as a push notification
     private int numberOfPlayers = 1; //Total number of players when the game is created.
+    private int numberOfPlayersInvited = 1; //Total number of players when the game is created.
 
     public void initialize() {
         playerObjects = new ArrayList<>();
@@ -70,7 +71,7 @@ public abstract class ParentChallenge {
         FitPlayGamesApplication.sendPushNotification(message, user);
     }
 
-    public void createChallenge(final ParseUser user, String challengeName, int stepsGoal, Date startDate, Date endDate, final GetObjectIdCallback callback, int numberOfPlayers) {
+    public void createChallenge(final ParseUser user, String challengeName, int stepsGoal, Date startDate, Date endDate, final GetObjectIdCallback callback, int numberOfPlayers, int numberOfPlayersInvited) {
         this.userChallengeName = challengeName;
         this.stepsGoal = stepsGoal;
         this.startDate = startDate;
@@ -84,6 +85,7 @@ public abstract class ParentChallenge {
         challengeObject.put(ParseConstants.CHALLENGE_CHALLENGE_START, startDate);
         challengeObject.put(ParseConstants.CHALLENGE_CHALLENGE_END, endDate);
         challengeObject.put(ParseConstants.CHALLENGE_NUMBER_OF_PLAYERS, numberOfPlayers);
+        challengeObject.put(ParseConstants.CHALLENGE_NUMBER_OF_PLAYERS_INVITED, numberOfPlayersInvited);
 
         challengeObject.saveInBackground(new SaveCallback() {
             @Override
@@ -143,10 +145,8 @@ public abstract class ParentChallenge {
     public static void updateChallenges() {
         // Grab all the ChallengePlayers objects for the current user where the status is accepted
         ParseQuery<ParseObject> challengePlayerQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
-//        challengePlayerQuery.whereNotEqualTo(ParseConstants.CHALLENGE_PLAYER_STATUS, ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED);
         challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_STATUS, ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED);
         challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT, ParseUser.getCurrentUser());
-        //challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_IS_TURN, true);
         challengePlayerQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> challengePlayers, ParseException e) {
@@ -489,10 +489,8 @@ public abstract class ParentChallenge {
         challengeEventQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
-                if (e == null)
-                {
-                    for (ParseObject challengeEvent : list)
-                    {
+                if (e == null) {
+                    for (ParseObject challengeEvent : list) {
                         challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_DONE);
                         challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_END_TIME, new Date());
                         challengeEvent.saveInBackground();
@@ -525,7 +523,7 @@ public abstract class ParentChallenge {
                         challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER_OBJECT, crownPlayer);
                         challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_START_TIME, new Date());
                         // If current user earned the crown, change event status to having the crown
-                        if(crownPlayer == challengePlayer) {
+                        if (crownPlayer == challengePlayer) {
                             challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_CROWN);
                             crownPlayer.put(ParseConstants.CHALLENGE_PLAYER_IS_TURN, true);
                             challengeEvent.saveInBackground();
@@ -673,6 +671,16 @@ public abstract class ParentChallenge {
     public void setNumberOfPlayers(int numOfPlayers)
     {
         numberOfPlayers = numOfPlayers;
+    }
+
+    public int getNumberOfPlayersInvited()
+    {
+        return numberOfPlayersInvited;
+    }
+
+    public void setNumberOfPlayersInvited(int numOfPlayersInvited)
+    {
+        numberOfPlayersInvited = numOfPlayersInvited;
     }
 
     public void updateChallengeStatusInDatabase(final String challengeId, final int challengeStatus)

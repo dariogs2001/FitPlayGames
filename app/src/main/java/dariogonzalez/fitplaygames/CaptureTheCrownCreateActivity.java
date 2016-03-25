@@ -181,7 +181,7 @@ public class CaptureTheCrownCreateActivity extends AppCompatActivity {
                                     intent.putExtras(extras);
                                     startActivity(intent);
                                 }
-                            }, selectedFriends.size() + 1);
+                            }, 1, selectedFriends.size() + 1);
                 } else {
                     Intent intent = new Intent(CaptureTheCrownCreateActivity.this, InviteFriendsActivity.class);
                     intent.putExtra(ParseConstants.CHALLENGE_CHALLENGE_ID, mChallengeId);

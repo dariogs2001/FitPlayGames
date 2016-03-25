@@ -130,7 +130,9 @@ public class GamesRowAdapterNew extends BaseAdapter {
         switch (rowType) {
             case TYPE_ITEM:
                 holder.challengeTitleTV.setText(currentItem.getUserChallengeName());
-                holder.numberOfPlayersTV.setText(Integer.toString(currentItem.getNumberOfPlayers()));
+                String value = String.format("# of Players: %1$d - # of Accepted: %2$d", currentItem.getNumberOfPlayersInvited(), currentItem.getNumberOfPlayers());
+//                holder.numberOfPlayersTV.setText(Integer.toString(currentItem.getNumberOfPlayers()));
+                holder.numberOfPlayersTV.setText(value);
                 holder.challengeThumbnail.setImageDrawable(currentItem.getIcon());
                 break;
             case TYPE_HEADER:

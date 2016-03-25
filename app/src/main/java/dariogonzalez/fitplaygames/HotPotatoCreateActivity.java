@@ -182,7 +182,7 @@ public class HotPotatoCreateActivity extends AppCompatActivity {
                             intent.putExtras(extras);
                             startActivity(intent);
                         }
-                    }, selectedFriends.size() + 1);
+                    }, 1, selectedFriends.size() + 1);
                 }
                 else
                 {

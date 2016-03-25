@@ -68,10 +68,6 @@ public class FitbitHelper {
     {
         if (mService == null)
         {
-//            mService = new ServiceBuilder().provider(FitbitApi.class)
-//                    .apiKey(Resources.getSystem().getString(R.string.fitbit_api_key))
-//                    .apiSecret(Resources.getSystem().getString(R.string.fitbit_api_secret))
-//                    .callback(Resources.getSystem().getString(R.string.fitbit_callback)).build();
             mService = new ServiceBuilder().provider(FitbitApi.class)
                 .apiKey(apiKey)
                 .apiSecret(apiSecret)
@@ -81,7 +77,7 @@ public class FitbitHelper {
 
         OAuthRequest request = new OAuthRequest(Verb.GET, url);
         mService.signRequest(mAccessToken, request); // the access token from step
-        // 4
+
         final Response response = request.send();
         final String result = response.getBody();
         return result;
@@ -112,7 +108,6 @@ public class FitbitHelper {
                 Log.d(TAG, result);
             }
         }).start();
-
     }
 
     public void getUserLastMonthData()
@@ -129,13 +124,12 @@ public class FitbitHelper {
 
     public void getStepsRangeDateTime()
     {
-//        executeQuery2("https://api.fitbit.com/1/user/-/activities/steps/date/2015-10-20/1d/15min.json");
-//        executeQuery2("https://api.fitbit.com/1/user/-/activities/steps/date/2015-11-11/1d/time/3:30/22:45.json");
         FitbitStepsRangeDateTimeTask task = new FitbitStepsRangeDateTimeTask();
-//        task.execute("https://api.fitbit.com/1/user/-/activities/steps/date/2015-11-11/1d/15min/time/3:30/22:45.json");
         task.execute("https://api.fitbit.com/1/user/-/activities/steps/date/today/1d/15min.json");
 
-
+//        task.execute("https://api.fitbit.com/1/user/-/activities/steps/date/2015-11-11/1d/15min/time/3:30/22:45.json");
+//        executeQuery2("https://api.fitbit.com/1/user/-/activities/steps/date/2015-10-20/1d/15min.json");
+//        executeQuery2("https://api.fitbit.com/1/user/-/activities/steps/date/2015-11-11/1d/time/3:30/22:45.json");
 //        executeQuery2("https://api.fitbit.com/1/user/-/activities/steps/date/2015-11-11/2015-11-11/time/3:30/22:45.json");
     }
 
@@ -222,158 +216,103 @@ public class FitbitHelper {
             return executeQuery(params[0]);
         }
 
-//        @Override
-//        protected void onPostExecute(String s) {
-//            super.onPostExecute(s);
-//            Log.d(TAG, "Result = " + s);
-//
-//            try {
-//                //Save daa in Database
-//                JSONObject jsonRootObject = new JSONObject(s);
-//                //Get the instance of JSONArray that contains JSONObjects
-//                JSONArray jsonArray = jsonRootObject.optJSONArray("activities-steps");
-//
-//                if (ParseUser.getCurrentUser() == null || jsonArray == null) return;
-//
-//                final String parseUserId = ParseUser.getCurrentUser().getObjectId();
-//                for(int i = 0; i < jsonArray.length(); i++){
-//                    try {
-//                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-//                        String dateTime = jsonObject.optString("dateTime").toString();
-//                        final int value = Integer.parseInt(jsonObject.optString("value").toString());
-//                        DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-//                        final Date date = df.parse(dateTime);
-//                        date.setHours(0);
-//                        date.setMinutes(0);
-//                        date.setSeconds(0);
-//
-//                        ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseConstants.CLASS_ACTIVITY_HISTORY);
-//                        query.whereEqualTo(ParseConstants.KEY_USER_ID, parseUserId);
-//                        query.whereEqualTo(ParseConstants.ACTIVITY_HISTORY_DATE, date);
-//
-//                        //Check if the value already exists. If exists update it with the new steps count, if it does not exist, create it.
-//                        query.getFirstInBackground(new GetCallback<ParseObject>() {
-//                            @Override
-//                            public void done(ParseObject parseObject, com.parse.ParseException e) {
-//                                if (e == null) {
-//                                    if (parseObject.getInt(ParseConstants.ACTIVITY_HISTORY_STEPS) != value) {
-//                                        parseObject.put(ParseConstants.ACTIVITY_HISTORY_STEPS, value);
-//                                        parseObject.saveInBackground();
-//                                    }
-//                                } else {
-//                                    ParseObject activityHistory = new ParseObject(ParseConstants.CLASS_ACTIVITY_HISTORY);
-//                                    activityHistory.put(ParseConstants.KEY_USER_ID, parseUserId);
-////                                    activityHistory.put("userId", ParseObject.createWithoutData(ParseConstants.CLASS_USER, parseUserId));
-//
-//                                    activityHistory.put(ParseConstants.ACTIVITY_HISTORY_DATE, date);
-//                                    activityHistory.put(ParseConstants.ACTIVITY_HISTORY_STEPS, value);
-//                                    activityHistory.saveInBackground();
-//                                }
-//                            }
-//                        });
-//
-//                    } catch (ParseException ex) {}
-//                }
-//            }
-//            catch (org.json.JSONException ex)
-//            {
-//                Log.d(TAG, ex.getMessage());
-//            }
-//        }
-
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            Log.d(TAG, "Result = " + s);
+            updateFitBitSteps(s);
+        }
+    }
 
-            try {
-                //Save daa in Database
-                JSONObject jsonRootObject = new JSONObject(s);
-                //Get the instance of JSONArray that contains JSONObjects
-                final JSONArray jsonArray = jsonRootObject.optJSONArray("activities-steps");
+    private void updateFitBitSteps(String s) {
+        Log.d(TAG, "Result = " + s);
 
-                if (ParseUser.getCurrentUser() == null || jsonArray == null) return;
+        try {
+            //Save daa in Database
+            JSONObject jsonRootObject = new JSONObject(s);
+            //Get the instance of JSONArray that contains JSONObjects
+            final JSONArray jsonArray = jsonRootObject.optJSONArray("activities-steps");
 
-                final String parseUserId = ParseUser.getCurrentUser().getObjectId();
+            if (ParseUser.getCurrentUser() == null || jsonArray == null) return;
 
-                //Getting only last 30 days
-                Calendar dateToCheck = Calendar.getInstance();
-                dateToCheck.add(Calendar.DATE, -30);
-                Date checkingDate = dateToCheck.getTime();
-                checkingDate.setHours(0);
-                checkingDate.setMinutes(0);
-                checkingDate.setSeconds(0);
-                ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseConstants.CLASS_ACTIVITY_HISTORY);
-                query.whereEqualTo(ParseConstants.KEY_USER_ID, parseUserId);
-                query.whereGreaterThanOrEqualTo(ParseConstants.ACTIVITY_HISTORY_DATE, checkingDate);
+            final String parseUserId = ParseUser.getCurrentUser().getObjectId();
 
-                //Trying to about to many calls to Parse.com we are getting everything and looping through the list...
-                query.findInBackground(new FindCallback<ParseObject>() {
-                    @Override
-                    public void done(List<ParseObject> list, com.parse.ParseException e) {
-                        for(int i = 0; i < jsonArray.length(); i++){
-                            try {
-                                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                String dateTime = jsonObject.optString("dateTime").toString();
-                                final int value = Integer.parseInt(jsonObject.optString("value").toString());
-                                DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                                final Date date = df.parse(dateTime);
-                                date.setHours(0);
-                                date.setMinutes(0);
-                                date.setSeconds(0);
+            //Getting only last 30 days
+            Calendar dateToCheck = Calendar.getInstance();
+            dateToCheck.add(Calendar.DATE, -30);
+            Date checkingDate = dateToCheck.getTime();
+            checkingDate.setHours(0);
+            checkingDate.setMinutes(0);
+            checkingDate.setSeconds(0);
+            ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseConstants.CLASS_ACTIVITY_HISTORY);
+            query.whereEqualTo(ParseConstants.KEY_USER_ID, parseUserId);
+            query.whereGreaterThanOrEqualTo(ParseConstants.ACTIVITY_HISTORY_DATE, checkingDate);
 
-                                ParseObject objectToUpdate = null;
-                                boolean objectFound = false;
-                                for (ParseObject po : list)
+            //Trying to about to many calls to Parse.com we are getting everything and looping through the list...
+            query.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> list, com.parse.ParseException e) {
+                    for(int i = 0; i < jsonArray.length(); i++){
+                        try {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            String dateTime = jsonObject.optString("dateTime").toString();
+                            final int value = Integer.parseInt(jsonObject.optString("value").toString());
+                            DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                            final Date date = df.parse(dateTime);
+                            date.setHours(0);
+                            date.setMinutes(0);
+                            date.setSeconds(0);
+
+                            ParseObject objectToUpdate = null;
+                            boolean objectFound = false;
+                            for (ParseObject po : list)
+                            {
+                                String parseUser = po.getString(ParseConstants.KEY_USER_ID);
+                                Date dateActivity = po.getDate(ParseConstants.ACTIVITY_HISTORY_DATE);
+                                if (parseUserId.equals(parseUser) && dateActivity.getYear() == date.getYear() && dateActivity.getMonth() == date.getMonth() && dateActivity.getDay() == date.getDay())
                                 {
-                                    String parseUser = po.getString(ParseConstants.KEY_USER_ID);
-                                    Date dateActivity = po.getDate(ParseConstants.ACTIVITY_HISTORY_DATE);
-                                    if (parseUserId.equals(parseUser) && dateActivity.getYear() == date.getYear() && dateActivity.getMonth() == date.getMonth() && dateActivity.getDay() == date.getDay())
-                                    {
-                                        objectToUpdate = po;
-                                        objectFound = true;
-                                        break;
-                                    }
-                                }
-
-                                if (objectFound)
-                                {
-                                    //Updating steps only if different
-                                    if (objectToUpdate.getInt(ParseConstants.ACTIVITY_HISTORY_STEPS) != value) {
-                                        objectToUpdate.put(ParseConstants.ACTIVITY_HISTORY_STEPS, value);
-                                        objectToUpdate.saveInBackground();
-                                    }
-                                }
-                                else
-                                {
-                                    //Object not found, so I create a new one...
-                                    ParseObject activityHistory = new ParseObject(ParseConstants.CLASS_ACTIVITY_HISTORY);
-                                    activityHistory.put(ParseConstants.KEY_USER_ID, parseUserId);
-                                    activityHistory.put(ParseConstants.ACTIVITY_HISTORY_DATE, date);
-                                    activityHistory.put(ParseConstants.ACTIVITY_HISTORY_STEPS, value);
-                                    activityHistory.saveInBackground();
+                                    objectToUpdate = po;
+                                    objectFound = true;
+                                    break;
                                 }
                             }
-                            catch (JSONException jex)
+
+                            if (objectFound)
                             {
-                                Log.d(TAG, jex.getMessage());
+                                //Updating steps only if different
+                                if (objectToUpdate.getInt(ParseConstants.ACTIVITY_HISTORY_STEPS) != value) {
+                                    objectToUpdate.put(ParseConstants.ACTIVITY_HISTORY_STEPS, value);
+                                    objectToUpdate.saveInBackground();
+                                }
                             }
-                            catch (ParseException ex)
+                            else
                             {
-                                Log.d(TAG, ex.getMessage());
+                                //Object not found, so I create a new one...
+                                ParseObject activityHistory = new ParseObject(ParseConstants.CLASS_ACTIVITY_HISTORY);
+                                activityHistory.put(ParseConstants.KEY_USER_ID, parseUserId);
+                                activityHistory.put(ParseConstants.ACTIVITY_HISTORY_DATE, date);
+                                activityHistory.put(ParseConstants.ACTIVITY_HISTORY_STEPS, value);
+                                activityHistory.saveInBackground();
                             }
                         }
+                        catch (JSONException jex)
+                        {
+                            Log.d(TAG, jex.getMessage());
+                        }
+                        catch (ParseException ex)
+                        {
+                            Log.d(TAG, ex.getMessage());
+                        }
                     }
-                });
-            }
-            catch (org.json.JSONException ex)
-            {
-                Log.d(TAG, ex.getMessage());
-            }
-            catch  (Exception ex)
-            {
-                Log.d(TAG, ex.getMessage());
-            }
+                }
+            });
+        }
+        catch (JSONException ex)
+        {
+            Log.d(TAG, ex.getMessage());
+        }
+        catch  (Exception ex)
+        {
+            Log.d(TAG, ex.getMessage());
         }
     }
 
@@ -387,227 +326,131 @@ public class FitbitHelper {
         @Override
         protected void onPostExecute(final String s) {
             super.onPostExecute(s);
-            Log.d(TAG, "Result = " + s);
-
-            try {
-                if (ParseUser.getCurrentUser() == null) return;
-
-                final String parseUserId = ParseUser.getCurrentUser().getObjectId();
-                //Save daa in Database
-                JSONObject jsonRootObjectToday = new JSONObject(s);
-                //Get the instance of JSONArray that contains JSONObjects
-                JSONArray jsonArrayToday = jsonRootObjectToday.optJSONArray("activities-steps");
-                if (jsonArrayToday == null) return;
-
-                JSONObject jsonObjectToday = jsonArrayToday.getJSONObject(0);
-                if (jsonObjectToday == null) return;
-
-                final String dateTimeToday = jsonObjectToday.optString("dateTime").toString();
-                final int valueToday = Integer.parseInt(jsonObjectToday.optString("value").toString());
-                DateFormat dfToday = new SimpleDateFormat("yyyy-MM-dd");
-                final Date dateToday = dfToday.parse(dateTimeToday);
-
-
-                ParseQuery<ParseObject> queryToday = ParseQuery.getQuery(ParseConstants.CLASS_ACTIVITY_HISTORY);
-                queryToday.whereEqualTo(ParseConstants.KEY_USER_ID, parseUserId);
-                queryToday.whereEqualTo(ParseConstants.ACTIVITY_HISTORY_DATE, dateToday);
-
-                //Check if the value already exists. If exists update it with the new steps count, if it does not exist, create it.
-                queryToday.getFirstInBackground(new GetCallback<ParseObject>() {
-                    @Override
-                    public void done(ParseObject parseObject, com.parse.ParseException e) {
-                        if (e == null) {
-                            if (parseObject.getInt(ParseConstants.ACTIVITY_HISTORY_STEPS) != valueToday) {
-                                parseObject.put(ParseConstants.ACTIVITY_HISTORY_STEPS, valueToday);
-                                parseObject.saveInBackground();
-                            }
-                        } else {
-                            ParseObject activityHistory = new ParseObject(ParseConstants.CLASS_ACTIVITY_HISTORY);
-                            activityHistory.put(ParseConstants.KEY_USER_ID, parseUserId);
-                            activityHistory.put(ParseConstants.ACTIVITY_HISTORY_DATE, dateToday);
-                            activityHistory.put(ParseConstants.ACTIVITY_HISTORY_STEPS, valueToday);
-                            activityHistory.saveInBackground();
-                        }
-                    }
-                });
-
-                //Getting only last day
-                Calendar dateToCheck = Calendar.getInstance();
-                dateToCheck.add(Calendar.DATE, -1);
-                Date checkingDate = dateToCheck.getTime();
-                checkingDate.setHours(0);
-                checkingDate.setMinutes(0);
-                checkingDate.setSeconds(0);
-                ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseConstants.CLASS_ACTIVITY_STEPS_BY_DAY_15M);
-                query.whereEqualTo(ParseConstants.KEY_USER_ID, parseUserId);
-                query.whereGreaterThanOrEqualTo(ParseConstants.ACTIVITY_STEPS_DATE, checkingDate);
-                query.findInBackground(new FindCallback<ParseObject>() {
-                    @Override
-                    public void done(List<ParseObject> list, com.parse.ParseException e) {
-                        try {
-                            JSONObject jsonRootObject = new JSONObject(s);
-                            JSONObject jsonObjectMain = jsonRootObject.getJSONObject("activities-steps-intraday");
-                            JSONArray jsonArray = jsonObjectMain.optJSONArray("dataset");
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                try {
-                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                    String dateTime = jsonObject.optString("time").toString();
-                                   // Log.d("dateTime: ", dateTime);
-                                    final int value = Integer.parseInt(jsonObject.optString("value").toString());
-                                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-
-                                    final Date time = df.parse(dateTimeToday + " " + dateTime);
-                                    //Log.d("Time2: ", time.toString());
-
-                                    ParseObject objectToUpdate = null;
-                                    boolean objectFound = false;
-                                    for (ParseObject po : list) {
-                                        String parseUser = po.getString(ParseConstants.KEY_USER_ID);
-                                        Date dateActivity = po.getDate(ParseConstants.ACTIVITY_STEPS_DATE);
-
-                                        if (parseUserId.equals(parseUser)
-                                                && dateActivity.getYear() == time.getYear() && dateActivity.getMonth() == time.getMonth() && dateActivity.getDay() == time.getDay()
-                                                && dateActivity.getHours() == time.getHours() && dateActivity.getMinutes() == time.getMinutes()) {
-                                            objectToUpdate = po;
-                                            objectFound = true;
-                                            break;
-                                        }
-                                    }
-
-                                    if (objectFound) {
-                                        if (objectToUpdate.getInt(ParseConstants.ACTIVITY_STEPS_STEPS) != value) {
-                                            objectToUpdate.put(ParseConstants.ACTIVITY_STEPS_STEPS, value);
-                                            objectToUpdate.saveInBackground();
-                                        }
-                                    } else {
-                                        ParseObject activityHistory = new ParseObject(ParseConstants.CLASS_ACTIVITY_STEPS_BY_DAY_15M);
-                                        activityHistory.put(ParseConstants.KEY_USER_ID, parseUserId);
-                                        activityHistory.put(ParseConstants.ACTIVITY_STEPS_DATE, time);
-                                        activityHistory.put(ParseConstants.ACTIVITY_STEPS_STEPS, value);
-                                        activityHistory.saveInBackground();
-                                    }
-                                } catch (Exception ex) {
-                                }
-                            }
-                        } catch (JSONException ex) {
-                        } catch (Exception ex) {
-                        }
-                    }
-                });
-            }
-            catch (org.json.JSONException ex)
-            {
-                Log.d(TAG, ex.getMessage());
-            }
-            catch (ParseException ex2)
-            {
-                Log.d(TAG, ex2.getMessage());
-            }
-            catch (Exception ex)
-            {
-            }
+            updateActivityStepsByDay15Minutes(s);
         }
     }
 
-//        @Override
-//        protected void onPostExecute(String s) {
-//            super.onPostExecute(s);
-//            Log.d(TAG, "Result = " + s);
-//
-//            try {
-//                if (ParseUser.getCurrentUser() == null) return;
-//
-//                final String parseUserId = ParseUser.getCurrentUser().getObjectId();
-//                //Save daa in Database
-//                JSONObject jsonRootObjectToday = new JSONObject(s);
-//                //Get the instance of JSONArray that contains JSONObjects
-//                JSONArray jsonArrayToday = jsonRootObjectToday.optJSONArray("activities-steps");
-//                if (jsonArrayToday == null) return;
-//
-//                JSONObject jsonObjectToday = jsonArrayToday.getJSONObject(0);
-//                if (jsonObjectToday == null) return;
-//
-//                String dateTimeToday = jsonObjectToday.optString("dateTime").toString();
-//                final int valueToday = Integer.parseInt(jsonObjectToday.optString("value").toString());
-//                DateFormat dfToday = new SimpleDateFormat("yyyy-MM-dd");
-//                final Date dateToday = dfToday.parse(dateTimeToday);
-//
-//
-//                ParseQuery<ParseObject> queryToday = ParseQuery.getQuery(ParseConstants.CLASS_ACTIVITY_HISTORY);
-//                queryToday.whereEqualTo(ParseConstants.KEY_USER_ID, parseUserId);
-//                queryToday.whereEqualTo(ParseConstants.ACTIVITY_HISTORY_DATE, dateToday);
-//
-//                //Check if the value already exists. If exists update it with the new steps count, if it does not exist, create it.
-//                queryToday.getFirstInBackground(new GetCallback<ParseObject>() {
-//                    @Override
-//                    public void done(ParseObject parseObject, com.parse.ParseException e) {
-//                        if (e == null) {
-//                            if (parseObject.getInt(ParseConstants.ACTIVITY_HISTORY_STEPS) != valueToday) {
-//                                parseObject.put(ParseConstants.ACTIVITY_HISTORY_STEPS, valueToday);
-//                                parseObject.saveInBackground();
-//                            }
-//                        } else {
-//                            ParseObject activityHistory = new ParseObject(ParseConstants.CLASS_ACTIVITY_HISTORY);
-//                            activityHistory.put(ParseConstants.KEY_USER_ID, parseUserId);
-//                            activityHistory.put(ParseConstants.ACTIVITY_HISTORY_DATE, dateToday);
-//                            activityHistory.put(ParseConstants.ACTIVITY_HISTORY_STEPS, valueToday);
-//                            activityHistory.saveInBackground();
-//                        }
-//                    }
-//                });
-//
-//
-//                JSONObject jsonRootObject = new JSONObject(s);
-//                JSONObject jsonObjectMain = jsonRootObject.getJSONObject("activities-steps-intraday");
-//                JSONArray jsonArray = jsonObjectMain.optJSONArray("dataset");
-//                for(int i = 0; i < jsonArray.length(); i++){
-//                    try {
-//                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-//                        String dateTime = jsonObject.optString("time").toString();
-//                        Log.d("dateTime: ", dateTime);
-//                        final int value = Integer.parseInt(jsonObject.optString("value").toString());
-//                        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-////                        df.setTimeZone(TimeZone.getTimeZone("UTC"));
-//
-////                        Log.d("Time1: ", df.parse(dateTimeToday + " " + dateTime).toString());
-//                        final Date time = df.parse(dateTimeToday + " " + dateTime);//tweakDate(df.parse(dateTimeToday + " " + dateTime), 12);// 12 here because it's 5 hours off in the past and we need it to be 7 hours in the future to make UTC time
-//                        Log.d("Time2: ", time.toString());
-//                        ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseConstants.CLASS_ACTIVITY_STEPS_BY_DAY_15M);
-//                        query.whereEqualTo(ParseConstants.KEY_USER_ID, parseUserId);
-//                        query.whereEqualTo(ParseConstants.ACTIVITY_STEPS_DATE, time);
-////                        query.whereEqualTo(ParseConstants.ACTIVITY_HISTORY_TIME, time);
-//
-//                        //Check if the value already exists. If exists update it with the new value count, if it does not exist, create it.
-//                        query.getFirstInBackground(new GetCallback<ParseObject>() {
-//                            @Override
-//                            public void done(ParseObject parseObject, com.parse.ParseException e) {
-//                                if (e == null) {
-//                                    if (parseObject.getInt(ParseConstants.ACTIVITY_STEPS_STEPS) != value) {
-//                                        parseObject.put(ParseConstants.ACTIVITY_STEPS_STEPS, value);
-//                                        parseObject.saveInBackground();
-//                                    }
-//                                } else {
-//                                    ParseObject activityHistory = new ParseObject(ParseConstants.CLASS_ACTIVITY_STEPS_BY_DAY_15M);
-//                                    activityHistory.put(ParseConstants.KEY_USER_ID, parseUserId);
-//                                    activityHistory.put(ParseConstants.ACTIVITY_STEPS_DATE, time);
-//                                    activityHistory.put(ParseConstants.ACTIVITY_STEPS_STEPS, value);
-//                                    activityHistory.saveInBackground();
-//                                }
-//                            }
-//                        });
-//
-//                    } catch (ParseException ex) {}
-//                }
-//            }
-//            catch (org.json.JSONException ex)
-//            {
-//                Log.d(TAG, ex.getMessage());
-//            }
-//            catch  (ParseException ex2)
-//            {
-//                Log.d(TAG, ex2.getMessage());
-//            }
-//        }
+    private void updateActivityStepsByDay15Minutes(final String s) {
+        Log.d(TAG, "Result = " + s);
+        try {
+            if (ParseUser.getCurrentUser() == null) return;
 
+            final String parseUserId = ParseUser.getCurrentUser().getObjectId();
+            //Save daa in Database
+            JSONObject jsonRootObjectToday = new JSONObject(s);
+            //Get the instance of JSONArray that contains JSONObjects
+            JSONArray jsonArrayToday = jsonRootObjectToday.optJSONArray("activities-steps");
+            if (jsonArrayToday == null) return;
+
+            JSONObject jsonObjectToday = jsonArrayToday.getJSONObject(0);
+            if (jsonObjectToday == null) return;
+
+            final String dateTimeToday = jsonObjectToday.optString("dateTime").toString();
+            final int valueToday = Integer.parseInt(jsonObjectToday.optString("value").toString());
+            DateFormat dfToday = new SimpleDateFormat("yyyy-MM-dd");
+            final Date dateToday = dfToday.parse(dateTimeToday);
+
+
+            ParseQuery<ParseObject> queryToday = ParseQuery.getQuery(ParseConstants.CLASS_ACTIVITY_HISTORY);
+            queryToday.whereEqualTo(ParseConstants.KEY_USER_ID, parseUserId);
+            queryToday.whereEqualTo(ParseConstants.ACTIVITY_HISTORY_DATE, dateToday);
+
+            //Check if the value already exists. If exists update it with the new steps count, if it does not exist, create it.
+            queryToday.getFirstInBackground(new GetCallback<ParseObject>() {
+                @Override
+                public void done(ParseObject parseObject, com.parse.ParseException e) {
+                    if (e == null) {
+                        if (parseObject.getInt(ParseConstants.ACTIVITY_HISTORY_STEPS) != valueToday) {
+                            parseObject.put(ParseConstants.ACTIVITY_HISTORY_STEPS, valueToday);
+                            parseObject.saveInBackground();
+                        }
+                    } else {
+                        ParseObject activityHistory = new ParseObject(ParseConstants.CLASS_ACTIVITY_HISTORY);
+                        activityHistory.put(ParseConstants.KEY_USER_ID, parseUserId);
+                        activityHistory.put(ParseConstants.ACTIVITY_HISTORY_DATE, dateToday);
+                        activityHistory.put(ParseConstants.ACTIVITY_HISTORY_STEPS, valueToday);
+                        activityHistory.saveInBackground();
+                    }
+                }
+            });
+
+            //Getting only last day
+            Calendar dateToCheck = Calendar.getInstance();
+            dateToCheck.add(Calendar.DATE, -1);
+            Date checkingDate = dateToCheck.getTime();
+            checkingDate.setHours(0);
+            checkingDate.setMinutes(0);
+            checkingDate.setSeconds(0);
+            ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseConstants.CLASS_ACTIVITY_STEPS_BY_DAY_15M);
+            query.whereEqualTo(ParseConstants.KEY_USER_ID, parseUserId);
+            query.whereGreaterThanOrEqualTo(ParseConstants.ACTIVITY_STEPS_DATE, checkingDate);
+            query.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> list, com.parse.ParseException e) {
+                    try {
+                        JSONObject jsonRootObject = new JSONObject(s);
+                        JSONObject jsonObjectMain = jsonRootObject.getJSONObject("activities-steps-intraday");
+                        JSONArray jsonArray = jsonObjectMain.optJSONArray("dataset");
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            try {
+                                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                String dateTime = jsonObject.optString("time").toString();
+                               // Log.d("dateTime: ", dateTime);
+                                final int value = Integer.parseInt(jsonObject.optString("value").toString());
+                                DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+                                final Date time = df.parse(dateTimeToday + " " + dateTime);
+                                //Log.d("Time2: ", time.toString());
+
+                                ParseObject objectToUpdate = null;
+                                boolean objectFound = false;
+                                for (ParseObject po : list) {
+                                    String parseUser = po.getString(ParseConstants.KEY_USER_ID);
+                                    Date dateActivity = po.getDate(ParseConstants.ACTIVITY_STEPS_DATE);
+
+                                    if (parseUserId.equals(parseUser)
+                                            && dateActivity.getYear() == time.getYear() && dateActivity.getMonth() == time.getMonth() && dateActivity.getDay() == time.getDay()
+                                            && dateActivity.getHours() == time.getHours() && dateActivity.getMinutes() == time.getMinutes()) {
+                                        objectToUpdate = po;
+                                        objectFound = true;
+                                        break;
+                                    }
+                                }
+
+                                if (objectFound) {
+                                    if (objectToUpdate.getInt(ParseConstants.ACTIVITY_STEPS_STEPS) != value) {
+                                        objectToUpdate.put(ParseConstants.ACTIVITY_STEPS_STEPS, value);
+                                        objectToUpdate.saveInBackground();
+                                    }
+                                } else {
+                                    ParseObject activityHistory = new ParseObject(ParseConstants.CLASS_ACTIVITY_STEPS_BY_DAY_15M);
+                                    activityHistory.put(ParseConstants.KEY_USER_ID, parseUserId);
+                                    activityHistory.put(ParseConstants.ACTIVITY_STEPS_DATE, time);
+                                    activityHistory.put(ParseConstants.ACTIVITY_STEPS_STEPS, value);
+                                    activityHistory.saveInBackground();
+                                }
+                            } catch (Exception ex) {
+                            }
+                        }
+                    }
+                    catch (JSONException ex) {
+                    }
+                    catch (Exception ex) {
+                    }
+                }
+            });
+        }
+        catch (JSONException ex)
+        {
+            Log.d(TAG, ex.getMessage());
+        }
+        catch (ParseException ex2)
+        {
+            Log.d(TAG, ex2.getMessage());
+        }
+        catch (Exception ex)
+        {
+        }
+    }
 }
 

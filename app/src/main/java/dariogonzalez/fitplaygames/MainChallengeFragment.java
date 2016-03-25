@@ -158,14 +158,6 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
                         }
                     }
                 }
-
-//                List<ParseObject> challengeplayers = query1.find();
-//                for(ParseObject challengeplayer : challengeplayers)
-//                {
-//                    ParseObject challenge = ((ParseObject) challengeplayer.get(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT)).fetchIfNeeded();
-//                    addHotPotatoChallenge(challenge, challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS), challengeplayer);
-//                    addCaptureTheCrownChallenge(challenge, challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS), challengeplayer);
-//                }
             }
             catch (com.parse.ParseException ex)
             {
@@ -185,6 +177,7 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
         hotPotatoChallenge.setEndDate(challenge.getDate(ParseConstants.CHALLENGE_CHALLENGE_END));
         hotPotatoChallenge.setChallengePlayer(challengePlayer);
         hotPotatoChallenge.setNumberOfPlayers(challenge.getInt(ParseConstants.CHALLENGE_NUMBER_OF_PLAYERS));
+        hotPotatoChallenge.setNumberOfPlayersInvited(challenge.getInt(ParseConstants.CHALLENGE_NUMBER_OF_PLAYERS_INVITED));
 
         if (challengeStatus == ParseConstants.CHALLENGE_STATUS_PLAYING && hotPotatoChallenge.getChallengePlayer().getInt(ParseConstants.CHALLENGE_PLAYER_STATUS) == ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED) {
             mGamesListPlaying.add(hotPotatoChallenge);
@@ -208,6 +201,7 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
         captureTheCrownChallenge.setEndDate(challenge.getDate(ParseConstants.CHALLENGE_CHALLENGE_END));
         captureTheCrownChallenge.setChallengePlayer(challengePlayer);
         captureTheCrownChallenge.setNumberOfPlayers(challenge.getInt(ParseConstants.CHALLENGE_NUMBER_OF_PLAYERS));
+        captureTheCrownChallenge.setNumberOfPlayersInvited(challenge.getInt(ParseConstants.CHALLENGE_NUMBER_OF_PLAYERS_INVITED));
 
         if (challengeStatus == ParseConstants.CHALLENGE_STATUS_PLAYING && captureTheCrownChallenge.getChallengePlayer().getInt(ParseConstants.CHALLENGE_PLAYER_STATUS) == ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED) {
             mGamesListPlaying.add(captureTheCrownChallenge);
