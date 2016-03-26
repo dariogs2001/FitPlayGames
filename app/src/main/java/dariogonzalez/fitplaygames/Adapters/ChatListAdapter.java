@@ -39,21 +39,23 @@ public class ChatListAdapter extends FirebaseListAdapter<Chat> {
         LinearLayout layoutMe = (LinearLayout)view.findViewById(R.id.layout_me);
         LinearLayout layoutYou = (LinearLayout)view.findViewById(R.id.layout_you);
 
+        String authorAndTime = author;
+        if (chat.getDateTimeMessageSent() != null)
+            authorAndTime += " at " + chat.getDateTimeMessageSent().toLocaleString();
+
         if (author != null && author.equals(mUsername)) {
             layoutMe.setVisibility(View.VISIBLE);
             layoutYou.setVisibility(View.GONE);
 
             ((TextView) view.findViewById(R.id.message)).setText(chat.getMessage());
             TextView authorText = (TextView) view.findViewById(R.id.author);
-            authorText.setText(author);
-//            authorText.setTextColor(Color.RED);
+            authorText.setText(authorAndTime);
         } else {
             layoutMe.setVisibility(View.GONE);
             layoutYou.setVisibility(View.VISIBLE);
             ((TextView) view.findViewById(R.id.message_you)).setText(chat.getMessage());
             TextView authorText = (TextView) view.findViewById(R.id.author_you);
-            authorText.setText(author);
-//            authorText.setTextColor(Color.BLUE);
+            authorText.setText(authorAndTime);
         }
     }
 }

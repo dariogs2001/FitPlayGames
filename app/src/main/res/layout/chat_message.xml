@@ -26,14 +26,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Hello I am here"
-                android:textSize="14dp"
-                android:textColor="#000000"/>
+                android:textSize="16dp"
+                android:textColor="#212121"/>
             <TextView
                 android:id="@+id/author_you"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Hola"
-                android:textSize="10dp"/>
+                android:textSize="12dp"
+                android:textColor="#B6B6B6"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -56,14 +57,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Hello I am here"
-                android:textSize="14dp"
-                android:textColor="#000000"/>
+                android:textSize="16dp"
+                android:textColor="#FFFFFF"/>
             <TextView
                 android:id="@+id/author"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Hola"
-                android:textSize="10dp"
+                android:textSize="12dp"
+                android:textColor="#BBDEFB"
                 />
         </LinearLayout>
 

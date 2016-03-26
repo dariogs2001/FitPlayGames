@@ -22,23 +22,20 @@
                 android:src="@drawable/ic_smug"
                 android:layout_gravity="center"
                 android:layout_marginBottom="15dp"/>
-
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/you_have_no_chats"
                 android:textSize="16sp" />
-
-
         </LinearLayout>
 
     <ListView
         android:id="@+id/list"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:layout_above="@+id/progress_bar"
         android:layout_alignParentTop="true"
+        android:layout_alignTop="@+id/listFooter"
         android:transcriptMode="alwaysScroll"
         android:divider="#00000000"/>
         <LinearLayout
@@ -58,37 +55,38 @@
                 android:gravity="left"
                 />
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/listFooter"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp"
+            android:background="@color/white"
+            android:layout_alignParentBottom="true">
+            <EditText
+                android:id="@+id/messageInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="textShortMessage"
+                android:lines="1"
+                android:hint="Send a message..."
+                android:singleLine="true"/>
+
+            <ImageButton
+                android:id="@+id/sendButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_send_blue"
+                android:background="#00000000"
+                android:paddingLeft="10dp"/>
+        </LinearLayout>
+
 
     </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/listFooter"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingBottom="10dp"
-        android:background="@color/white">
-        <EditText
-            android:id="@+id/messageInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:inputType="textShortMessage"
-            android:lines="1"
-            android:hint="Send a message..."
-            android:singleLine="true"/>
-
-        <ImageButton
-            android:id="@+id/sendButton"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_send_blue"
-            android:background="#00000000"
-            android:paddingLeft="10dp"/>
-    </LinearLayout>
 
 
 </RelativeLayout>

@@ -23,6 +23,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.parse.ParseUser;
 
+import java.util.Date;
 import java.util.Random;
 
 import dariogonzalez.fitplaygames.Adapters.ChatListAdapter;
@@ -93,14 +94,7 @@ public class MainChatActivity extends AppCompatActivity {
         // Tell our list adapter that we only want 50 messages at a time
         mChatListAdapter = new ChatListAdapter(mFirebaseRef.limit(50), this, R.layout.chat_message, mUsername);
 
-            listView.setAdapter(mChatListAdapter);
-       // if(// I don't know what I need here)
-        //{
-            //emptyStateLayout.setVisibility(View.VISIBLE);
-        //}
-        //else {
-            //emptyStateLayout.setVisibility(View.GONE);
-        //}
+        listView.setAdapter(mChatListAdapter);
 
         mChatListAdapter.registerDataSetObserver(new DataSetObserver() {
             @Override
@@ -153,7 +147,7 @@ public class MainChatActivity extends AppCompatActivity {
         String input = inputText.getText().toString();
         if (!input.equals("")) {
             // Create our 'model', a Chat object
-            Chat chat = new Chat(input, mUsername);
+            Chat chat = new Chat(input, mUsername, new Date());
             // Create a new, auto-generated child of that chat location, and save our chat data there
             mFirebaseRef.push().setValue(chat);
             inputText.setText("");
