@@ -133,7 +133,8 @@ public class LeaderBoardFragment extends Fragment {
                                             try {
                                                 ParseObject challengeObject = challengePlayer.getParseObject(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT).fetchIfNeeded();
 
-                                                if (challengeObject.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == challengeType)
+                                                if (challengeObject.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == challengeType &&
+                                                        challengeObject.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS) == ParseConstants.CHALLENGE_STATUS_FINISHED)
                                                 {
                                                     numGames++;
 
@@ -152,6 +153,7 @@ public class LeaderBoardFragment extends Fragment {
                                         if (numGames != 0) {
                                             avgTime = avgTime / numGames;
                                         }
+
                                         LeaderboardItem leaderboardItem = new LeaderboardItem(friendObject.getUsername(), numGames, avgTime, fileUri, finalResults, challengeType);
                                         if (leaderboardItem.getmNumOfGames() != 0) {
                                             if (mLeadBoardList.size() == 0) {

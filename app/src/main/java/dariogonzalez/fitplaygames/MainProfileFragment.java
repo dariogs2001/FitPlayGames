@@ -74,7 +74,7 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
 
     protected Uri mMediaUri;
 
-    private int mNumOfHotPotatoGames = 0, mNumOfHotPotatoLosses = 0, mAveragePotatoTime = 0, mNumOfCrownGames = 0, mNumOfCrownLosses = 0, mCrownTime = 0;
+    private int mNumOfHotPotatoGames = 0, mNumOfHotPotatoLosses = 0, mAveragePotatoTime = 0, mNumOfCrownGames = 0, mNumOfCrownWins = 0, mCrownTime = 0;
 
     public MainProfileFragment() {
         // Required empty public constructor
@@ -289,66 +289,60 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
                         try {
                             final ParseObject challenge = challengePlayer.getParseObject(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT).fetchIfNeeded();
 
-                            if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO) {
-                                mNumOfHotPotatoGames++;
-                                mAveragePotatoTime += challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_AVERAGE_TIME);
-                            } else if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN) {
-                                mNumOfCrownGames++;
-                                mCrownTime += challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_AVERAGE_TIME);
-                            }
-
-                            ParseQuery<ParseObject> challengeEventQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_EVENTS);
-                            challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_OBJECT, challenge);
-                            challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER_OBJECT, challengePlayer);
-                            challengeEventQuery.findInBackground(new FindCallback<ParseObject>() {
-                                @Override
-                                public void done(List<ParseObject> challengeEvents, ParseException e) {
-                                    {
-                                        for (ParseObject challengeEvent : challengeEvents) {
-                                            // If the status is still playing then that means that they were "playing" when the game ended so they lost
-                                            if (challengeEvent.getInt(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS) == ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_PLAYING && (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO
-                                                    && challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS) == ParseConstants.CHALLENGE_STATUS_FINISHED)) {
-                                                mNumOfHotPotatoLosses++;
-                                            } else if (challengeEvent.getInt(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS) == ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_DONE && (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN
-                                                    && challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS) == ParseConstants.CHALLENGE_STATUS_FINISHED)) {
-                                                mNumOfCrownLosses++;
-                                            }
-                                        }
-
-                                        int aHPTTime = 0;
-                                        int aCtCTime = 0;
-                                        mPotatoGamesTV.setText(String.valueOf(mNumOfHotPotatoGames));
-                                        mPotatoLossesTV.setText(String.valueOf(mNumOfHotPotatoLosses));
-                                        if (mAveragePotatoTime <= 0) {
-                                            mAveragePotatoTime = 0;
-                                        }
-
-                                        if (mNumOfHotPotatoGames > 0) {
-                                            aHPTTime = mAveragePotatoTime / mNumOfHotPotatoGames;
-                                        }
-
-                                        int hours = aHPTTime / 60;
-                                        int minutes = aHPTTime % 60;
-                                        String potatoTimeStr = ((hours > 0) ? hours + " Hr " : "") + minutes + " Min";
-                                        mPotatoAvgTimeTV.setText(potatoTimeStr);
-
-                                        mCrownGamesTV.setText(String.valueOf(mNumOfCrownGames));
-                                        mCrownLossesTV.setText(String.valueOf(mNumOfCrownLosses));
-                                        if (mCrownTime <= 0) {
-                                            mCrownTime = 0;
-                                        }
-
-                                        if (mNumOfCrownGames > 0) {
-                                            aCtCTime = mCrownTime / mNumOfCrownGames;
-                                        }
-
-                                        int hoursC = aCtCTime / 60;
-                                        int minutesC = aCtCTime % 60;
-                                        String crownTimeStr = ((hoursC > 0) ? hoursC + " Hr " : "") + minutesC + " Min";
-                                        mCrownAvgTimeTV.setText(crownTimeStr);
-                                    }
+                            if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS) == ParseConstants.CHALLENGE_STATUS_FINISHED) {
+                                if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO) {
+                                    mNumOfHotPotatoGames++;
+                                    mAveragePotatoTime += challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_AVERAGE_TIME);
+                                    mNumOfHotPotatoLosses +=challengePlayer.getBoolean(ParseConstants.CHALLENGE_PLAYER_IS_LOSER) == true ? 1 : 0;
+                                } else if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN) {
+                                    mNumOfCrownGames++;
+                                    mCrownTime += challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_AVERAGE_TIME);
+                                    mNumOfCrownWins += challengePlayer.getBoolean(ParseConstants.CHALLENGE_PLAYER_IS_WINNER) == true ? 1 : 0;
                                 }
-                            });
+
+
+                                ParseQuery<ParseObject> challengeEventQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_EVENTS);
+                                challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_OBJECT, challenge);
+                                challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER_OBJECT, challengePlayer);
+                                challengeEventQuery.findInBackground(new FindCallback<ParseObject>() {
+                                    @Override
+                                    public void done(List<ParseObject> challengeEvents, ParseException e) {
+                                        {
+                                            int aHPTTime = 0;
+                                            int aCtCTime = 0;
+                                            mPotatoGamesTV.setText(String.valueOf(mNumOfHotPotatoGames));
+                                            mPotatoLossesTV.setText(String.valueOf(mNumOfHotPotatoLosses));
+                                            if (mAveragePotatoTime <= 0) {
+                                                mAveragePotatoTime = 0;
+                                            }
+
+                                            if (mNumOfHotPotatoGames > 0) {
+                                                aHPTTime = mAveragePotatoTime / mNumOfHotPotatoGames;
+                                            }
+
+                                            int hours = aHPTTime / 60;
+                                            int minutes = aHPTTime % 60;
+                                            String potatoTimeStr = ((hours > 0) ? hours + " Hr " : "") + minutes + " Min";
+                                            mPotatoAvgTimeTV.setText(potatoTimeStr);
+
+                                            mCrownGamesTV.setText(String.valueOf(mNumOfCrownGames));
+                                            mCrownLossesTV.setText(String.valueOf(mNumOfCrownWins));
+                                            if (mCrownTime <= 0) {
+                                                mCrownTime = 0;
+                                            }
+
+                                            if (mNumOfCrownGames > 0) {
+                                                aCtCTime = mCrownTime / mNumOfCrownGames;
+                                            }
+
+                                            int hoursC = aCtCTime / 60;
+                                            int minutesC = aCtCTime % 60;
+                                            String crownTimeStr = ((hoursC > 0) ? hoursC + " Hr " : "") + minutesC + " Min";
+                                            mCrownAvgTimeTV.setText(crownTimeStr);
+                                        }
+                                    }
+                                });
+                            }
                         }
                         catch (Exception ex)
                         {}
