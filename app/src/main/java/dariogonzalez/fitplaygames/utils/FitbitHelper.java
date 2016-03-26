@@ -389,9 +389,12 @@ public class FitbitHelper {
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 try {
                                     JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                    final int steps = Integer.parseInt(jsonObject.optString("value").toString());
+                                    //We are not saving in the database when steps = 0 to reduce de table size, and also trying to avoid duplicates.
+                                    if (steps == 0) continue;
+
                                     String dateTime = jsonObject.optString("time").toString();
                                     Log.d("dateTime: ", dateTime);
-                                    final int value = Integer.parseInt(jsonObject.optString("value").toString());
                                     DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
                                     final Date time = df.parse(dateTimeToday + " " + dateTime);
@@ -412,15 +415,15 @@ public class FitbitHelper {
                                     }
 
                                     if (objectFound) {
-                                        if (objectToUpdate.getInt(ParseConstants.ACTIVITY_STEPS_STEPS) != value) {
-                                            objectToUpdate.put(ParseConstants.ACTIVITY_STEPS_STEPS, value);
+                                        if (objectToUpdate.getInt(ParseConstants.ACTIVITY_STEPS_STEPS) != steps) {
+                                            objectToUpdate.put(ParseConstants.ACTIVITY_STEPS_STEPS, steps);
                                             objectToUpdate.saveInBackground();
                                         }
                                     } else {
                                         ParseObject activityHistory = new ParseObject(ParseConstants.CLASS_ACTIVITY_STEPS_BY_DAY_15M);
                                         activityHistory.put(ParseConstants.KEY_USER_ID, parseUserId);
                                         activityHistory.put(ParseConstants.ACTIVITY_STEPS_DATE, time);
-                                        activityHistory.put(ParseConstants.ACTIVITY_STEPS_STEPS, value);
+                                        activityHistory.put(ParseConstants.ACTIVITY_STEPS_STEPS, steps);
                                         activityHistory.saveInBackground();
                                     }
                                 } catch (Exception ex) {
