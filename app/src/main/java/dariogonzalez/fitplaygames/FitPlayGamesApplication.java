@@ -5,21 +5,16 @@ import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 import com.flurry.android.FlurryAgent;
-import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 import com.parse.SendCallback;
 
 import dariogonzalez.fitplaygames.AlarmManager.AlarmReceiver;
 import io.fabric.sdk.android.Fabric;
-import java.util.List;
-
-import dariogonzalez.fitplaygames.Helper.ParseUtils;
 import dariogonzalez.fitplaygames.classes.FlurryConstants;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
 

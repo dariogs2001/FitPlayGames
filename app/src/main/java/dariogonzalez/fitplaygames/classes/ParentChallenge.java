@@ -234,7 +234,7 @@ public abstract class ParentChallenge {
                                             boolean isFinished = false;
                                             for (ParseObject data : list) {
 
-                                                if (isFinished) break;
+                                               // if (isFinished) break;
 
                                                 //Adding first to be sure we get the last updated value,
                                                 int steps = data.getInt(ParseConstants.ACTIVITY_STEPS_STEPS);
