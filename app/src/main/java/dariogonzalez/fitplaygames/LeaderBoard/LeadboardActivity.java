@@ -1,6 +1,8 @@
 package dariogonzalez.fitplaygames.LeaderBoard;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 
@@ -10,10 +12,13 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 
 import dariogonzalez.fitplaygames.MainActivity;
 import dariogonzalez.fitplaygames.R;
 import dariogonzalez.fitplaygames.classes.ChallengeTypeConstants;
+import dariogonzalez.fitplaygames.classes.ParseConstants;
 
 public class LeadboardActivity extends AppCompatActivity {
 
@@ -38,17 +43,27 @@ public class LeadboardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_leader_board_new);
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null)
         {
             challengeType = bundle.getInt("challengeType");
+            if (challengeType == ChallengeTypeConstants.HOT_POTATO) {
+                super.setTheme(R.style.HotPotatoTheme);
+                super.setTitle(getString(R.string.hot_potato_leaderboard));
+            }
+            else if (challengeType == ChallengeTypeConstants.CROWN) {
+                super.setTheme(R.style.CaptureTheCrownTheme);
+                super.setTitle(getString(R.string.crown_leaderboard));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    Window window = getWindow();
+                    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                    window.setStatusBarColor(getResources().getColor(R.color.capture_the_crown_dark));
+                }
+            }
         }
+        setContentView(R.layout.activity_leader_board_new);
 
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        toolbar.setTitle("Hot Potato Leaderboard");
-//        setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new LeaderboardPageAdapter(this, getSupportFragmentManager());

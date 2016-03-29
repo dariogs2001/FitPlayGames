@@ -1,11 +1,13 @@
 package dariogonzalez.fitplaygames;
 
+import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,9 +15,11 @@ import android.view.MenuItem;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import dariogonzalez.fitplaygames.classes.ParseConstants;
@@ -45,7 +49,7 @@ public class UserProfileActivity extends AppCompatActivity {
             if (actionBar != null) {
                 actionBar.setTitle(extras.getString("username"));
             }
-            String userId = extras.getString("userId");
+            userId = extras.getString("userId");
             fragment.setUserData(userId);
             boolean isFriend = extras.getBoolean("isFriend", false);
             fragment.setIsFriend(isFriend);
@@ -94,6 +98,48 @@ public class UserProfileActivity extends AppCompatActivity {
             }
 
             return true;
+        }
+        else if (id == R.id.action_remove) {
+            // Delete Friend
+            new AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("Unfriend this person")
+                    .setMessage("Are you sure you want to unfriend this person?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ParseUser currentUser = ParseUser.getCurrentUser();
+                            List<ParseQuery<ParseObject>> queries = new ArrayList<>();
+                            ParseQuery<ParseObject> query1 = new ParseQuery<>(ParseConstants.CLASS_USER_FRIENDS);
+                            query1.whereEqualTo(ParseConstants.USER_OBJECT, currentUser);
+                            query1.whereEqualTo(ParseConstants.USER_FRIENDS_FRIEND_ID, userId);
+
+
+                            ParseQuery<ParseObject> query2 = new ParseQuery<>(ParseConstants.CLASS_USER_FRIENDS);
+                            query2.whereEqualTo(ParseConstants.FRIEND_OBJECT, currentUser);
+                            query2.whereEqualTo(ParseConstants.USER_OBJECT, userId);
+
+                            queries.add(query1);
+                            queries.add(query2);
+
+                            ParseQuery<ParseObject> superQuery = ParseQuery.or(queries);
+                            superQuery.findInBackground(new FindCallback<ParseObject>() {
+                                @Override
+                                public void done(List<ParseObject> friendObjects, ParseException e) {
+                                    if (e == null) {
+                                        for (ParseObject friendObject : friendObjects) {
+                                            ParseObject.createWithoutData(ParseConstants.CLASS_USER_FRIENDS, friendObject.getObjectId()).deleteEventually();
+                                        }
+                                    }
+                                }
+                            });
+
+
+                        }
+
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
         }
 
 

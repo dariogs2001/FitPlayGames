@@ -182,4 +182,6 @@
     <string name="slash">/</string>
     <string name="end_day">End Day</string>
     <string name="declined">Declined</string>
+    <string name="hot_potato_leaderboard">Hot Potato Leaderboard</string>
+    <string name="crown_leaderboard">Capture the Crown Leaderboard</string>
 </resources>

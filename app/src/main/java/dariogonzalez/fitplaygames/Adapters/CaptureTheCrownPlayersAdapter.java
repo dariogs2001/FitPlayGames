@@ -156,6 +156,7 @@ public class CaptureTheCrownPlayersAdapter extends ArrayAdapter<ChallengePlayerI
             @Override
             public void onClick(View view) {
                 sendPlayerResponse(ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED, userObject, rowHolder);
+                rowHolder.capturesTV.setText(getContext().getResources().getString(R.string.accepted));
             }
         });
 
@@ -163,6 +164,7 @@ public class CaptureTheCrownPlayersAdapter extends ArrayAdapter<ChallengePlayerI
             @Override
             public void onClick(View view) {
                 sendPlayerResponse(ParseConstants.CHALLENGE_PLAYER_STATUS_DECLINED, userObject, rowHolder);
+                rowHolder.capturesTV.setText(getContext().getResources().getString(R.string.declined));
             }
         });
 
