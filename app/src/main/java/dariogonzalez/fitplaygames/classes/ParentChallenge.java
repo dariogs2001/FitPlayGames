@@ -449,6 +449,7 @@ public abstract class ParentChallenge {
 
         final int passes = challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_PASSES);
         nextPlayerQuery.whereLessThanOrEqualTo(ParseConstants.CHALLENGE_PLAYER_PASSES, passes);
+        nextPlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_STATUS, ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED);
         nextPlayerQuery.orderByAscending(ParseConstants.CHALLENGE_PLAYER_PASSES);
 
         nextPlayerQuery.getFirstInBackground(new GetCallback<ParseObject>() {
@@ -736,8 +737,7 @@ public abstract class ParentChallenge {
                     // If Playing Capture the Crown
                     if(challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN) {
                         // Query through everyone in the list that is not the starting player and add them to the database as playing with a turn set to false.
-                        for(int i = 1; i < list.size(); i++) {
-                            ParseObject crownSeekerPlayer = list.get(i);
+                        for(ParseObject crownSeekerPlayer : list) {
                             ParseObject crownSeekerChallengeEvent = new ParseObject(ParseConstants.CLASS_CHALLENGE_EVENTS);
                             crownSeekerChallengeEvent.put(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_OBJECT, challenge);
                             crownSeekerChallengeEvent.put(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER_OBJECT, crownSeekerPlayer);

@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -125,7 +127,40 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
         return view;
     }
 
-    private void getGameData() {
+    private void getGameData()
+    {
+        final ParseUser userObject = ParseUser.getCurrentUser();
+        if(userObject != null) {
+            ParseQuery<ParseObject> query1 = new ParseQuery<>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
+            query1.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT, userObject);
+            query1.orderByDescending(ParseConstants.KEY_CREATED_AT);
+
+            try {
+                List<ParseObject> challengeplayers = query1.find();
+                for (ParseObject challengePlayer : challengeplayers) {
+                    ParseQuery<ParseObject> query2 = new ParseQuery<>(ParseConstants.CLASS_CHALLENGES);
+                    ParseObject challenge = (ParseObject) challengePlayer.get(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT);
+                    query2.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_ID, challenge.getObjectId());
+
+                    ParseObject challenge2 = query2.getFirst();
+
+                    if (mUserPermission == ParseConstants.PERMISSION_ALL || mUserPermission == ParseConstants.PERMISSION_HOT_POTATO) {
+                        if (challenge2.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO) {
+                            addHotPotatoChallenge(challenge2, challenge2.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS), challengePlayer);
+                        }
+                    }
+
+                    if (mUserPermission == ParseConstants.PERMISSION_ALL || mUserPermission == ParseConstants.PERMISSION_CAPTURE_THE_CROWN) {
+                        if (challenge2.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN) {
+                            addCaptureTheCrownChallenge(challenge2, challenge2.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS), challengePlayer);
+                        }
+                    }
+                }
+            }catch (Exception ex) {}
+        }
+    }
+
+    private void getGameData2() {
         final ParseUser userObject = ParseUser.getCurrentUser();
         if(userObject != null) {
             ParseQuery<ParseObject> query1 = new ParseQuery<>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
@@ -167,6 +202,10 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
     }
 
     private void addHotPotatoChallenge(ParseObject challenge, int challengeStatus, ParseObject challengePlayer) {
+
+        if (challengeStatus == ParseConstants.CHALLENGE_STATUS_CANCELLED ||
+            (challengeStatus == ParseConstants.CHALLENGE_STATUS_FINISHED && mGamesListFinished.size() >= 5)) return;
+
         HotPotatoChallenge hotPotatoChallenge = new HotPotatoChallenge(challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE));
         hotPotatoChallenge.setIcon(getResources().getDrawable(R.drawable.potato_124));
         hotPotatoChallenge.setChallengeId(challenge.getObjectId());
@@ -191,6 +230,10 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
     }
 
     private void addCaptureTheCrownChallenge(ParseObject challenge, int challengeStatus, ParseObject challengePlayer) {
+
+        if (challengeStatus == ParseConstants.CHALLENGE_STATUS_CANCELLED ||
+            (challengeStatus == ParseConstants.CHALLENGE_STATUS_FINISHED && mGamesListFinished.size() >= 5)) return;
+
         CaptureTheCrownChallenge captureTheCrownChallenge = new CaptureTheCrownChallenge(challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE));
         captureTheCrownChallenge.setIcon(getResources().getDrawable(R.drawable.crown_47));
         captureTheCrownChallenge.setChallengeId(challenge.getObjectId());
