@@ -2,10 +2,19 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item
     android:state_enabled="false"
-    android:textColor ="@android:color/black"
-    android:drawable="@android:color/darker_gray" />
+    android:textColor ="@android:color/black">
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/darker_gray"/>
+            <!--corners allow us to make the rounded corners button-->
+            <corners android:radius="@dimen/button_radius" />
+        </shape></item>
     <item
         android:state_enabled="true"
-        android:textColor ="@android:color/white"
-        android:drawable="@color/primary" />
+        android:textColor ="@android:color/white">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/primary"/>
+            <!--corners allow us to make the rounded corners button-->
+            <corners android:radius="@dimen/button_radius" />
+        </shape>
+    </item>
 </selector>
