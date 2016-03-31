@@ -8,4 +8,5 @@
     <dimen name="login_vertical_padding">10dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
+    <dimen name="button_radius">2dp</dimen>
 </resources>

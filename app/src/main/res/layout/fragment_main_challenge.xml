@@ -10,7 +10,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:background="@color/accent"
+        android:background="@drawable/new_challenge_button"
         android:text="@string/create_new_game_button"
         android:textColor="@color/white"
         android:textSize="15sp"

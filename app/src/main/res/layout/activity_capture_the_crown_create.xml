@@ -63,9 +63,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/start_day"
-                        android:layout_gravity="center_horizontal"
+                        android:layout_gravity="left"
                         android:textColor="@color/divider_color"
-                        android:textSize="13sp"/>
+                        android:textSize="13sp"
+                        />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -102,9 +103,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/start_time"
-                        android:layout_gravity="center_horizontal"
+                        android:layout_gravity="left"
                         android:textColor="@color/divider_color"
-                        android:textSize="13sp"/>
+                        android:textSize="13sp"
+                        />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -141,7 +143,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/step_goal"
-                        android:layout_gravity="center_horizontal"
+                        android:layout_gravity="left"
                         android:textColor="@color/divider_color"
                         android:textSize="13sp"/>
 
@@ -203,7 +205,7 @@
             android:layout_weight="1"
             android:text="@string/cancel"
             android:textColor="@color/white"
-            android:background="@color/light_gray"/>
+            android:background="@drawable/cancel_challenge_button"/>
 
         <Button
             android:id="@+id/create_game_button"
@@ -214,7 +216,7 @@
             android:layout_weight="1"
             android:text="@string/create_game"
             android:textColor="@color/white"
-            android:background="@color/capture_the_crown_color"/>
+            android:background="@drawable/ctc_create_challenge_button"/>
 
     </LinearLayout>
 

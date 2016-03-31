@@ -9,8 +9,8 @@
         android:layout_alignParentLeft="true">
         <ImageView
             android:id="@+id/ivImage"
-            android:layout_width="55dp"
-            android:layout_height="55dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:src="@drawable/ic_action_refresh"
             android:cropToPadding="true"
             android:layout_gravity="center_horizontal|center_vertical"
@@ -24,7 +24,6 @@
             android:text="Test"
             android:gravity="center_vertical"
             android:textSize="20dp"
-            android:textStyle="bold"
             />
     </LinearLayout>
 </RelativeLayout>

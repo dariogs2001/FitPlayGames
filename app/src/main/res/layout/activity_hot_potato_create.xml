@@ -64,7 +64,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/start_day"
-                        android:layout_gravity="center_horizontal"
+                        android:layout_gravity="left"
                         android:textColor="@color/divider_color"
                         android:textSize="13sp"/>
 
@@ -103,7 +103,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/start_time"
-                        android:layout_gravity="center_horizontal"
+                        android:layout_gravity="left"
                         android:textColor="@color/divider_color"
                         android:textSize="13sp"/>
 
@@ -142,7 +142,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/step_goal"
-                        android:layout_gravity="center_horizontal"
+                        android:layout_gravity="left"
                         android:textColor="@color/divider_color"
                         android:textSize="13sp"/>
 
@@ -191,7 +191,10 @@
         android:layout_height="75dp"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
-        android:padding="16dp">
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="16dp"
+        android:paddingTop="8dp">
 
         <Button
             android:id="@+id/cancel_button"
@@ -202,7 +205,7 @@
             android:layout_weight="1"
             android:text="@string/cancel"
             android:textColor="@color/white"
-            android:background="@color/light_gray"/>
+            android:background="@drawable/cancel_challenge_button"/>
 
         <Button
             android:id="@+id/create_game_button"
@@ -213,7 +216,7 @@
             android:layout_weight="1"
             android:text="@string/create_game"
             android:textColor="@color/white"
-            android:background="@color/hot_potato_color"/>
+            android:background="@drawable/ht_create_challenge_button"/>
 
     </LinearLayout>
 
