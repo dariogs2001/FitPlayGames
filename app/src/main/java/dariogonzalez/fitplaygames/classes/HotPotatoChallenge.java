@@ -8,6 +8,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -130,11 +131,18 @@ public class HotPotatoChallenge extends ParentChallenge implements Parcelable {
                     challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_GAME_TIME, timeDifference);
                     challengeEvent.saveInBackground();
 
-                    ParseObject challengePlayer = challengeEvent.getParseObject(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER_OBJECT);
+                    final ParseObject challengePlayer = challengeEvent.getParseObject(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER_OBJECT);
                     challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_IS_LOSER, true);
-                    challengePlayer.saveInBackground();
-                    ParseUser loserPlayerUser = (ParseUser) challengePlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT);
-                    ParentChallenge.sendPushNotification("Oh no! The potato has exploded in '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", loserPlayerUser);
+                    challengePlayer.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                ParseUser loserPlayerUser = (ParseUser) challengePlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT);
+                                ParentChallenge.sendPushNotification("Oh no! The potato has exploded in '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", loserPlayerUser);
+
+                            }
+                        }
+                    });
                 }
             }
         });

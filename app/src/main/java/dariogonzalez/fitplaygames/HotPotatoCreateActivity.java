@@ -162,7 +162,7 @@ public class HotPotatoCreateActivity extends AppCompatActivity {
 
                 if (mChallengeId == null || mChallengeId.length() == 0) {
                     //Create challenge
-                    //TODO: see generateRandomEndDate
+
                     String startDateInfo = String.format("%s/%d %s", startDaySpinner.getSelectedItem().toString(), mYear, startTimeSpinner.getSelectedItem().toString());
                     DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
                     dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));

@@ -8,6 +8,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -124,11 +125,18 @@ public class CaptureTheCrownChallenge extends ParentChallenge implements Parcela
                     challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_GAME_TIME, timeDifference);
                     challengeEvent.saveInBackground();
 
-                    ParseObject challengePlayer = challengeEvent.getParseObject(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER_OBJECT);
+                    final ParseObject challengePlayer = challengeEvent.getParseObject(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER_OBJECT);
                     challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_IS_WINNER, true);
-                    challengePlayer.saveInBackground();
-                    ParseUser winnerPlayerUser = (ParseUser) challengePlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT);
-                    ParentChallenge.sendPushNotification("We have a royal winner in " + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "!", winnerPlayerUser);
+                    challengePlayer.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                ParseUser winnerPlayerUser = (ParseUser) challengePlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT);
+                                ParentChallenge.sendPushNotification("We have a royal winner in " + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "!", winnerPlayerUser);
+
+                            }
+                        }
+                    });
                 }
             }
         });

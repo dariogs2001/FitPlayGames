@@ -265,8 +265,6 @@ public abstract class ParentChallenge {
 
                                                                 challengePlayer.increment(ParseConstants.CHALLENGE_PLAYER_PASSES);
                                                                 int playerPasses = challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_PASSES);
-//                                                    playerPasses = playerPasses + 1;
-//                                                    challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_PASSES, playerPasses);
 
                                                                 long gameTime = challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_GAME_TIME);
                                                                 gameTime += timeDifference;
@@ -375,9 +373,10 @@ public abstract class ParentChallenge {
                                                                     challengePlayer.saveEventually(new SaveCallback() {
                                                                         @Override
                                                                         public void done(ParseException e) {
-                                                                            updateCtCChallengeEventsToDone(challenge);
-                                                                            handOverCrown(challenge, challengePlayer);
-                                                                            sendPushNotification("You have captured the crown in '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", ParseUser.getCurrentUser());
+                                                                            if (e == null) {
+                                                                                updateCtCChallengeEventsToDone(challenge);
+                                                                                handOverCrown(challenge, challengePlayer);
+                                                                             }
                                                                          }
                                                                     });
                                                                 }
@@ -467,15 +466,18 @@ public abstract class ParentChallenge {
                     challengeEvent.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
-                            //Sending push notification...
-                            ParseUser nextPlayerUser = (ParseUser) nextPlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT);
-                            String object = "";
-                            if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO) {
-                                object = "potato";
-                            } else if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN) {
-                                object = "crown";
+                            if (e == null) {
+                                //Sending push notification...
+                                ParseUser nextPlayerUser = (ParseUser) nextPlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT);
+                                String object = "";
+                                if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO) {
+                                    object = "potato";
+                                } else if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN) {
+                                    //This else should never happens, this is a HOT POTATO game.
+                                    object = "crown";
+                                }
+                                ParentChallenge.sendPushNotification("You have been passed the " + object + " in game '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", nextPlayerUser);
                             }
-                            ParentChallenge.sendPushNotification("You have been passed the " + object + " in game '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", nextPlayerUser);
                         }
                     });
                 }
@@ -527,7 +529,16 @@ public abstract class ParentChallenge {
                         if (crownPlayer == challengePlayer) {
                             challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_CROWN);
                             crownPlayer.put(ParseConstants.CHALLENGE_PLAYER_IS_TURN, true);
-                            challengeEvent.saveInBackground();
+                            challengeEvent.saveInBackground(new SaveCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    if (e == null)
+                                    {
+                                        ParseUser crownTaker = (ParseUser) crownPlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT);
+                                        sendPushNotification("You have captured the crown in '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", crownTaker);
+                                    }
+                                }
+                            });
                         }
                         // All other players should be created with a playing status and turn set to false.  Turn = true is reserved for the crown holder.
                         else {
@@ -538,9 +549,11 @@ public abstract class ParentChallenge {
                             challengeEvent.saveInBackground(new SaveCallback() {
                                 @Override
                                 public void done(ParseException e) {
-                                    //Sending push notification only to players that don't have the crown.
-                                    ParseUser crownSeekerPlayerUser = (ParseUser) crownPlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT);
-                                    ParentChallenge.sendPushNotification("Another player captured the crown! Try to get it back in '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", crownSeekerPlayerUser);
+                                    if (e == null) {
+                                        //Sending push notification only to players that don't have the crown.
+                                        ParseUser crownSeekerPlayerUser = (ParseUser) crownPlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT);
+                                        ParentChallenge.sendPushNotification("Another player captured the crown! Try to get it back in '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", crownSeekerPlayerUser);
+                                    }
                                 }
                             });
                         }
@@ -701,16 +714,15 @@ public abstract class ParentChallenge {
 
     //Moving methods to this class
     public static void chooseStartingPlayer(final ParseObject challenge) {
-        Log.d("chooseStartingPlayer", "true");
         ParseQuery<ParseObject> startingPlayerQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
         startingPlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT, challenge);
         startingPlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_STATUS, ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED);
-        //startingPlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_OWNER, true);
+
         startingPlayerQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
-            public void done(List<ParseObject> list, ParseException e) {
+            public void done(final List<ParseObject> list, ParseException e) {
                 if (e == null && !list.isEmpty()) {
-                    ParseObject startingPlayer = list.get(0);
+                    final ParseObject startingPlayer = list.get(0);
                     ParseObject challengeEvent = new ParseObject(ParseConstants.CLASS_CHALLENGE_EVENTS);
                     challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_OBJECT, challenge);
                     challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER_OBJECT, startingPlayer);
@@ -721,35 +733,50 @@ public abstract class ParentChallenge {
                     else if ( challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN) {
                         challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_CROWN);
                     }
-                    challengeEvent.saveInBackground();
+                    challengeEvent.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null)
+                            {
+                                startingPlayer.put(ParseConstants.CHALLENGE_PLAYER_IS_TURN, true);
+                                startingPlayer.saveInBackground(new SaveCallback() {
+                                    @Override
+                                    public void done(ParseException e) {
+                                        if (e == null)
+                                        {
+                                            ParseUser startingPlayerUser = (ParseUser) startingPlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT);
+                                            String object = "";
+                                            if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO) {
+                                                object = "potato";
+                                            }
+                                            else if ( challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN) {
+                                                object = "crown";
+                                            }
+                                            ParentChallenge.sendPushNotification("You've started off with the " + object + " in '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", startingPlayerUser);
+                                            // If Playing Capture the Crown
+                                            if(challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN) {
+                                                // Query through everyone in the list that is not the starting player and add them to the database as playing with a turn set to false.
+                                                for(int idx = 1; idx < list.size(); idx++) {
+                                                    ParseObject crownSeekerPlayer = list.get(idx);
+                                                    ParseObject crownSeekerChallengeEvent = new ParseObject(ParseConstants.CLASS_CHALLENGE_EVENTS);
+                                                    crownSeekerChallengeEvent.put(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_OBJECT, challenge);
+                                                    crownSeekerChallengeEvent.put(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER_OBJECT, crownSeekerPlayer);
+                                                    crownSeekerChallengeEvent.put(ParseConstants.CHALLENGE_EVENTS_START_TIME, new Date());
+                                                    crownSeekerChallengeEvent.put(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_PLAYING);
+                                                    crownSeekerChallengeEvent.saveInBackground();
+                                                    crownSeekerPlayer.put(ParseConstants.CHALLENGE_PLAYER_IS_TURN, false);
+                                                    crownSeekerPlayer.saveInBackground();
+                                                    ParseUser crownSeekerPlayerUser = (ParseUser) crownSeekerPlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT);
+                                                    ParentChallenge.sendPushNotification("Try to capture the crown in '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", crownSeekerPlayerUser);
+                                                }
+                                            }
 
-                    startingPlayer.put(ParseConstants.CHALLENGE_PLAYER_IS_TURN, true);
-                    startingPlayer.saveInBackground();
-                    ParseUser startingPlayerUser = (ParseUser) startingPlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT);
-                    String object = "";
-                    if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO) {
-                        object = "potato";
-                    }
-                    else if ( challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN) {
-                        object = "crown";
-                    }
-                    ParentChallenge.sendPushNotification("You've started off with the " + object + " in '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", startingPlayerUser);
-                    // If Playing Capture the Crown
-                    if(challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN) {
-                        // Query through everyone in the list that is not the starting player and add them to the database as playing with a turn set to false.
-                        for(ParseObject crownSeekerPlayer : list) {
-                            ParseObject crownSeekerChallengeEvent = new ParseObject(ParseConstants.CLASS_CHALLENGE_EVENTS);
-                            crownSeekerChallengeEvent.put(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_OBJECT, challenge);
-                            crownSeekerChallengeEvent.put(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER_OBJECT, crownSeekerPlayer);
-                            crownSeekerChallengeEvent.put(ParseConstants.CHALLENGE_EVENTS_START_TIME, new Date());
-                            crownSeekerChallengeEvent.put(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_PLAYING);
-                            crownSeekerChallengeEvent.saveInBackground();
-                            crownSeekerPlayer.put(ParseConstants.CHALLENGE_PLAYER_IS_TURN, false);
-                            crownSeekerPlayer.saveInBackground();
-                            ParseUser crownSeekerPlayerUser = (ParseUser) crownSeekerPlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT);
-                            ParentChallenge.sendPushNotification("Try to capture the crown in '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", crownSeekerPlayerUser);
+                                        }
+                                    }
+                                });
+                            }
                         }
-                    }
+                    });
                 }
             }
         });
