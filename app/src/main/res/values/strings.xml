@@ -90,6 +90,7 @@
 
     <string-array name="challenge_steps_array">
         <item>Select steps</item>
+        <item>100</item>
         <item>1000</item>
         <item>2000</item>
         <item>3000</item>

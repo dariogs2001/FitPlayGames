@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -117,12 +118,12 @@ public class HotPotatoChallenge extends ParentChallenge implements Parcelable {
         challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_OBJECT, challenge);
         challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_PLAYING);
         challengeEventQuery.include(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER_OBJECT);
-        challengeEventQuery.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> list, ParseException e) {
-                if (e == null  && !list.isEmpty()) {
-                    ParseObject challengeEvent = list.get(0);
 
+        challengeEventQuery.getFirstInBackground(new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject challengeEvent, ParseException e) {
+                if (e == null && challengeEvent != null)
+                {
                     Date startTime = challengeEvent.getDate(ParseConstants.CHALLENGE_EVENTS_START_TIME);
                     Date endTime = new Date();
                     //Result is in miliseconds so I divided by 1000 to set the seconds and by 60 to set the minutes
@@ -137,9 +138,8 @@ public class HotPotatoChallenge extends ParentChallenge implements Parcelable {
                         @Override
                         public void done(ParseException e) {
                             if (e == null) {
-                                ParseUser loserPlayerUser = (ParseUser) challengePlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT);
+                                ParseUser loserPlayerUser = challengePlayer.getParseUser(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT);
                                 ParentChallenge.sendPushNotification("Oh no! The potato has exploded in '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", loserPlayerUser);
-
                             }
                         }
                     });

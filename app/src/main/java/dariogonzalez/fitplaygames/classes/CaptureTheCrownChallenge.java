@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -39,6 +40,7 @@ public class CaptureTheCrownChallenge extends ParentChallenge implements Parcela
     public void createEndDateMapping() {
         // Initialize hours map
         // This is a relationship of stepGoal to hours
+        hours.put(100, 2);
         hours.put(1000, 2);
         hours.put(2000, 4);
         hours.put(3000, 6);
@@ -48,6 +50,7 @@ public class CaptureTheCrownChallenge extends ParentChallenge implements Parcela
         // Initialize captures map
         // This is a relationship of people to # of captures for the game
         HashMap<Integer, Integer> twoPeople = new HashMap<>();
+        twoPeople.put(100, 24);
         twoPeople.put(1000, 24);
         twoPeople.put(2000, 12);
         twoPeople.put(3000, 8);
@@ -56,6 +59,7 @@ public class CaptureTheCrownChallenge extends ParentChallenge implements Parcela
         captures.put(2, twoPeople);
 
         HashMap<Integer, Integer> threePeople = new HashMap<>();
+        threePeople.put(100, 12);
         threePeople.put(1000, 12);
         threePeople.put(2000, 9);
         threePeople.put(3000, 7);
@@ -64,6 +68,7 @@ public class CaptureTheCrownChallenge extends ParentChallenge implements Parcela
         captures.put(3, threePeople);
 
         HashMap<Integer, Integer> fourPeople = new HashMap<>();
+        fourPeople.put(100, 12);
         fourPeople.put(1000, 12);
         fourPeople.put(2000, 8);
         fourPeople.put(3000, 8);
@@ -72,6 +77,7 @@ public class CaptureTheCrownChallenge extends ParentChallenge implements Parcela
         captures.put(4, fourPeople);
 
         HashMap<Integer, Integer> fivePeople = new HashMap<>();
+        fivePeople.put(100, 15);
         fivePeople.put(1000, 15);
         fivePeople.put(2000, 10);
         fivePeople.put(3000, 10);
@@ -109,15 +115,14 @@ public class CaptureTheCrownChallenge extends ParentChallenge implements Parcela
     public static void findWinner(final ParseObject challenge) {
         ParseQuery<ParseObject> challengeEventQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_EVENTS);
         challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_OBJECT, challenge);
-        challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_PLAYING);
+        challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_CROWN);
         challengeEventQuery.include(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER_OBJECT);
-        challengeEventQuery.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> list, ParseException e) {
-                if (e == null && !list.isEmpty()) {
-                    ParseObject challengeEvent = list.get(0);
 
-                    Date startTime = challengeEvent.getDate(ParseConstants.CHALLENGE_EVENTS_START_TIME);
+        challengeEventQuery.getFirstInBackground(new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject challengeEvent, ParseException e) {
+                if (e == null && challengeEvent != null) {
+                     Date startTime = challengeEvent.getDate(ParseConstants.CHALLENGE_EVENTS_START_TIME);
                     Date endTime = new Date();
                     //Result is in milliseconds so I divided by 1000 to set the seconds and by 60 to set the minutes
                     long timeDifference = endTime.getTime() - startTime.getTime() / 1000 * 60;
@@ -131,9 +136,8 @@ public class CaptureTheCrownChallenge extends ParentChallenge implements Parcela
                         @Override
                         public void done(ParseException e) {
                             if (e == null) {
-                                ParseUser winnerPlayerUser = (ParseUser) challengePlayer.get(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT);
+                                ParseUser winnerPlayerUser = challengePlayer.getParseUser(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT);
                                 ParentChallenge.sendPushNotification("We have a royal winner in " + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "!", winnerPlayerUser);
-
                             }
                         }
                     });
