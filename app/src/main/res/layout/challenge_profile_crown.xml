@@ -4,13 +4,14 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    style="@style/CardView_Main" >
+    style="@style/CardView_Profile"
+    android:layout_marginBottom="5dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_margin="16dp">
+        android:padding="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,7 +23,7 @@
                 android:layout_height="45dp"
                 android:visibility="visible"
                 android:src="@drawable/crown_124"
-                android:padding="10dp"/>
+                android:padding="16dp"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -43,21 +44,20 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:paddingTop="10dp"
-                android:layout_weight="1">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="# of games"
-                    style="@style/challenge_profile_header2"/>
+                android:layout_weight="1"
+                android:layout_marginLeft="56dp">
 
                 <TextView
                     android:id="@+id/crown_num_of_games"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     style="@style/challenge_profile_text"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/num_of_games"
+                    style="@style/challenge_profile_header2"/>
 
             </LinearLayout>
 
@@ -67,20 +67,18 @@
                 android:orientation="vertical"
                 android:paddingTop="10dp"
                 android:layout_weight="1">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/num_of_wins"
-                    style="@style/challenge_profile_header2"/>
 
                 <TextView
                     android:id="@+id/crown_num_of_losses"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     style="@style/challenge_profile_text"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/num_of_wins"
+                    style="@style/challenge_profile_header2"/>
 
             </LinearLayout>
 
@@ -92,18 +90,16 @@
                 android:layout_weight="1">
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/average_crown_time"
-                    style="@style/challenge_profile_header2"/>
-
-                <TextView
                     android:id="@+id/avg_crown_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     style="@style/challenge_profile_text"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/profile_average_crown_time"
+                    style="@style/challenge_profile_header2"/>
 
             </LinearLayout>
 

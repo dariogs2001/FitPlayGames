@@ -62,6 +62,7 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
     private boolean isFriend = false;
     private String Friendship;
     private LinearLayout progressBar;
+    private LinearLayout profileLayout;
     private SwipeRefreshLayout swipeRefreshLayout;
 
     private ParseUser user;
@@ -106,6 +107,7 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
         mCrownGamesTV = (TextView) view.findViewById(R.id.crown_num_of_games);
         mCrownLossesTV = (TextView) view.findViewById(R.id.crown_num_of_losses);
         mCrownAvgTimeTV = (TextView) view.findViewById(R.id.avg_crown_time);
+        profileLayout = (LinearLayout)view.findViewById(R.id.profile_layout);
 
         MainScreenTask task = new MainScreenTask();
         task.execute("");
@@ -136,6 +138,10 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
             if (isFriend) {
                 fabAddFriend.setVisibility(View.GONE);
                 fabMessageFriend.setVisibility(View.VISIBLE);
+                profileLayout.setBackgroundResource(R.color.primary);
+                userName.setTextColor(getResources().getColor(R.color.white));
+                userEmail.setTextColor(getResources().getColor(R.color.white));
+                userSteps.setTextColor(getResources().getColor(R.color.white));
             }
 
             if (fabMessageFriend != null) {
@@ -209,6 +215,10 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
             if (isFriend) {
                 fabAddFriend.setVisibility(View.GONE);
                 fabMessageFriend.setVisibility(View.VISIBLE);
+                profileLayout.setBackgroundResource(R.color.primary);
+                userName.setTextColor(getResources().getColor(R.color.white));
+                userEmail.setTextColor(getResources().getColor(R.color.white));
+                userSteps.setTextColor(getResources().getColor(R.color.white));
             }
         }
         else {

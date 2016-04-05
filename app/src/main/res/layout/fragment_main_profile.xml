@@ -4,24 +4,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="dariogonzalez.fitplaygames.MainProfileFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/very_light_grey">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="130dp"
+        android:layout_height="120dp"
         android:orientation="horizontal"
         android:paddingTop="16dp"
-        android:paddingBottom="16dp"
         android:paddingLeft="32dp"
-        android:paddingStart="32dp"
         android:paddingRight="16dp"
-        android:paddingEnd="16dp"
-        android:background="@color/primary">
+        android:id="@+id/profile_layout">
 
         <dariogonzalez.fitplaygames.utils.RoundedImageView
             android:id="@+id/profile_image"
-            android:layout_width="85dp"
-            android:layout_height="85dp"
+            android:layout_width="86dp"
+            android:layout_height="86dp"
             android:layout_marginRight="16dp"
             android:layout_marginEnd="16dp"
             android:visibility="gone"/>
@@ -44,29 +42,26 @@
                 android:id="@+id/user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:textSize="28sp"
+                android:textColor="@color/primary_text"
+                android:textSize="28dp"
                 android:text="User Name"/>
 
             <TextView
                 android:id="@+id/user_steps"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:textSize="20sp"
+                android:textColor="@color/accent"
+                android:textSize="20dp"
                 android:text="15.000 steps"/>
 
             <TextView
                 android:id="@+id/user_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/opaque_white"
-                android:textSize="12sp"
+                android:textColor="@color/divider_color"
+                android:textSize="12dp"
                 android:text="email@emai.com"/>
-
         </LinearLayout>
-
-
     </LinearLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout
@@ -84,7 +79,7 @@
         android:visibility="visible"
         android:paddingRight="10dp"
         android:paddingLeft="10dp"
-        android:paddingTop="140dp">
+        android:paddingTop="125dp">
 
       <LinearLayout
           android:layout_width="match_parent"
@@ -95,7 +90,7 @@
 
           <Space
               android:layout_width="match_parent"
-              android:layout_height="10dp" />
+              android:layout_height="3dp" />
 
           <include layout="@layout/challenge_profile_crown"/>
 
@@ -128,10 +123,9 @@
         android:id="@+id/fab_add_friend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="96dp"
         android:layout_gravity="end"
         android:layout_marginRight="16dp"
-        android:layout_marginEnd="16dp"
         android:src="@drawable/ic_addfriend"
         fab:fab_colorNormal="@color/accent"
         fab:fab_colorPressed="@color/primary_dark"
@@ -142,10 +136,9 @@
         android:id="@+id/fab_message_friend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="96dp"
         android:layout_gravity="end"
         android:layout_marginRight="16dp"
-        android:layout_marginEnd="16dp"
         android:visibility="gone"
         android:src="@drawable/ic_message"
         fab:fab_colorNormal="@color/accent"
