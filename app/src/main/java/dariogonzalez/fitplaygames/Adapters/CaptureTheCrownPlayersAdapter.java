@@ -132,7 +132,7 @@ public class CaptureTheCrownPlayersAdapter extends ArrayAdapter<ChallengePlayerI
         }
         else if (mGameStatus == ParseConstants.CHALLENGE_STATUS_FINISHED) {
 
-            holder.capturesTV.setText(String.valueOf(userObject.getmPasses() + " passes"));
+            holder.capturesTV.setText(String.valueOf(userObject.getmPasses() + " captures"));
             holder.finishedLayout.setVisibility(View.VISIBLE);
             holder.stepsTV.setText(String.valueOf(userObject.getmSteps()));
             int hours = userObject.getmPlayerAverageHoldingTime() / 60;
