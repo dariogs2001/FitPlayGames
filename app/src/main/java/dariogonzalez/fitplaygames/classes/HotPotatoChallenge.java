@@ -3,7 +3,6 @@ package dariogonzalez.fitplaygames.classes;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -14,7 +13,6 @@ import com.parse.SaveCallback;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

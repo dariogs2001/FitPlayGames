@@ -51,6 +51,7 @@ public final class ParseConstants
     public static final String LAST_SEVEN_DAYS_AVG = "Average";
 
     public static final String USER_FRIENDS_FRIEND_ID = "FriendId";
+    public static final String USER_FRIENDS_USER_ID = "userId";
     public static final String USER_FRIENDS_STATUS = "UserFriendStatus";
 
     public static final String USER_OBJECT = "UserObject";

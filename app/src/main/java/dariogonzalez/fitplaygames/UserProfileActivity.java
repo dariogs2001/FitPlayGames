@@ -66,9 +66,7 @@ public class UserProfileActivity extends AppCompatActivity {
                     }
                 }
             });
-
         }
-
     }
 
     @Override
@@ -110,14 +108,14 @@ public class UserProfileActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             ParseUser currentUser = ParseUser.getCurrentUser();
                             List<ParseQuery<ParseObject>> queries = new ArrayList<>();
+
                             ParseQuery<ParseObject> query1 = new ParseQuery<>(ParseConstants.CLASS_USER_FRIENDS);
                             query1.whereEqualTo(ParseConstants.USER_OBJECT, currentUser);
                             query1.whereEqualTo(ParseConstants.USER_FRIENDS_FRIEND_ID, userId);
 
-
                             ParseQuery<ParseObject> query2 = new ParseQuery<>(ParseConstants.CLASS_USER_FRIENDS);
                             query2.whereEqualTo(ParseConstants.FRIEND_OBJECT, currentUser);
-                            query2.whereEqualTo(ParseConstants.USER_OBJECT, userId);
+                            query2.whereEqualTo(ParseConstants.USER_FRIENDS_USER_ID, userId);
 
                             queries.add(query1);
                             queries.add(query2);
@@ -128,21 +126,22 @@ public class UserProfileActivity extends AppCompatActivity {
                                 public void done(List<ParseObject> friendObjects, ParseException e) {
                                     if (e == null) {
                                         for (ParseObject friendObject : friendObjects) {
-                                            ParseObject.createWithoutData(ParseConstants.CLASS_USER_FRIENDS, friendObject.getObjectId()).deleteEventually();
+                                            friendObject.deleteEventually();
+                                           // ParseObject.createWithoutData(ParseConstants.CLASS_USER_FRIENDS, friendObject.getObjectId()).deleteEventually();
                                         }
+
+                                        //Go back to the main screen to reload the data.
+                                        Intent intent = new Intent(UserProfileActivity.this, MainActivity.class);
+                                        startActivity(intent);
                                     }
                                 }
                             });
-
-
                         }
 
                     })
                     .setNegativeButton("No", null)
                     .show();
         }
-
-
         return super.onOptionsItemSelected(item);
     }
 }
