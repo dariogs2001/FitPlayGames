@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +47,7 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
     private LinearLayout progressBar;
     private SwipeRefreshLayout swipeRefreshLayout;
     private int mUserPermission;
+    private CardView emptyMessageCardView;
 
     public MainChallengeFragment() {
         // Required empty public constructor
@@ -85,6 +87,8 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
             mUserPermission = ParseUser.getCurrentUser().getInt(ParseConstants.USER_PERMISSION);
         }
 
+
+        emptyMessageCardView  = (CardView) view.findViewById(R.id.card_message_empty);
 
         mAdapterNew = new GamesRowAdapterNew(getActivity());
         showAll = (ListView) view.findViewById(R.id.show_all);
@@ -160,47 +164,6 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
         }
     }
 
-    private void getGameData2() {
-        final ParseUser userObject = ParseUser.getCurrentUser();
-        if(userObject != null) {
-            ParseQuery<ParseObject> query1 = new ParseQuery<>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
-            query1.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT, userObject);
-            query1.orderByDescending(ParseConstants.KEY_CREATED_AT);
-
-            try {
-                List<ParseObject> challengeplayers = query1.find();
-                for(ParseObject challengeplayer : challengeplayers) {
-                    ParseQuery<ParseObject> query2 = new ParseQuery<>(ParseConstants.CLASS_CHALLENGES);
-                    ParseObject challenge = (ParseObject) challengeplayer.get(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT);
-                    query2.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_ID, challenge.getObjectId());
-                    List<ParseObject> challenges = query2.find();
-
-                    for (ParseObject challenge2 : challenges) {
-                        if (mUserPermission == ParseConstants.PERMISSION_ALL || mUserPermission == ParseConstants.PERMISSION_HOT_POTATO)
-                        {
-                            if (challenge2.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO)
-                            {
-                                addHotPotatoChallenge(challenge2, challenge2.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS), challengeplayer);
-                            }
-                        }
-
-                        if (mUserPermission == ParseConstants.PERMISSION_ALL || mUserPermission == ParseConstants.PERMISSION_CAPTURE_THE_CROWN)
-                        {
-                            if (challenge2.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN)
-                            {
-                                addCaptureTheCrownChallenge(challenge2, challenge2.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS), challengeplayer);
-                            }
-                        }
-                    }
-                }
-            }
-            catch (com.parse.ParseException ex)
-            {
-
-            }
-        }
-    }
-
     private void addHotPotatoChallenge(ParseObject challenge, int challengeStatus, ParseObject challengePlayer) {
 
         if (challengeStatus == ParseConstants.CHALLENGE_STATUS_CANCELLED ||
@@ -232,7 +195,7 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
     private void addCaptureTheCrownChallenge(ParseObject challenge, int challengeStatus, ParseObject challengePlayer) {
 
         if (challengeStatus == ParseConstants.CHALLENGE_STATUS_CANCELLED ||
-            (challengeStatus == ParseConstants.CHALLENGE_STATUS_FINISHED && mGamesListFinished.size() >= 5)) return;
+            (challengeStatus == ParseConstants.CHALLENGE_STATUS_FINISHED && mGamesListFinished.size() >= 15)) return;
 
         CaptureTheCrownChallenge captureTheCrownChallenge = new CaptureTheCrownChallenge(challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE));
         captureTheCrownChallenge.setIcon(getResources().getDrawable(R.drawable.crown_47));
@@ -258,6 +221,13 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
     }
 
     private void populateListViewNew() {
+
+        //Showing empty message when there are no games to show.
+        if (mGamesListPlaying.size() == 0 && mGamesListPending.size() == 0 && mGamesListFinished.size() == 0)
+        {
+            emptyMessageCardView.setVisibility(View.VISIBLE);
+            return;
+        }
 
         if (mGamesListPlaying.size() > 0) {
             mAdapterNew.addSectionHeaderItem(new GamesHeader("Playing", R.color.primary_dark));

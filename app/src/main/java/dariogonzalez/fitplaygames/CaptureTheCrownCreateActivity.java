@@ -130,11 +130,9 @@ public class CaptureTheCrownCreateActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Utils.trackData(ParseConstants.KEY_ANALYTICS_CREATE_GAME_CAPTURE_CROWN, ParseConstants.KEY_ANALYTICS_CREATE_GAME_CAPTURE_CROWN);
 
-                boolean isReady = true;
-                if (mChallengeName.getText().length() < 1 || stepSpinner.getSelectedItemPosition() == 0)
-                    isReady = false;
+                List<UserListItem> selectedFriends = mSearchFriendsFragment.getSelectedFriends();
 
-                if (!isReady) {
+                if (mChallengeName.getText().length() < 1 || stepSpinner.getSelectedItemPosition() == 0 ||selectedFriends.size() < 1) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(CaptureTheCrownCreateActivity.this);
                     builder.setMessage(R.string.challenge_error_message)
                             .setTitle(R.string.challenge_error_title)
@@ -145,7 +143,16 @@ public class CaptureTheCrownCreateActivity extends AppCompatActivity {
                     return;
                 }
 
-                List<UserListItem> selectedFriends = mSearchFriendsFragment.getSelectedFriends();
+                if (selectedFriends.size() > 4){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(CaptureTheCrownCreateActivity.this);
+                    builder.setMessage(R.string.challenge_error_message_2)
+                            .setTitle(R.string.challenge_error_title)
+                            .setPositiveButton(android.R.string.ok, null);
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                    return;
+                }
 
                 for (UserListItem selectedFriend : selectedFriends) {
                     ParseUser user;
@@ -161,7 +168,6 @@ public class CaptureTheCrownCreateActivity extends AppCompatActivity {
                 if (mChallengeId == null || mChallengeId.length() == 0) {
                     String challengeName = mChallengeName.getText().toString();
                     //Create challenge
-                    //TODO: see generateRandomEndDate
                     String startDateInfo = String.format("%s/%d %s", startDaySpinner.getSelectedItem().toString(), mYear, startTimeSpinner.getSelectedItem().toString());
                     DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
                     dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));

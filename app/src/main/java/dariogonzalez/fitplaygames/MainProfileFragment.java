@@ -295,7 +295,6 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
                 if (e == null) {
                     for (final ParseObject challengePlayer : challengePlayers)
                     {
-
                         try {
                             final ParseObject challenge = challengePlayer.getParseObject(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT).fetchIfNeeded();
 
@@ -310,14 +309,13 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
                                     mNumOfCrownWins += challengePlayer.getBoolean(ParseConstants.CHALLENGE_PLAYER_IS_WINNER) == true ? 1 : 0;
                                 }
 
-
-                                ParseQuery<ParseObject> challengeEventQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_EVENTS);
-                                challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_OBJECT, challenge);
-                                challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER_OBJECT, challengePlayer);
-                                challengeEventQuery.findInBackground(new FindCallback<ParseObject>() {
-                                    @Override
-                                    public void done(List<ParseObject> challengeEvents, ParseException e) {
-                                        {
+//                                ParseQuery<ParseObject> challengeEventQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_EVENTS);
+//                                challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_OBJECT, challenge);
+//                                challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER_OBJECT, challengePlayer);
+//                                challengeEventQuery.findInBackground(new FindCallback<ParseObject>() {
+//                                    @Override
+//                                    public void done(List<ParseObject> challengeEvents, ParseException e) {
+//                                        {
                                             int aHPTTime = 0;
                                             int aCtCTime = 0;
                                             mPotatoGamesTV.setText(String.valueOf(mNumOfHotPotatoGames));
@@ -349,9 +347,9 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
                                             int minutesC = aCtCTime % 60;
                                             String crownTimeStr = ((hoursC > 0) ? hoursC + " Hr " : "") + minutesC + " Min";
                                             mCrownAvgTimeTV.setText(crownTimeStr);
-                                        }
-                                    }
-                                });
+//                                        }
+//                                    }
+//                                });
                             }
                         }
                         catch (Exception ex)

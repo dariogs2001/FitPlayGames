@@ -50,6 +50,7 @@
     <string name="gender_label">Gender:</string>
     <string name="age_range_label">Age Range:</string>
     <string name="challenge_error_message">Please be sure you\'ve selected a challenge name, steps and at least one friend!</string>
+    <string name="challenge_error_message_2">You cannot select more than 4 friends to play this challenge!</string>
     <string name="challenge_error_title">Error</string>
     <string name="leader_board_friends">Friends</string>
     <string name="leader_board_global">Global</string>
@@ -186,4 +187,5 @@
     <string name="declined">Declined</string>
     <string name="hot_potato_leaderboard">Hot Potato Leaderboard</string>
     <string name="crown_leaderboard">Capture the Crown Leaderboard</string>
+    <string name="empty_message">There are no current games. Invite your friends and create a new game to get started!</string>
 </resources>

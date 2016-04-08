@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -55,14 +56,11 @@ public class UserProfileActivity extends AppCompatActivity {
             fragment.setIsFriend(isFriend);
             ParseQuery<ParseUser> userQuery = ParseUser.getQuery();
             userQuery.whereEqualTo(ParseConstants.OBJECT_ID, userId);
-            userQuery.findInBackground(new FindCallback<ParseUser>() {
+            userQuery.getFirstInBackground(new GetCallback<ParseUser>() {
                 @Override
-                public void done(List<ParseUser> list, ParseException e) {
-                    if (e == null) {
-                        if (list.size() > 0) {
-                            ParseUser user = list.get(0);
-                            fragment.getAnalyticalData(user);
-                        }
+                public void done(ParseUser parseUser, ParseException e) {
+                    if (e == null && parseUser != null) {
+                        fragment.getAnalyticalData(parseUser);
                     }
                 }
             });

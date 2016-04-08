@@ -67,17 +67,13 @@ public class HotPotatoCreateActivity extends AppCompatActivity {
         mCreateGameButton = (Button) findViewById(R.id.create_game_button);
         mCancelButton = (Button) findViewById(R.id.cancel_button);
 
-
-//        mChallengeName.setText(mHotPotatoChallenge.getDefaultChallengeName());
         mChallengeName.setSelection(mChallengeName.getText().length(), mChallengeName.getText().length());
-
 
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this, R.array.challenge_steps_array, android.R.layout.simple_spinner_item);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         stepSpinner.setAdapter(adapter1);
 
         mSearchFriendsFragment = (SearchFriendsFragment) getFragmentManager().findFragmentById(R.id.search_friends_fragment);
-
 
         DateFormat dateFormat = new SimpleDateFormat("MM/dd", Locale.getDefault());
         Calendar cal = Calendar.getInstance(Locale.getDefault());
@@ -139,6 +135,18 @@ public class HotPotatoCreateActivity extends AppCompatActivity {
                 {
                     AlertDialog.Builder builder = new AlertDialog.Builder(HotPotatoCreateActivity.this);
                     builder.setMessage(R.string.challenge_error_message)
+                            .setTitle(R.string.challenge_error_title)
+                            .setPositiveButton(android.R.string.ok, null);
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                    return;
+                }
+
+                if (selectedFriends.size() > 4)
+                {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(HotPotatoCreateActivity.this);
+                    builder.setMessage(R.string.challenge_error_message_2)
                             .setTitle(R.string.challenge_error_title)
                             .setPositiveButton(android.R.string.ok, null);
 

@@ -41,10 +41,7 @@ public abstract class ParentChallenge {
     private Date endDate; // The system set endDate/time
     private ArrayList<ParseUser> playerObjects; // A list of all the player ids of the challenge. This should be > 2 for challenge to start
     private ArrayList<String> activePlayers; // A list of all the active player ids of the challenge. This could be 1 or more
-    private String startChallengeMessage; // A push message to be sent when a challenge starts
-    private String endChallengeMessage; // A push message to be sent when a challenge ends
     private String inviteChallengeMessage; // A push message to be sent when a user gets invited to a challenge
-    private String mainPushMessage = ""; // This is the message that will be sent as a push notification
     private int numberOfPlayers = 1; //Total number of players when the game is created.
     private int numberOfPlayersInvited = 1; //Total number of players when the game is created.
 
@@ -791,7 +788,6 @@ public abstract class ParentChallenge {
         ParseQuery<ParseObject> startingPlayerQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
         startingPlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT, challenge);
         startingPlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_STATUS, ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED);
-
         startingPlayerQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(final List<ParseObject> list, ParseException e) {
@@ -816,21 +812,19 @@ public abstract class ParentChallenge {
                                 startingPlayer.saveInBackground(new SaveCallback() {
                                     @Override
                                     public void done(ParseException e) {
-                                        if (e == null)
-                                        {
+                                        if (e == null) {
                                             ParseUser startingPlayerUser = startingPlayer.getParseUser(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT);//.get(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT);
                                             String object = "";
                                             if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO) {
                                                 object = "potato";
-                                            }
-                                            else if ( challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN) {
+                                            } else if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN) {
                                                 object = "crown";
                                             }
                                             ParentChallenge.sendPushNotification("You've started off with the " + object + " in '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", startingPlayerUser);
                                             // If Playing Capture the Crown
-                                            if(challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN) {
+                                            if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN) {
                                                 // Query through everyone in the list that is not the starting player and add them to the database as playing with a turn set to false.
-                                                for(int idx = 1; idx < list.size(); idx++) {
+                                                for (int idx = 1; idx < list.size(); idx++) {
                                                     ParseObject crownSeekerPlayer = list.get(idx);
                                                     ParseObject crownSeekerChallengeEvent = new ParseObject(ParseConstants.CLASS_CHALLENGE_EVENTS);
                                                     crownSeekerChallengeEvent.put(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_OBJECT, challenge);
