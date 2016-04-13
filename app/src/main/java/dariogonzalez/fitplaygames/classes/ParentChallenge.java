@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.parse.FindCallback;
 import com.parse.GetCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -172,7 +173,7 @@ public abstract class ParentChallenge {
     public static void updateChallengesSync() {
         try {
             // Grab all the ChallengePlayers objects for the current user where the status is accepted
-            ParseQuery<ParseObject> challengePlayerQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
+            ParseQuery<ParseObject> challengePlayerQuery = ParseQuery.getQuery(ParseConstants.CLASS_CHALLENGE_PLAYERS);
             challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_STATUS, ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED);
             challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT, ParseUser.getCurrentUser());
 
@@ -462,7 +463,6 @@ public abstract class ParentChallenge {
 //    }
 
     public static void updateChallenge(final ParseObject challenge, final ParseObject challengePlayer) {
-        Log.d("TEST", "You got into ParentChallenge.updateChallenge successfully");
         // First, check to see what the status of the challenge is. If it hasn't started, check to see if it needs to start
         int challengeStatus = challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS);
         int numOfPlayers = challenge.getInt(ParseConstants.CHALLENGE_NUMBER_OF_PLAYERS);
@@ -503,7 +503,7 @@ public abstract class ParentChallenge {
                         Log.d("TEST", "HP Before end date");
                         final int stepsGoal = challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STEPS_GOAL);
                         // If current user has an active "turn", check steps and see if they should pass it
-                        ParseQuery<ParseObject> challengeEventQuery = new ParseQuery(ParseConstants.CLASS_CHALLENGE_EVENTS);
+                        ParseQuery<ParseObject> challengeEventQuery = ParseQuery.getQuery(ParseConstants.CLASS_CHALLENGE_EVENTS);
                         challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER_OBJECT, challengePlayer);
                         challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_OBJECT, challenge);
                         challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_PLAYING);
@@ -514,7 +514,7 @@ public abstract class ParentChallenge {
                             Log.d("TEST", "Challenge event inside");
                             // Then, update the steps for this user, see if they have finished their "turn" and update the challenge event table
                             Date startTime = challengeEvent.getDate(ParseConstants.CHALLENGE_EVENTS_START_TIME);
-                            ParseQuery<ParseObject> activityStepsQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_ACTIVITY_STEPS_15_MIN);
+                            ParseQuery<ParseObject> activityStepsQuery = ParseQuery.getQuery(ParseConstants.CLASS_ACTIVITY_STEPS_15_MIN);
                             // Where userId and where date >= startTime
                             activityStepsQuery.whereEqualTo(ParseConstants.ACTIVITY_STEPS_USER_ID, ParseUser.getCurrentUser().getObjectId());
                             Log.d("TEST", "Start time: " + startTime.toString());
@@ -579,7 +579,7 @@ public abstract class ParentChallenge {
                         final int stepsGoal = challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STEPS_GOAL);
                         Log.d("Crown: ", "You're in the CROWN if statement");
                         // Query the player in a specific challenge if their status is playing (i.e. they are trying to capture the crown)
-                        ParseQuery<ParseObject> challengeEventQuery = new ParseQuery(ParseConstants.CLASS_CHALLENGE_EVENTS);
+                        ParseQuery<ParseObject> challengeEventQuery = ParseQuery.getQuery(ParseConstants.CLASS_CHALLENGE_EVENTS);
                         challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER_OBJECT, challengePlayer);
                         challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_OBJECT, challenge);
                         challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_PLAYING);
@@ -661,7 +661,7 @@ public abstract class ParentChallenge {
                                             long avgTime2 = gameTime2 / playerCaptures2;
                                             challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_GAME_TIME, gameTime2);
                                             challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_AVERAGE_TIME, avgTime2);
-                                            challengePlayer.saveInBackground();
+                                            challengePlayer.save();
                                         }
 
                                         // break if code makes it to the end of this if statement
@@ -669,7 +669,7 @@ public abstract class ParentChallenge {
                                     } // END IF STATEMENT FOR IF STEPSAMOUNT >= STEPSGOAL
                                 }
                                 challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_STEP_PROGRESSION, stepsAmount);
-                                challengeEvent.saveInBackground();
+                                challengeEvent.save();
                             }
                         }
                     }
@@ -731,7 +731,7 @@ public abstract class ParentChallenge {
 
     public static void chooseNextPlayerHotPotato(final ParseObject challenge, final ParseObject challengePlayer) {
         try {
-            ParseQuery<ParseObject> nextPlayerQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
+            ParseQuery<ParseObject> nextPlayerQuery = ParseQuery.getQuery(ParseConstants.CLASS_CHALLENGE_PLAYERS);
             nextPlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT, challenge);
 
             final int passes = challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_PASSES);
@@ -790,7 +790,7 @@ public abstract class ParentChallenge {
     public static void updateCtCChallengeEventsToDone(final ParseObject challenge)
     {
         try {
-            ParseQuery<ParseObject> challengeEventQuery = new ParseQuery(ParseConstants.CLASS_CHALLENGE_EVENTS);
+            ParseQuery<ParseObject> challengeEventQuery = ParseQuery.getQuery(ParseConstants.CLASS_CHALLENGE_EVENTS);
             challengeEventQuery.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_OBJECT, challenge);
 
             List<ParseObject> list =  challengeEventQuery.find();
@@ -869,7 +869,7 @@ public abstract class ParentChallenge {
 
         try {
             // Query that returns all players in specific challenge, getting only those who have accepted the challenge
-            ParseQuery<ParseObject> moveTurnQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
+            ParseQuery<ParseObject> moveTurnQuery = ParseQuery.getQuery(ParseConstants.CLASS_CHALLENGE_PLAYERS);
             moveTurnQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT, challenge);
             moveTurnQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_STATUS, ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED);
 
@@ -1060,7 +1060,7 @@ public abstract class ParentChallenge {
     public void updateChallengeStatusInDatabase(final String challengeId, final int challengeStatus)
     {
         try {
-            ParseQuery<ParseObject> challengeQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGES);
+            ParseQuery<ParseObject> challengeQuery = ParseQuery.getQuery(ParseConstants.CLASS_CHALLENGES);
             challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_ID, challengeId);
             ParseObject parseObject = challengeQuery.getFirst();
             if (parseObject != null) {
@@ -1141,7 +1141,7 @@ public abstract class ParentChallenge {
     //Moving methods to this class
     public static void chooseStartingPlayer(final ParseObject challenge) {
         try {
-            ParseQuery<ParseObject> startingPlayerQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
+            ParseQuery<ParseObject> startingPlayerQuery = ParseQuery.getQuery(ParseConstants.CLASS_CHALLENGE_PLAYERS);
             startingPlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT, challenge);
             startingPlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_STATUS, ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED);
 
@@ -1158,21 +1158,22 @@ public abstract class ParentChallenge {
                     challengeEvent.put(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_CROWN);
                 }
                 challengeEvent.save();
-                startingPlayer.put(ParseConstants.CHALLENGE_PLAYER_IS_TURN, true);
 
+                startingPlayer.put(ParseConstants.CHALLENGE_PLAYER_IS_TURN, true);
                 startingPlayer.save();
 
-                ParseUser startingPlayerUser = startingPlayer.getParseUser(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT);//.get(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT);
+                ParseUser startingPlayerUser = startingPlayer.getParseUser(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT);
                 String object = "";
                 if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.HOT_POTATO) {
                     object = "potato";
                 } else if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN) {
                     object = "crown";
                 }
+
                 ParentChallenge.sendPushNotification("You've started off with the " + object + " in '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", startingPlayerUser);
                 // If Playing Capture the Crown
-                if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN) {
-                    // Query through everyone in the list that is not the starting player and add them to the database as playing with a turn set to false.
+//                if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN) {
+//                    // Query through everyone in the list that is not the starting player and add them to the database as playing with a turn set to false.
                     for (int idx = 1; idx < list.size(); idx++) {
                         ParseObject crownSeekerPlayer = list.get(idx);
                         ParseObject crownSeekerChallengeEvent = new ParseObject(ParseConstants.CLASS_CHALLENGE_EVENTS);
@@ -1183,10 +1184,16 @@ public abstract class ParentChallenge {
                         crownSeekerChallengeEvent.save();
                         crownSeekerPlayer.put(ParseConstants.CHALLENGE_PLAYER_IS_TURN, false);
                         crownSeekerPlayer.save();
-                        ParseUser crownSeekerPlayerUser = crownSeekerPlayer.getParseUser(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT);//.get(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT);
-                        ParentChallenge.sendPushNotification("Try to capture the crown in '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", crownSeekerPlayerUser);
+                        ParseUser crownSeekerPlayerUser = crownSeekerPlayer.getParseUser(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT);
+                        if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN) {
+                            ParentChallenge.sendPushNotification("Try to capture the crown in '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", crownSeekerPlayerUser);
+                        }
+                        else
+                        {
+                            ParentChallenge.sendPushNotification(startingPlayerUser.get(ParseConstants.USER_USERNAME) + " has started with the potato in '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", crownSeekerPlayerUser);
+                        }
                     }
-                }
+//                }
             }
         }
         catch (Exception ex)

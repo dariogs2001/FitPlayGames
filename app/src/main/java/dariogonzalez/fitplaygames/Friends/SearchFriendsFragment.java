@@ -76,7 +76,6 @@ public class SearchFriendsFragment extends Fragment {
             }
         });
 
-
         getFriendData();
         // Inflate the layout for this fragment
         return rootView;

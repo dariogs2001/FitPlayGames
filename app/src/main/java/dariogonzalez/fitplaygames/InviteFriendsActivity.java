@@ -25,7 +25,7 @@ import dariogonzalez.fitplaygames.classes.ParseConstants;
 public class InviteFriendsActivity extends AppCompatActivity {
 
     private List<UserListItem> mSearchFriendList = new ArrayList<UserListItem>();
-        ListView searchResultListView;
+    ListView searchResultListView;
     ParseObject mChallengeObject;
 
     @Override

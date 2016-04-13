@@ -117,9 +117,6 @@
     <string name="challenge_title_pending">Pending</string>
     <string name="challenge_title_finished">Finished</string>
 
-
-
-    <string name="fitbit_30_days">{"activities-steps":[{"dateTime":"2015-07-05","value":"3678"},{"dateTime":"2015-07-06","value":"9465"},{"dateTime":"2015-07-07","value":"8447"},{"dateTime":"2015-07-08","value":"10818"},{"dateTime":"2015-07-09","value":"17318"},{"dateTime":"2015-07-10","value":"9448"},{"dateTime":"2015-07-11","value":"8057"},{"dateTime":"2015-07-12","value":"7128"},{"dateTime":"2015-07-13","value":"12648"},{"dateTime":"2015-07-14","value":"7864"},{"dateTime":"2015-07-15","value":"9039"},{"dateTime":"2015-07-16","value":"7384"},{"dateTime":"2015-07-17","value":"6293"},{"dateTime":"2015-07-18","value":"14585"},{"dateTime":"2015-07-19","value":"10844"},{"dateTime":"2015-07-20","value":"11127"},{"dateTime":"2015-07-21","value":"6901"},{"dateTime":"2015-07-22","value":"6841"},{"dateTime":"2015-07-23","value":"5942"},{"dateTime":"2015-07-24","value":"4076"},{"dateTime":"2015-07-25","value":"2635"},{"dateTime":"2015-07-26","value":"7024"},{"dateTime":"2015-07-27","value":"6125"},{"dateTime":"2015-07-28","value":"15"},{"dateTime":"2015-07-29","value":"11995"},{"dateTime":"2015-07-30","value":"30"},{"dateTime":"2015-07-31","value":"198"},{"dateTime":"2015-08-01","value":"0"},{"dateTime":"2015-08-02","value":"4158"},{"dateTime":"2015-08-03","value":"9419"},{"dateTime":"2015-08-04","value":"156"}]}</string>
     <string name="title_activity_search_friend">Invite Friends</string>
     <string name="title_activity_challenge__choose">Challenge_Choose</string>
     <string name="title_activity_choose_challenge">Choose Challenge</string>

@@ -76,12 +76,12 @@ public class SearchFriendActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(final String newText) {
-                if (newText.length() < 2) {
+                if (newText.length() < 1) {
                     mSearchFriendList.clear();
+                    mAdapter.notifyDataSetChanged();
                     populateListView(newText);
                     return false;
                 }
-
 
                 final ParseUser userObject = ParseUser.getCurrentUser();
                 final String userId = userObject.getObjectId();
@@ -98,18 +98,17 @@ public class SearchFriendActivity extends AppCompatActivity {
                         if (e == null && list.size() > 0) {
                             mSearchFriendList.clear();
                             for (final ParseUser friendUser : list) {
-                                final ParseObject userFriend = friendUser.getParseObject("ActivityHistory");
 
                                 List<ParseQuery<ParseObject>> queries = new ArrayList<>();
 
                                 // Double check that the user doesn't already have a friend request history
                                 ParseQuery<ParseObject> query1 = ParseQuery.getQuery(ParseConstants.CLASS_USER_FRIENDS);
-                                query1.whereEqualTo("UserObject", userObject);
-                                query1.whereEqualTo("FriendObject", friendUser);
+                                query1.whereEqualTo(ParseConstants.USER_OBJECT, userObject);
+                                query1.whereEqualTo(ParseConstants.FRIEND_OBJECT, friendUser);
 
                                 ParseQuery<ParseObject> query2 = ParseQuery.getQuery(ParseConstants.CLASS_USER_FRIENDS);
-                                query2.whereEqualTo("UserObject", friendUser);
-                                query2.whereEqualTo("FriendObject", userObject);
+                                query2.whereEqualTo(ParseConstants.USER_OBJECT, friendUser);
+                                query2.whereEqualTo(ParseConstants.FRIEND_OBJECT, userObject);
 
                                 queries.add(query1);
                                 queries.add(query2);
@@ -139,11 +138,10 @@ public class SearchFriendActivity extends AppCompatActivity {
                                         Uri fileUri = file != null ? Uri.parse(file.getUrl()) : null;
 
                                         double steps = 0;
-                                        ParseObject lastSevenDays = friendUser.getParseObject("lastSevenDays");
+                                        ParseObject lastSevenDays = friendUser.getParseObject(ParseConstants.CLASS_LAST_SEVEN_DAYS);
                                         if (lastSevenDays != null) {
                                             steps = lastSevenDays.getDouble(ParseConstants.LAST_SEVEN_DAYS_STEPS);
                                         }
-
 
                                         UserListItem userListItem = new UserListItem();
                                         userListItem.setmIconId(R.drawable.ic_user);
@@ -158,8 +156,9 @@ public class SearchFriendActivity extends AppCompatActivity {
                                     if (mSearchFriendList.size() > 0) {
                                         populateListView(newText);
                                     }
-                                } catch (ParseException ex) {
                                 }
+                                catch (ParseException ex)
+                                {}
                             }
                         } else {
                             //No results, so cleaning the list.
@@ -201,5 +200,4 @@ public class SearchFriendActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
 }
