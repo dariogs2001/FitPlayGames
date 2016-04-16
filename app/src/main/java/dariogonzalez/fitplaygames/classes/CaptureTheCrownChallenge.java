@@ -1,10 +1,12 @@
 package dariogonzalez.fitplaygames.classes;
 
+import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.parse.FindCallback;
 import com.parse.GetCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -16,6 +18,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
+
+import dariogonzalez.fitplaygames.R;
 
 /**
  * Created by ChristensenKC on 1/27/2016.
@@ -35,6 +39,18 @@ public class CaptureTheCrownChallenge extends ParentChallenge implements Parcela
 
         totalSteps = 0;
         totalCaptures = 0;
+    }
+
+    public void setAttributesFromParseObject(ParseObject object, Context context) {
+        this.setIcon(context.getResources().getDrawable(R.drawable.crown_47));
+        this.setChallengeId(object.getObjectId());
+        this.setUserChallengeName(object.getString(ParseConstants.CHALLENGE_CHALLENGE_NAME));
+        this.setStepsGoal(object.getInt(ParseConstants.CHALLENGE_CHALLENGE_STEPS_GOAL));
+        this.setChallengeStatusType(object.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS));
+        this.setStartDate(object.getDate(ParseConstants.CHALLENGE_CHALLENGE_START));
+        this.setEndDate(object.getDate(ParseConstants.CHALLENGE_CHALLENGE_END));
+        this.setNumberOfPlayers(object.getInt(ParseConstants.CHALLENGE_NUMBER_OF_PLAYERS));
+        this.setNumberOfPlayersInvited(object.getInt(ParseConstants.CHALLENGE_NUMBER_OF_PLAYERS_INVITED));
     }
 
     public void createEndDateMapping() {

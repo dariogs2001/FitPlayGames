@@ -170,16 +170,8 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
             (challengeStatus == ParseConstants.CHALLENGE_STATUS_FINISHED && mGamesListFinished.size() >= 5)) return;
 
         HotPotatoChallenge hotPotatoChallenge = new HotPotatoChallenge(challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE));
-        hotPotatoChallenge.setIcon(getResources().getDrawable(R.drawable.potato_124));
-        hotPotatoChallenge.setChallengeId(challenge.getObjectId());
-        hotPotatoChallenge.setUserChallengeName(challenge.getString(ParseConstants.CHALLENGE_CHALLENGE_NAME));
-        hotPotatoChallenge.setStepsGoal(challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STEPS_GOAL));
-        hotPotatoChallenge.setChallengeStatusType(challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS));
-        hotPotatoChallenge.setStartDate(challenge.getDate(ParseConstants.CHALLENGE_CHALLENGE_START));
-        hotPotatoChallenge.setEndDate(challenge.getDate(ParseConstants.CHALLENGE_CHALLENGE_END));
+        hotPotatoChallenge.setAttributesFromParseObject(challenge, getActivity());
         hotPotatoChallenge.setChallengePlayer(challengePlayer);
-        hotPotatoChallenge.setNumberOfPlayers(challenge.getInt(ParseConstants.CHALLENGE_NUMBER_OF_PLAYERS));
-        hotPotatoChallenge.setNumberOfPlayersInvited(challenge.getInt(ParseConstants.CHALLENGE_NUMBER_OF_PLAYERS_INVITED));
 
         if (challengeStatus == ParseConstants.CHALLENGE_STATUS_PLAYING && hotPotatoChallenge.getChallengePlayer().getInt(ParseConstants.CHALLENGE_PLAYER_STATUS) == ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED) {
             mGamesListPlaying.add(hotPotatoChallenge);
@@ -198,16 +190,8 @@ public class MainChallengeFragment extends android.support.v4.app.Fragment {
             (challengeStatus == ParseConstants.CHALLENGE_STATUS_FINISHED && mGamesListFinished.size() >= 15)) return;
 
         CaptureTheCrownChallenge captureTheCrownChallenge = new CaptureTheCrownChallenge(challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE));
-        captureTheCrownChallenge.setIcon(getResources().getDrawable(R.drawable.crown_47));
-        captureTheCrownChallenge.setChallengeId(challenge.getObjectId());
-        captureTheCrownChallenge.setUserChallengeName(challenge.getString(ParseConstants.CHALLENGE_CHALLENGE_NAME));
-        captureTheCrownChallenge.setStepsGoal(challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STEPS_GOAL));
-        captureTheCrownChallenge.setChallengeStatusType(challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_STATUS));
-        captureTheCrownChallenge.setStartDate(challenge.getDate(ParseConstants.CHALLENGE_CHALLENGE_START));
-        captureTheCrownChallenge.setEndDate(challenge.getDate(ParseConstants.CHALLENGE_CHALLENGE_END));
+        captureTheCrownChallenge.setAttributesFromParseObject(challenge, getActivity());
         captureTheCrownChallenge.setChallengePlayer(challengePlayer);
-        captureTheCrownChallenge.setNumberOfPlayers(challenge.getInt(ParseConstants.CHALLENGE_NUMBER_OF_PLAYERS));
-        captureTheCrownChallenge.setNumberOfPlayersInvited(challenge.getInt(ParseConstants.CHALLENGE_NUMBER_OF_PLAYERS_INVITED));
 
         if (challengeStatus == ParseConstants.CHALLENGE_STATUS_PLAYING && captureTheCrownChallenge.getChallengePlayer().getInt(ParseConstants.CHALLENGE_PLAYER_STATUS) == ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED) {
             mGamesListPlaying.add(captureTheCrownChallenge);

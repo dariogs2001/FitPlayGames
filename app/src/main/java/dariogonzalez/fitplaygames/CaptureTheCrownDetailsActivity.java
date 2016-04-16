@@ -1,10 +1,12 @@
 package dariogonzalez.fitplaygames;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -36,6 +38,7 @@ import java.util.Map;
 import dariogonzalez.fitplaygames.Adapters.CaptureTheCrownPlayersAdapter;
 import dariogonzalez.fitplaygames.classes.CaptureTheCrownChallenge;
 import dariogonzalez.fitplaygames.classes.ChallengePlayerItem;
+import dariogonzalez.fitplaygames.classes.ChallengeTypeConstants;
 import dariogonzalez.fitplaygames.classes.ParentChallenge;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
 
@@ -56,10 +59,16 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
     private int mAverageCrownTime = 0;
     private int mTotalCaptures = 0;
 
+    public ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_capture_the_crown_details);
+        progressDialog = new ProgressDialog(this, ProgressDialog.THEME_TRADITIONAL);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setTitle(getResources().getString(R.string.please_wait));
+        progressDialog.setMessage(getResources().getString(R.string.challenge_refreshing));
 
         challengeName = (TextView) findViewById(R.id.challenge_name);
         startDate = (TextView) findViewById(R.id.start_day);
@@ -314,23 +323,25 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
     }
 
     private void updateChallenge() {
-        ParseQuery<ParseObject> challengeQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGES);
-        challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_ID, mCaptureTheCrownChallenge.getChallengeId());
-        challengeQuery.getFirstInBackground(new GetCallback<ParseObject>() {
+        progressDialog.show();
+        new refreshGameTask().execute("");
+    }
+
+    private void updateChallengeDetails() {
+        users.clear();
+        mAverageCrownTime = 0;
+        mTotalCaptures = 0;
+        ParseQuery<ParseObject> getChallengeQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGES);
+        getChallengeQuery.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_ID, mCaptureTheCrownChallenge.getChallengeId());
+        getChallengeQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
-            public void done(final ParseObject challenge, ParseException e) {
-                if (e == null && challenge != null) {
-                    ParseQuery<ParseObject> challengePlayerQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
-                    challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT, challenge);
-                    challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT, ParseUser.getCurrentUser());
-                    challengePlayerQuery.getFirstInBackground(new GetCallback<ParseObject>() {
-                        @Override
-                        public void done(ParseObject challengePlayer, ParseException e) {
-                            if (e == null && challengePlayer != null) {
-                                ParentChallenge.updateChallenge(challenge, challengePlayer);
-                            }
-                        }
-                    });
+            public void done(List<ParseObject> list, ParseException e) {
+                if (e == null) {
+                    CaptureTheCrownChallenge updatedCaptureTheCrownChallenge = new CaptureTheCrownChallenge(ChallengeTypeConstants.CROWN);
+                    updatedCaptureTheCrownChallenge.setAttributesFromParseObject(list.get(0), getBaseContext());
+                    mCaptureTheCrownChallenge = updatedCaptureTheCrownChallenge;
+                    setChallengeDetails();
+                    progressDialog.dismiss();
                 }
             }
         });
@@ -341,5 +352,42 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
         Intent intent = new Intent(CaptureTheCrownDetailsActivity.this, MainChatActivity.class);
         intent.putExtra(ParseConstants.OBJECT_ID, mChallengeId);
         startActivity(intent);
+    }
+
+    private class refreshGameTask extends AsyncTask<String, Integer, Long> {
+
+        @Override
+        protected Long doInBackground(String... params) {
+            ParseQuery<ParseObject> challengeQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGES);
+            challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_ID, mCaptureTheCrownChallenge.getChallengeId());
+            challengeQuery.getFirstInBackground(new GetCallback<ParseObject>() {
+                @Override
+                public void done(final ParseObject challenge, ParseException e) {
+                    if (e == null && challenge != null) {
+                        ParseQuery<ParseObject> challengePlayerQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
+                        challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT, challenge);
+                        challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT, ParseUser.getCurrentUser());
+                        challengePlayerQuery.getFirstInBackground(new GetCallback<ParseObject>() {
+                            @Override
+                            public void done(ParseObject challengePlayer, ParseException e) {
+                                if (e == null && challengePlayer != null) {
+                                    ParentChallenge.updateChallenge(challenge, challengePlayer);
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+
+            return null;
+        }
+
+        protected void onProgressUpdate(Integer... progress) {
+
+        }
+
+        protected void onPostExecute(Long result) {
+            updateChallengeDetails();
+        }
     }
 }

@@ -1,10 +1,12 @@
 package dariogonzalez.fitplaygames;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -35,6 +37,7 @@ import java.util.Map;
 
 import dariogonzalez.fitplaygames.Adapters.HotPotatoPlayersAdapter;
 import dariogonzalez.fitplaygames.classes.ChallengePlayerItem;
+import dariogonzalez.fitplaygames.classes.ChallengeTypeConstants;
 import dariogonzalez.fitplaygames.classes.HotPotatoChallenge;
 import dariogonzalez.fitplaygames.classes.ParentChallenge;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
@@ -54,10 +57,16 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
     private int mAveragePotatoTime = 0;
     private int mTotalPasses = 0;
 
+    public ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hot_potato_details);
+        progressDialog = new ProgressDialog(this, ProgressDialog.THEME_TRADITIONAL);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setTitle(getResources().getString(R.string.please_wait));
+        progressDialog.setMessage(getResources().getString(R.string.challenge_refreshing));
 
         challengeName = (TextView) findViewById(R.id.challenge_name);
         startDate = (TextView) findViewById(R.id.start_day);
@@ -309,27 +318,25 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
     }
 
     private void updateChallenge() {
-        ParseQuery<ParseObject> challengeQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGES);
-        challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_ID, mHotPotatoChallenge.getChallengeId());
-        challengeQuery.findInBackground(new FindCallback<ParseObject>() {
+        progressDialog.show();
+        new refreshGameTask().execute("");
+    }
+
+    private void updateChallengeDetails() {
+        users.clear();
+        mAveragePotatoTime = 0;
+        mTotalPasses = 0;
+        ParseQuery<ParseObject> getChallengeQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGES);
+        getChallengeQuery.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_ID, mHotPotatoChallenge.getChallengeId());
+        getChallengeQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
-                if (e == null && !list.isEmpty()) {
-                    final ParseObject challenge = list.get(0);
-                    ParseQuery<ParseObject> challengePlayerQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
-                    challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT, challenge);
-                    challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT, ParseUser.getCurrentUser());
-                    challengePlayerQuery.findInBackground(new FindCallback<ParseObject>() {
-                        @Override
-                        public void done(List<ParseObject> list, ParseException e)
-                        {
-                            if (e == null && !list.isEmpty())
-                            {
-                                ParseObject challengePlayer = list.get(0);
-                                ParentChallenge.updateChallenge(challenge, challengePlayer);
-                            }
-                        }
-                    });
+                if (e == null) {
+                    HotPotatoChallenge updatedHotPotatoChallenge = new HotPotatoChallenge(ChallengeTypeConstants.HOT_POTATO);
+                    updatedHotPotatoChallenge.setAttributesFromParseObject(list.get(0), getBaseContext());
+                    mHotPotatoChallenge = updatedHotPotatoChallenge;
+                    setChallengeDetails();
+                    progressDialog.dismiss();
                 }
             }
         });
@@ -340,5 +347,46 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
         Intent intent = new Intent(HotPotatoDetailsActivity.this, MainChatActivity.class);
         intent.putExtra(ParseConstants.OBJECT_ID, mChallengeId);
         startActivity(intent);
+    }
+
+    private class refreshGameTask extends AsyncTask<String, Integer, Long> {
+
+        @Override
+        protected Long doInBackground(String... params) {
+            ParseQuery<ParseObject> challengeQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGES);
+            challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_ID, mHotPotatoChallenge.getChallengeId());
+            challengeQuery.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> list, ParseException e) {
+                    if (e == null && !list.isEmpty()) {
+                        final ParseObject challenge = list.get(0);
+                        ParseQuery<ParseObject> challengePlayerQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
+                        challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT, challenge);
+                        challengePlayerQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT, ParseUser.getCurrentUser());
+                        challengePlayerQuery.findInBackground(new FindCallback<ParseObject>() {
+                            @Override
+                            public void done(List<ParseObject> list, ParseException e)
+                            {
+                                if (e == null && !list.isEmpty())
+                                {
+                                    ParseObject challengePlayer = list.get(0);
+                                    ParentChallenge.updateChallenge(challenge, challengePlayer);
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+
+            return null;
+        }
+
+        protected void onProgressUpdate(Integer... progress) {
+
+        }
+
+        protected void onPostExecute(Long result) {
+            updateChallengeDetails();
+        }
     }
 }

@@ -187,4 +187,6 @@
     <string name="hot_potato_leaderboard">Hot Potato Leaderboard</string>
     <string name="crown_leaderboard">Capture the Crown Leaderboard</string>
     <string name="empty_message">There are no current games. Invite your friends and create a new game to get started!</string>
+    <string name="please_wait">Please wait</string>
+    <string name="challenge_refreshing">This challenge is refreshing...</string>
 </resources>
