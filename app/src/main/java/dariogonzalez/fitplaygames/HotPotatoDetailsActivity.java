@@ -361,8 +361,8 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
             public void done(List<ParseObject> list, ParseException e) {
                 if (e == null && !list.isEmpty()) {
                     final ParseObject challenge = list.get(0);
-                    ParseProxyObject ppo = new ParseProxyObject(challenge);
-                    String mChallengeId = mHotPotatoChallenge.getChallengeId();
+                    ParseProxyObject ppo = new ParseProxyObject(challenge); // class I found on line to pass ParseObjects to other Activities
+                    String mChallengeId = mHotPotatoChallenge.getChallengeId(); // I have to pass a string for Firebase URL.
                     Intent intent = new Intent(HotPotatoDetailsActivity.this, MainChatActivity.class);
                     intent.putExtra(ParseConstants.OBJECT_ID, mChallengeId);
                     intent.putExtra("parseObject", ppo);

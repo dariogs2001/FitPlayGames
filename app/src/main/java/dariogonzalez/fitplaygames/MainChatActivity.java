@@ -74,8 +74,8 @@ public class MainChatActivity extends AppCompatActivity {
 
         setTitle("Chat");
         Intent intent = getIntent();
-        String objectId = intent.getStringExtra(ParseConstants.OBJECT_ID);
-        ppo = (ParseProxyObject) intent.getSerializableExtra("parseObject");
+        String objectId = intent.getStringExtra(ParseConstants.OBJECT_ID); // Firebase URL only accepts a string so I have to use this for my "mFirebaseRef"
+        ppo = (ParseProxyObject) intent.getSerializableExtra("parseObject"); // This is my ParseObject challenge that I want to use in my query in NotifyChatUsers
         Log.v("Test", String.format("Proxy object name: %s", ppo.getString("name")));
         // Setup our Firebase mFirebaseRef
         mFirebaseRef = new Firebase(FIREBASE_URL).child(objectId);
