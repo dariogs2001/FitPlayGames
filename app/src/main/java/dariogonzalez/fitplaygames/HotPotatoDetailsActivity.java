@@ -41,6 +41,7 @@ import dariogonzalez.fitplaygames.classes.ChallengeTypeConstants;
 import dariogonzalez.fitplaygames.classes.HotPotatoChallenge;
 import dariogonzalez.fitplaygames.classes.ParentChallenge;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
+import dariogonzalez.fitplaygames.classes.ParseProxyObject;
 
 public class HotPotatoDetailsActivity extends AppCompatActivity {
 
@@ -342,11 +343,34 @@ public class HotPotatoDetailsActivity extends AppCompatActivity {
         });
     }
 
+//    private void openChatDialogue() {
+//            Intent intent = new Intent(HotPotatoDetailsActivity.this, MainChatActivity.class);
+//            String mChallengeId = mHotPotatoChallenge.getChallengeId();
+//            Bundle extras = new Bundle();
+//            extras.putParcelable("game-details", mHotPotatoChallenge);
+//            intent.putExtra(ParseConstants.OBJECT_ID, mChallengeId);
+//            intent.putExtras(extras);
+//            startActivity(intent);
+//    }
+
     private void openChatDialogue() {
-        String mChallengeId = mHotPotatoChallenge.getChallengeId();
-        Intent intent = new Intent(HotPotatoDetailsActivity.this, MainChatActivity.class);
-        intent.putExtra(ParseConstants.OBJECT_ID, mChallengeId);
-        startActivity(intent);
+        ParseQuery<ParseObject> challengeQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGES);
+        challengeQuery.whereEqualTo(ParseConstants.CHALLENGE_CHALLENGE_ID, mHotPotatoChallenge.getChallengeId());
+        challengeQuery.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if (e == null && !list.isEmpty()) {
+                    final ParseObject challenge = list.get(0);
+                    ParseProxyObject ppo = new ParseProxyObject(challenge);
+                    String mChallengeId = mHotPotatoChallenge.getChallengeId();
+                    Intent intent = new Intent(HotPotatoDetailsActivity.this, MainChatActivity.class);
+                    intent.putExtra(ParseConstants.OBJECT_ID, mChallengeId);
+                    intent.putExtra("parseObject", ppo);
+                    Log.v("Test", ppo.toString());
+                    startActivity(intent);
+                }
+            }
+        });
     }
 
     private class refreshGameTask extends AsyncTask<String, Integer, Long> {

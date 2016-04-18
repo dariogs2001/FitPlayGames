@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.DataSetObserver;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,13 +23,22 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 import dariogonzalez.fitplaygames.Adapters.ChatListAdapter;
+import dariogonzalez.fitplaygames.classes.HotPotatoChallenge;
+import dariogonzalez.fitplaygames.classes.ParentChallenge;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
+import dariogonzalez.fitplaygames.classes.ParseProxyObject;
 import dariogonzalez.fitplaygames.utils.Utils;
 
 /**
@@ -45,6 +56,8 @@ public class MainChatActivity extends AppCompatActivity {
     private ChatListAdapter mChatListAdapter;
     private LinearLayout progressBar;
     private LinearLayout emptyStateLayout;
+    private ParseProxyObject ppo;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +75,8 @@ public class MainChatActivity extends AppCompatActivity {
         setTitle("Chat");
         Intent intent = getIntent();
         String objectId = intent.getStringExtra(ParseConstants.OBJECT_ID);
+        ppo = (ParseProxyObject) intent.getSerializableExtra("parseObject");
+        Log.v("Test", String.format("Proxy object name: %s", ppo.getString("name")));
         // Setup our Firebase mFirebaseRef
         mFirebaseRef = new Firebase(FIREBASE_URL).child(objectId);
 
@@ -148,10 +163,37 @@ public class MainChatActivity extends AppCompatActivity {
         if (!input.equals("")) {
             // Create our 'model', a Chat object
             Chat chat = new Chat(input, mUsername, new Date());
+            notifyChatUsers(ppo);
             // Create a new, auto-generated child of that chat location, and save our chat data there
             mFirebaseRef.push().setValue(chat);
             inputText.setText("");
         }
+    }
+
+    public static void notifyChatUsers(ParseProxyObject challenge) {
+        // Send Push notification to all players that are part of that challengeId
+        ParseQuery<ParseObject> getListOfAllPlayersQuery = new ParseQuery<ParseObject>(ParseConstants.CLASS_CHALLENGE_PLAYERS);
+        getListOfAllPlayersQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT, challenge);
+        getListOfAllPlayersQuery.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_STATUS, ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED);
+        getListOfAllPlayersQuery.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(final List<ParseObject> list, ParseException e) {
+                Log.d("List"," is null");
+                if (e == null && !list.isEmpty()) {
+                    Log.d("test","you got here");
+                    for(final ParseObject chatObject : list) {
+                        try {
+                            Log.d("ListPlayer", list.toString());
+                            ParseObject challenge = chatObject.getParseObject(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT).fetchIfNeeded();
+                            ParseUser chatUser = chatObject.getParseUser(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT);//.get(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT);
+                            ParentChallenge.sendPushNotification("You have a chat message waiting for you in '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", chatUser);
+                        } catch (Exception ex) {
+
+                        }
+                    }
+                }
+            }
+        });
     }
 
     @Override
