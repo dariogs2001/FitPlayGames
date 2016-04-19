@@ -154,6 +154,25 @@ public class CaptureTheCrownChallenge extends ParentChallenge implements Parcela
                             if (e == null) {
                                 ParseUser winnerPlayerUser = challengePlayer.getParseUser(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT);
                                 ParentChallenge.sendPushNotification("We have a royal winner in " + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "!", winnerPlayerUser);
+
+
+                                //Sent message to everybody else
+                                ParseQuery<ParseObject> challengePlayers = ParseQuery.getQuery(ParseConstants.CLASS_CHALLENGE_PLAYERS);
+                                challengePlayers.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT, challenge);
+                                challengePlayers.whereNotEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT, winnerPlayerUser);
+                                challengePlayers.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_STATUS, ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED);
+
+                                challengePlayers.findInBackground(new FindCallback<ParseObject>() {
+                                    @Override
+                                    public void done(List<ParseObject> list, ParseException e) {
+                                        if (e == null) {
+                                            for (ParseObject player : list) {
+                                                ParseUser pp = player.getParseUser(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT);
+                                                ParentChallenge.sendPushNotification(challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + " is over. Find out who is the winner!", pp);
+                                            }
+                                        }
+                                    }
+                                });
                             }
                         }
                     });

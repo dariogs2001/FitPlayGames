@@ -168,7 +168,7 @@ public class MainChatActivity extends AppCompatActivity {
         }
     }
 
-    public static void notifyFriendshipChatUser( String friendshipId) {
+    public static void notifyFriendshipChatUser(String friendshipId) {
 
         final ParseUser userObject = ParseUser.getCurrentUser();
         final String userId = userObject.getObjectId();
@@ -182,7 +182,14 @@ public class MainChatActivity extends AppCompatActivity {
                     for (ParseObject ff : list) {
                         try {
                             ParseUser friend = ff.getParseUser(ParseConstants.FRIEND_OBJECT).fetchIfNeeded();
-                            ParentChallenge.sendPushNotification(friend.getUsername() + " " + "has sent you a private message!", friend);
+                            ParseUser friend2 = ff.getParseUser(ParseConstants.USER_OBJECT).fetchIfNeeded();
+                            if (userObject != friend) {
+                                ParentChallenge.sendPushNotification(friend2.getUsername() + " " + "has sent you a private message!", friend);
+                            }
+                            else
+                            {
+                                ParentChallenge.sendPushNotification(friend.getUsername() + " " + "has sent you a private message!", friend2);
+                            }
                         } catch (ParseException ex) {
                         }
                     }

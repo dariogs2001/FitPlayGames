@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -15,6 +16,7 @@ import com.parse.SaveCallback;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import dariogonzalez.fitplaygames.R;
@@ -154,6 +156,27 @@ public class HotPotatoChallenge extends ParentChallenge implements Parcelable {
                             if (e == null) {
                                 ParseUser loserPlayerUser = challengePlayer.getParseUser(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT);
                                 ParentChallenge.sendPushNotification("Oh no! The potato has exploded in '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", loserPlayerUser);
+
+
+                                //Sent message to everybody else
+                                ParseQuery<ParseObject> challengePlayers = ParseQuery.getQuery(ParseConstants.CLASS_CHALLENGE_PLAYERS);
+                                challengePlayers.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_CHALLENGE_OBJECT, challenge);
+                                challengePlayers.whereNotEqualTo(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT, loserPlayerUser);
+                                challengePlayers.whereEqualTo(ParseConstants.CHALLENGE_PLAYER_STATUS, ParseConstants.CHALLENGE_PLAYER_STATUS_ACCEPTED);
+
+                                challengePlayers.findInBackground(new FindCallback<ParseObject>() {
+                                    @Override
+                                    public void done(List<ParseObject> list, ParseException e) {
+                                        if (e == null)
+                                        {
+                                            for (ParseObject player : list)
+                                            {
+                                                ParseUser pp = player.getParseUser(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT);
+                                                ParentChallenge.sendPushNotification( challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + " is over. Find out who is the loser!", pp);
+                                            }
+                                        }
+                                    }
+                                });
                             }
                         }
                     });
