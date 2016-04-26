@@ -64,10 +64,10 @@ public class MainMoreOptionsFragment extends android.support.v4.app.Fragment {
         mOptions.add(new MoreOptionsListItem(getString(R.string.fitbit_sign_in_text), R.drawable.ic_fitbit));
         mOptions.add(new MoreOptionsListItem(getString(R.string.log_out_text), R.drawable.ic_logout));
         mOptions.add(new MoreOptionsListItem(getString(R.string.privacy_policy_text), R.drawable.ic_privacy));
-        mOptions.add(new MoreOptionsListItem("getUserLastMonthData", R.drawable.ic_launcher));
-        mOptions.add(new MoreOptionsListItem("lastSevenDaySumAndAverage", R.drawable.ic_launcher));
-        mOptions.add(new MoreOptionsListItem("getStepsRangeDateTime", R.drawable.ic_launcher));
-        mOptions.add(new MoreOptionsListItem("Update Games Test", R.drawable.ic_launcher));
+//        mOptions.add(new MoreOptionsListItem("getUserLastMonthData", R.drawable.ic_launcher));
+//        mOptions.add(new MoreOptionsListItem("lastSevenDaySumAndAverage", R.drawable.ic_launcher));
+//        mOptions.add(new MoreOptionsListItem("getStepsRangeDateTime", R.drawable.ic_launcher));
+//        mOptions.add(new MoreOptionsListItem("Update Games Test", R.drawable.ic_launcher));
     }
 
     private void populateListView() {
@@ -77,8 +77,7 @@ public class MainMoreOptionsFragment extends android.support.v4.app.Fragment {
     }
 
     private void registerClickCallback() {
-        final FitbitHelper fh = new FitbitHelper(getActivity());
-
+//        final FitbitHelper fh = new FitbitHelper(getActivity());
 
         ListView list = (ListView)view.findViewById(R.id.more_options_list_view);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -99,54 +98,54 @@ public class MainMoreOptionsFragment extends android.support.v4.app.Fragment {
                         Utils.trackData(ParseConstants.KEY_ANALYTICS_MAIN_OTHER_PRIVACY, ParseConstants.KEY_ANALYTICS_MAIN_OTHER_PRIVACY);
                         showIntent(getActivity(), PrivacyPolicyActivity.class);
                         break;
-                    case 3:
-                        if (!fh.isFitbitUserAlive())
-                        {
-                            Context context = getActivity();
-                            CharSequence text = "Your are not logged in Fitbit!";
-                            int duration = Toast.LENGTH_LONG;
-
-                            Toast toast = Toast.makeText(context, text, duration);
-                            toast.show();
-                            return;
-                        }
-//                        fh.getUserLastMonthData();
-                        fh.getUserLastWeekData();
-                        break;
-
-                    case 4:
-                        if (!fh.isFitbitUserAlive())
-                        {
-                            Context context = getActivity();
-                            CharSequence text = "Your are not logged in Fitbit!";
-                            int duration = Toast.LENGTH_LONG;
-
-                            Toast toast = Toast.makeText(context, text, duration);
-                            toast.show();
-                            return;
-                        }
-                        fh.lastSevenDaySumAndAverage(ParseUser.getCurrentUser().getObjectId());
-                        break;
-
-                    case 5:
-                        if (!fh.isFitbitUserAlive())
-                        {
-                            Context context = getActivity();
-                            CharSequence text = "Your are not logged in Fitbit!";
-                            int duration = Toast.LENGTH_LONG;
-
-                            Toast toast = Toast.makeText(context, text, duration);
-                            toast.show();
-                            return;
-                        }
-                        fh.getStepsRangeDateTime();
-                        break;
-
-                    case 6:
-                        ParentChallenge.updateChallenges();
-//                        HotPotatoChallenge challenge = new HotPotatoChallenge(ChallengeTypeConstants.HOT_POTATO);
-//                        Date ddd = challenge.generateRandomEndDate(1000, 2, new Date());
-                        break;
+//                    case 3:
+//                        if (!fh.isFitbitUserAlive())
+//                        {
+//                            Context context = getActivity();
+//                            CharSequence text = "Your are not logged in Fitbit!";
+//                            int duration = Toast.LENGTH_LONG;
+//
+//                            Toast toast = Toast.makeText(context, text, duration);
+//                            toast.show();
+//                            return;
+//                        }
+////                        fh.getUserLastMonthData();
+//                        fh.getUserLastWeekData();
+//                        break;
+//
+//                    case 4:
+//                        if (!fh.isFitbitUserAlive())
+//                        {
+//                            Context context = getActivity();
+//                            CharSequence text = "Your are not logged in Fitbit!";
+//                            int duration = Toast.LENGTH_LONG;
+//
+//                            Toast toast = Toast.makeText(context, text, duration);
+//                            toast.show();
+//                            return;
+//                        }
+//                        fh.lastSevenDaySumAndAverage(ParseUser.getCurrentUser().getObjectId());
+//                        break;
+//
+//                    case 5:
+//                        if (!fh.isFitbitUserAlive())
+//                        {
+//                            Context context = getActivity();
+//                            CharSequence text = "Your are not logged in Fitbit!";
+//                            int duration = Toast.LENGTH_LONG;
+//
+//                            Toast toast = Toast.makeText(context, text, duration);
+//                            toast.show();
+//                            return;
+//                        }
+//                        fh.getStepsRangeDateTime();
+//                        break;
+//
+//                    case 6:
+//                        ParentChallenge.updateChallenges();
+////                        HotPotatoChallenge challenge = new HotPotatoChallenge(ChallengeTypeConstants.HOT_POTATO);
+////                        Date ddd = challenge.generateRandomEndDate(1000, 2, new Date());
+//                        break;
                     default:
                         break;
                 }

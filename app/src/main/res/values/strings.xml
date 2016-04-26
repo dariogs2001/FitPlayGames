@@ -92,7 +92,7 @@
 
     <string-array name="challenge_steps_array">
         <item>Select steps</item>
-        <item>100</item>
+        <!--<item>100</item>-->
         <item>1000</item>
         <item>2000</item>
         <item>3000</item>
@@ -108,10 +108,18 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_privacy_policy">Privacy Policy</string>
     <string name="title_activity_leader_board">Leader Board</string>
-    <string name="privacy_text">Your participation in this study will require you to use a new Android app called FitPlay Games, which syncs with your Fitbit data. The app will capture the past 30 days of your Fitbit data (only steps counts), in order to compare your past physical activity with the activity when you use the app. All app data including fitness data, app usage, and chat messages will be captured and analyzed by the research team, though it will be aggregated and/or anonymized in any publications. The application will consist in two different type of games, and you will be invited to use the app for a total of approximately 4 weeks.
+    <string name="privacy_text">My name is Dario Gonzalez, I am a graduate student at Brigham Young University and I am conducting this research under the supervision of Professor Derek Hansen, from the School of Technology. You are being invited to participate in this research study of Exergames and Motivation using a Novel Mobile Application. I am interested on finding out about how games that use smartphones and fitness tracking influence physical activity and enjoyment.
     </string>
-    <string name="privacy_line_2">You do not have to be in this study if you do not want to be. You may discontinue using the app at any time. We will be happy to answer any questions you have about this study. If you have further questions about this project or if you have a research-related problem you may contact me, Dario Gonzalez at <b>fitplaygames@gmail.com</b> or my advisor, Derek Hansen at <b>dlhansen@byu.edu</b>.
-    </string>
+    <string name="privacy_line_2">Your participation in this study will require to use a new Android application called FitPlay Games, which syncs with your Fitbit data. The app will capture the past 30 days of your Fitbit data (only steps count), in order to compare your past physical activity with the activity when you use the app. All app data including fitness data, app usage, and chat messages will be captured and analyzed by the research team, though it will be aggregated and/or anonymized in any publications. If you consent to joining this research, you will be sent an email asking for your consent. After downloading the app you will be instructed to play two different games over a 4 week period. You can participate as much or as little as you want, but we do not imagine you spending more than an hour a day on the application. The games rely on step-count, and you can invite your friends to play with you. After finishing the 4-week play time, you will be asked to complete a questionnaire that should take approximately 10 minutes. Finally, some participants may be asked to participate in an interview or focus group, which will take no more than an hour and 15 minutes. Such interviews and focus group will be recorded, only for study purposes, and will not published or shared with anybody other than the research team. This study involves minimal risk to you. The benefits, however, may impact society by helping increase knowledge about exercise games that uses fitness tracker data.
+   </string>
+    <string name="privacy_line_3">You do not have to be in this study if you do not want to be. You do not have to answer any question that you do not want to answer for any reason. You may discontinue using the app at any time. We will be happy to answer any questions you have about this study. If you have further questions about this project or if you have a research-related problem you may contact myself, Dario Gonzalez at <b>fitplaygames@gmail.com</b> or my advisor, Derek Hansen at <b>dlhansen@byu.edu</b>.
+   </string>
+    <string name="privacy_line_4">If you have any questions about your rights as a research participant you may contact the IRB Administrator at A-285 ASB, Brigham Young University, Provo, UT 84062; <b>irb@byu.edu</b>; (801) 422-1461. The IRB is a group of people who review research studies to protect the rights and welfare of research participants.
+   </string>
+    <string name="privacy_line_5">Thank you!
+   </string>
+    <string name="privacy_line_6">The FitPlay Games Team.
+   </string>
 
     <string name="fitbit_api_key">a2f813cf8c7420eff5629382ae6a25a4</string>
     <string name="fitbit_api_secret">0129ef7d53df74e1bb428fdaec8df9c1</string>

@@ -28,6 +28,7 @@ import dariogonzalez.fitplaygames.R;
 import dariogonzalez.fitplaygames.classes.ChallengeTypeConstants;
 import dariogonzalez.fitplaygames.classes.LeaderboardItem;
 import dariogonzalez.fitplaygames.classes.ParseConstants;
+import dariogonzalez.fitplaygames.utils.Utils;
 
 /**
  * Created by ChristensenKC on 10/7/2015.
@@ -63,6 +64,9 @@ public class LeaderBoardFragment extends Fragment {
         progressBar.setVisibility(View.VISIBLE);
 
         showFriendsList(ChallengeType);
+
+        Utils.trackData(ParseConstants.KEY_ANALYTICS_LEADERBOARD, ParseConstants.KEY_ANALYTICS_LEADERBOARD);
+
         return view;
     }
 

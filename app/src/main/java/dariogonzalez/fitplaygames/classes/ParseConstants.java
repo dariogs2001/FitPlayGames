@@ -150,6 +150,8 @@ public final class ParseConstants
     public static String KEY_ANALYTICS_MAIN_OTHER_LOGOUT = "MainOtherLogout";
     public static String KEY_ANALYTICS_MAIN_OTHER_PRIVACY = "MainOtherPrivacy";
 
+    public static String KEY_ANALYTICS_LEADERBOARD = "LeaderBoard";
+
     public static String KEY_ANALYTICS_HP_CHALLENGE_PENDING = "HPChallengePending";
     public static String KEY_ANALYTICS_HP_CHALLENGE_PLAYING = "HPChallengePlaying";
     public static String KEY_ANALYTICS_HP_CHALLENGE_FINISHED = "HPChallengeFinished";
