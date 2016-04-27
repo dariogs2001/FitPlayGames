@@ -123,8 +123,11 @@ public class CaptureTheCrownDetailsActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_capture_the_crown_details, menu);
         if (mState == 1)
         {
-            for (int i = 0; i < menu.size(); i++)
-                menu.getItem(i).setVisible(false);
+            for (int i = 0; i < menu.size(); i++) {
+                if (menu.getItem(i).getItemId() != R.id.action_message) {
+                    menu.getItem(i).setVisible(false);
+                }
+            }
         }
         return true;
     }

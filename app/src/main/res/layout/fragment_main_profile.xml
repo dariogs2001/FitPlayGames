@@ -7,6 +7,62 @@
     android:orientation="vertical"
     android:background="@color/very_light_grey">
 
+
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/swipe_refresh">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:visibility="visible"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="125dp">
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:orientation="vertical">
+
+          <include layout="@layout/challenge_profile_hot_potato"/>
+
+          <Space
+              android:layout_width="match_parent"
+              android:layout_height="3dp" />
+
+          <include layout="@layout/challenge_profile_crown"/>
+
+      </LinearLayout>
+        
+    </ScrollView>
+
+        <LinearLayout
+            android:id="@+id/progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:gravity="center">
+
+            <ProgressBar
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="left"
+                />
+        </LinearLayout>
+    </RelativeLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="120dp"
@@ -63,62 +119,6 @@
                 android:text="email@emai.com"/>
         </LinearLayout>
     </LinearLayout>
-
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/swipe_refresh">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:visibility="visible"
-        android:paddingRight="10dp"
-        android:paddingLeft="10dp"
-        android:paddingTop="125dp">
-
-      <LinearLayout
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:orientation="vertical">
-
-          <include layout="@layout/challenge_profile_hot_potato"/>
-
-          <Space
-              android:layout_width="match_parent"
-              android:layout_height="3dp" />
-
-          <include layout="@layout/challenge_profile_crown"/>
-
-      </LinearLayout>
-        
-    </ScrollView>
-
-        <LinearLayout
-            android:id="@+id/progress_bar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:orientation="horizontal"
-            android:visibility="gone"
-            android:gravity="center">
-
-            <ProgressBar
-                style="?android:attr/progressBarStyleLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="left"
-                />
-        </LinearLayout>
-    </RelativeLayout>
-    </android.support.v4.widget.SwipeRefreshLayout>
-
-
     <com.melnykov.fab.FloatingActionButton
         android:id="@+id/fab_add_friend"
         android:layout_width="wrap_content"

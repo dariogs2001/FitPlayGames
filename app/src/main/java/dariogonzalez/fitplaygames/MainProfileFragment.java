@@ -249,6 +249,7 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
                 });
             }
             else {
+
                 placeholderProfileImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -279,7 +280,6 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
                     }
                 }
             });
-
         }
     }
 
@@ -507,6 +507,8 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
                 Picasso.with(getActivity()).load(mMediaUri.toString()).resize(80, 80).into(profileImage);
                 profileImage.setVisibility(View.VISIBLE);
                 if (user != null) {
+                    UploadPictureAsync doTask = new UploadPictureAsync();
+                    doTask.execute("");
                 }
             }
             else {
@@ -574,6 +576,14 @@ public class MainProfileFragment extends android.support.v4.app.Fragment {
                 }
             };
             mainHandler.post(myRunnable);
+        }
+    }
+
+    public class UploadPictureAsync extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... params) {
+            saveImage();
+            return "";
         }
     }
 }
