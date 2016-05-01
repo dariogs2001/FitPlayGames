@@ -138,7 +138,7 @@ public class CaptureTheCrownChallenge extends ParentChallenge implements Parcela
             @Override
             public void done(ParseObject challengeEvent, ParseException e) {
                 if (e == null && challengeEvent != null) {
-                     Date startTime = challengeEvent.getDate(ParseConstants.CHALLENGE_EVENTS_START_TIME);
+                    Date startTime = challengeEvent.getDate(ParseConstants.CHALLENGE_EVENTS_START_TIME);
                     Date endTime = new Date();
                     //Result is in milliseconds so I divided by 1000 to set the seconds and by 60 to set the minutes
                     long timeDifference = endTime.getTime() - startTime.getTime() / 1000 * 60;

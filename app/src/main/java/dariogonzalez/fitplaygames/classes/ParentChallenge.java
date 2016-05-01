@@ -1176,14 +1176,19 @@ public abstract class ParentChallenge {
 //                    // Query through everyone in the list that is not the starting player and add them to the database as playing with a turn set to false.
                     for (int idx = 1; idx < list.size(); idx++) {
                         ParseObject crownSeekerPlayer = list.get(idx);
-                        ParseObject crownSeekerChallengeEvent = new ParseObject(ParseConstants.CLASS_CHALLENGE_EVENTS);
-                        crownSeekerChallengeEvent.put(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_OBJECT, challenge);
-                        crownSeekerChallengeEvent.put(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER_OBJECT, crownSeekerPlayer);
-                        crownSeekerChallengeEvent.put(ParseConstants.CHALLENGE_EVENTS_START_TIME, new Date());
-                        crownSeekerChallengeEvent.put(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_PLAYING);
-                        crownSeekerChallengeEvent.save();
                         crownSeekerPlayer.put(ParseConstants.CHALLENGE_PLAYER_IS_TURN, false);
                         crownSeekerPlayer.save();
+
+                        //Create new player event for every player in CTC games
+                        if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN) {
+                            ParseObject crownSeekerChallengeEvent = new ParseObject(ParseConstants.CLASS_CHALLENGE_EVENTS);
+                            crownSeekerChallengeEvent.put(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_OBJECT, challenge);
+                            crownSeekerChallengeEvent.put(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_PLAYER_OBJECT, crownSeekerPlayer);
+                            crownSeekerChallengeEvent.put(ParseConstants.CHALLENGE_EVENTS_START_TIME, new Date());
+                            crownSeekerChallengeEvent.put(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_PLAYING);
+                            crownSeekerChallengeEvent.save();
+                        }
+
                         ParseUser crownSeekerPlayerUser = crownSeekerPlayer.getParseUser(ParseConstants.CHALLENGE_PLAYER_USER_OBJECT);
                         if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN) {
                             ParentChallenge.sendPushNotification("Try to capture the crown in '" + challenge.get(ParseConstants.CHALLENGE_CHALLENGE_NAME) + "'!", crownSeekerPlayerUser);
