@@ -636,23 +636,24 @@ public abstract class ParentChallenge {
 
                                         challengePlayer.save();
 
-                                        // This query is supposed to find the player with the crown (aka not playing), change status to DONE, and update that players stats
-                                        ParseQuery<ParseObject> challengeEventQuery2 = new ParseQuery(ParseConstants.CLASS_CHALLENGE_EVENTS);
-                                        challengeEventQuery2.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_OBJECT, challenge);
-                                        challengeEventQuery2.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_CROWN);
-                                        ParseObject parseObject = challengeEventQuery2.getFirst();
+                                        try {
+                                            // This query is supposed to find the player with the crown (aka not playing), change status to DONE, and update that players stats
+                                            ParseQuery<ParseObject> challengeEventQuery2 = new ParseQuery(ParseConstants.CLASS_CHALLENGE_EVENTS);
+                                            challengeEventQuery2.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_CHALLENGE_OBJECT, challenge);
+                                            challengeEventQuery2.whereEqualTo(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_CROWN);
+                                            ParseObject parseObject = challengeEventQuery2.getFirst();
 
-                                        if (parseObject != null) {
-                                            Log.d("Crown Query: ", "changing crown player status to done");
-                                            Date startTime2 = parseObject.getDate(ParseConstants.CHALLENGE_EVENTS_START_TIME);
-                                            Date endTime2 = new Date();
-                                            //Result is in miliseconds so I divided by 1000 to set the seconds and by 60 to set the minutes
-                                            final long timeDifference2 = (endTime2.getTime() - startTime2.getTime()) / (1000 * 60);
-                                            //Changing status to DONE, and preparing everything to set next player and create new challengeEvent
-                                            parseObject.put(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_DONE);
-                                            parseObject.put(ParseConstants.CHALLENGE_EVENTS_END_TIME, endTime2);
-                                            parseObject.put(ParseConstants.CHALLENGE_EVENTS_GAME_TIME, timeDifference2);
-                                            parseObject.save();
+                                            if (parseObject != null) {
+                                                Log.d("Crown Query: ", "changing crown player status to done");
+                                                Date startTime2 = parseObject.getDate(ParseConstants.CHALLENGE_EVENTS_START_TIME);
+                                                Date endTime2 = new Date();
+                                                //Result is in miliseconds so I divided by 1000 to set the seconds and by 60 to set the minutes
+                                                final long timeDifference2 = (endTime2.getTime() - startTime2.getTime()) / (1000 * 60);
+                                                //Changing status to DONE, and preparing everything to set next player and create new challengeEvent
+                                                parseObject.put(ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS, ParseConstants.CHALLENGE_EVENTS_FINAL_STATUS_DONE);
+                                                parseObject.put(ParseConstants.CHALLENGE_EVENTS_END_TIME, endTime2);
+                                                parseObject.put(ParseConstants.CHALLENGE_EVENTS_GAME_TIME, timeDifference2);
+                                                parseObject.save();
 //                                            int playerCaptures2 = challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_PASSES);
 //                                            long gameTime2 = challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_GAME_TIME);
 //                                            gameTime2 += timeDifference2;
@@ -660,6 +661,10 @@ public abstract class ParentChallenge {
 //                                            challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_GAME_TIME, gameTime2);
 //                                            challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_AVERAGE_TIME, avgTime2);
 //                                            challengePlayer.save();
+                                            }
+                                        }catch (Exception ex)
+                                        {
+                                            //There is none...
                                         }
 
                                         updateCtCChallengeEventsToDone(challenge);
