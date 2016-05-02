@@ -635,8 +635,6 @@ public abstract class ParentChallenge {
                                         challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_AVERAGE_TIME, avgTime);
 
                                         challengePlayer.save();
-                                        updateCtCChallengeEventsToDone(challenge);
-                                        handOverCrown(challenge, challengePlayer);
 
                                         // This query is supposed to find the player with the crown (aka not playing), change status to DONE, and update that players stats
                                         ParseQuery<ParseObject> challengeEventQuery2 = new ParseQuery(ParseConstants.CLASS_CHALLENGE_EVENTS);
@@ -655,14 +653,17 @@ public abstract class ParentChallenge {
                                             parseObject.put(ParseConstants.CHALLENGE_EVENTS_END_TIME, endTime2);
                                             parseObject.put(ParseConstants.CHALLENGE_EVENTS_GAME_TIME, timeDifference2);
                                             parseObject.save();
-                                            int playerCaptures2 = challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_PASSES);
-                                            long gameTime2 = challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_GAME_TIME);
-                                            gameTime2 += timeDifference2;
-                                            long avgTime2 = gameTime2 / playerCaptures2;
-                                            challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_GAME_TIME, gameTime2);
-                                            challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_AVERAGE_TIME, avgTime2);
-                                            challengePlayer.save();
+//                                            int playerCaptures2 = challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_PASSES);
+//                                            long gameTime2 = challengePlayer.getInt(ParseConstants.CHALLENGE_PLAYER_GAME_TIME);
+//                                            gameTime2 += timeDifference2;
+//                                            long avgTime2 = gameTime2 / playerCaptures2;
+//                                            challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_GAME_TIME, gameTime2);
+//                                            challengePlayer.put(ParseConstants.CHALLENGE_PLAYER_AVERAGE_TIME, avgTime2);
+//                                            challengePlayer.save();
                                         }
+
+                                        updateCtCChallengeEventsToDone(challenge);
+                                        handOverCrown(challenge, challengePlayer);
 
                                         // break if code makes it to the end of this if statement
                                         break;
@@ -1174,7 +1175,7 @@ public abstract class ParentChallenge {
                 // If Playing Capture the Crown
 //                if (challenge.getInt(ParseConstants.CHALLENGE_CHALLENGE_TYPE) == ChallengeTypeConstants.CROWN) {
 //                    // Query through everyone in the list that is not the starting player and add them to the database as playing with a turn set to false.
-                    for (int idx = 1; idx < list.size(); idx++) {
+                for (int idx = 1; idx < list.size(); idx++) {
                         ParseObject crownSeekerPlayer = list.get(idx);
                         crownSeekerPlayer.put(ParseConstants.CHALLENGE_PLAYER_IS_TURN, false);
                         crownSeekerPlayer.save();
